@@ -1,0 +1,45 @@
+{
+  "name": "loom99",
+  "owner": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "metadata": {
+    "description": "A marketplace of claude plugins designed and implemented by Brandon Fryslie"
+  },
+  "plugins": [
+    {
+      "name": "agent-loop",
+      "source": "./plugins/agent-loop",
+      "description": "Agentic Software Engineering Loop",
+      "version": "0.1.0",
+      "author": {
+        "name": "Brandon Fryslie"
+      },
+      "strict": true,
+      "license": "MIT"
+    },
+    {
+      "name": "epti",
+      "source": "./plugins/epti",
+      "description": "'Evaluate - Plan - Test - Implement' Agent",
+      "version": "0.1.0",
+      "author": {
+        "name": "Brandon Fryslie"
+      },
+      "strict": true,
+      "license": "MIT"
+    },
+    {
+      "name": "visual-iteration",
+      "source": "./plugins/visual-iteration",
+      "description": "Visual iteration workflow - Screenshot-driven UI development",
+      "version": "0.1.0",
+      "author": {
+        "name": "Brandon Fryslie"
+      },
+      "strict": true,
+      "license": "MIT"
+    }
+  ]
+}

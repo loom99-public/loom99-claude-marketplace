@@ -1,0 +1,16 @@
+{
+  "name": "visual-iteration",
+  "version": "0.1.0",
+  "description": "Visual iteration workflow - Screenshot-driven UI development and refinement",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["visual", "ui", "screenshot", "iteration", "design", "frontend"],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}

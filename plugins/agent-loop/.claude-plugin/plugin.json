@@ -1,0 +1,16 @@
+{
+  "name": "agent-loop",
+  "version": "0.1.0",
+  "description": "Agentic Software Engineering Loop - Explore, plan, code, commit workflow",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["agent", "workflow", "engineering", "explore", "plan", "code", "commit"],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}

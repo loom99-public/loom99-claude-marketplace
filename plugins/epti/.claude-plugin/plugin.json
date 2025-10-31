@@ -1,0 +1,16 @@
+{
+  "name": "epti",
+  "version": "0.1.0",
+  "description": "Evaluate-Plan-Test-Implement - Test-driven development workflow",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["agent", "tdd", "test-driven", "evaluate", "plan", "test", "implement"],
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/",
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}
