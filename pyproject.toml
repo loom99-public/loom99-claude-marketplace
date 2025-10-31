@@ -1,0 +1,30 @@
+[project]
+name = "loom99-claude-marketplace-tests"
+version = "0.1.0"
+description = "Testing infrastructure for loom99 Claude Code Plugin Marketplace"
+requires-python = ">=3.9"
+dependencies = [
+    "pytest>=7.4.0",
+    "PyYAML>=6.0.1",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+# Verbose output showing test names and results
+addopts = [
+    "-v",
+    "--tb=short",
+    "--strict-markers",
+]
+
+# Markers for different test categories
+markers = [
+    "structure: Tests for directory and file structure",
+    "frontmatter: Tests for YAML frontmatter validation",
+    "config: Tests for plugin configuration",
+    "content: Tests for content preservation",
+]

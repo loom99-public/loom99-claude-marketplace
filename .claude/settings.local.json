@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ssh:*)",
+      "Bash(ssh-keygen:*)",
+      "Bash(ping:*)",
+      "Bash(nmap:*)",
+      "Bash(chmod:*)",
+      "Read(//Users/bmf/**)",
+      "Read(//Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/dotfiles/dotfiles-home/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
