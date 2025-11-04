@@ -1,0 +1,16 @@
+{
+  "name": "promptctl",
+  "version": "0.1.0",
+  "description": "Hook-based automation for Claude Code workflows",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": "",
+    "url": "https://gith`ub.com/brandon-fryslie"
+  },
+  "homepage": "https://github.com/loom99-public/loom99-claude-marketplace",
+  "repository": "https://github.com/loom99-public/loom99-claude-marketplace",
+  "license": "MIT",
+  "keywords": ["automation", "prompts", "hooks", "workflow"],
+  "hooks": "./hooks/hooks.json",
+  "mcpServers": "./.mcp.json"
+}

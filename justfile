@@ -62,6 +62,56 @@ phase2-metrics:
     @echo "  epti: $(wc -l < plugins/epti/README.md) lines (target: 350)"
     @echo "  visual-iteration: $(wc -l < plugins/visual-iteration/README.md) lines (target: 500)"
 
+# Run Phase 3 agent optimization tests
+test-phase3:
+    @echo "🧪 Running Phase 3 agent optimization tests..."
+    @pytest tests/functional/test_phase3_agents.py -v --tb=short
+    @echo ""
+    @echo "📊 Phase 3 Status:"
+    @pytest tests/functional/test_phase3_agents.py::TestPhase3Summary::test_phase3_optimization_complete -v --tb=short
+
+# Run Phase 3 tests (quiet mode for quick checks)
+test-phase3-quick:
+    @echo "🧪 Quick Phase 3 check..."
+    @pytest tests/functional/test_phase3_agents.py --tb=no -q
+
+# Run Phase 3 tests for specific plugin
+test-phase3-plugin plugin:
+    @echo "🧪 Testing Phase 3 for {{plugin}}..."
+    @pytest tests/functional/test_phase3_agents.py -k "{{plugin}}" -v --tb=short
+
+# Show current Phase 3 metrics
+phase3-metrics:
+    @echo "📊 Phase 3 Current Metrics"
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    @echo ""
+    @echo "Agents:"
+    @echo "  Total: $(wc -l plugins/*/agents/*.md | tail -1 | awk '{print $1}') lines (target: 1,206)"
+    @echo "  agent-loop/workflow-agent: $(wc -l < plugins/agent-loop/agents/workflow-agent.md) lines (target: 206)"
+    @echo "  epti/tdd-agent: $(wc -l < plugins/epti/agents/tdd-agent.md) lines (target: 400)"
+    @echo "  visual-iteration/visual-iteration-agent: $(wc -l < plugins/visual-iteration/agents/visual-iteration-agent.md) lines (target: 600)"
+
+# Run all phase tests
+test-all-phases:
+    @echo "🧪 Running all phase tests..."
+    @echo ""
+    @echo "Phase 2: Skills & READMEs"
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    @pytest tests/functional/test_phase2_reductions.py -v --tb=line
+    @echo ""
+    @echo "Phase 3: Agents"
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    @pytest tests/functional/test_phase3_agents.py -v --tb=line
+
+# Show all phase metrics
+metrics:
+    @echo "📊 All Phase Metrics"
+    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    @echo ""
+    @just phase2-metrics
+    @echo ""
+    @just phase3-metrics
+
 # Install test dependencies
 install-deps:
     @echo "📦 Installing test dependencies..."

@@ -1,0 +1,196 @@
+# Justfile for PromptCtl Plugin
+
+# Show available commands
+default:
+    @just --list
+
+# Install dependencies
+install:
+    uv sync
+
+# Run tests
+test:
+    python3 tests/test_logging.py
+
+# Run tests with pytest
+test-pytest:
+    uv run pytest -v
+
+# Generate hooks configuration
+gen-hooks:
+    python3 bin/write_hooks_config.py
+
+# View recent logs (rich format)
+logs:
+    python3 bin/logs.py --format rich --limit 50
+
+# View logs from last N days
+logs-days DAYS="7":
+    python3 bin/logs.py --days {{DAYS}} --format rich
+
+# Tail logs in real-time
+tail:
+    python3 bin/logs.py --follow
+
+# Tail logs with filters
+tail-hooks:
+    python3 bin/logs.py --follow --hooks
+
+# Tail logs for specific event type
+tail-event EVENT="PostToolUse":
+    python3 bin/logs.py --follow --event-type {{EVENT}}
+
+# View logs with hook input/output
+logs-debug:
+    python3 bin/logs.py --show-input --show-output --limit 20
+
+# View only hook events
+logs-hooks:
+    python3 bin/logs.py --hooks --limit 50
+
+# View only errors
+logs-errors:
+    python3 bin/logs.py --errors --limit 20
+
+# View slow operations (>1s)
+logs-slow:
+    python3 bin/logs.py --slow --limit 20
+
+# View logs for specific session
+logs-session SESSION:
+    python3 bin/logs.py --session {{SESSION}}
+
+# View logs for specific handler
+logs-handler HANDLER:
+    python3 bin/logs.py --handler {{HANDLER}}
+
+# View logs for specific event type
+logs-event EVENT="PreToolUse":
+    python3 bin/logs.py --event-type {{EVENT}} --limit 50
+
+# View logs in JSON format
+logs-json:
+    python3 bin/logs.py --format json --limit 50
+
+# View logs in simple format
+logs-simple:
+    python3 bin/logs.py --format simple --limit 50
+
+# Clear log files
+clean-logs:
+    rm -f ~/.promptctl/logs/*.jsonl
+    @echo "Cleared log files"
+
+# Validate Python syntax
+check:
+    python3 -m py_compile mcp/server.py
+    python3 -m py_compile mcp/logflow.py
+    python3 -m py_compile bin/dispatch.py
+    python3 -m py_compile bin/logs.py
+    python3 -m py_compile bin/write_hooks_config.py
+    @echo "All Python files validated"
+
+# Format code (requires black)
+format:
+    black mcp/ bin/ tests/
+
+# Lint code (requires ruff)
+lint:
+    ruff check mcp/ bin/ tests/
+
+# Show log file info
+log-info:
+    @echo "Log directory: ~/.promptctl/logs"
+    @echo "Log files:"
+    @ls -lh ~/.promptctl/logs/*.jsonl 2>/dev/null || echo "No log files found"
+    @echo ""
+    @echo "Total log size:"
+    @du -sh ~/.promptctl/logs 2>/dev/null || echo "N/A"
+
+# Count log entries
+log-count:
+    @echo "Counting log entries..."
+    @wc -l ~/.promptctl/logs/*.jsonl 2>/dev/null || echo "No log files found"
+
+# Show most recent log entries
+log-recent COUNT="10":
+    @tail -n {{COUNT}} ~/.promptctl/logs/$(ls -t ~/.promptctl/logs/*.jsonl | head -1) | python3 -m json.tool --no-ensure-ascii
+
+# Search logs for pattern
+log-search PATTERN:
+    @grep -h "{{PATTERN}}" ~/.promptctl/logs/*.jsonl | python3 -m json.tool --no-ensure-ascii
+
+# Run MCP server (for testing)
+run-server:
+    python3 mcp/server.py
+
+# Show server status
+status:
+    @echo "PromptCtl Status"
+    @echo "================"
+    @echo ""
+    @echo "Plugin root: $PWD"
+    @echo "Log directory: ~/.promptctl/logs"
+    @echo "Config file: ~/.promptctl/promptctl.yaml (or ./promptctl.yaml)"
+    @echo ""
+    @echo "Recent log files:"
+    @ls -lt ~/.promptctl/logs/*.jsonl 2>/dev/null | head -5 || echo "No log files found"
+
+# Create example configuration
+example-config:
+    @cat > example-promptctl.yaml << 'EOF'
+    version: "1.0"
+
+    # Logging configuration
+    logging:
+      enabled: true
+      level: INFO
+      buffer_size: 10000
+      rate_limit: 1000
+
+      console:
+        enabled: true
+        format: rich
+        colors: true
+        show_data: false
+
+      jsonl:
+        enabled: true
+        path: "~/.promptctl/logs/{date}.jsonl"
+        rotation: daily
+        max_size_mb: 100
+
+    # Handler configuration
+    handlers:
+      auto-test:
+        enabled: true
+        hook: PostToolUse
+        priority: 10
+        match:
+          tool: ["Edit", "Write"]
+          file_pattern: "*.py"
+        actions:
+          - action: command
+            script: "pytest {tool_input.file_path}"
+
+      review-prompt:
+        enabled: true
+        hook: Stop
+        priority: 5
+        actions:
+          - action: prompt
+            template: "Please review the changes and suggest improvements"
+    EOF
+    @echo "Created example-promptctl.yaml"
+
+# Show help for logs CLI
+logs-help:
+    python3 bin/logs.py --help
+
+# Development workflow: install, test, check
+dev: install test check
+    @echo "Development environment ready!"
+
+# CI workflow: check, test
+ci: check test
+    @echo "CI checks passed!"

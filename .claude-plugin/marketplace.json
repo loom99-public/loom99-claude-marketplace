@@ -5,7 +5,7 @@
     "email": ""
   },
   "metadata": {
-    "description": "A marketplace of claude plugins designed and implemented by Brandon Fryslie"
+    "description": "the loom99 public claude plugin marketplace"
   },
   "plugins": [
     {
@@ -34,6 +34,17 @@
       "name": "visual-iteration",
       "source": "./plugins/visual-iteration",
       "description": "Visual iteration workflow - Screenshot-driven UI development",
+      "version": "0.1.0",
+      "author": {
+        "name": "Brandon Fryslie"
+      },
+      "strict": true,
+      "license": "MIT"
+    },
+    {
+      "name": "promptctl",
+      "source": "./plugins/promptctl",
+      "description": "A tool for prompt control",
       "version": "0.1.0",
       "author": {
         "name": "Brandon Fryslie"
