@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -50,7 +50,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -61,7 +61,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -72,7 +72,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -83,7 +83,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }
@@ -94,7 +94,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+            "command": "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
           }
         ]
       }

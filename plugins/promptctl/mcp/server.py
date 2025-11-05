@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import yaml
 from fastmcp import FastMCP
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 # Import logging system
 from logflow import (
@@ -169,6 +169,8 @@ class StopOutput(BaseModel):
 class HookOutput(BaseModel):
     """Base output schema for all hooks."""
 
+    model_config = ConfigDict(populate_by_name=True)
+
     continue_: bool = Field(
         default=True, alias="continue", description="Whether to continue execution"
     )
@@ -181,9 +183,6 @@ class HookOutput(BaseModel):
         Union[PreToolUseOutput, UserPromptSubmitOutput, StopOutput]
     ] = None
 
-    class Config:
-        populate_by_name = True
-
 
 # ============================================================================
 # PromptCtl Configuration Schemas
@@ -193,24 +192,22 @@ class HookOutput(BaseModel):
 class HandlerAction(BaseModel):
     """Configuration for a handler action."""
 
+    model_config = ConfigDict(extra="allow")
+
     action: str = Field(..., description="Action type: prompt, command, git, etc.")
     # Additional fields depend on action type - keep flexible
     extra: Dict[str, Any] = Field(default_factory=dict)
-
-    class Config:
-        extra = "allow"
 
 
 class HandlerMatch(BaseModel):
     """Match conditions for a handler."""
 
+    model_config = ConfigDict(extra="allow")
+
     tool: Optional[Union[str, List[str]]] = None
     file_pattern: Optional[str] = None
     # Additional match conditions
     extra: Dict[str, Any] = Field(default_factory=dict)
-
-    class Config:
-        extra = "allow"
 
 
 class Handler(BaseModel):
@@ -226,12 +223,11 @@ class Handler(BaseModel):
 class PromptCtlConfig(BaseModel):
     """Root configuration for promptctl.yaml."""
 
+    model_config = ConfigDict(extra="allow")
+
     version: str = Field(default="1.0")
     handlers: Dict[str, Handler] = Field(default_factory=dict)
     logging: Optional[LoggingConfig] = None
-
-    class Config:
-        extra = "allow"
 
 
 # ============================================================================

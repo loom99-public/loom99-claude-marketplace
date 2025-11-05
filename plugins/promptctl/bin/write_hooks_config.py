@@ -6,13 +6,34 @@ This script generates the hooks.json file that configures Claude Code
 to call the dispatch.py script for all hook events.
 """
 
-import sys
+import json
 from pathlib import Path
 
-# Add parent directory to path to import server module
-sys.path.insert(0, str(Path(__file__).parent.parent / "mcp"))
 
-from server import HooksConfigWriter
+def generate_hooks_config(dispatch_script: str):
+    """Generate hooks.json configuration."""
+    events = [
+        "PreToolUse",
+        "PostToolUse",
+        "Notification",
+        "UserPromptSubmit",
+        "SessionStart",
+        "SessionEnd",
+        "Stop",
+        "SubagentStop",
+        "PreCompact"
+    ]
+
+    hooks = {}
+    for event_name in events:
+        hooks[event_name] = [
+            {
+                "matcher": "*",
+                "hooks": [{"type": "command", "command": dispatch_script}],
+            }
+        ]
+
+    return {"hooks": hooks}
 
 
 def main():
@@ -20,11 +41,15 @@ def main():
     script_dir = Path(__file__).parent
     hooks_config_file = script_dir.parent / "hooks" / "hooks.json"
 
-    # Generate dispatch command - uses python3 to run dispatch.py
-    dispatch_command = "python3 ${CLAUDE_PLUGIN_ROOT}/bin/dispatch.py"
+    # Generate dispatch command - uses python3 to run dispatch.sh
+    dispatch_command = "\"${CLAUDE_PLUGIN_ROOT}\"/bin/dispatch.sh"
 
     # Write hooks configuration
-    HooksConfigWriter.write_hooks_config(hooks_config_file, dispatch_command)
+    config = generate_hooks_config(dispatch_command)
+
+    hooks_config_file.parent.mkdir(parents=True, exist_ok=True)
+    with open(hooks_config_file, "w") as f:
+        json.dump(config, f, indent=2)
 
     print(f"Wrote hooks config to: {hooks_config_file}")
     print("\nThe following hook events are configured:")
