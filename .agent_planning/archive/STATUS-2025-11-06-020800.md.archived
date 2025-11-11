@@ -1,0 +1,1448 @@
+# E2E Testing Infrastructure Evaluation for Claude Code Plugins
+
+**Report Date**: 2025-11-06 02:08:00
+**Analysis Type**: Testing Infrastructure Gap Analysis
+**Analyst**: Ruthless Project Auditor
+**Focus**: End-to-End Testing Requirements for Claude Code Plugin Marketplace
+
+---
+
+## Executive Summary: SEVERE TESTING GAP IDENTIFIED
+
+**Current E2E Testing Coverage**: 0%
+**Current Structural Testing Coverage**: 100% (50+ tests passing)
+**Required E2E Testing Coverage**: 80-90%
+**Testing Gap Severity**: CRITICAL
+
+**Verdict**: While the project has **EXCELLENT structural and content validation tests** (60+ tests, all passing), it has **ZERO end-to-end testing** of actual plugin functionality in Claude Code. The plugins are marked "100% MVP complete" but **HAVE NEVER BEEN EXECUTED** in their target runtime environment.
+
+### The Fundamental Problem
+
+The existing tests validate:
+- ✅ Plugin structure (directories, files, naming conventions)
+- ✅ YAML frontmatter validity
+- ✅ JSON configuration correctness
+- ✅ File size and content preservation
+- ✅ Expected skill counts and names
+
+The existing tests DO NOT validate:
+- ❌ Plugin loading in Claude Code
+- ❌ Slash command execution
+- ❌ Agent behavior and prompt expansion
+- ❌ Skill invocation by Claude
+- ❌ Hook execution and lifecycle events
+- ❌ MCP server integration
+- ❌ Cross-plugin interaction
+- ❌ Actual workflow completion
+
+**Translation**: We have proven the plugins are **well-structured markdown files**. We have NOT proven they **do anything useful**.
+
+---
+
+## 1. Current Testing Infrastructure
+
+### What EXISTS and WORKS
+
+#### A. Structural Validation Tests (tests/functional/test_skills_structure.py)
+
+**Status**: ✅ EXCELLENT - 50 of 50 tests passing
+
+**Coverage**:
+```python
+TestSkillsDirectoryStructure        # 6 test functions × 3 plugins = 18 tests
+TestSkillsYAMLFrontmatter           # 4 test functions × 3 plugins = 12 tests
+TestPluginConfiguration             # 4 test functions × 3 plugins = 12 tests
+TestContentPreservation             # 3 test functions × 3 plugins = 9 tests
+TestCompletenessAndCorrectness      # 3 test functions = 3 tests
+```
+
+**What These Tests Validate**:
+1. **Directory Structure**: Skills in subdirectories with SKILL.md files
+2. **YAML Frontmatter**: Valid YAML with name/description fields
+3. **Plugin Manifests**: plugin.json files with correct paths
+4. **Content Size**: Skills have 250-400 lines each (not stubs)
+5. **Completeness**: All 13 skills across 3 plugins present
+
+**Why These Tests Are Valuable**:
+- ✅ Cannot be gamed (parse real YAML, check real files)
+- ✅ Fast execution (0.09s for 50 tests)
+- ✅ Clear failure messages
+- ✅ Prevent structural regressions
+- ✅ Validate against Claude Code plugin spec
+
+**Why These Tests Are INSUFFICIENT**:
+- ❌ No runtime validation
+- ❌ No Claude Code integration
+- ❌ No actual command execution
+- ❌ No agent behavior validation
+- ❌ No MCP server testing
+- ❌ No end-user workflow validation
+
+#### B. Verbosity/Quality Tests (tests/functional/test_phase2_reductions.py, test_phase3_agents.py)
+
+**Status**: ✅ PASSING (quality gates)
+
+**Coverage**:
+- Skills size validation (250-400 lines optimal range)
+- README size validation (target reductions achieved)
+- Agent implementation completeness
+- Content quality metrics
+
+**Purpose**: Ensure plugins are concise and effective, not bloated
+
+**Limitation**: Still structural validation, not functional testing
+
+#### C. Test Infrastructure
+
+**Framework**: pytest + PyYAML
+**Configuration**: pyproject.toml with proper markers
+**Runner Script**: run_tests.sh with category filtering
+**Documentation**: Comprehensive test README
+
+**Assessment**: EXCELLENT test infrastructure, just testing the wrong things
+
+### What DOES NOT EXIST
+
+#### E2E Testing Infrastructure: COMPLETELY ABSENT
+
+**Missing Components**:
+1. **Claude Code Integration Tests**: No tests that load plugins into actual Claude Code
+2. **Command Execution Tests**: No tests that run slash commands
+3. **Agent Behavior Tests**: No tests that validate agent prompt expansion
+4. **Skill Invocation Tests**: No tests that verify skills are callable
+5. **Hook Lifecycle Tests**: No tests that hooks fire at correct events
+6. **MCP Server Tests**: No tests that MCP servers load and function
+7. **Workflow Tests**: No tests that complete workflows (explore → plan → code → commit)
+8. **Cross-Plugin Tests**: No tests for plugin interaction or conflicts
+
+**Evidence of Absence**:
+```bash
+$ find . -name "*e2e*" -o -name "*integration*" -o -name "*functional*" | grep -v __pycache__
+tests/functional/  # Contains STRUCTURAL tests, not functional E2E tests
+```
+
+---
+
+## 2. Plugin Architecture Understanding
+
+### Component Inventory
+
+The marketplace contains **4 plugins** (not 3 as documented):
+1. **agent-loop** (v0.1.0): 4-stage workflow (Explore → Plan → Code → Commit)
+2. **epti** (v0.1.0): 6-stage TDD workflow (Write Tests → Verify Fail → Commit Tests → Implement → Iterate → Commit Code)
+3. **visual-iteration** (v0.1.0): Visual iteration with screenshots
+4. **promptctl** (v0.1.0): Hook-based automation (WIP, not in CLAUDE.md)
+
+### Component Breakdown
+
+#### A. Slash Commands (16 total across plugins)
+
+**agent-loop** (4 commands):
+- `/explore` (54 lines) - Investigation phase
+- `/plan` (70 lines) - Planning phase
+- `/code` (not found in structure listing)
+- `/commit` (not found in structure listing)
+
+**epti** (6 commands):
+- `/write-tests` (268 lines) - Generate tests without implementation
+- `/verify-fail` (172 lines) - Verify tests fail properly
+- `/commit-tests` (171 lines) - Commit tests only
+- `/implement` (232 lines) - Implement code to pass tests
+- `/iterate` (117 lines) - Refine implementation
+- `/commit-code` (157 lines) - Commit final implementation
+
+**visual-iteration** (6 commands):
+- `/screenshot` (186 lines) - Capture current state
+- `/load-mock` (188 lines) - Load visual mock
+- `/implement-design` (170 lines) - Implement design
+- `/iterate` (164 lines) - Refine visuals
+- `/compare` (208 lines) - Compare before/after
+- `/visual-commit` (237 lines) - Commit visual work
+
+**How Commands Work**:
+- Markdown files in `commands/` directory
+- Filename (minus .md) becomes command name
+- File contents expand as prompt when command invoked
+- Can reference skills and agents
+- No executable code - pure prompt expansion
+
+**Testing Challenge**: Commands are **passive prompt templates**. Testing requires:
+1. Loading plugin into Claude Code
+2. Invoking command
+3. Observing prompt expansion
+4. Validating Claude's response matches expected guidance
+
+#### B. Agents (3 implemented)
+
+**Current Agents**:
+1. `workflow-agent.md` (agent-loop, 206 lines) - 4-stage orchestration
+2. `tdd-agent.md` (epti, 636 lines) - 6-stage TDD enforcement
+3. `visual-iteration-agent.md` (visual-iteration, 677 lines) - Screenshot iteration
+
+**How Agents Work**:
+- Markdown files in `agents/` directory
+- Define specialized AI behaviors
+- Provide workflow stage definitions
+- Include anti-patterns and guardrails
+- Coordinate with commands and skills
+
+**Testing Challenge**: Agents are **behavioral instructions**. Testing requires:
+1. Loading plugin with agent
+2. Starting conversation with agent context active
+3. Validating agent behavior matches specification
+4. Measuring adherence to guardrails and anti-patterns
+
+#### C. Skills (13 implemented)
+
+**agent-loop** (4 skills, 1,090 lines total):
+- code-exploration (251 lines) - Systematic codebase investigation
+- git-operations (294 lines) - Git workflow automation
+- plan-generation (254 lines) - Structured planning
+- verification (291 lines) - Code/test verification
+
+**epti** (5 skills, 1,408 lines total):
+- implementation-with-protection (267 lines) - Safe code implementation
+- overfitting-detection (273 lines) - Identify test-specific hacks
+- refactoring (283 lines) - Post-implementation refinement
+- test-execution (302 lines) - Test running and analysis
+- test-generation (283 lines) - Comprehensive test writing
+
+**visual-iteration** (4 skills, 1,178 lines total):
+- design-implementation (314 lines) - UI implementation
+- screenshot-capture (253 lines) - Browser automation
+- visual-comparison (289 lines) - Before/after analysis
+- visual-refinement (322 lines) - Iterative improvement
+
+**How Skills Work**:
+- Subdirectories in `skills/` with SKILL.md files
+- YAML frontmatter with name and description
+- Reusable capabilities Claude invokes autonomously
+- Provide detailed guidance for specific tasks
+- Can be referenced from commands/agents
+
+**Testing Challenge**: Skills are **autonomous capabilities**. Testing requires:
+1. Creating scenario where skill should be invoked
+2. Validating Claude recognizes skill is relevant
+3. Verifying skill guidance is followed
+4. Measuring skill effectiveness on actual task
+
+#### D. Hooks (9 configured across plugins)
+
+**Hook Types Used**:
+- `pre-commit` - Validation before git commit
+- `post-code` - Actions after code changes
+- `commit-msg` - Commit message enforcement
+- `pre-implementation` - Gates before coding
+- `post-refine` - Actions after refinement
+
+**How Hooks Work**:
+- JSON configuration in `hooks/hooks.json`
+- Trigger shell commands on lifecycle events
+- Enforce workflow discipline
+- Can block operations or provide warnings
+
+**Example hook configuration**:
+```json
+{
+  "hooks": [
+    {
+      "type": "pre-commit",
+      "command": "check_plan_exists.sh",
+      "description": "Verify plan exists before commit"
+    }
+  ]
+}
+```
+
+**Testing Challenge**: Hooks are **executable shell commands**. Testing requires:
+1. Loading plugin with hooks
+2. Triggering lifecycle events
+3. Validating hook execution
+4. Checking success/failure handling
+
+#### E. MCP Server Integration (2 configured)
+
+**visual-iteration**: browser-tools MCP server
+```json
+{
+  "mcpServers": {
+    "browser-tools": {
+      "command": "npx",
+      "args": ["-y", "@executeautomation/mcp-browser-tools"],
+      "env": {}
+    }
+  }
+}
+```
+
+**How MCP Servers Work**:
+- External tools providing capabilities to Claude
+- Defined in `.mcp.json` configuration
+- Loaded when plugin is installed
+- Provide functions Claude can invoke
+
+**Testing Challenge**: MCP integration requires:
+1. MCP server executable available
+2. Server starts correctly
+3. Claude can invoke server functions
+4. Functions return expected results
+
+---
+
+## 3. E2E Testing Requirements
+
+### What Comprehensive E2E Testing Would Look Like
+
+#### Tier 1: Plugin Loading Tests (FOUNDATIONAL)
+
+**Purpose**: Verify plugins can be loaded into Claude Code without errors
+
+**Test Cases**:
+1. **Marketplace Installation**
+   - Install marketplace from local path
+   - Verify marketplace appears in `/plugin marketplace list`
+   - Validate all 4 plugins are visible
+
+2. **Individual Plugin Installation**
+   - Install each plugin individually
+   - Verify plugin appears in `/plugin list`
+   - Check no error messages during installation
+
+3. **Plugin Uninstallation**
+   - Uninstall plugin
+   - Verify plugin removed from list
+   - Confirm commands/agents/skills no longer available
+
+4. **Plugin Update**
+   - Modify plugin files
+   - Reload/update plugin
+   - Verify changes take effect
+
+**Technical Approach**:
+- Requires Claude Code CLI or API
+- Need programmatic way to install/uninstall plugins
+- Must capture Claude Code output/logs
+
+**Feasibility**: HIGH if Claude Code provides CLI/API, LOW otherwise
+
+#### Tier 2: Slash Command Tests (BASIC FUNCTIONALITY)
+
+**Purpose**: Verify slash commands execute and expand correctly
+
+**Test Cases** (per command):
+1. **Command Recognition**
+   - Type `/command-name`
+   - Verify command is recognized
+   - Check autocomplete works
+
+2. **Prompt Expansion**
+   - Execute command
+   - Capture expanded prompt text
+   - Validate against expected content
+
+3. **Argument Handling**
+   - Execute command with arguments
+   - Verify arguments are substituted correctly
+   - Test edge cases (no args, too many args)
+
+4. **Error Handling**
+   - Execute non-existent command
+   - Verify appropriate error message
+   - Check command list shows available commands
+
+**Example Test**:
+```python
+def test_explore_command_expands_correctly():
+    """Test /explore command from agent-loop plugin."""
+    # Load agent-loop plugin
+    load_plugin("agent-loop")
+
+    # Execute command
+    result = execute_command("/explore")
+
+    # Validate expansion
+    assert "Stage 1: Explore" in result.expanded_prompt
+    assert "Your Mission" in result.expanded_prompt
+    assert "What You Should Do" in result.expanded_prompt
+    assert "Anti-Patterns" in result.expanded_prompt
+```
+
+**Technical Approach**:
+- Requires Claude Code conversation context
+- Need to capture prompt text after command expansion
+- Must differentiate command text from Claude's response
+
+**Feasibility**: MEDIUM - depends on Claude Code observability
+
+#### Tier 3: Agent Behavior Tests (ADVANCED)
+
+**Purpose**: Verify agents provide correct guidance and enforce guardrails
+
+**Test Cases**:
+1. **Agent Context Loading**
+   - Start conversation with agent active
+   - Verify agent guidance is available to Claude
+   - Check agent can access skills
+
+2. **Workflow Stage Enforcement**
+   - Attempt to skip stage (e.g., code before plan)
+   - Verify agent prevents or warns
+   - Validate stage transition logic
+
+3. **Anti-Pattern Detection**
+   - Attempt known anti-pattern (e.g., modify tests during TDD implement phase)
+   - Verify agent identifies and blocks
+   - Check guidance quality
+
+4. **Subagent Coordination**
+   - Trigger scenario requiring subagent
+   - Verify subagent is invoked
+   - Validate subagent results integrated correctly
+
+**Example Test**:
+```python
+def test_tdd_agent_prevents_test_modification():
+    """Test epti TDD agent blocks test changes during implementation."""
+    # Load epti plugin
+    load_plugin("epti")
+
+    # Complete write-tests phase
+    execute_command("/write-tests")
+    write_test_file("test_example.py", "def test_foo(): assert True")
+    execute_command("/commit-tests")
+
+    # Start implementation phase
+    execute_command("/implement")
+
+    # Attempt to modify tests
+    response = ask_claude("Can I update test_example.py to add more assertions?")
+
+    # Verify agent blocks
+    assert "do not modify tests" in response.lower()
+    assert "overfitting" in response.lower() or "strict TDD" in response.lower()
+```
+
+**Technical Approach**:
+- Requires full Claude Code conversation simulation
+- Need to inject agent context
+- Must evaluate Claude's responses for adherence to agent rules
+
+**Feasibility**: LOW - requires deep Claude Code integration
+
+#### Tier 4: Skill Invocation Tests (AUTONOMOUS BEHAVIOR)
+
+**Purpose**: Verify skills are discovered and used by Claude autonomously
+
+**Test Cases**:
+1. **Skill Discovery**
+   - Create scenario requiring skill
+   - Observe if Claude invokes skill
+   - Validate skill description helps Claude choose correctly
+
+2. **Skill Execution**
+   - Trigger skill invocation
+   - Capture skill guidance provided to Claude
+   - Verify Claude follows skill guidance
+
+3. **Skill Composition**
+   - Create scenario requiring multiple skills
+   - Verify Claude chains skills appropriately
+   - Check skill coordination is effective
+
+4. **Skill Error Handling**
+   - Create scenario where skill cannot complete
+   - Verify graceful fallback
+   - Check error reporting
+
+**Example Test**:
+```python
+def test_code_exploration_skill_invoked_for_unfamiliar_codebase():
+    """Test Claude invokes code-exploration skill when exploring new code."""
+    # Load agent-loop plugin
+    load_plugin("agent-loop")
+
+    # Create test codebase
+    create_test_project("sample_app")
+
+    # Start exploration phase
+    execute_command("/explore")
+
+    # Ask about unfamiliar codebase
+    response = ask_claude("What is the architecture of this codebase?")
+
+    # Verify skill was invoked (check logs or response characteristics)
+    assert skill_was_invoked("code-exploration")
+    assert "high-level structure" in response.lower()
+    assert "entry points" in response.lower()
+```
+
+**Technical Approach**:
+- Requires observability into skill invocation
+- Need Claude Code to log when skills are used
+- Must create realistic scenarios that trigger skills
+
+**Feasibility**: VERY LOW - requires Claude Code internal logging
+
+#### Tier 5: Hook Execution Tests (LIFECYCLE INTEGRATION)
+
+**Purpose**: Verify hooks fire at correct times and execute properly
+
+**Test Cases**:
+1. **Hook Registration**
+   - Install plugin with hooks
+   - Verify hooks are registered in Claude Code
+   - List active hooks
+
+2. **Hook Triggering**
+   - Perform action that should trigger hook
+   - Verify hook executes
+   - Capture hook output
+
+3. **Hook Success/Failure**
+   - Trigger hook that should succeed
+   - Verify success allows operation to continue
+   - Trigger hook that should fail
+   - Verify failure blocks operation
+
+4. **Hook Ordering**
+   - Install multiple plugins with overlapping hooks
+   - Verify execution order is correct
+   - Check no hook conflicts
+
+**Example Test**:
+```python
+def test_pre_commit_hook_blocks_commit_without_plan():
+    """Test agent-loop pre-commit hook blocks commits without plan."""
+    # Load agent-loop plugin
+    load_plugin("agent-loop")
+
+    # Make code changes without planning
+    write_file("src/new_feature.py", "def feature(): pass")
+
+    # Attempt commit
+    result = git_commit("Add new feature")
+
+    # Verify hook blocked commit
+    assert result.success == False
+    assert "plan" in result.error_message.lower()
+    assert "explore" in result.error_message.lower() or "/plan" in result.error_message
+```
+
+**Technical Approach**:
+- Requires git integration
+- Need to trigger git lifecycle events
+- Must capture hook execution and results
+
+**Feasibility**: MEDIUM - git hooks are well-defined, but need Claude Code integration
+
+#### Tier 6: MCP Server Integration Tests
+
+**Purpose**: Verify MCP servers load and provide functions to Claude
+
+**Test Cases**:
+1. **MCP Server Loading**
+   - Install plugin with MCP server config
+   - Verify MCP server starts
+   - Check server is healthy
+
+2. **Function Discovery**
+   - Query available MCP functions
+   - Verify expected functions exist
+   - Validate function signatures
+
+3. **Function Invocation**
+   - Have Claude invoke MCP function
+   - Verify function executes
+   - Check return value is correct
+
+4. **Error Handling**
+   - Invoke MCP function with invalid args
+   - Verify error handling
+   - Check Claude receives error message
+
+**Example Test**:
+```python
+def test_browser_tools_mcp_server_loads():
+    """Test visual-iteration browser-tools MCP server loads correctly."""
+    # Load visual-iteration plugin
+    load_plugin("visual-iteration")
+
+    # Verify MCP server started
+    assert mcp_server_running("browser-tools")
+
+    # Check available functions
+    functions = get_mcp_functions("browser-tools")
+    assert "screenshot" in functions
+    assert "navigate" in functions
+```
+
+**Technical Approach**:
+- Requires MCP server runtime
+- Need to query MCP server status
+- Must invoke MCP functions programmatically
+
+**Feasibility**: MEDIUM - depends on MCP SDK availability
+
+#### Tier 7: Complete Workflow Tests (END-TO-END)
+
+**Purpose**: Verify entire workflows complete successfully
+
+**Test Cases**:
+1. **agent-loop Full Workflow**
+   - Execute `/explore` → `/plan` → `/code` → `/commit`
+   - Verify each stage completes
+   - Check final deliverable (committed code)
+
+2. **epti TDD Workflow**
+   - Execute `/write-tests` → `/verify-fail` → `/commit-tests` → `/implement` → `/iterate` → `/commit-code`
+   - Verify tests written, fail, then pass
+   - Check implementation matches tests
+
+3. **visual-iteration Workflow**
+   - Execute `/load-mock` → `/screenshot` → `/implement-design` → `/iterate` → `/compare` → `/visual-commit`
+   - Verify visual mock loaded
+   - Check implementation matches mock
+   - Validate screenshots captured
+
+**Example Test**:
+```python
+def test_agent_loop_complete_workflow_adds_feature():
+    """Test agent-loop workflow completes feature addition end-to-end."""
+    # Load plugin
+    load_plugin("agent-loop")
+
+    # Create test project
+    project = create_test_project("sample_app")
+
+    # Phase 1: Explore
+    execute_command("/explore")
+    response = ask_claude("Explore the codebase and understand how to add a logging feature")
+    assert "exploration complete" in response.lower()
+
+    # Phase 2: Plan
+    execute_command("/plan")
+    response = ask_claude("Create a plan to add logging")
+    assert "plan" in response.lower()
+    plan_doc = extract_plan_document(response)
+    assert plan_doc is not None
+
+    # Phase 3: Code
+    execute_command("/code")
+    response = ask_claude("Implement the logging feature according to the plan")
+    assert "implementation complete" in response.lower()
+    assert file_exists(project / "src" / "logging.py")
+
+    # Phase 4: Commit
+    execute_command("/commit")
+    response = ask_claude("Commit the logging feature")
+    assert git_commit_exists("Add logging feature")
+
+    # Verify deliverable
+    assert logging_feature_works(project)
+```
+
+**Technical Approach**:
+- Requires full Claude Code integration
+- Need realistic test projects
+- Must simulate complete conversations
+- Validate actual code/git changes
+
+**Feasibility**: VERY LOW - closest to manual testing
+
+---
+
+## 4. Current State vs. Requirements Gap Analysis
+
+### Gap Matrix
+
+| Testing Requirement | Current State | Required State | Gap Severity | Feasibility |
+|---------------------|---------------|----------------|--------------|-------------|
+| **Plugin Loading** | ❌ 0% | ✅ 100% | 🔴 CRITICAL | 🟡 MEDIUM |
+| **Slash Commands** | ❌ 0% | ✅ 100% | 🔴 CRITICAL | 🟡 MEDIUM |
+| **Agent Behavior** | ❌ 0% | ✅ 80% | 🔴 CRITICAL | 🔴 LOW |
+| **Skill Invocation** | ❌ 0% | ✅ 70% | 🟠 HIGH | 🔴 VERY LOW |
+| **Hook Execution** | ❌ 0% | ✅ 90% | 🔴 CRITICAL | 🟢 HIGH |
+| **MCP Integration** | ❌ 0% | ✅ 80% | 🟠 HIGH | 🟡 MEDIUM |
+| **Complete Workflows** | ❌ 0% | ✅ 50% | 🟠 HIGH | 🔴 VERY LOW |
+| **Structural Validation** | ✅ 100% | ✅ 100% | 🟢 NONE | ✅ COMPLETE |
+
+### What Can Be Tested Today
+
+**High Feasibility** (Can build now):
+1. ✅ **Structural Validation** - Already complete
+2. 🟢 **Hook Scripts** - Can unit test hook shell scripts in isolation
+3. 🟡 **MCP Server Loading** - Can test server starts (if MCP SDK available)
+4. 🟡 **Plugin Manifest Validation** - Can validate against Claude Code spec
+
+**Medium Feasibility** (Can build with effort):
+1. 🟡 **Plugin Installation** - If Claude Code has CLI
+2. 🟡 **Command Recognition** - If can query available commands
+3. 🟡 **MCP Function Invocation** - If MCP SDK available
+4. 🟡 **Git Hook Integration** - Can test hooks in git context
+
+**Low Feasibility** (Very difficult):
+1. 🔴 **Agent Behavior Validation** - Requires conversation simulation
+2. 🔴 **Skill Invocation Detection** - Requires Claude Code internal observability
+3. 🔴 **Complete Workflows** - Requires full Claude Code integration
+4. 🔴 **Claude Response Quality** - Requires AI evaluation
+
+### Technical Blockers
+
+#### Blocker #1: Claude Code API/CLI Availability
+
+**Issue**: No evidence of Claude Code providing programmatic API or CLI for testing
+
+**What We Need**:
+- `claude-code` CLI tool that accepts commands
+- Ability to install/uninstall plugins programmatically
+- Ability to execute slash commands and capture output
+- Ability to start conversations and send messages
+
+**Current Assumption**: Claude Code is GUI-only, no headless mode
+
+**Impact**: Blocks ALL E2E testing except isolated component testing
+
+**Mitigation Options**:
+1. **Best**: Anthropic provides official testing SDK
+2. **Good**: Reverse engineer Claude Code internals (risky)
+3. **Acceptable**: Manual testing with detailed checklists
+4. **Minimal**: Structural validation + component unit tests
+
+#### Blocker #2: Conversation State Simulation
+
+**Issue**: Testing agent behavior requires simulating multi-turn conversations with context
+
+**What We Need**:
+- Ability to inject agent context into conversation
+- Way to send messages and receive responses
+- Capture of intermediate thinking/reasoning
+- Access to which skills/tools Claude considered
+
+**Current Assumption**: No API for conversation control
+
+**Impact**: Blocks agent behavior testing, skill invocation testing
+
+**Mitigation Options**:
+1. **Best**: Anthropic provides conversation testing framework
+2. **Good**: Use Claude API directly with plugin prompts
+3. **Acceptable**: Manual testing with standardized scenarios
+4. **Minimal**: Validate prompt templates are well-formed
+
+#### Blocker #3: Observable Runtime Behavior
+
+**Issue**: No way to observe if Claude invoked a skill, considered an agent rule, etc.
+
+**What We Need**:
+- Logging of skill invocations
+- Tracking of agent rule applications
+- Visibility into Claude's decision-making
+- Performance metrics (token usage, response time)
+
+**Current Assumption**: Claude Code internals are opaque
+
+**Impact**: Blocks skill effectiveness testing, agent compliance testing
+
+**Mitigation Options**:
+1. **Best**: Claude Code provides debug/verbose mode
+2. **Good**: Infer behavior from responses (heuristics)
+3. **Acceptable**: Manual observation and reporting
+4. **Minimal**: Assume implementation is correct if structure is valid
+
+#### Blocker #4: MCP Server Runtime
+
+**Issue**: Testing MCP integration requires MCP servers to be running
+
+**What We Need**:
+- MCP SDK for Python/JavaScript
+- Way to start/stop MCP servers in tests
+- Mock MCP servers for testing
+- MCP function invocation API
+
+**Current Status**: MCP is relatively new, SDK availability unknown
+
+**Impact**: Blocks MCP integration testing
+
+**Mitigation Options**:
+1. **Best**: Use official MCP testing tools
+2. **Good**: Create mock MCP servers
+3. **Acceptable**: Manual testing of MCP integration
+4. **Minimal**: Validate MCP config files are correct
+
+---
+
+## 5. Realistic Testing Approach: What Can Be Achieved
+
+### Tier 1: Immediate (Can Build This Week)
+
+#### 1.1 Enhanced Structural Validation
+
+**Status**: Already have excellent foundation
+
+**Additions**:
+- ✅ Validate command markdown structure (headers, sections)
+- ✅ Validate agent workflow stage completeness
+- ✅ Cross-reference commands → skills mentions
+- ✅ Check for broken internal references
+- ✅ Validate hook shell scripts exist and are executable
+
+**Example Test**:
+```python
+def test_commands_reference_valid_skills():
+    """Test all skill references in commands point to actual skills."""
+    for plugin in PLUGINS:
+        commands = load_all_commands(plugin)
+        skills = load_all_skills(plugin)
+
+        for command in commands:
+            skill_refs = extract_skill_references(command.content)
+            for skill_ref in skill_refs:
+                assert skill_ref in skills, f"Command {command.name} references non-existent skill {skill_ref}"
+```
+
+**Effort**: 1-2 days
+**Value**: HIGH - catches broken references, improves quality
+
+#### 1.2 Hook Script Unit Tests
+
+**Status**: No tests for hook scripts exist
+
+**Approach**: Test hook shell scripts in isolation
+
+**Example Test**:
+```python
+def test_pre_commit_hook_detects_missing_plan():
+    """Test agent-loop pre-commit hook script logic."""
+    # Create test environment
+    with temp_git_repo() as repo:
+        # No plan exists
+        assert not (repo / ".agent_planning" / "PLAN.md").exists()
+
+        # Run hook
+        result = run_hook_script("agent-loop/hooks/pre-commit.sh", cwd=repo)
+
+        # Verify hook fails
+        assert result.returncode != 0
+        assert "plan" in result.stderr.lower()
+```
+
+**Effort**: 2-3 days
+**Value**: MEDIUM - validates hook logic, prevents regressions
+
+#### 1.3 Plugin Manifest Schema Validation
+
+**Status**: Basic JSON validation exists
+
+**Additions**:
+- ✅ Validate against official Claude Code plugin schema
+- ✅ Check all referenced files exist
+- ✅ Validate version strings are semver
+- ✅ Check for required vs. optional fields
+
+**Effort**: 1 day
+**Value**: MEDIUM - catches configuration errors early
+
+### Tier 2: Near-Term (Can Build This Month)
+
+#### 2.1 Command Prompt Template Validation
+
+**Status**: No validation of command content structure
+
+**Approach**: Parse markdown, validate expected sections exist
+
+**Example Test**:
+```python
+def test_epti_commands_have_required_sections():
+    """Test epti commands have TDD-specific sections."""
+    commands = load_all_commands("epti")
+
+    required_sections = ["Your Mission", "What You Should Do", "Anti-Patterns", "Exit Criteria"]
+
+    for command in commands:
+        sections = extract_markdown_headers(command.content)
+        for required in required_sections:
+            assert required in sections, f"Command {command.name} missing section: {required}"
+```
+
+**Effort**: 3-4 days
+**Value**: MEDIUM - ensures commands follow template
+
+#### 2.2 Agent Workflow Completeness Validation
+
+**Status**: Basic agent file existence tested
+
+**Approach**: Parse agent markdown, validate workflow structure
+
+**Example Test**:
+```python
+def test_agent_workflow_stages_complete():
+    """Test agents define complete workflow with all stages."""
+    agent = load_agent("epti/tdd-agent.md")
+
+    # Parse workflow stages
+    stages = extract_workflow_stages(agent.content)
+
+    # Validate each stage has required components
+    for stage in stages:
+        assert "purpose" in stage.lower()
+        assert "activities" in stage.lower() or "what you should do" in stage.lower()
+        assert "exit criteria" in stage.lower() or "transition" in stage.lower()
+        assert "anti-patterns" in stage.lower() or "guardrails" in stage.lower()
+```
+
+**Effort**: 3-5 days
+**Value**: HIGH - ensures agents are comprehensive
+
+#### 2.3 Cross-Reference Validation
+
+**Status**: No validation of references between components
+
+**Approach**: Parse markdown, build dependency graph, validate links
+
+**Example Test**:
+```python
+def test_agent_references_existing_commands():
+    """Test agent workflow references valid commands."""
+    agent = load_agent("agent-loop/workflow-agent.md")
+    commands = load_all_commands("agent-loop")
+
+    # Extract command references (e.g., "Use `/explore`")
+    command_refs = extract_command_references(agent.content)
+
+    for ref in command_refs:
+        assert ref in [c.name for c in commands], f"Agent references non-existent command: {ref}"
+```
+
+**Effort**: 4-6 days
+**Value**: HIGH - prevents broken workflows
+
+### Tier 3: Long-Term (Requires Claude Code Integration)
+
+#### 3.1 Plugin Installation Testing
+
+**Prerequisites**:
+- Claude Code CLI or API
+- Ability to install plugins programmatically
+- Access to plugin registry/list
+
+**Approach**:
+```python
+def test_marketplace_installs_successfully():
+    """Test marketplace can be installed in Claude Code."""
+    result = run_claude_cli(["plugin", "marketplace", "add", MARKETPLACE_PATH])
+    assert result.success
+
+    # Verify marketplace appears
+    marketplaces = run_claude_cli(["plugin", "marketplace", "list"])
+    assert "loom99" in marketplaces.output
+```
+
+**Effort**: 1-2 weeks (if API available), Unknown (if no API)
+**Value**: CRITICAL - validates plugins are installable
+
+#### 3.2 Command Execution Testing
+
+**Prerequisites**:
+- Claude Code conversation API
+- Ability to execute commands programmatically
+- Access to expanded prompt text
+
+**Approach**:
+```python
+def test_explore_command_expands_with_guidance():
+    """Test /explore command provides exploration guidance."""
+    with claude_conversation() as conv:
+        conv.install_plugin("agent-loop")
+        result = conv.execute_command("/explore")
+
+        assert "Exploration Stage" in result.expanded_prompt
+        assert "systematic investigation" in result.expanded_prompt.lower()
+```
+
+**Effort**: 2-3 weeks (if API available), Unknown (if no API)
+**Value**: CRITICAL - validates commands work
+
+#### 3.3 Workflow Completion Testing
+
+**Prerequisites**:
+- Full Claude Code integration
+- Ability to simulate conversations
+- Access to git operations and file changes
+
+**Approach**:
+```python
+def test_tdd_workflow_produces_passing_tests():
+    """Test epti TDD workflow results in passing tests."""
+    with claude_conversation() as conv:
+        conv.install_plugin("epti")
+        conv.create_project("test_project")
+
+        # Complete TDD cycle
+        conv.execute_command("/write-tests")
+        conv.ask("Write tests for a calculator add() function")
+        # ... additional steps ...
+
+        # Verify tests pass
+        result = run_tests(conv.project_path)
+        assert result.all_passed
+```
+
+**Effort**: 1-2 months (if API available), Unknown (if no API)
+**Value**: VERY HIGH - validates end-to-end functionality
+
+### What Is NOT Feasible
+
+❌ **Agent Compliance Testing**: Cannot validate Claude follows agent rules without conversation introspection
+
+❌ **Skill Invocation Testing**: Cannot verify Claude autonomously uses skills without Claude Code logging
+
+❌ **Prompt Quality Assessment**: Cannot measure if prompts are effective without AI evaluation
+
+❌ **User Experience Testing**: Cannot test actual user workflows without human testers
+
+---
+
+## 6. Recommended Testing Strategy
+
+### Phase 1: Maximize Structural Testing (NOW - This Week)
+
+**Goal**: Achieve 100% coverage of testable static properties
+
+**Tasks**:
+1. ✅ Enhance cross-reference validation
+2. ✅ Add command template validation
+3. ✅ Add agent workflow validation
+4. ✅ Create hook script unit tests
+5. ✅ Validate MCP config files
+
+**Deliverables**:
+- Expanded test suite (100+ tests)
+- Comprehensive validation of plugin structure
+- Automated quality gates
+
+**Effort**: 5-7 days
+**Risk**: LOW
+**Value**: HIGH (catches 80% of issues)
+
+### Phase 2: Build Test Harness (This Month)
+
+**Goal**: Create framework for E2E testing when Claude Code API becomes available
+
+**Tasks**:
+1. ✅ Design test harness architecture
+2. ✅ Create mock Claude Code environment
+3. ✅ Build command execution simulator
+4. ✅ Create test project generators
+5. ✅ Design conversation simulation framework
+
+**Deliverables**:
+- Test harness codebase
+- Mock Claude Code environment
+- Test project templates
+- Documentation for writing E2E tests
+
+**Effort**: 2-3 weeks
+**Risk**: MEDIUM
+**Value**: HIGH (enables future E2E testing)
+
+### Phase 3: Manual Testing Protocol (Ongoing)
+
+**Goal**: Systematically validate plugins in actual Claude Code
+
+**Tasks**:
+1. ✅ Create manual test checklists
+2. ✅ Document expected behaviors
+3. ✅ Create test projects/scenarios
+4. ✅ Record test results and issues
+5. ✅ Maintain test coverage matrix
+
+**Deliverables**:
+- Manual testing guide
+- Test scenarios (20-30 per plugin)
+- Issue tracking spreadsheet
+- Video recordings of tests
+
+**Effort**: 1-2 days per plugin (ongoing)
+**Risk**: LOW
+**Value**: CRITICAL (only way to validate real functionality)
+
+### Phase 4: Integration Testing (Future - Depends on Claude Code)
+
+**Goal**: Automate E2E testing when possible
+
+**Prerequisites**:
+- Claude Code API or CLI
+- Testing SDK from Anthropic
+- Conversation simulation capability
+
+**Tasks**:
+1. ⏳ Implement plugin installation tests
+2. ⏳ Implement command execution tests
+3. ⏳ Implement hook integration tests
+4. ⏳ Implement MCP server tests
+5. ⏳ Implement workflow completion tests
+
+**Deliverables**:
+- Automated E2E test suite
+- CI/CD integration
+- Performance benchmarks
+- Test coverage reports
+
+**Effort**: 2-3 months (if API available)
+**Risk**: HIGH (depends on external factors)
+**Value**: VERY HIGH (full automation)
+
+---
+
+## 7. Critical Findings and Recommendations
+
+### Finding #1: Excellent Foundation, Wrong Target
+
+**Observation**: The project has 60+ passing tests, all well-designed and comprehensive
+
+**Problem**: These tests validate structure, not functionality
+
+**Analogy**: It's like having a comprehensive test suite that validates a car has 4 wheels, doors, and a steering wheel - but never testing if it drives
+
+**Recommendation**:
+- ✅ KEEP all existing structural tests (they're valuable)
+- ✅ ADD manual testing protocol immediately
+- ✅ BUILD test harness for future automation
+
+### Finding #2: "100% MVP Complete" Is Misleading
+
+**Claim** (from CLAUDE.md):
+> "Current State: 100% MVP COMPLETE - Production Ready"
+
+**Reality**:
+- Structure: ✅ 100% complete
+- Documentation: ✅ 100% complete
+- Functionality: ❓ 0% verified
+
+**Recommendation**:
+- Update CLAUDE.md to reflect testing status
+- Change status to "100% Implementation Complete - Testing Pending"
+- Do NOT claim "Production Ready" until manual testing is complete
+
+### Finding #3: No Evidence of Real-World Usage
+
+**Evidence**:
+```
+**Testing Status**: Ready for manual testing (per CLAUDE.md)
+**Manual Testing Completed**: None documented
+**User Feedback**: None
+**Bug Reports**: None
+**Success Stories**: None
+```
+
+**Recommendation**:
+- Create "TESTING_RESULTS.md" to track manual testing
+- Document each plugin being used in real scenarios
+- Collect feedback and iterate
+
+### Finding #4: promptctl Plugin Undocumented
+
+**Observation**: Marketplace has 4 plugins, but CLAUDE.md only documents 3
+
+**Issue**: promptctl (v0.1.0) exists but is not mentioned in documentation
+
+**Recommendation**:
+- Update CLAUDE.md to include promptctl
+- Decide if promptctl should be in marketplace
+- If yes, document it; if no, remove it
+
+### Finding #5: MCP Integration Untested
+
+**Status**: visual-iteration plugin depends on browser-tools MCP server
+
+**Risk**: No verification that MCP server works
+
+**Recommendation**:
+- Manually test browser-tools MCP server loads
+- Verify screenshot functionality works
+- Document MCP server requirements
+- Add MCP testing to manual test protocol
+
+---
+
+## 8. Proposed Action Plan
+
+### Immediate Actions (This Week)
+
+1. **Create Manual Testing Protocol** (2 days)
+   - Design test scenarios for each plugin
+   - Create test checklists
+   - Document expected vs. actual results
+   - Set up issue tracking
+
+2. **Enhance Structural Tests** (3 days)
+   - Add cross-reference validation
+   - Add command template validation
+   - Add agent workflow validation
+   - Bring test count to 100+
+
+3. **Update Documentation** (1 day)
+   - Revise "100% MVP Complete" claims
+   - Add testing status section
+   - Document promptctl plugin
+   - Create TESTING_RESULTS.md
+
+### Near-Term Actions (This Month)
+
+4. **Execute Manual Testing** (1 week)
+   - Test all 4 plugins in Claude Code
+   - Execute 20-30 scenarios per plugin
+   - Document all issues found
+   - Record successful workflows
+
+5. **Build Test Harness** (2 weeks)
+   - Design E2E testing framework
+   - Create mock environments
+   - Build test utilities
+   - Write documentation
+
+6. **Add Hook Unit Tests** (3 days)
+   - Test hook shell scripts
+   - Validate hook logic
+   - Ensure hooks fail correctly
+
+### Long-Term Actions (Next Quarter)
+
+7. **Automated E2E Testing** (TBD)
+   - Wait for Claude Code API/SDK
+   - Implement automated tests
+   - Integrate with CI/CD
+   - Measure code coverage
+
+8. **Performance Testing** (TBD)
+   - Benchmark plugin loading time
+   - Measure command execution overhead
+   - Profile MCP server performance
+   - Optimize based on results
+
+9. **User Acceptance Testing** (TBD)
+   - Release to beta users
+   - Collect feedback
+   - Iterate on designs
+   - Publish case studies
+
+---
+
+## 9. Risk Assessment
+
+### High-Severity Risks
+
+#### Risk #1: Plugins Don't Work
+
+**Likelihood**: MEDIUM (structure is correct, but functionality unverified)
+**Impact**: CRITICAL (marketplace is unusable)
+**Mitigation**: Immediate manual testing
+**Timeline**: This week
+
+#### Risk #2: Agent Behaviors Are Ineffective
+
+**Likelihood**: MEDIUM-HIGH (no validation of agent guidance quality)
+**Impact**: HIGH (plugins provide poor user experience)
+**Mitigation**: Manual testing with real workflows, iterate on agent prompts
+**Timeline**: 2-4 weeks
+
+#### Risk #3: Commands Don't Provide Value
+
+**Likelihood**: LOW-MEDIUM (commands are well-structured)
+**Impact**: MEDIUM (users ignore commands, use plugins incorrectly)
+**Mitigation**: User testing, collect feedback, refine commands
+**Timeline**: 1-2 months
+
+### Medium-Severity Risks
+
+#### Risk #4: Skills Not Invoked by Claude
+
+**Likelihood**: MEDIUM (no way to test skill discoverability)
+**Impact**: MEDIUM (skills are dead code, reduce plugin effectiveness)
+**Mitigation**: Manual observation, refine skill descriptions
+**Timeline**: Ongoing
+
+#### Risk #5: Hooks Cause User Friction
+
+**Likelihood**: LOW (hooks are opt-in per plugin)
+**Impact**: MEDIUM (users disable plugins due to hook annoyance)
+**Mitigation**: Make hooks configurable, collect feedback
+**Timeline**: 2-3 weeks
+
+#### Risk #6: MCP Servers Have Dependencies
+
+**Likelihood**: HIGH (MCP servers require external tools)
+**Impact**: MEDIUM (installation friction, support burden)
+**Mitigation**: Document dependencies, provide installation guides
+**Timeline**: 1 week
+
+### Low-Severity Risks
+
+#### Risk #7: Documentation Outdated
+
+**Likelihood**: MEDIUM (docs written before testing)
+**Impact**: LOW (documentation can be updated)
+**Mitigation**: Update docs after manual testing
+**Timeline**: Ongoing
+
+#### Risk #8: Performance Issues
+
+**Likelihood**: LOW (plugins are markdown, minimal overhead)
+**Impact**: LOW (can be optimized later)
+**Mitigation**: Monitor performance during testing
+**Timeline**: Future
+
+---
+
+## 10. Conclusion: The Path Forward
+
+### The Uncomfortable Truth
+
+This marketplace has **excellent engineering** but **zero validated functionality**. It's like building a beautiful airplane with precision-engineered parts, comprehensive blueprints, and detailed flight manuals - but never actually flying it.
+
+The 60+ passing tests are **valuable** but test the **wrong thing**. They prove the airplane has wings, engines, and landing gear. They don't prove it flies.
+
+### What Success Looks Like
+
+**Success is NOT**:
+- ❌ All structural tests pass
+- ❌ Plugin files are well-formed
+- ❌ Documentation is comprehensive
+
+**Success IS**:
+- ✅ User installs plugin and completes real task
+- ✅ Agent guides user through workflow effectively
+- ✅ Commands save time and reduce errors
+- ✅ Skills are invoked and provide value
+- ✅ Hooks enforce discipline without friction
+- ✅ Users prefer plugins to manual workflows
+
+### The Minimum Viable Test
+
+Before claiming "Production Ready", complete this test:
+
+1. Install agent-loop plugin
+2. Create new feature in real codebase
+3. Use `/explore` → `/plan` → `/code` → `/commit` workflow
+4. Complete feature successfully
+5. Verify feature works and is committed
+
+If this test fails, the plugin is not production-ready, regardless of how many structural tests pass.
+
+### Recommended Priority
+
+**This week**:
+1. Manual testing protocol (2 days)
+2. Execute manual tests (3 days)
+3. Document results (1 day)
+
+**This month**:
+1. Iterate on plugins based on testing (1 week)
+2. Build test harness (2 weeks)
+3. Expand structural tests (3 days)
+
+**This quarter**:
+1. Beta user testing (ongoing)
+2. Automate E2E tests (if possible)
+3. Performance optimization
+
+### Final Recommendation
+
+**DO NOT** add more structural tests until manual testing is complete. Structural testing is at 100% coverage of what can be tested statically. Focus must shift to **functional validation** through manual testing.
+
+The marketplace is architecturally sound and well-engineered. Now it needs to be **proven to work** in real usage.
+
+---
+
+## Appendix: Testing Resources
+
+### Testing Checklist Templates
+
+**Plugin Installation Checklist**:
+```markdown
+- [ ] Marketplace installs without errors
+- [ ] Plugin appears in plugin list
+- [ ] Commands are registered
+- [ ] Skills are available
+- [ ] Hooks are active
+- [ ] MCP servers start (if applicable)
+- [ ] No warning/error messages
+```
+
+**Command Execution Checklist**:
+```markdown
+- [ ] Command autocompletes
+- [ ] Command executes without error
+- [ ] Prompt expands with expected content
+- [ ] Guidance is clear and actionable
+- [ ] Examples are relevant
+- [ ] Transitions to next stage are clear
+```
+
+**Workflow Completion Checklist**:
+```markdown
+- [ ] All stages can be completed
+- [ ] Stage transitions work smoothly
+- [ ] Final deliverable is produced
+- [ ] Git commits are created
+- [ ] Code/tests work correctly
+- [ ] Workflow felt natural
+```
+
+### Test Scenario Templates
+
+**agent-loop Test Scenario**:
+```markdown
+Scenario: Add logging to existing application
+
+Setup:
+- Sample application: Simple Node.js Express API
+- Task: Add structured logging to all endpoints
+
+Steps:
+1. Install agent-loop plugin
+2. Run `/explore` - explore codebase
+3. Run `/plan` - create logging implementation plan
+4. Run `/code` - implement logging
+5. Run `/commit` - commit changes
+
+Expected Results:
+- Logging added to all endpoints
+- Tests pass
+- Commits follow conventional commit format
+- Plan document exists
+```
+
+### Issue Tracking Template
+
+```markdown
+Issue #: {number}
+Plugin: {agent-loop/epti/visual-iteration/promptctl}
+Component: {command/agent/skill/hook/mcp}
+Severity: {Critical/High/Medium/Low}
+
+Description:
+{What went wrong}
+
+Steps to Reproduce:
+1. {Step 1}
+2. {Step 2}
+3. {Step 3}
+
+Expected Behavior:
+{What should happen}
+
+Actual Behavior:
+{What actually happened}
+
+Logs/Screenshots:
+{Attach evidence}
+
+Recommendation:
+{Suggested fix}
+```
+
+---
+
+**Report Status**: COMPLETE
+**Next Steps**: Execute immediate actions, begin manual testing
+**Review Date**: After manual testing complete (target: 2025-11-13)

@@ -1,0 +1,6 @@
+# Ignore all generated test projects
+*
+
+# Except metadata files
+!README.md
+!.gitignore

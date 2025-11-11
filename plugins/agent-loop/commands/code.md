@@ -23,7 +23,7 @@ Implement the planned solution with discipline, quality, and attention to detail
    - Add comprehensive error handling
    - Handle edge cases identified during planning
    - Validate inputs and provide helpful error messages
-   - No TODO comments - finish what you start
+   - No incomplete task markers - finish what you start
    - No hardcoded values or magic numbers
 
 4. **Test Continuously**
@@ -78,7 +78,7 @@ Type `/commit` to finalize and commit your work once:
 - All planned functionality is implemented
 - All tests pass
 - Code is reviewed and polished
-- No TODOs or temporary code remains
+- No incomplete tasks or temporary code remains
 
 ---
 

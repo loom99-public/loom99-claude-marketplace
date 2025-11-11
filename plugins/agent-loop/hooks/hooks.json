@@ -1,0 +1,17 @@
+[
+  {
+    "event": "pre-commit",
+    "command": "echo '\n📋 Workflow Check: Verifying plan exists...\n' && if [ ! -f PLAN.md ] && [ ! -f .plan.md ] && [ ! -d .agent_planning ]; then echo '❌ Error: No plan found!' && echo 'The agent-loop workflow requires planning before committing.' && echo 'Run /explore to investigate the codebase' && echo 'Run /plan to create an implementation plan' && echo 'Then /code to implement' && echo 'Finally /commit when ready' && exit 1; fi && echo '✓ Plan exists. Commit allowed.'",
+    "description": "Block commits without a plan"
+  },
+  {
+    "event": "post-code",
+    "command": "echo '\n✓ Code changes detected.\n' && echo 'Reminder: Run tests to verify your implementation:' && echo '  - pytest (Python)' && echo '  - npm test (JavaScript)' && echo '  - go test ./... (Go)' && echo '  - mvn test (Java)' && echo '  - rspec (Ruby)' && echo '' && echo 'Once tests pass, use /commit to finalize changes.'",
+    "description": "Remind to run tests after code changes"
+  },
+  {
+    "event": "commit-msg",
+    "command": "COMMIT_MSG=$(cat \"$1\") && if echo \"$COMMIT_MSG\" | grep -qE '^(feat|fix|refactor|test|docs|style|perf|chore|ci|build|revert)\\('; then echo '✓ Conventional commit format valid'; exit 0; fi && if echo \"$COMMIT_MSG\" | grep -qE '^(feat|fix|refactor|test|docs|style|perf|chore|ci|build|revert):'; then echo '✓ Conventional commit format valid (no scope)'; exit 0; fi && echo '\n❌ Error: Commit message must follow conventional commit format' && echo '' && echo 'Format: <type>(<scope>): <description>' && echo '' && echo 'Types:' && echo '  feat:     New feature' && echo '  fix:      Bug fix' && echo '  refactor: Code refactoring' && echo '  test:     Test changes' && echo '  docs:     Documentation' && echo '  style:    Code style/formatting' && echo '  perf:     Performance improvement' && echo '  chore:    Maintenance tasks' && echo '  ci:       CI/CD changes' && echo '  build:    Build system changes' && echo '' && echo 'Examples:' && echo '  feat(auth): add JWT authentication' && echo '  fix(api): handle null response' && echo '  refactor: extract validation logic' && exit 1",
+    "description": "Enforce conventional commit message format"
+  }
+]

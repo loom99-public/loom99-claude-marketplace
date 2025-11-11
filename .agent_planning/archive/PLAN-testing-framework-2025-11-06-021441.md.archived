@@ -1,0 +1,1304 @@
+# Testing Framework Implementation Plan
+
+**Generated**: 2025-11-06 02:14:41
+**Source STATUS**: STATUS-2025-11-06-020800.md
+**Specification**: CLAUDE.md (Last modified: 2025-11-06)
+**Plan Type**: Testing Infrastructure Backlog
+
+---
+
+## Executive Summary
+
+### Current State (from STATUS-2025-11-06-020800.md)
+
+**Testing Coverage Reality**:
+- ✅ Structural Testing: 100% (60+ tests passing, all well-designed)
+- ❌ Functional Testing: 0% (plugins never executed in Claude Code)
+- ❌ E2E Testing: 0% (no runtime validation whatsoever)
+
+**Critical Gap**: Plugins are "100% MVP Complete" in implementation but **0% verified** in functionality. All existing tests validate structure (files exist, YAML is valid, JSON is correct) but do NOT validate that plugins actually work when loaded into Claude Code.
+
+**Technical Blockers Identified**:
+1. **No Claude Code API/CLI**: Cannot programmatically install plugins or execute commands
+2. **No Conversation Simulation**: Cannot test agent behavior or skill invocation
+3. **No Runtime Observability**: Cannot detect if skills are used or agents are followed
+4. **MCP Server Dependencies**: External tools required, untested
+
+### Recommended 3-Phase Approach
+
+The STATUS report recommends a pragmatic approach based on what's actually achievable:
+
+**Phase 1: Manual Testing** (Immediate - This Week)
+- Manual testing protocols and checklists
+- Systematic validation in real Claude Code environment
+- Issue tracking and documentation
+
+**Phase 2: Enhanced Structural Testing** (Near-term - This Month)
+- Cross-reference validation (commands → skills → agents)
+- Hook script unit tests
+- Command template validation
+- Agent workflow validation
+- MCP configuration validation
+
+**Phase 3: E2E Test Harness** (Long-term - When API Available)
+- Architecture for automated testing
+- Conversation simulation framework
+- Integration points for future Claude Code APIs
+
+### This Plan's Scope
+
+This plan creates **actionable work items** for all three phases, with clear separation between:
+- **Ready to implement NOW**: Items with no blockers
+- **Ready when API available**: Items waiting on Claude Code integration
+- **Research/Design only**: Items requiring investigation first
+
+---
+
+## Phase 1: Manual Testing Protocol (IMMEDIATE - HIGH PRIORITY)
+
+### Overview
+
+**Why This is Critical**: Manual testing is the ONLY way to validate plugins actually work. All other testing validates structure, not functionality.
+
+**Effort**: 1 week initial setup, ongoing execution
+**Dependencies**: None - can start immediately
+**Risk**: Low
+**Value**: CRITICAL - this is the only functional validation possible
+
+---
+
+### P0-1: Create Manual Testing Documentation Framework
+
+**Status**: Not Started
+**Effort**: Small (1 day)
+**Dependencies**: None
+**Spec Reference**: Section 8 "Proposed Action Plan" • **Status Reference**: STATUS-2025-11-06-020800.md Section 8 "Immediate Actions"
+
+#### Description
+
+Create the documentation structure and templates for manual testing. This provides the foundation for systematic, repeatable testing of all plugins.
+
+#### Acceptance Criteria
+
+- [ ] Create `tests/manual/README.md` with testing overview and instructions
+- [ ] Create `tests/manual/TESTING_RESULTS.md` template for recording results
+- [ ] Create `tests/manual/ISSUE_TEMPLATE.md` for bug reporting
+- [ ] Create plugin-specific test plan templates (one per plugin)
+- [ ] Document manual test execution workflow
+- [ ] Add instructions for recording videos/screenshots of tests
+- [ ] Create success criteria definitions for each test type
+
+#### Technical Notes
+
+Manual testing documentation should include:
+- Installation verification checklist
+- Command execution checklist
+- Workflow completion checklist
+- Issue severity definitions (Critical/High/Medium/Low)
+- Expected vs. actual result comparison format
+
+---
+
+### P0-2: Create Plugin Installation Test Scenarios
+
+**Status**: Not Started
+**Effort**: Small (1 day)
+**Dependencies**: P0-1 (documentation framework)
+**Spec Reference**: Section 3 "E2E Testing Requirements - Tier 1" • **Status Reference**: STATUS-2025-11-06-020800.md Section 3 "Tier 1: Plugin Loading Tests"
+
+#### Description
+
+Define comprehensive test scenarios for verifying each plugin can be installed and loaded into Claude Code without errors.
+
+#### Acceptance Criteria
+
+- [ ] Create installation checklist for marketplace as a whole
+- [ ] Create installation checklist for each individual plugin (4 plugins)
+- [ ] Define test cases for plugin uninstallation
+- [ ] Define test cases for plugin updates/reloads
+- [ ] Document expected outputs at each installation step
+- [ ] Create troubleshooting guide for common installation issues
+- [ ] Include verification that commands/skills/hooks/agents are registered
+
+#### Technical Notes
+
+Test scenarios should cover:
+1. Fresh marketplace installation
+2. Individual plugin installation
+3. Plugin conflicts (multiple plugins installed)
+4. Plugin updates (modify files, reload)
+5. Plugin removal and cleanup
+
+---
+
+### P0-3: Create Command Execution Test Scenarios
+
+**Status**: Not Started
+**Effort**: Medium (2-3 days)
+**Dependencies**: P0-1 (documentation framework)
+**Spec Reference**: Section 3 "E2E Testing Requirements - Tier 2" • **Status Reference**: STATUS-2025-11-06-020800.md Section 3 "Tier 2: Slash Command Tests"
+
+#### Description
+
+Define test scenarios for all 16 slash commands across all plugins, verifying they execute and provide appropriate guidance.
+
+#### Acceptance Criteria
+
+- [ ] Create test scenario for each command (16 total)
+- [ ] Define expected prompt expansion content for each command
+- [ ] Create command autocomplete verification tests
+- [ ] Define argument handling tests (where applicable)
+- [ ] Create error handling tests (invalid commands)
+- [ ] Document expected workflow transitions between commands
+- [ ] Include validation criteria for command output quality
+
+#### Technical Notes
+
+Commands to test:
+- **agent-loop** (4): `/explore`, `/plan`, `/code`, `/commit`
+- **epti** (6): `/write-tests`, `/verify-fail`, `/commit-tests`, `/implement`, `/iterate`, `/commit-code`
+- **visual-iteration** (6): `/screenshot`, `/load-mock`, `/implement-design`, `/iterate`, `/compare`, `/visual-commit`
+- **promptctl**: Document any commands once plugin is characterized
+
+---
+
+### P0-4: Create Complete Workflow Test Scenarios
+
+**Status**: Not Started
+**Effort**: Medium (2-3 days)
+**Dependencies**: P0-1, P0-3 (command scenarios as foundation)
+**Spec Reference**: Section 3 "E2E Testing Requirements - Tier 7" • **Status Reference**: STATUS-2025-11-06-020800.md Section 3 "Tier 7: Complete Workflow Tests"
+
+#### Description
+
+Design end-to-end workflow scenarios that test complete cycles from start to finish for each plugin. These represent realistic usage patterns.
+
+#### Acceptance Criteria
+
+- [ ] Create 3-5 workflow scenarios for agent-loop (explore → plan → code → commit)
+- [ ] Create 3-5 workflow scenarios for epti (full TDD cycle)
+- [ ] Create 3-5 workflow scenarios for visual-iteration (mock → implement → iterate)
+- [ ] Each scenario includes realistic project setup steps
+- [ ] Each scenario defines expected deliverables (code, tests, commits)
+- [ ] Each scenario includes verification steps for deliverables
+- [ ] Document time estimates for completing each workflow
+
+#### Technical Notes
+
+Example scenarios:
+- **agent-loop**: Add logging feature to Express.js app
+- **epti**: Implement calculator class with TDD
+- **visual-iteration**: Build landing page from Figma mock
+
+Each scenario should be completable in 30-60 minutes to remain practical.
+
+---
+
+### P0-5: Create Agent Behavior Observation Checklist
+
+**Status**: Not Started
+**Effort**: Small (1 day)
+**Dependencies**: P0-1
+**Spec Reference**: Section 3 "E2E Testing Requirements - Tier 3" • **Status Reference**: STATUS-2025-11-06-020800.md Section 3 "Tier 3: Agent Behavior Tests"
+
+#### Description
+
+Since we cannot programmatically test agent compliance, create observation checklists for manually verifying agents provide correct guidance and enforce guardrails during testing.
+
+#### Acceptance Criteria
+
+- [ ] Create agent behavior checklist for workflow-agent (agent-loop)
+- [ ] Create agent behavior checklist for tdd-agent (epti)
+- [ ] Create agent behavior checklist for visual-iteration-agent
+- [ ] Define observable behaviors for each agent (stage transitions, warnings, blocks)
+- [ ] Create anti-pattern detection verification points
+- [ ] Document how to observe if agent guidance is being followed
+- [ ] Include qualitative assessment criteria for agent effectiveness
+
+#### Technical Notes
+
+Observable behaviors include:
+- Does agent warn when attempting to skip stages?
+- Does agent prevent anti-patterns (e.g., modifying tests during TDD implementation)?
+- Does agent provide helpful guidance at each stage?
+- Does agent transition smoothly between stages?
+
+---
+
+### P0-6: Execute Manual Testing for All Plugins
+
+**Status**: Not Started
+**Effort**: Large (1 week)
+**Dependencies**: P0-1, P0-2, P0-3, P0-4, P0-5 (all test scenarios defined)
+**Spec Reference**: Section 8 "Proposed Action Plan - Near-Term Actions" • **Status Reference**: STATUS-2025-11-06-020800.md Section 8 "Near-Term Actions #4"
+
+#### Description
+
+Execute all manual test scenarios across all 4 plugins and document results comprehensively. This is the critical validation step.
+
+#### Acceptance Criteria
+
+- [ ] Test all 4 plugins install successfully
+- [ ] Execute all 16 command tests and record results
+- [ ] Complete at least 3 workflow scenarios per plugin (12 total)
+- [ ] Document all issues found in TESTING_RESULTS.md
+- [ ] Record at least one successful workflow video per plugin
+- [ ] Create issue reports for all bugs discovered
+- [ ] Update CLAUDE.md with actual testing status
+- [ ] Achieve at least 80% test scenario pass rate
+
+#### Technical Notes
+
+Testing should be performed in a real Claude Code environment with:
+- Fresh installation for each plugin
+- Real codebases (not toy examples)
+- Complete workflow execution (no shortcuts)
+- Detailed note-taking of observations
+
+Issues should be categorized by severity:
+- **Critical**: Plugin cannot be used
+- **High**: Major feature broken
+- **Medium**: Feature works but has issues
+- **Low**: Minor polish needed
+
+---
+
+### P0-7: Document promptctl Plugin
+
+**Status**: Not Started
+**Effort**: Small (1 day)
+**Dependencies**: None
+**Spec Reference**: CLAUDE.md documentation standards • **Status Reference**: STATUS-2025-11-06-020800.md Section 7 "Finding #4: promptctl Plugin Undocumented"
+
+#### Description
+
+The STATUS report identified that promptctl plugin exists but is not documented in CLAUDE.md. Document it properly or remove it from marketplace.
+
+#### Acceptance Criteria
+
+- [ ] Review promptctl plugin structure and implementation
+- [ ] Determine if promptctl should be in marketplace or is WIP
+- [ ] If included: Add promptctl section to CLAUDE.md with full documentation
+- [ ] If included: Create manual test scenarios for promptctl
+- [ ] If excluded: Remove from .claude-plugin/marketplace.json
+- [ ] If excluded: Move to archive or separate repo
+- [ ] Update marketplace plugin count in documentation
+
+#### Technical Notes
+
+promptctl has:
+- hooks/hooks.json configuration
+- bin/dispatch.sh script
+- But no commands/agents/skills directories visible in STATUS report
+
+This suggests it's a different pattern (hook-only plugin). Document this pattern if valid.
+
+---
+
+## Phase 2: Enhanced Structural Testing (NEAR-TERM - HIGH VALUE)
+
+### Overview
+
+**Why This Matters**: While manual testing validates functionality, enhanced structural tests catch issues earlier and prevent regressions. They complement (not replace) manual testing.
+
+**Effort**: 2-3 weeks
+**Dependencies**: Minimal - can work in parallel with manual testing
+**Risk**: Low
+**Value**: HIGH - catches 80% of structural issues automatically
+
+---
+
+### P1-1: Implement Cross-Reference Validation Tests
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 1.1" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 2: Near-Term - 2.3 Cross-Reference Validation"
+
+#### Description
+
+Parse markdown content and validate that all references between components are valid (commands → skills, agents → commands, etc.).
+
+#### Acceptance Criteria
+
+- [ ] Test that commands reference only existing skills
+- [ ] Test that agents reference only existing commands
+- [ ] Test that agents reference only existing skills
+- [ ] Test that skill names in YAML frontmatter match directory names
+- [ ] Test that all internal markdown links resolve
+- [ ] Test that workflow stage transitions reference valid stages
+- [ ] Create comprehensive cross-reference dependency graph
+
+#### Technical Notes
+
+Implementation approach:
+```python
+def test_commands_reference_valid_skills():
+    """Commands should only reference skills that exist."""
+    for plugin in get_all_plugins():
+        commands = load_commands(plugin)
+        skills = load_skills(plugin)
+
+        for command in commands:
+            skill_refs = extract_skill_references(command.content)
+            for ref in skill_refs:
+                assert ref in [s.name for s in skills], \
+                    f"{plugin}/{command.name} references non-existent skill: {ref}"
+```
+
+Need to implement markdown parsers for extracting references like:
+- `Use the code-exploration skill` (prose reference)
+- `/explore` (command reference)
+- `Stage 2: Plan` (stage reference)
+
+---
+
+### P1-2: Implement Command Template Validation Tests
+
+**Status**: Not Started
+**Effort**: Medium (3-4 days)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 2.1" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 2: Near-Term - 2.1 Command Prompt Template Validation"
+
+#### Description
+
+Validate that all command markdown files follow expected template structure with required sections.
+
+#### Acceptance Criteria
+
+- [ ] Parse command markdown into structured sections
+- [ ] Validate commands have required sections (Your Mission, What You Should Do, etc.)
+- [ ] Verify command sections contain sufficient content (not empty)
+- [ ] Check for workflow transition guidance in commands
+- [ ] Validate examples exist where appropriate
+- [ ] Ensure anti-patterns section exists for workflow commands
+- [ ] Test exit criteria clearly defined
+
+#### Technical Notes
+
+Required sections vary by plugin type:
+- **agent-loop commands**: Stage context, activities, transitions
+- **epti commands**: TDD guidance, test-first enforcement, anti-patterns
+- **visual-iteration commands**: Visual feedback guidance, iteration steps
+
+Template validation should be flexible per plugin while ensuring quality standards.
+
+---
+
+### P1-3: Implement Agent Workflow Validation Tests
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 2.2" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 2: Near-Term - 2.2 Agent Workflow Completeness Validation"
+
+#### Description
+
+Parse agent markdown and validate workflow structure is complete with all required stages and components.
+
+#### Acceptance Criteria
+
+- [ ] Extract workflow stages from agent markdown
+- [ ] Validate each stage has purpose/objective
+- [ ] Validate each stage has activities/guidance
+- [ ] Validate each stage has exit criteria/transitions
+- [ ] Validate each stage has anti-patterns/guardrails
+- [ ] Test stage ordering is logical
+- [ ] Verify subagent coordination patterns are defined (where applicable)
+- [ ] Check that all stages in agent match commands available
+
+#### Technical Notes
+
+Example validation:
+```python
+def test_agent_workflow_stages_complete():
+    """Agent workflows must have complete stage definitions."""
+    agent = load_agent("epti/tdd-agent.md")
+    stages = extract_workflow_stages(agent.content)
+
+    required_components = ["purpose", "activities", "exit criteria", "anti-patterns"]
+
+    for stage in stages:
+        for component in required_components:
+            assert has_component(stage, component), \
+                f"Stage {stage.name} missing {component}"
+```
+
+---
+
+### P1-4: Implement Hook Script Unit Tests
+
+**Status**: Not Started
+**Effort**: Medium (2-3 days)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 1.2" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 1: Immediate - 1.2 Hook Script Unit Tests"
+
+#### Description
+
+Test hook shell commands in isolation to verify their logic works correctly before testing in full Claude Code environment.
+
+#### Acceptance Criteria
+
+- [ ] Create test harness for executing hook commands in isolation
+- [ ] Test epti pre-implementation hook detects missing tests
+- [ ] Test epti post-code hook runs test suite
+- [ ] Test epti pre-commit hook blocks commits with failing tests
+- [ ] Test epti commit-msg hook validates commit message format
+- [ ] Test hooks succeed when conditions are met
+- [ ] Test hooks fail gracefully with clear error messages
+- [ ] Test hook exit codes are correct (0 for success, non-zero for failure)
+
+#### Technical Notes
+
+Hook commands from epti/hooks/hooks.json are complex bash scripts. Unit testing approach:
+
+```python
+def test_pre_commit_hook_blocks_failing_tests():
+    """Pre-commit hook should block commits if tests fail."""
+    with temp_git_repo() as repo:
+        create_test_file(repo, "tests/test_fail.py", "def test(): assert False")
+
+        hook_script = load_hook_command("epti", "pre-commit")
+        result = run_command(hook_script, cwd=repo)
+
+        assert result.returncode != 0
+        assert "Cannot commit with failing tests" in result.stderr
+```
+
+Challenges:
+- Hooks detect test frameworks dynamically (pytest, jest, go test, etc.)
+- Need to create realistic test environments for each framework
+- Should test both success and failure paths
+
+---
+
+### P1-5: Implement MCP Configuration Validation Tests
+
+**Status**: Not Started
+**Effort**: Small (1-2 days)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 1.3" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 1: Immediate - 1.3 Plugin Manifest Schema Validation"
+
+#### Description
+
+Validate MCP server configurations in `.mcp.json` files are correct and can be loaded (structural validation only, not runtime).
+
+#### Acceptance Criteria
+
+- [ ] Parse all `.mcp.json` files successfully
+- [ ] Validate JSON schema is correct
+- [ ] Verify required fields present (command, args)
+- [ ] Check that MCP server commands are executable names
+- [ ] Validate environment variables are properly formatted
+- [ ] Test that multiple MCP servers can coexist
+- [ ] Create documentation for MCP server requirements
+
+#### Technical Notes
+
+Current MCP servers:
+- **visual-iteration**: browser-tools via npx
+
+Validation should check:
+- Command exists or is installable (npx packages)
+- Arguments are valid for that command
+- No conflicting server names across plugins
+
+---
+
+### P1-6: Implement Plugin Manifest Schema Validation
+
+**Status**: Not Started
+**Effort**: Small (1 day)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 1.3" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 1: Immediate - 1.3 Plugin Manifest Schema Validation"
+
+#### Description
+
+Validate plugin.json files against Claude Code plugin specification and ensure all referenced paths exist.
+
+#### Acceptance Criteria
+
+- [ ] Load Claude Code plugin schema (if available) or define expected schema
+- [ ] Validate all plugin.json files against schema
+- [ ] Check all paths in plugin.json point to existing files/directories
+- [ ] Validate version strings are valid semver
+- [ ] Verify required fields vs optional fields
+- [ ] Test marketplace.json references all plugins correctly
+- [ ] Validate author and license information present
+
+#### Technical Notes
+
+plugin.json validation:
+- Check `name`, `version`, `description`, `author` fields
+- Validate `agents`, `commands`, `skills`, `hooks` paths
+- Ensure paths are relative and resolve correctly
+- Check for conflicting plugin names
+
+---
+
+### P1-7: Implement Markdown Content Quality Tests
+
+**Status**: Not Started
+**Effort**: Small (2 days)
+**Dependencies**: None
+**Spec Reference**: Section 1 "Current Testing Infrastructure" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 2: Near-Term"
+
+#### Description
+
+Validate markdown content quality beyond just structure - check for broken links, formatting issues, and content completeness.
+
+#### Acceptance Criteria
+
+- [ ] Test for broken internal links in markdown files
+- [ ] Validate code blocks have language specifiers
+- [ ] Check for TODO/FIXME comments (should be none)
+- [ ] Verify markdown headings follow hierarchy (no skipped levels)
+- [ ] Test for common typos and formatting issues
+- [ ] Validate examples in commands are realistic and complete
+- [ ] Check that anti-pattern sections have concrete examples
+
+#### Technical Notes
+
+Use markdown parsing library to:
+- Extract all links and verify targets exist
+- Parse code blocks and check for language tags
+- Scan for placeholder content
+- Validate heading structure
+
+This catches documentation quality issues that don't break structure but reduce usability.
+
+---
+
+## Phase 3: E2E Test Harness (LONG-TERM - FOUNDATION)
+
+### Overview
+
+**Why Design Now**: Even though Claude Code API doesn't exist yet, designing the test harness now:
+1. Clarifies what we need from Claude Code
+2. Allows rapid implementation when API becomes available
+3. Helps us provide feedback to Anthropic on testing needs
+
+**Effort**: 2-3 months (when API available)
+**Dependencies**: Claude Code API/CLI (BLOCKED)
+**Risk**: HIGH (depends on external factors)
+**Value**: VERY HIGH (enables full automation)
+
+---
+
+### P2-1: Design E2E Test Harness Architecture
+
+**Status**: Not Started
+**Effort**: Medium (1 week - design only)
+**Dependencies**: None (design can proceed without API)
+**Spec Reference**: Section 5 "Realistic Testing Approach - Phase 2" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Phase 2: Build Test Harness"
+
+#### Description
+
+Design the architecture for automated E2E testing framework that can be implemented when Claude Code provides APIs. This is design/documentation only - no implementation until API is available.
+
+#### Acceptance Criteria
+
+- [ ] Document required Claude Code API capabilities
+- [ ] Design test harness class structure and interfaces
+- [ ] Define conversation simulation abstraction layer
+- [ ] Create plugin installation API specification
+- [ ] Design test project generator framework
+- [ ] Document integration points for future implementation
+- [ ] Create API request template for Anthropic
+
+#### Technical Notes
+
+Required Claude Code API capabilities:
+```python
+# What we need from Claude Code
+class ClaudeCodeAPI:
+    def install_plugin(path: str) -> InstallResult
+    def uninstall_plugin(name: str) -> bool
+    def list_plugins() -> List[Plugin]
+    def execute_command(command: str) -> CommandResult
+    def start_conversation(plugin: str) -> Conversation
+    def send_message(conversation: Conversation, message: str) -> Response
+```
+
+Test harness design:
+```python
+class E2ETestHarness:
+    def setup_test_environment() -> TestEnv
+    def load_plugin(plugin_name: str) -> Plugin
+    def execute_workflow(steps: List[WorkflowStep]) -> WorkflowResult
+    def validate_deliverables(expected: Deliverables) -> ValidationResult
+```
+
+This design serves as:
+1. Blueprint for future implementation
+2. Requirements document for Anthropic
+3. Specification for test authors
+
+---
+
+### P2-2: Design Conversation Simulation Framework
+
+**Status**: Not Started
+**Effort**: Medium (1 week - design only)
+**Dependencies**: P2-1 (harness architecture)
+**Spec Reference**: Section 4 "Technical Blockers - Blocker #2" • **Status Reference**: STATUS-2025-11-06-020800.md Section 4 "Blocker #2: Conversation State Simulation"
+
+#### Description
+
+Design framework for simulating multi-turn conversations with Claude in plugin context. Design only - implementation blocked on API.
+
+#### Acceptance Criteria
+
+- [ ] Define conversation state model
+- [ ] Design message/response abstraction
+- [ ] Specify agent context injection mechanism
+- [ ] Define skill invocation observability requirements
+- [ ] Design conversation assertion framework
+- [ ] Create example test scenarios using designed API
+- [ ] Document what observability we need from Claude Code
+
+#### Technical Notes
+
+Conversation simulation needs:
+```python
+class ConversationSimulator:
+    def inject_agent_context(agent: Agent) -> None
+    def send_message(message: str) -> Response
+    def assert_guidance_provided(guidance: str) -> None
+    def assert_skill_invoked(skill: str) -> None
+    def assert_agent_rule_followed(rule: str) -> None
+    def get_conversation_transcript() -> List[Turn]
+```
+
+Key challenge: How to verify Claude followed agent guidance?
+- Need access to Claude's reasoning/thinking
+- Need logs of skill invocations
+- Need visibility into which agent rules were considered
+
+This is a research item - may require Anthropic cooperation.
+
+---
+
+### P2-3: Design Test Project Generators
+
+**Status**: Not Started
+**Effort**: Small (3 days)
+**Dependencies**: None
+**Spec Reference**: Section 5 "Realistic Testing Approach - Phase 2 Task 4" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Phase 2: Build Test Harness Task 4"
+
+#### Description
+
+Design (and implement) system for generating realistic test projects for workflow testing. This CAN be implemented now as it doesn't depend on Claude Code API.
+
+#### Acceptance Criteria
+
+- [ ] Design project template system
+- [ ] Create sample projects for agent-loop testing (Node.js, Python, Go)
+- [ ] Create sample projects for epti testing (minimal codebases)
+- [ ] Create sample projects for visual-iteration testing (HTML/CSS/JS)
+- [ ] Implement project generator CLI tool
+- [ ] Document how to create new project templates
+- [ ] Include verification that generated projects are valid
+
+#### Technical Notes
+
+Project generator should create:
+- Git repository with initial commit
+- Project structure (src/, tests/, etc.)
+- Configuration files (package.json, pyproject.toml, etc.)
+- Sample code with intentional gaps for testing
+- README with project description
+
+Example usage:
+```bash
+$ python tools/generate_test_project.py --template node-express --name test-app
+Creating test project: test-app
+✓ Initialized git repository
+✓ Created project structure
+✓ Installed dependencies
+✓ Created initial commit
+Test project ready: ./test-projects/test-app
+```
+
+This is NOT blocked and can be implemented now to support manual testing.
+
+---
+
+### P2-4: Research and Document Claude Code Plugin Testing API Requirements
+
+**Status**: Not Started
+**Effort**: Small (2-3 days)
+**Dependencies**: None
+**Spec Reference**: Section 4 "Technical Blockers - Blocker #1" • **Status Reference**: STATUS-2025-11-06-020800.md Section 4 "Blocker #1: Claude Code API/CLI Availability"
+
+#### Description
+
+Research what testing capabilities we need from Claude Code and document them as requirements. This can inform discussions with Anthropic or community.
+
+#### Acceptance Criteria
+
+- [ ] Document all required API endpoints for testing
+- [ ] Document required observability/logging capabilities
+- [ ] Research if Claude Code CLI exists or is planned
+- [ ] Check if other users have solved plugin testing
+- [ ] Create feature request document for Anthropic
+- [ ] Investigate reverse-engineering Claude Code (risk assessment)
+- [ ] Explore using Claude API directly as alternative
+
+#### Technical Notes
+
+Required capabilities:
+1. **Plugin Management API**
+   - Install/uninstall plugins programmatically
+   - Query installed plugins
+   - Reload plugins without restart
+
+2. **Command Execution API**
+   - Execute slash commands
+   - Capture expanded prompts
+   - Get command completion status
+
+3. **Conversation API**
+   - Start conversation with plugin context
+   - Send messages programmatically
+   - Receive responses with metadata
+
+4. **Observability API**
+   - Skill invocation logs
+   - Agent rule application logs
+   - Hook execution logs
+   - MCP server interaction logs
+
+5. **Testing Utilities**
+   - Mock file system
+   - Mock git repository
+   - Test data injection
+   - Deterministic behavior mode
+
+Investigate:
+- Can we use Claude API directly with plugin prompts?
+- Can we mock Claude Code environment?
+- Are there testing tools in Claude Code source?
+
+---
+
+### P3-1: Implement Plugin Installation Tests (BLOCKED)
+
+**Status**: Blocked (waiting on Claude Code API)
+**Effort**: Medium (1-2 weeks when API available)
+**Dependencies**: Claude Code API, P2-1 (test harness design)
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 3.1" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 3: Long-Term - 3.1 Plugin Installation Testing"
+
+#### Description
+
+Implement automated tests for plugin installation, uninstallation, and updates. BLOCKED until Claude Code provides API.
+
+#### Acceptance Criteria
+
+- [ ] Test marketplace installation from local path
+- [ ] Test individual plugin installation
+- [ ] Test plugin appears in plugin list after installation
+- [ ] Test plugin uninstallation removes all components
+- [ ] Test plugin updates apply correctly
+- [ ] Test multiple plugins can coexist
+- [ ] Test plugin installation error handling
+
+#### Technical Notes
+
+**BLOCKED**: Cannot implement without Claude Code API.
+
+**When unblocked**: Use test harness designed in P2-1.
+
+**Example test** (future):
+```python
+@pytest.mark.e2e
+def test_agent_loop_installs_successfully():
+    """Test agent-loop plugin installs without errors."""
+    harness = E2ETestHarness()
+
+    result = harness.install_plugin("plugins/agent-loop")
+    assert result.success
+
+    plugins = harness.list_plugins()
+    assert "agent-loop" in [p.name for p in plugins]
+```
+
+---
+
+### P3-2: Implement Command Execution Tests (BLOCKED)
+
+**Status**: Blocked (waiting on Claude Code API)
+**Effort**: Medium (2-3 weeks when API available)
+**Dependencies**: Claude Code API, P2-1, P2-2 (conversation framework)
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 3.2" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 3: Long-Term - 3.2 Command Execution Testing"
+
+#### Description
+
+Implement automated tests for slash command execution and prompt expansion. BLOCKED until Claude Code provides API.
+
+#### Acceptance Criteria
+
+- [ ] Test all 16 commands execute without errors
+- [ ] Test command prompt expansion contains expected content
+- [ ] Test command autocomplete works
+- [ ] Test command argument handling
+- [ ] Test command error handling (invalid commands)
+- [ ] Test workflow transitions between commands
+- [ ] Test command execution in different contexts
+
+#### Technical Notes
+
+**BLOCKED**: Cannot implement without conversation API.
+
+**When unblocked**: Use conversation simulator designed in P2-2.
+
+**Example test** (future):
+```python
+@pytest.mark.e2e
+def test_explore_command_provides_exploration_guidance():
+    """Test /explore command expands with exploration guidance."""
+    harness = E2ETestHarness()
+    harness.load_plugin("agent-loop")
+
+    conv = harness.start_conversation()
+    result = conv.execute_command("/explore")
+
+    assert "Exploration Stage" in result.expanded_prompt
+    assert "systematic investigation" in result.expanded_prompt.lower()
+```
+
+---
+
+### P3-3: Implement Agent Behavior Tests (BLOCKED)
+
+**Status**: Blocked (waiting on Claude Code API + observability)
+**Effort**: Large (1-2 months when API available)
+**Dependencies**: Claude Code API with observability, P2-1, P2-2
+**Spec Reference**: Section 3 "E2E Testing Requirements - Tier 3" • **Status Reference**: STATUS-2025-11-06-020800.md Section 3 "Tier 3: Agent Behavior Tests"
+
+#### Description
+
+Implement automated tests for agent behavior, workflow enforcement, and anti-pattern detection. HIGHLY BLOCKED on observability.
+
+#### Acceptance Criteria
+
+- [ ] Test agents load and provide context to Claude
+- [ ] Test workflow stage enforcement
+- [ ] Test anti-pattern detection and blocking
+- [ ] Test agent transitions between stages
+- [ ] Test subagent coordination
+- [ ] Test agent compliance throughout conversation
+- [ ] Test agent error handling and fallbacks
+
+#### Technical Notes
+
+**HIGHLY BLOCKED**: Requires not just API but observability into Claude's decision-making.
+
+**Challenge**: How to verify Claude followed agent rules?
+- Need access to Claude's reasoning
+- Need logs of which agent sections were considered
+- May require special testing mode in Claude Code
+
+**Alternative**: Heuristic testing based on response content
+- If response contains certain phrases, infer agent guidance was used
+- Measure correlation between agent rules and Claude's responses
+- Not perfect, but better than nothing
+
+---
+
+### P3-4: Implement Workflow Completion Tests (BLOCKED)
+
+**Status**: Blocked (waiting on Claude Code API)
+**Effort**: Large (1-2 months when API available)
+**Dependencies**: Claude Code API, P2-1, P2-2, P2-3 (test projects)
+**Spec Reference**: Section 5 "Realistic Testing Approach - Tier 3.3" • **Status Reference**: STATUS-2025-11-06-020800.md Section 5 "Tier 3: Long-Term - 3.3 Workflow Completion Testing"
+
+#### Description
+
+Implement end-to-end tests that execute complete workflows and verify deliverables. This is the closest to manual testing, fully automated.
+
+#### Acceptance Criteria
+
+- [ ] Test complete agent-loop workflow (explore → plan → code → commit)
+- [ ] Test complete epti workflow (write tests → verify fail → implement → commit)
+- [ ] Test complete visual-iteration workflow (mock → implement → iterate → commit)
+- [ ] Verify deliverables are created (code, tests, commits)
+- [ ] Validate deliverables are correct (tests pass, code works)
+- [ ] Measure workflow completion time
+- [ ] Test workflow error recovery
+
+#### Technical Notes
+
+**BLOCKED**: Requires full Claude Code integration.
+
+**Example test** (future):
+```python
+@pytest.mark.e2e
+@pytest.mark.slow
+def test_epti_tdd_workflow_creates_passing_implementation():
+    """Test epti TDD workflow produces passing tests and implementation."""
+    harness = E2ETestHarness()
+    harness.load_plugin("epti")
+
+    # Generate test project
+    project = harness.create_test_project("calculator")
+
+    # Execute TDD workflow
+    conv = harness.start_conversation(project=project)
+    conv.execute_command("/write-tests")
+    conv.ask("Write tests for add(a, b) function")
+    # ... continue workflow ...
+
+    # Verify deliverables
+    assert project.has_file("tests/test_calculator.py")
+    assert project.has_file("src/calculator.py")
+
+    # Verify tests pass
+    result = project.run_tests()
+    assert result.all_passed
+
+    # Verify commits
+    assert project.has_commit_matching("test(calculator): add calculator tests")
+    assert project.has_commit_matching("impl(calculator): implement add function")
+```
+
+This is the gold standard but requires significant infrastructure.
+
+---
+
+### P3-5: Implement MCP Server Integration Tests (BLOCKED)
+
+**Status**: Blocked (waiting on MCP runtime access)
+**Effort**: Medium (2-3 weeks when MCP SDK available)
+**Dependencies**: MCP SDK/runtime, P2-1
+**Spec Reference**: Section 3 "E2E Testing Requirements - Tier 6" • **Status Reference**: STATUS-2025-11-06-020800.md Section 3 "Tier 6: MCP Server Integration Tests"
+
+#### Description
+
+Implement tests for MCP server loading and function invocation. Blocked on MCP testing infrastructure.
+
+#### Acceptance Criteria
+
+- [ ] Test MCP servers load successfully
+- [ ] Test MCP server health checks
+- [ ] Test MCP function discovery
+- [ ] Test MCP function invocation from Claude
+- [ ] Test MCP error handling
+- [ ] Test MCP server lifecycle (start, stop, restart)
+- [ ] Test multiple MCP servers don't conflict
+
+#### Technical Notes
+
+**BLOCKED**: Needs MCP SDK or runtime access.
+
+**MCP servers in use**:
+- browser-tools (visual-iteration)
+
+**What to test**:
+1. Server starts when plugin loads
+2. Functions are discoverable
+3. Functions execute correctly
+4. Errors are handled gracefully
+
+**Research needed**: Is there an MCP testing SDK?
+
+---
+
+## Risk Assessment and Mitigation
+
+### High-Severity Risks
+
+#### Risk #1: Manual Testing Reveals Critical Issues
+
+**Likelihood**: MEDIUM-HIGH
+**Impact**: HIGH (delays production readiness)
+**Mitigation**:
+- Prioritize manual testing immediately
+- Fix issues iteratively
+- Don't claim "production ready" until validated
+
+**Work Items**: P0-6 must be completed before claiming functionality
+
+---
+
+#### Risk #2: Plugins Fundamentally Don't Work as Designed
+
+**Likelihood**: LOW-MEDIUM
+**Impact**: CRITICAL (requires redesign)
+**Mitigation**:
+- Start with simplest plugin (agent-loop)
+- Test incrementally, not all at once
+- Be prepared to iterate on design
+
+**Work Items**: P0-6 will reveal this quickly
+
+---
+
+#### Risk #3: Claude Code API Never Becomes Available
+
+**Likelihood**: MEDIUM
+**Impact**: HIGH (cannot automate E2E testing)
+**Mitigation**:
+- Focus on manual testing protocols
+- Maximize structural testing value
+- Consider reverse engineering (risky)
+- Explore using Claude API directly
+
+**Work Items**: P2-4 (research alternatives)
+
+---
+
+### Medium-Severity Risks
+
+#### Risk #4: Test Maintenance Burden Too High
+
+**Likelihood**: MEDIUM
+**Impact**: MEDIUM (tests become stale)
+**Mitigation**:
+- Keep tests focused and valuable
+- Automate what can be automated
+- Maintain clear documentation
+- Regular test review cycles
+
+**Work Items**: All test implementations should include maintenance docs
+
+---
+
+#### Risk #5: Structural Tests Give False Confidence
+
+**Likelihood**: LOW (we're aware of this)
+**Impact**: MEDIUM (overestimate quality)
+**Mitigation**:
+- Clearly document what tests do/don't validate
+- Update CLAUDE.md to reflect testing status
+- Emphasize manual testing results
+
+**Work Items**: P0-6 (update documentation with reality)
+
+---
+
+## Success Metrics
+
+### Phase 1 Success (Manual Testing)
+
+- [ ] All 4 plugins install successfully in Claude Code
+- [ ] At least 80% of command tests pass
+- [ ] At least 2 complete workflows succeed per plugin
+- [ ] All critical issues documented
+- [ ] CLAUDE.md updated with accurate testing status
+
+### Phase 2 Success (Enhanced Structural)
+
+- [ ] 100+ structural tests passing
+- [ ] Cross-references validated automatically
+- [ ] Hook scripts unit tested
+- [ ] Zero broken internal references
+- [ ] Test execution time under 30 seconds
+
+### Phase 3 Success (E2E Automation)
+
+- [ ] Plugin installation automated
+- [ ] Command execution automated
+- [ ] At least 1 complete workflow automated per plugin
+- [ ] Tests run in CI/CD
+- [ ] Test coverage reports available
+
+---
+
+## Recommended Execution Order
+
+### Week 1 (Immediate)
+
+1. **P0-1**: Create manual testing documentation (1 day)
+2. **P0-2**: Create installation test scenarios (1 day)
+3. **P0-7**: Document promptctl plugin (1 day)
+4. **P0-3**: Create command test scenarios (2 days)
+
+**Deliverable**: Complete manual testing framework ready to use
+
+### Week 2 (Immediate)
+
+1. **P0-4**: Create workflow test scenarios (2 days)
+2. **P0-5**: Create agent observation checklist (1 day)
+3. **Start P0-6**: Begin manual testing execution (2 days)
+
+**Deliverable**: First round of manual testing results
+
+### Week 3-4 (Near-term)
+
+1. **Complete P0-6**: Finish manual testing (3 days)
+2. **P1-1**: Implement cross-reference validation (3 days)
+3. **P1-4**: Implement hook script unit tests (2 days)
+4. **P1-6**: Implement manifest schema validation (1 day)
+
+**Deliverable**: Manual testing complete, enhanced structural tests deployed
+
+### Month 2 (Near-term)
+
+1. **P1-2**: Implement command template validation (3 days)
+2. **P1-3**: Implement agent workflow validation (4 days)
+3. **P1-5**: Implement MCP config validation (2 days)
+4. **P1-7**: Implement markdown quality tests (2 days)
+5. **P2-3**: Implement test project generators (3 days)
+
+**Deliverable**: Comprehensive structural test suite (100+ tests)
+
+### Month 3 (Foundation)
+
+1. **P2-1**: Design E2E test harness architecture (5 days)
+2. **P2-2**: Design conversation simulation framework (5 days)
+3. **P2-4**: Research Claude Code API requirements (3 days)
+
+**Deliverable**: Complete E2E test design, ready to implement when API available
+
+### Future (When Claude Code API Available)
+
+1. **P3-1**: Implement plugin installation tests
+2. **P3-2**: Implement command execution tests
+3. **P3-4**: Implement workflow completion tests
+4. **P3-3**: Implement agent behavior tests (if observability available)
+5. **P3-5**: Implement MCP integration tests (if MCP SDK available)
+
+**Deliverable**: Fully automated E2E test suite
+
+---
+
+## Critical Path Items
+
+These items MUST be completed before claiming "Production Ready":
+
+1. ✅ **P0-6**: Execute manual testing for all plugins (CRITICAL)
+2. ✅ **P0-7**: Document/resolve promptctl status (HIGH)
+3. ✅ **P1-1**: Cross-reference validation (prevents broken workflows)
+4. ✅ **P1-4**: Hook script unit tests (validates critical functionality)
+
+Until these are complete, the marketplace is "Implementation Complete - Testing In Progress"
+
+---
+
+## File Management and Cleanup
+
+Per the planner agent's guidance, after generating this plan:
+
+1. **Check for old planning files**:
+   ```bash
+   ls -t .agent_planning/PLAN-*.md
+   ls -t .agent_planning/SPRINT-*.md
+   ```
+
+2. **Retain exactly 4 of each** (delete oldest if >4)
+
+3. **Archive conflicting files**:
+   - Any undated `PLAN.md`, `BACKLOG.md`, `SPRINT.md`
+   - Any files contradicting latest STATUS
+   - Move to `.agent_planning/archive/` with `.archived` suffix
+
+4. **Verify no contradictions**:
+   - This plan should align with STATUS-2025-11-06-020800.md
+   - This plan should align with CLAUDE.md specification
+   - Any conflicts should be flagged for resolution
+
+---
+
+## Appendix: Test Scenario Examples
+
+### Example: agent-loop Workflow Test
+
+**Scenario**: Add logging feature to Express.js application
+
+**Setup**:
+- Create Express.js app with 3 endpoints
+- No logging currently exists
+- App has tests that should pass
+
+**Execution**:
+1. Install agent-loop plugin
+2. Run `/explore` - investigate codebase structure
+3. Run `/plan` - create logging implementation plan
+4. Run `/code` - implement logging middleware
+5. Run `/commit` - commit changes
+
+**Expected Results**:
+- Plan document created in `.agent_planning/`
+- Logging middleware added to codebase
+- All endpoints use logging
+- Tests still pass
+- Git commit follows conventional format
+- Workflow felt natural and guided
+
+**Pass Criteria**: All expected results achieved in <60 minutes
+
+---
+
+### Example: epti TDD Test
+
+**Scenario**: Implement calculator class with TDD
+
+**Setup**:
+- Empty Python project with pytest configured
+- No code exists yet
+
+**Execution**:
+1. Install epti plugin
+2. Run `/write-tests` - write calculator tests
+3. Run `/verify-fail` - verify tests fail as expected
+4. Run `/commit-tests` - commit tests
+5. Run `/implement` - implement calculator to pass tests
+6. Run `/iterate` - refine implementation
+7. Run `/commit-code` - commit final implementation
+
+**Expected Results**:
+- Test file created with comprehensive tests
+- Tests initially fail (verified)
+- Implementation makes all tests pass
+- No test modifications during implementation
+- Two commits: one for tests, one for implementation
+- Agent prevented test modifications
+
+**Pass Criteria**: Strict TDD discipline enforced, all tests pass
+
+---
+
+### Example: visual-iteration Test
+
+**Scenario**: Build landing page from Figma mock
+
+**Setup**:
+- HTML/CSS project structure
+- Figma design exported as image
+- Browser-tools MCP server installed
+
+**Execution**:
+1. Install visual-iteration plugin
+2. Run `/load-mock` - load Figma design
+3. Run `/screenshot` - capture initial state
+4. Run `/implement-design` - implement initial version
+5. Run `/iterate` - refine based on comparison
+6. Run `/compare` - compare before/after
+7. Run `/visual-commit` - commit when satisfied
+
+**Expected Results**:
+- Screenshots captured at each step
+- Implementation matches design visually
+- Iterations show progressive improvement
+- Final comparison shows alignment with mock
+- Git commits include screenshot references
+
+**Pass Criteria**: Visual implementation matches design, iterations productive
+
+---
+
+## Conclusion
+
+This plan provides a comprehensive, actionable roadmap for building a testing framework for the Claude Code plugin marketplace. It respects the technical constraints identified in the STATUS report while maximizing what can be validated today.
+
+**Key Principles**:
+
+1. **Manual testing is critical** - It's the only way to validate functionality
+2. **Structural testing is valuable** - It catches issues early and prevents regressions
+3. **E2E automation is aspirational** - Design it now, implement when possible
+4. **Be honest about status** - Don't claim "production ready" without validation
+
+**Immediate Priority**: Execute Phase 1 manual testing to validate plugins actually work.
+
+**Next Steps**: Review this plan, assign work items, and begin execution with P0-1.

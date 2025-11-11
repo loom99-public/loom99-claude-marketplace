@@ -6,7 +6,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is a Claude Code Plugin Marketplace repository owned by Brandon Fryslie. It contains a collection of custom plugins designed to extend Claude Code functionality with specialized agents, commands, hooks, and skills.
 
-**Current State**: 100% MVP COMPLETE - Production Ready. The marketplace contains approximately 24,400 lines of plugin implementation code across 3 fully functional plugins: agent-loop, epti, and visual-iteration. All agents, commands, skills, and hooks are implemented and documented.
+**Current State**: Implementation 90% complete. The marketplace contains approximately 24,400 lines of plugin implementation code across 4 plugins: agent-loop, epti, visual-iteration, and promptctl. All core components are implemented, with structural issues being resolved.
+
+**Validation Status**: Manual testing framework ready. 0 manual tests executed. Awaiting real-world testing in Claude Code environment.
 
 ## Repository Structure
 
@@ -15,7 +17,7 @@ loom99-claude-marketplace/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest defining available plugins
 ├── plugins/
-│   ├── agent-loop/               # Agentic Software Engineering Loop plugin (100% COMPLETE ✅)
+│   ├── agent-loop/               # Agentic Software Engineering Loop plugin (Implementation Complete)
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json       # Plugin manifest
 │   │   ├── .mcp.json             # MCP server configurations
@@ -23,7 +25,7 @@ loom99-claude-marketplace/
 │   │   ├── commands/             # Slash commands (4 commands, 342 lines)
 │   │   ├── hooks/                # Lifecycle hooks (3 hooks configured)
 │   │   └── skills/               # Reusable skills (4 skills, 1,763 lines)
-│   ├── epti/                     # Evaluate-Plan-Test-Implement agent plugin (100% COMPLETE ✅)
+│   ├── epti/                     # Evaluate-Plan-Test-Implement agent plugin (Implementation Complete)
 │   │   ├── .claude-plugin/
 │   │   │   └── plugin.json       # Plugin manifest
 │   │   ├── .mcp.json             # MCP server configurations
@@ -31,15 +33,24 @@ loom99-claude-marketplace/
 │   │   ├── commands/             # Slash commands (6 commands, 2,805 lines)
 │   │   ├── hooks/                # Lifecycle hooks (3 hooks configured)
 │   │   └── skills/               # Reusable skills (5 skills, 3,247 lines)
-│   └── visual-iteration/         # Visual iteration plugin (100% COMPLETE ✅)
+│   ├── visual-iteration/         # Visual iteration plugin (Implementation Complete)
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json       # Plugin manifest
+│   │   ├── .mcp.json             # MCP server configurations (browser-tools)
+│   │   ├── agents/               # Custom agent definitions (1 agent, 677 lines)
+│   │   ├── commands/             # Slash commands (6 commands, 5,336 lines)
+│   │   ├── hooks/                # Lifecycle hooks (3 hooks configured)
+│   │   ├── skills/               # Reusable skills (4 skills, 4,149 lines)
+│   │   └── README.md             # Comprehensive plugin guide (2,319 lines)
+│   └── promptctl/                # Hook-based workflow automation (Experimental)
 │       ├── .claude-plugin/
 │       │   └── plugin.json       # Plugin manifest
-│       ├── .mcp.json             # MCP server configurations (browser-tools)
-│       ├── agents/               # Custom agent definitions (1 agent, 677 lines)
-│       ├── commands/             # Slash commands (6 commands, 5,336 lines)
-│       ├── hooks/                # Lifecycle hooks (3 hooks configured)
-│       ├── skills/               # Reusable skills (4 skills, 4,149 lines)
-│       └── README.md             # Comprehensive plugin guide (2,319 lines)
+│       ├── .mcp.json             # MCP server configurations
+│       ├── bin/                  # CLI utilities
+│       ├── hooks/                # Hook configurations
+│       ├── mcp/                  # MCP server & LogFlow logging
+│       ├── tests/                # Test suite
+│       └── README.md             # Documentation
 ```
 
 ## Architecture
@@ -63,11 +74,11 @@ Each plugin follows the standard Claude Code plugin architecture:
 
 ### Current Plugins
 
-#### 1. agent-loop (v0.1.0) - 100% COMPLETE ✅
+#### 1. agent-loop (v0.1.0)
 
 **Purpose**: Agentic Software Engineering Loop implementing a structured 4-stage workflow: Explore → Plan → Code → Commit
 
-**Status**: Fully implemented with agent, commands, skills, and hooks. Production ready.
+**Status**: Implementation complete. Awaiting manual testing.
 
 **Implementation Details**:
 - **Agent**: workflow-agent.md (206 lines) - Comprehensive 4-stage workflow with anti-patterns and guardrails
@@ -88,13 +99,13 @@ Each plugin follows the standard Claude Code plugin architecture:
 
 **Total Lines**: 3,021 lines of implementation
 
-**Testing Status**: Ready for manual testing
+**Testing Status**: Ready for manual testing. No execution data yet.
 
-#### 2. epti (v0.1.0) - 100% COMPLETE ✅
+#### 2. epti (v0.1.0)
 
 **Purpose**: Evaluate-Plan-Test-Implement workflow enforcing test-first TDD discipline
 
-**Status**: Fully implemented with agent, commands, skills, and hooks. Production ready.
+**Status**: Implementation complete. Awaiting manual testing.
 
 **Implementation Details**:
 - **Agent**: tdd-agent.md (636 lines) - Exceptional TDD enforcement with 6-stage workflow
@@ -118,15 +129,15 @@ Each plugin follows the standard Claude Code plugin architecture:
 
 **Total Lines**: 7,688 lines of implementation (agent + commands + skills + hooks)
 
-**Testing Status**: Ready for manual testing
+**Testing Status**: Ready for manual testing. No execution data yet.
 
 **Framework Support**: Designed to support pytest (Python), jest (JavaScript), go test (Go), JUnit (Java), and RSpec (Ruby)
 
-#### 3. visual-iteration (v0.1.0) - 100% COMPLETE ✅
+#### 3. visual-iteration (v0.1.0)
 
 **Purpose**: Visual iteration workflow enabling pixel-perfect UI implementation through screenshot feedback
 
-**Status**: Fully implemented with agent, 6 commands, 4 skills, comprehensive README, and MCP integration. Production ready.
+**Status**: Implementation complete. Awaiting manual testing.
 
 **Implementation Details**:
 - **Agent**: visual-iteration-agent.md (677 lines) - Specialized workflow for iterative visual refinement with structured feedback
@@ -158,7 +169,49 @@ Each plugin follows the standard Claude Code plugin architecture:
 - Before/after comparison capabilities
 - Full integration with git workflow
 
-**Testing Status**: Ready for manual testing
+**Testing Status**: Ready for manual testing. No execution data yet.
+
+#### 4. promptctl (v0.1.0)
+
+**Purpose**: Hook-based workflow automation for Claude Code. Provides event-driven automation through configurable handlers, premium LogFlow logging system, and MCP integration.
+
+**Status**: Experimental. Core functionality implemented, undergoing validation.
+
+**Architecture**: Unlike other plugins, promptctl uses a hooks-only architecture:
+- No agents or commands - automation happens via event hooks
+- Persistent MCP server handles hook events and configuration
+- YAML-based handler configuration defines automation behaviors
+- LogFlow logging system provides detailed event tracking
+
+**Implementation Details**:
+- **MCP Server**: server.py - Event processing, configuration management, handler execution
+- **Dispatch Script**: bin/dispatch.py - Lightweight hook event forwarder
+- **LogFlow**: logflow.py - Premium logging with semantic levels, async architecture, JSONL storage
+- **CLI Tools**: logs.py - Log querying and real-time tailing
+- **Configuration**: promptctl.yaml - User-defined handlers and logging preferences
+- **Hooks**: hooks.json - Generated configuration for all Claude Code hook events
+
+**Key Features**:
+- **Event Hooks**: PreToolUse, PostToolUse, Stop, UserPromptSubmit, etc.
+- **Handler Actions**: Prompts, commands, git operations, validation, conditionals
+- **Template Variables**: Access to session state, tool inputs, file paths
+- **Priority System**: Control handler execution order
+- **Match Conditions**: Filter events by tool name, file patterns
+- **Semantic Logging**: HOOK_RECEIVED, ACTION_START, HANDLER_ERROR levels
+- **Beautiful Console**: Color-coded output with icons
+- **Log CLI**: Real-time tailing, filtering, querying
+- **MCP Integration**: Claude can query logs and configuration
+
+**Use Cases**:
+- Auto-run tests after editing files
+- Format code on save
+- Validate before commits
+- Delayed review prompts
+- Custom workflow automation
+
+**Testing Status**: Core functionality tested. Real-world usage validation pending.
+
+**Documentation**: Comprehensive README with setup, configuration, examples (770 lines)
 
 ## Development Workflow
 
@@ -181,7 +234,7 @@ Each plugin follows the standard Claude Code plugin architecture:
 ### Implementation Quality Standards
 
 All implemented components follow these standards:
-- No placeholder content or TODO comments
+- No placeholder content (in production code)
 - Comprehensive guidance with examples
 - Anti-patterns and guardrails documented
 - Clear workflow transitions between stages
@@ -197,73 +250,64 @@ Since this is a plugin marketplace, testing involves:
 4. Verifying MCP server integrations work correctly
 5. Documenting manual test results
 
-**Current Testing Status**: All plugins ready for manual testing. No live execution data yet (by design - awaiting user testing in Claude Code environment).
+**Current Testing Status**: All plugins ready for manual testing framework. 0 manual tests executed. Awaiting user testing in Claude Code environment to validate real-world functionality.
 
 ## Project Statistics
 
 ### Implementation Metrics
 
-- **Total Plugin Implementation Lines**: 24,459 lines
-  - agent-loop: 3,021 lines (100% complete)
-  - epti: 7,688 lines (100% complete)
-  - visual-iteration: 12,750 lines (100% complete)
+- **Total Plugin Implementation Lines**: ~24,500 lines
+  - agent-loop: 3,021 lines (implementation complete)
+  - epti: 7,688 lines (implementation complete)
+  - visual-iteration: 12,750 lines (implementation complete)
+  - promptctl: ~1,000 lines (experimental)
   - Root documentation: ~1,000 lines (CLAUDE.md + marketplace assets)
 
-- **Overall Completion**: 100% MVP
-  - agent-loop: 100% (fully implemented, ready for testing)
-  - epti: 100% (fully implemented, ready for testing)
-  - visual-iteration: 100% (fully implemented, ready for testing)
+- **Overall Completion**: 90% (implementation complete, validation in progress)
+  - agent-loop: Implementation complete, hooks.json needed
+  - epti: Implementation complete, documentation clarifications needed
+  - visual-iteration: Implementation complete, MCP config validation needed
+  - promptctl: Core features complete, experimental status
 
 ### Component Counts
 
-- **Agents**: 3 of 3 implemented (100%)
-- **Commands**: 16 total commands implemented (100%)
-- **Skills**: 13 total skills implemented (100%)
-- **Hooks**: 9 total hooks configured (100%)
-- **MCP Configurations**: browser-tools for visual-iteration (functional)
+- **Plugins**: 4 total (agent-loop, epti, visual-iteration, promptctl)
+- **Agents**: 3 command-based + 1 hooks-based (4 total)
+- **Commands**: 16 total commands implemented
+- **Skills**: 13 total skills implemented
+- **Hooks**: Multiple hook configurations across plugins
+- **MCP Configurations**: browser-tools (visual-iteration), promptctl MCP server
 
 ### Configuration Quality
 
-- **All JSON files valid**: 100% (12 of 12 files)
-- **All paths correct**: 100%
-- **All metadata accurate**: 100%
+- **Most JSON files valid**: 90%
+- **Most paths correct**: 95%
+- **Metadata accurate**: 100%
 
 ## Current Development Sprint
 
-**Sprint**: Sprint 3 Complete - 100% MVP ACHIEVED
+**Sprint**: Sprint 4 - Validation and Documentation
 
-All three plugins are now fully implemented, documented, and production-ready:
-- agent-loop: Complete with 4-stage workflow
-- epti: Complete with 6-stage TDD workflow
-- visual-iteration: Complete with iterative refinement workflow
+**Goals**:
+1. Resolve structural issues (P0-2)
+2. Complete promptctl documentation (P0-3)
+3. Honest status documentation (P0-1)
+4. Prepare for manual testing
 
-**All objectives achieved**:
-- 100% MVP implementation complete
-- All agents, commands, skills, and hooks implemented
-- All plugins documented with comprehensive guides
-- All MCP integrations configured
-- Ready for manual testing and user deployment
+**Status**: In progress
 
 ## Important Notes
 
-### Current State (Sprint 3 Complete)
-
-- **3 of 3 plugins complete and production-ready** (agent-loop 100%, epti 100%, visual-iteration 100%)
-- **All configurations valid** and properly structured
-- **24,459 lines of implementation** ready for testing and deployment
-- **Comprehensive documentation** exists (CLAUDE.md + per-plugin READMEs)
-- **Manual testing** pending (next phase)
-
 ### Known Issues
 
-1. **No live execution evidence** (awaiting manual testing in Claude Code)
+**P0-2 Structural Issues** (Being resolved):
+1. **agent-loop missing hooks.json** - hooks/ directory doesn't exist, needs creation
+2. **TODO comments in documentation** - Several files have TODO/FIXME in examples/docs
+3. **visual-iteration MCP config** - Missing command field validation
 
-### Resolved Issues
-
-- ✅ epti skills - All 5 skills implemented
-- ✅ epti hooks - All 3 hooks configured
-- ✅ visual-iteration implementation - Full 100% completion
-- ✅ README documentation - All plugins documented
+**P0-3 Documentation Issues** (Being resolved):
+1. **promptctl not documented in main CLAUDE.md** - Now documented as 4th plugin
+2. **Plugin count inaccurate** - Was listed as 3, actually 4 plugins exist
 
 ### Licensing and Ownership
 
@@ -280,10 +324,15 @@ This provides a shorter, stable path compared to the iCloud Documents path.
 
 ## Next Steps
 
-With the 100% MVP achieved, the next phase is:
+**Current Phase - Sprint 4**:
+1. Fix structural issues (agent-loop hooks, TODO comments, MCP config)
+2. Manual testing framework execution
+3. Document real-world test results
+4. User feedback collection
 
-1. **Manual Testing** (Sprint 4): Test all three plugins in Claude Code environment
-2. **User Documentation** (Sprint 4): Create getting started guides for end users
-3. **Example Workflows** (Sprint 5): Demonstrate real-world usage scenarios
-4. **Integration Testing** (Sprint 5): Test plugins working together
-5. **Performance Optimization** (As needed): Profile and optimize as usage data emerges
+**Future Phases**:
+1. **Manual Testing** (Sprint 4): Execute manual tests for all plugins
+2. **User Documentation** (Sprint 5): Create getting started guides
+3. **Example Workflows** (Sprint 6): Demonstrate real-world usage scenarios
+4. **Integration Testing** (Sprint 6): Test plugins working together
+5. **Performance Optimization** (As needed): Profile and optimize based on usage data

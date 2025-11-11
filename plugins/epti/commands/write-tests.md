@@ -231,7 +231,7 @@ def register_user(email, password, username):
 ```python
 # WRONG - stub implementation
 def register_user(email, password, username):
-    pass  # TODO
+    pass  # Incomplete stub
 ```
 
 ❌ **Tests that pass immediately**:

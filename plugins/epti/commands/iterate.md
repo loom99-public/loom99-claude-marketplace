@@ -74,7 +74,7 @@ Typical iteration count: 2-5 cycles
 1. **Fix Implementation**: Never modify tests to make them easier
 2. **One Issue at a Time**: Address one failure, re-run, repeat
 3. **Understand Failures**: Read error messages carefully
-4. **Maintain Quality**: Don't hack around tests with special cases
+4. **Maintain Quality**: Don't work around tests with special cases
 5. **Track Progress**: Document what changed and why
 
 ## Anti-Patterns

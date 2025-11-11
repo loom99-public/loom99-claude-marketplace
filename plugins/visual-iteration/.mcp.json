@@ -1,9 +1,7 @@
 {
-  "mcpServers": {
-    "browser-tools": {
-      "command": "npx",
-      "args": ["-y", "@executeautomation/mcp-browser-tools"],
-      "env": {}
-    }
+  "browser-tools": {
+    "command": "npx",
+    "args": ["-y", "@executeautomation/mcp-browser-tools"],
+    "env": {}
   }
 }

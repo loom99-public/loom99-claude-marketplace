@@ -1,0 +1,1559 @@
+# Implementation Plan: Path to 100% Completion
+
+**Generated**: 2025-11-06 23:49:55
+**Source STATUS**: STATUS-100-percent-2025-11-06-234533.md
+**Specification**: CLAUDE.md (last modified 2025-11-06)
+**Plan Scope**: Concrete, actionable work to move from 42% to 100% completion
+
+---
+
+## Executive Summary
+
+### Current State (from STATUS)
+
+**True Completion**: 42%
+- Implementation: 90% (24,459 lines across 4 plugins)
+- Validation: 0% (manual testing framework ready, ZERO tests executed)
+- Documentation: 40% (accurate stats, false "100%" claims)
+- Structural Issues: 14 unfixed issues (86% test pass rate)
+
+**Critical Blocker**: NO functional validation exists. Plugins have NEVER been tested in Claude Code.
+
+### Target State (100% Completion)
+
+**Objective Metrics**:
+- All 14 structural issues fixed (95%+ test pass rate)
+- Manual testing executed with 80%+ workflow success rate
+- All plugins documented (including promptctl)
+- Documentation claims match reality
+- Zero Critical or High severity bugs
+- User can install and use all plugins successfully
+
+### Timeline
+
+**Total Effort**: 54-77 hours over 3-4 weeks
+- Week 1: Foundation & Critical Fixes (9-12 hours)
+- Week 2-3: Bug Fixing & Iteration (30-45 hours)
+- Week 4: Documentation & Release Prep (15-20 hours)
+
+**Critical Path**: Execute P0-6 manual testing (blocks all subsequent work)
+
+---
+
+## Backlog by Priority
+
+### P0 (CRITICAL) - Foundation & Immediate Blockers
+
+These items MUST be completed before claiming any level of production readiness.
+
+---
+
+## P0-1: Honesty Update - Remove False "100%" Claims
+
+**Status**: Not Started
+**Effort**: Small (30 minutes)
+**Dependencies**: None
+**Spec Reference**: Project Overview, Current Plugins sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §10 "Executive Summary"
+
+### Description
+
+CLAUDE.md currently claims "100% MVP COMPLETE - Production Ready" for all 3 plugins. The STATUS report definitively proves this claim is false - ZERO functional testing has been executed, 14 structural issues remain unfixed, and there is NO EVIDENCE plugins work in Claude Code. This false claim erodes trust and sets incorrect expectations.
+
+Update CLAUDE.md to reflect the honest reality: implementation is largely complete, but validation has not occurred.
+
+### Acceptance Criteria
+
+- [ ] Remove "100% MVP COMPLETE - Production Ready" from line 9
+- [ ] Replace with "Implementation 90% Complete - Validation In Progress"
+- [ ] Add honest status note: "Manual testing framework complete (17 files, 3,236 lines), functional testing not yet executed (0 tests run)"
+- [ ] Remove all "100% COMPLETE ✅" markers from plugin sections (lines 18, 26, 34)
+- [ ] Replace with "Implementation Complete - Testing Pending"
+- [ ] Add "Known Issues" subsection listing the 14 structural issues
+- [ ] Update "Testing Status" from "Ready for manual testing" to "Manual testing framework ready, execution pending"
+- [ ] Add prominently: "Production readiness: Cannot be claimed without functional validation"
+- [ ] Update plugin count from "3 fully functional plugins" to "4 plugins (3 documented + promptctl undocumented)"
+- [ ] Commit with message: "docs: correct false 100% completion claims to reflect actual 42% completion"
+
+### Technical Notes
+
+This is the MOST IMPORTANT item. All subsequent work depends on having honest baseline documentation. False claims destroy credibility and mislead users.
+
+**Lines to modify**:
+- Line 9: Current State claim
+- Lines 18, 26, 34: Plugin completion markers
+- Lines 70, 97, 144: "Status: Fully implemented...Production ready"
+- Lines 91, 122, 177: "Testing Status: Ready for manual testing"
+
+---
+
+## P0-2: Fix 14 Structural Issues
+
+**Status**: Not Started
+**Effort**: Small (2-3 hours)
+**Dependencies**: None (can start immediately)
+**Spec Reference**: All plugin sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §3 "Plugin-by-Plugin Status Analysis"
+
+### Description
+
+Automated structural tests discovered 14 genuine issues across all plugins. These issues will cause confusion, errors, or broken functionality. They represent REAL BUGS that must be fixed before claiming production readiness.
+
+Fix all issues to achieve 95%+ structural test pass rate (currently 86%).
+
+### Acceptance Criteria
+
+#### agent-loop (1 issue - 15 min)
+- [ ] Fix broken hooks reference in plugin.json
+  - Current: `./hooks/hooks.json` (file does NOT exist)
+  - Options: (1) Create missing hooks/hooks.json file, (2) Remove hooks reference, (3) Fix path
+  - Verify: Run structural tests, confirm path validation passes
+
+#### epti (6 issues - 1 hour)
+- [ ] Fix 4 broken command references in agents/tdd-agent.md
+  - Remove or replace references to: `/pending`, `/ignore`, `/names`, `/test`
+  - These commands do NOT exist (only 6 actual commands: write-tests, verify-fail, commit-tests, implement, iterate, commit-code)
+  - Verify: Run cross-reference validation tests
+- [ ] Remove 2 TODO comments from production code
+  - Search for "TODO" in epti plugin files
+  - Either implement the TODO or remove if not needed
+  - Verify: Run TODO detection tests
+
+#### visual-iteration (7 issues - 1.5 hours)
+- [ ] Fix 11 broken command references in agents/visual-iteration-agent.md
+  - Remove or replace references to: `/styles`, `/to`, `/login`, `/mockup`, `/path`, `/manual`, `/fonts`, `/password`, `/components`, `/technology`, `/unavailable`
+  - Actual commands are: screenshot, feedback, refine, iterate-loop, commit-visual, compare
+  - Verify: Run cross-reference validation tests
+- [ ] Fix MCP configuration missing required fields in .mcp.json
+  - Review .mcp.json schema requirements
+  - Add missing fields for browser-tools MCP server
+  - Verify: Run MCP config validation tests
+- [ ] Remove 2 XXX comments from production code
+  - Search for "XXX" in visual-iteration plugin files
+  - Either address the concern or remove if not needed
+  - Verify: Run XXX detection tests
+
+#### Final Verification
+- [ ] Run full structural test suite: `pytest tests/structural/ -v`
+- [ ] Confirm pass rate >= 95% (at least 69 of 73 tests passing)
+- [ ] Document remaining failures (if any) with justification
+- [ ] Commit fixes with message: "fix: resolve 14 structural issues across all plugins"
+
+### Technical Notes
+
+**Testing command**:
+```bash
+cd /Users/bmf/Library/Mobile\ Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace
+pytest tests/structural/ -v --tb=short
+```
+
+**Priority order**: Fix cross-references first (highest user impact), then config issues, then code comments.
+
+**Expected outcome**: Structural integrity increases from 70-85% to 95%+, eliminating obvious bugs before manual testing.
+
+---
+
+## P0-3: Document promptctl Plugin
+
+**Status**: Not Started
+**Effort**: Small (1-2 hours)
+**Dependencies**: None
+**Spec Reference**: N/A (plugin not in spec) • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §3.4 "Plugin 4: promptctl (UNDOCUMENTED)"
+
+### Description
+
+A fourth plugin (promptctl) exists in the marketplace but is completely undocumented in CLAUDE.md. Users have NO IDEA it exists. The STATUS report shows it has comprehensive files (hooks/hooks.json, bin/dispatch.py, README.md) but zero visibility.
+
+Determine if promptctl is production-ready or experimental, then document appropriately.
+
+### Acceptance Criteria
+
+- [ ] Read promptctl README.md to understand purpose and status
+- [ ] Read promptctl hooks/hooks.json to understand functionality
+- [ ] Read promptctl bin/dispatch.py to understand implementation
+- [ ] Decide: Is promptctl production or experimental?
+- [ ] If production: Add full section to CLAUDE.md (following agent-loop/epti/visual-iteration format)
+  - Purpose statement
+  - Implementation details (files, lines)
+  - Architecture explanation
+  - Testing status
+- [ ] If experimental: Add "Experimental Plugins" section noting promptctl exists but is not production-ready
+- [ ] Update plugin count in CLAUDE.md from "3 plugins" to "4 plugins"
+- [ ] Update total line count to include promptctl (if production)
+- [ ] If production: Add promptctl to manual testing scenarios
+- [ ] If experimental: Document why it's experimental and what's needed for production
+- [ ] Commit with message: "docs: add promptctl plugin documentation"
+
+### Technical Notes
+
+**Files to review**:
+- `/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/promptctl/README.md`
+- `/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/promptctl/hooks/hooks.json`
+- `/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/promptctl/bin/dispatch.py`
+
+promptctl uses a different architecture (hooks-based automation) vs. agent-loop/epti/visual-iteration (agents + commands + skills). Document this architectural difference clearly.
+
+---
+
+## P0-4: Execute P0-6 Manual Testing - agent-loop
+
+**Status**: Not Started
+**Effort**: Medium (2-3 hours)
+**Dependencies**: P0-2 (fix structural issues first to avoid wasting testing time)
+**Spec Reference**: agent-loop implementation sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §4 "Testing Status: The Critical Gap"
+
+### Description
+
+**THIS IS THE CRITICAL BLOCKER**. agent-loop has NEVER been tested in Claude Code. NO EVIDENCE exists that it works. Without execution, all "production ready" claims are baseless speculation.
+
+Execute comprehensive manual testing per the testing framework to obtain first real evidence of functionality.
+
+### Acceptance Criteria
+
+#### Installation Testing (30 min)
+- [ ] Install agent-loop plugin in Claude Code via marketplace
+- [ ] Verify plugin loads without errors
+- [ ] Verify agent appears in agent selection
+- [ ] Verify 4 commands appear: /explore, /plan, /code, /commit
+- [ ] Record any installation errors or warnings
+- [ ] Document in TESTING_RESULTS.md under "agent-loop Installation"
+
+#### Command Execution Testing (1 hour)
+- [ ] Test `/explore` command
+  - Execute in test project
+  - Verify command expands to agent prompt
+  - Verify agent provides systematic exploration guidance
+  - Record success/failure and any issues
+- [ ] Test `/plan` command
+  - Execute after exploration
+  - Verify structured plan generation guidance
+  - Record success/failure and any issues
+- [ ] Test `/code` command
+  - Execute with plan in context
+  - Verify implementation guidance with verification
+  - Record success/failure and any issues
+- [ ] Test `/commit` command
+  - Execute after code changes
+  - Verify git operation guidance
+  - Record success/failure and any issues
+
+#### Workflow Testing (1 hour)
+- [ ] Execute complete Explore → Plan → Code → Commit workflow
+  - Start with simple feature (e.g., "add hello world function")
+  - Follow agent guidance at each stage
+  - Record time taken, issues encountered, workflow completion success
+- [ ] Execute partial workflow: Plan → Code only
+  - Test workflow flexibility
+  - Record any blockers or confusing guidance
+
+#### Hooks Testing (30 min)
+- [ ] Test pre-commit hook (blocks commits without plan)
+  - Attempt commit without plan
+  - Verify hook blocks commit
+  - Add plan, verify commit succeeds
+- [ ] Test post-code hook (reminds to run tests)
+  - Make code change
+  - Verify reminder appears
+- [ ] Test commit-msg hook (enforces conventional commit format)
+  - Attempt commit with bad message
+  - Verify hook rejects
+  - Use conventional format, verify accepts
+
+#### Agent Behavior Observation (30 min)
+- [ ] Observe agent providing stage-specific guidance
+- [ ] Verify agent enforces workflow discipline
+- [ ] Check for anti-pattern warnings
+- [ ] Evaluate guidance clarity and usefulness
+- [ ] Record observations in TESTING_RESULTS.md
+
+#### Issue Filing
+- [ ] File GitHub issues for any Critical bugs (prevent core functionality)
+- [ ] File GitHub issues for any High bugs (major usability problems)
+- [ ] Document Medium/Low issues in TESTING_RESULTS.md
+- [ ] Calculate pass rate: (successful tests / total tests) * 100%
+- [ ] Update TESTING_RESULTS.md with complete agent-loop results
+
+### Technical Notes
+
+**Testing framework location**:
+`/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/testing/manual/`
+
+**Results documentation**:
+`/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/testing/TESTING_RESULTS.md`
+
+**Expected Issues**: Based on structural tests, expect issues with hooks (broken reference to hooks/hooks.json). Be prepared for hook functionality to fail.
+
+**Success Criteria**: At least 70% of test scenarios pass. If lower, agent-loop is NOT production-ready.
+
+---
+
+## P0-5: Execute P0-6 Manual Testing - epti
+
+**Status**: Not Started
+**Effort**: Medium (2-3 hours)
+**Dependencies**: P0-2 (fix structural issues first), P0-4 (learn from agent-loop testing)
+**Spec Reference**: epti implementation sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §3.2 "Plugin 2: epti"
+
+### Description
+
+epti (Evaluate-Plan-Test-Implement) has NEVER been tested in Claude Code. The STATUS report identifies 4 broken command references in the agent, which will cause confusing or misleading guidance.
+
+Execute comprehensive TDD workflow testing to validate functionality.
+
+### Acceptance Criteria
+
+#### Installation Testing (30 min)
+- [ ] Install epti plugin in Claude Code via marketplace
+- [ ] Verify plugin loads without errors
+- [ ] Verify agent appears in agent selection
+- [ ] Verify 6 commands appear: /write-tests, /verify-fail, /commit-tests, /implement, /iterate, /commit-code
+- [ ] Record any installation errors or warnings
+- [ ] Document in TESTING_RESULTS.md under "epti Installation"
+
+#### Command Execution Testing (1.5 hours)
+- [ ] Test `/write-tests` command - generate tests without implementation
+- [ ] Test `/verify-fail` command - verify tests fail properly (RED phase)
+- [ ] Test `/commit-tests` command - commit tests only
+- [ ] Test `/implement` command - implement code to pass tests (GREEN phase)
+- [ ] Test `/iterate` command - refine implementation
+- [ ] Test `/commit-code` command - commit final implementation
+- [ ] For each command: verify expansion, agent guidance quality, record issues
+
+#### TDD Workflow Testing (1.5 hours)
+- [ ] Execute complete RED-GREEN-REFACTOR workflow
+  - Feature: "add function to calculate factorial"
+  - Write tests first (RED)
+  - Verify tests fail
+  - Implement (GREEN)
+  - Verify tests pass
+  - Refactor (REFACTOR)
+  - Record time, issues, workflow completion
+- [ ] Test TDD discipline enforcement
+  - Attempt to implement before writing tests
+  - Verify agent blocks or warns
+  - Record enforcement effectiveness
+
+#### Hooks Testing (30 min)
+- [ ] Test pre-implementation hook (verify tests defined)
+- [ ] Test post-code hook (run test suite)
+- [ ] Test pre-commit hook (gate on all tests passing)
+
+#### Agent Behavior Observation (30 min)
+- [ ] Verify agent references correct commands (NOT /pending, /ignore, /names, /test)
+- [ ] Observe TDD guidance quality
+- [ ] Check for overfitting detection
+- [ ] Evaluate test generation suggestions
+- [ ] Record observations in TESTING_RESULTS.md
+
+#### Issue Filing
+- [ ] File bugs for broken command references (if not fixed in P0-2)
+- [ ] File bugs for any Critical/High issues
+- [ ] Document Medium/Low issues
+- [ ] Calculate pass rate
+- [ ] Update TESTING_RESULTS.md with complete epti results
+
+### Technical Notes
+
+**Known Issues to Watch For**:
+- Agent may reference non-existent commands: /pending, /ignore, /names, /test
+- TODO comments in production code (should be fixed in P0-2)
+
+**Test Framework Support**: epti designed for pytest (Python), jest (JavaScript), go test (Go), JUnit (Java), RSpec (Ruby). Choose one framework for testing.
+
+**Success Criteria**: At least 70% of test scenarios pass, TDD workflow completes successfully at least once.
+
+---
+
+## P0-6: Execute P0-6 Manual Testing - visual-iteration
+
+**Status**: Not Started
+**Effort**: Medium (2-3 hours)
+**Dependencies**: P0-2 (fix structural issues first), P0-4 and P0-5 (learn from previous testing)
+**Spec Reference**: visual-iteration implementation sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §3.3 "Plugin 3: visual-iteration"
+
+### Description
+
+visual-iteration has NEVER been tested in Claude Code. The STATUS report identifies 11 broken command references in the agent and incomplete MCP configuration. This plugin requires browser-tools MCP server which has never been validated.
+
+Execute comprehensive visual iteration workflow testing, including MCP integration.
+
+### Acceptance Criteria
+
+#### Installation Testing (30 min)
+- [ ] Install visual-iteration plugin in Claude Code via marketplace
+- [ ] Verify plugin loads without errors
+- [ ] Verify agent appears in agent selection
+- [ ] Verify 6 commands appear: /screenshot, /feedback, /refine, /iterate-loop, /commit-visual, /compare
+- [ ] Verify browser-tools MCP server starts (or document failure)
+- [ ] Record any installation errors or warnings
+- [ ] Document in TESTING_RESULTS.md under "visual-iteration Installation"
+
+#### MCP Integration Testing (45 min)
+- [ ] Test browser-tools MCP server startup
+- [ ] Test automated screenshot capture via Puppeteer
+- [ ] If automated capture fails, document and test manual screenshot workflow
+- [ ] Verify screenshots are captured and accessible
+- [ ] Record MCP server issues in detail
+
+#### Command Execution Testing (1.5 hours)
+- [ ] Test `/screenshot` command - capture current UI state
+- [ ] Test `/feedback` command - analyze screenshot and provide specific improvements
+- [ ] Test `/refine` command - implement visual improvements based on feedback
+- [ ] Test `/iterate-loop` command - run full feedback → refinement cycle
+- [ ] Test `/commit-visual` command - commit polished visual results
+- [ ] Test `/compare` command - side-by-side before/after comparison
+- [ ] For each command: verify expansion, agent guidance quality, record issues
+
+#### Visual Iteration Workflow Testing (1.5 hours)
+- [ ] Execute complete visual iteration workflow
+  - Create simple UI component (e.g., button, form, card)
+  - Capture initial screenshot
+  - Get feedback (expect SPECIFIC measurements like "32px should be 24px")
+  - Refine based on feedback
+  - Iterate 2-3 times to pixel-perfect state
+  - Commit final result
+  - Record: time taken, iteration count, feedback specificity, final quality
+- [ ] Test hybrid workflow (manual screenshot mode if automated fails)
+
+#### Hooks Testing (30 min)
+- [ ] Test post-code hook (suggest screenshot verification)
+- [ ] Test pre-commit hook (validate visual polish)
+- [ ] Test post-refine hook (update screenshots)
+
+#### Agent Behavior Observation (30 min)
+- [ ] Verify agent references correct commands (NOT /styles, /to, /login, /mockup, etc.)
+- [ ] Observe feedback specificity (should give pixel-perfect guidance)
+- [ ] Check iteration management effectiveness
+- [ ] Evaluate visual analysis quality
+- [ ] Record observations in TESTING_RESULTS.md
+
+#### Issue Filing
+- [ ] File bugs for broken command references (if not fixed in P0-2)
+- [ ] File bugs for MCP configuration issues (if not fixed in P0-2)
+- [ ] File bugs for any Critical/High issues
+- [ ] Document Medium/Low issues
+- [ ] Calculate pass rate
+- [ ] Update TESTING_RESULTS.md with complete visual-iteration results
+
+### Technical Notes
+
+**Known Issues to Watch For**:
+- Agent references 11 non-existent commands
+- MCP .mcp.json missing required fields
+- Browser-tools MCP server may fail to start
+- XXX comments in production code (should be fixed in P0-2)
+
+**Fallback Strategy**: If automated screenshot capture fails, visual-iteration should support manual screenshot workflow. Test both modes.
+
+**Success Criteria**: At least 60% of test scenarios pass (lower threshold due to MCP complexity), visual iteration workflow completes at least once, feedback is specific and actionable.
+
+---
+
+## P0-7: Consolidate Manual Testing Results
+
+**Status**: Not Started
+**Effort**: Small (1 hour)
+**Dependencies**: P0-4, P0-5, P0-6 (all manual testing complete)
+**Spec Reference**: N/A • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §4 "Testing Status: The Critical Gap"
+
+### Description
+
+After executing manual testing for all 3 main plugins, consolidate results into comprehensive report. This provides the first real evidence of functionality and creates actionable bug backlog.
+
+### Acceptance Criteria
+
+- [ ] Update TESTING_RESULTS.md with aggregate statistics
+  - Total tests executed (across all plugins)
+  - Tests passed (count and %)
+  - Tests failed (count and %)
+  - Overall pass rate
+- [ ] Categorize all discovered issues by severity
+  - Critical: Prevents core functionality (installation fails, commands don't execute, workflows can't complete)
+  - High: Major usability problems (confusing guidance, broken agent references, significant bugs)
+  - Medium: Quality issues (poor documentation, TODO comments, minor bugs)
+  - Low: Nice-to-have improvements (UI polish, error messages)
+- [ ] Create issue summary table
+  - Plugin | Critical | High | Medium | Low | Total
+- [ ] File GitHub issues for all Critical and High severity bugs
+  - Use consistent issue template
+  - Tag with plugin name
+  - Link to TESTING_RESULTS.md sections
+- [ ] Update CLAUDE.md with honest testing status
+  - "Manual testing executed: [date]"
+  - "Pass rate: X%"
+  - "Known Critical issues: N"
+  - "Known High issues: N"
+- [ ] Determine production readiness per plugin
+  - Metrics: pass rate >= 70%, zero Critical bugs, <= 2 High bugs
+  - Document verdict: Production Ready / Not Ready / Needs Work
+- [ ] Commit with message: "test: manual testing results for agent-loop, epti, visual-iteration"
+
+### Technical Notes
+
+**Evidence Required**: This work item provides the FIRST REAL EVIDENCE that plugins work (or don't). It's the foundation for all claims about production readiness.
+
+**Expected Discovery**: Based on STATUS structural analysis, expect 10-20 issues total across all plugins.
+
+**Decision Point**: If overall pass rate < 60%, DO NOT proceed with production release. Focus entirely on bug fixing until rate >= 80%.
+
+---
+
+### P1 (HIGH) - Bug Fixing & Iteration (Week 2-3)
+
+These items are required to achieve production quality (80%+ success rate).
+
+---
+
+## P1-1: Analyze Manual Testing Results & Prioritize Fixes
+
+**Status**: Not Started
+**Effort**: Small (2-4 hours)
+**Dependencies**: P0-7 (manual testing results consolidated)
+**Spec Reference**: N/A • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §5 "Phase 2: Iterate on Testing Results"
+
+### Description
+
+Review all issues discovered during manual testing. Understand failure patterns, root causes, and impact. Create prioritized bug fix backlog with effort estimates.
+
+### Acceptance Criteria
+
+- [ ] Review all filed GitHub issues (Critical and High)
+- [ ] Review all documented Medium/Low issues in TESTING_RESULTS.md
+- [ ] Identify patterns
+  - Are failures clustered in one plugin?
+  - Are cross-reference issues most common?
+  - Are there systemic problems (e.g., agent guidance quality)?
+- [ ] Group issues by plugin and type
+  - agent-loop: [list issues]
+  - epti: [list issues]
+  - visual-iteration: [list issues]
+  - Cross-plugin: [list issues]
+- [ ] Estimate effort for each Critical/High bug
+  - Small: < 1 hour
+  - Medium: 1-3 hours
+  - Large: 3-8 hours
+  - XL: > 8 hours
+- [ ] Calculate total fix effort
+- [ ] Create prioritized fix order
+  1. Critical bugs (by effort, easiest first)
+  2. High bugs blocking workflows
+  3. High bugs affecting usability
+  4. Medium bugs if time permits
+- [ ] Document fix plan in new SPRINT file
+- [ ] Commit plan with message: "plan: bug fix prioritization based on manual testing"
+
+### Technical Notes
+
+**Decision Criteria**:
+- If total Critical bug count > 10: Focus exclusively on Critical, delay release
+- If total Critical + High count > 20: Re-evaluate scope, consider dropping a plugin
+- If visual-iteration has > 50% of issues: Consider marking as "beta" instead of production
+
+**Output**: SPRINT-bugfix-[timestamp].md with ordered, estimated work items
+
+---
+
+## P1-2: Fix All Critical Bugs
+
+**Status**: Not Started
+**Effort**: Large (1-2 weeks, depending on bug count)
+**Dependencies**: P1-1 (prioritization complete)
+**Spec Reference**: All plugin sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §5 "ITERATE-1: Fix Critical Bugs from P0-6"
+
+### Description
+
+Fix every Critical severity bug discovered in manual testing. Critical bugs prevent core functionality - plugins cannot be production-ready until these are resolved.
+
+### Acceptance Criteria
+
+**Per Bug**:
+- [ ] Reproduce bug in test environment
+- [ ] Identify root cause
+- [ ] Implement fix
+- [ ] Verify fix resolves bug (retest specific scenario)
+- [ ] Run structural tests to ensure no regressions
+- [ ] Update documentation if behavior changed
+- [ ] Commit fix with message: "fix: [brief description] (fixes #N)"
+
+**Aggregate**:
+- [ ] All Critical bugs resolved (0 remaining)
+- [ ] All fixes tested individually
+- [ ] Regression suite passed (structural tests 95%+)
+- [ ] TESTING_RESULTS.md updated with retest results
+- [ ] GitHub issues closed with "Fixed in [commit]" comments
+
+### Technical Notes
+
+**Iteration Approach**: Fix 2-3 bugs, retest, commit. Don't fix all bugs before testing - you'll introduce regressions.
+
+**Testing Protocol**: After each fix, rerun the specific manual test scenario that discovered the bug. Then run full structural suite.
+
+**Documentation**: If a fix changes expected behavior, update CLAUDE.md, README.md, or command documentation.
+
+**Estimated Effort**: Assuming 5-10 Critical bugs discovered, expect 1-2 weeks of focused work (40-80 hours).
+
+---
+
+## P1-3: Fix All High Severity Bugs
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: P1-2 (Critical bugs fixed first)
+**Spec Reference**: All plugin sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §5 "ITERATE-2: Fix High Severity Bugs"
+
+### Description
+
+Fix all High severity bugs discovered in manual testing. High bugs cause major usability problems - users can complete workflows but with significant frustration.
+
+### Acceptance Criteria
+
+**Per Bug**:
+- [ ] Reproduce bug in test environment
+- [ ] Decide: Fix or document workaround
+- [ ] If fixing: implement, test, commit (same protocol as P1-2)
+- [ ] If workaround: document in CLAUDE.md "Known Issues" section
+- [ ] Update TESTING_RESULTS.md with resolution
+
+**Aggregate**:
+- [ ] All High bugs resolved OR documented with workarounds
+- [ ] Fixes tested individually and in aggregate
+- [ ] Regression suite passed
+- [ ] Workarounds clearly documented for users
+- [ ] GitHub issues closed or marked "wontfix" with rationale
+
+### Technical Notes
+
+**Fix vs. Workaround Decision**:
+- Fix if: Root cause clear, fix is < 4 hours, no workaround exists
+- Workaround if: Fix is complex (> 8 hours), acceptable alternative exists, affects edge case
+
+**Documentation**: High severity issues with workarounds MUST be documented prominently in CLAUDE.md so users know what to expect.
+
+**Estimated Effort**: Assuming 5-15 High bugs discovered, expect 3-5 days (24-40 hours).
+
+---
+
+## P1-4: Re-execute Full Manual Test Suite
+
+**Status**: Not Started
+**Effort**: Medium (3-5 hours)
+**Dependencies**: P1-2, P1-3 (all Critical and High bugs fixed)
+**Spec Reference**: All plugin sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §5 "ITERATE-2: Fix High Severity Bugs"
+
+### Description
+
+After fixing all Critical and High bugs, re-run complete manual test suite for all plugins. Validate fixes work and no regressions introduced. Establish new pass rate baseline.
+
+### Acceptance Criteria
+
+- [ ] Re-execute P0-4 test scenarios for agent-loop
+- [ ] Re-execute P0-5 test scenarios for epti
+- [ ] Re-execute P0-6 test scenarios for visual-iteration
+- [ ] Document results in TESTING_RESULTS.md (append "Retest - [date]" section)
+- [ ] Calculate new pass rates per plugin
+- [ ] Calculate overall pass rate
+- [ ] Verify Critical bugs resolved (0 Critical bugs in retest)
+- [ ] Verify High bugs resolved or have documented workarounds
+- [ ] Compare pass rates: initial vs. retest
+  - Expect improvement from ~50-60% to 80%+
+- [ ] If pass rate < 80%, identify remaining blockers and iterate
+- [ ] Update CLAUDE.md with retest results
+- [ ] Commit with message: "test: retest after bug fixes, pass rate now X%"
+
+### Technical Notes
+
+**Success Criteria**: Overall pass rate >= 80%, per-plugin pass rate >= 70%
+
+**If Success Criteria Not Met**: Create new bug fix sprint (P1-5) with remaining issues. Do NOT proceed to P2 until 80% threshold met.
+
+**Regression Detection**: If any previously passing test now fails, that's a regression. File as Critical and fix immediately.
+
+---
+
+## P1-5: Update CLAUDE.md with Accurate Status
+
+**Status**: Not Started
+**Effort**: Small (30 minutes)
+**Dependencies**: P1-4 (retesting complete)
+**Spec Reference**: All sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §6 "ITERATE-3: Update CLAUDE.md with Real Status"
+
+### Description
+
+After testing and bug fixing, update CLAUDE.md to reflect reality. Remove false claims, add testing evidence, document known issues.
+
+### Acceptance Criteria
+
+- [ ] Update "Current State" section with test-backed claims
+  - "Implementation: 95% complete (14 structural issues resolved)"
+  - "Validation: 80% complete (manual testing executed, pass rate X%)"
+  - "Known Issues: N Critical, M High (see Known Issues section)"
+  - "Production Readiness: [Per-plugin assessment]"
+- [ ] Remove all unvalidated "Production Ready" claims
+- [ ] Add "Manual Testing Results" subsection to each plugin
+  - "Tested on: [date]"
+  - "Pass rate: X%"
+  - "Critical issues: N (resolved/documented)"
+  - "High issues: M (resolved/documented)"
+  - "Status: Production Ready / Beta / Not Ready"
+- [ ] Add "Known Issues" section after "Current Plugins"
+  - List all unresolved High severity issues with workarounds
+  - List all Medium/Low issues planned for future releases
+- [ ] Update statistics to match reality
+  - Plugin count (3 or 4 depending on promptctl status)
+  - Line counts (if changed during bug fixes)
+  - Test counts (manual tests executed)
+- [ ] Add "Testing Approach" section
+  - "Manual testing framework: 17 files, 3,236 lines"
+  - "Automated structural testing: 73 tests"
+  - "Manual tests executed: [count]"
+  - "Overall pass rate: X%"
+- [ ] Add "Next Steps" section if not 100% complete
+- [ ] Commit with message: "docs: update CLAUDE.md with accurate testing results"
+
+### Technical Notes
+
+**Honesty over Optimism**: Better to document known issues than to hide them. Users will respect transparency.
+
+**Production Ready Criteria** (per plugin):
+- Pass rate >= 70%
+- Zero Critical bugs
+- <= 2 High bugs (with workarounds)
+- Core workflows complete successfully
+
+If criteria not met, mark as "Beta" or "Not Production Ready" with clear explanation.
+
+---
+
+### P2 (MEDIUM) - Production Readiness & Documentation (Week 4)
+
+These items polish the marketplace for public distribution.
+
+---
+
+## P2-1: Create User-Facing Getting Started Guide
+
+**Status**: Not Started
+**Effort**: Medium (1-2 days)
+**Dependencies**: P1-5 (accurate status documented)
+**Spec Reference**: N/A (new documentation) • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §7 "PROD-2: User Documentation"
+
+### Description
+
+Create comprehensive getting started documentation for users who want to install and use the marketplace. Assume users have never used Claude Code plugins before.
+
+### Acceptance Criteria
+
+- [ ] Create `/docs/GETTING_STARTED.md` with sections:
+  - **Prerequisites**: Claude Code installation, version requirements
+  - **Installation**: Step-by-step marketplace installation
+  - **Your First Plugin**: Walkthrough of installing one plugin
+  - **Plugin Overview**: Brief description of each plugin with use cases
+  - **Basic Workflows**: Example usage for each plugin
+  - **Troubleshooting**: Common issues and solutions
+  - **Next Steps**: Links to advanced guides
+- [ ] Include screenshots or screencasts (optional but highly recommended)
+- [ ] Add installation commands with copy-paste snippets
+- [ ] Document system requirements (OS, dependencies, MCP servers)
+- [ ] Add "What to Expect" section setting realistic expectations
+  - Known issues and workarounds
+  - Plugin maturity levels (stable/beta)
+  - Performance characteristics
+- [ ] Link to TESTING_RESULTS.md for transparency
+- [ ] Add FAQ section addressing common questions
+- [ ] Get feedback from a non-developer user (if possible)
+- [ ] Update main README.md to link to GETTING_STARTED.md
+- [ ] Commit with message: "docs: add user-facing getting started guide"
+
+### Technical Notes
+
+**Tone**: Friendly, welcoming, assumes no prior plugin knowledge
+
+**Length**: Aim for 1500-2500 words (readable in 10-15 minutes)
+
+**Examples**: Use real, concrete examples. Don't say "build a feature" - say "add a factorial function to math.py"
+
+---
+
+## P2-2: Create Per-Plugin User Guides
+
+**Status**: Not Started
+**Effort**: Medium (1-2 days)
+**Dependencies**: P1-5 (accurate status documented)
+**Spec Reference**: visual-iteration README.md as template • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §7 "PROD-2: User Documentation"
+
+### Description
+
+Create detailed user guides for each production-ready plugin. visual-iteration already has excellent 2,319-line README - use as template for agent-loop and epti.
+
+### Acceptance Criteria
+
+#### agent-loop User Guide
+- [ ] Create `/plugins/agent-loop/README.md` with sections:
+  - Overview and purpose
+  - When to use agent-loop
+  - Installation instructions
+  - Workflow stages explained (Explore → Plan → Code → Commit)
+  - Command reference (/explore, /plan, /code, /commit)
+  - Example workflows (3-5 complete examples)
+  - Hooks behavior and customization
+  - Troubleshooting
+  - Known issues and workarounds
+- [ ] Length: 1500-2000 lines (match visual-iteration quality)
+- [ ] Include code examples and expected outputs
+
+#### epti User Guide
+- [ ] Create `/plugins/epti/README.md` with sections:
+  - Overview and purpose
+  - TDD philosophy and benefits
+  - When to use epti
+  - Installation instructions
+  - TDD workflow explained (RED-GREEN-REFACTOR)
+  - Command reference (all 6 commands)
+  - Example workflows (3-5 complete TDD cycles)
+  - Framework support (pytest, jest, go test, JUnit, RSpec)
+  - Hooks behavior and enforcement
+  - Troubleshooting
+  - Known issues and workarounds
+- [ ] Length: 2000-2500 lines (most complex plugin)
+- [ ] Include failing test examples and passing test examples
+
+#### promptctl User Guide (if production-ready)
+- [ ] Create `/plugins/promptctl/README.md` if missing or inadequate
+- [ ] Ensure comprehensive documentation matching other plugins
+
+#### Integration
+- [ ] Update main README.md to link to all plugin READMEs
+- [ ] Cross-reference between plugin guides where relevant
+- [ ] Ensure consistent formatting and terminology
+- [ ] Commit with message: "docs: add comprehensive user guides for all plugins"
+
+### Technical Notes
+
+**Quality Bar**: visual-iteration README.md is 2,319 lines and excellent. Match that quality for other plugins.
+
+**Use Testing Results**: Include actual workflows tested during P0-4, P0-5, P0-6. This provides real, validated examples.
+
+**Honesty**: Document known limitations and workarounds. Don't hide problems.
+
+---
+
+## P2-3: Create Troubleshooting Guide and FAQ
+
+**Status**: Not Started
+**Effort**: Small (4-8 hours)
+**Dependencies**: P1-4 (testing complete, common issues identified)
+**Spec Reference**: N/A (new documentation) • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §7 "PROD-2: User Documentation"
+
+### Description
+
+Based on issues discovered during manual testing, create comprehensive troubleshooting guide and FAQ. Help users self-service common problems.
+
+### Acceptance Criteria
+
+- [ ] Create `/docs/TROUBLESHOOTING.md` with sections:
+  - **Installation Issues**
+    - Plugin won't load
+    - Marketplace not found
+    - Permission errors
+  - **Command Issues**
+    - Command doesn't expand
+    - Command gives unexpected output
+    - Command references missing
+  - **Workflow Issues**
+    - Workflow gets stuck
+    - Agent provides confusing guidance
+    - Hooks blocking progress
+  - **MCP Integration Issues** (visual-iteration specific)
+    - Browser-tools server won't start
+    - Screenshot capture fails
+    - Puppeteer errors
+  - **General Issues**
+    - Performance problems
+    - Compatibility issues
+    - How to report bugs
+- [ ] Create `/docs/FAQ.md` with common questions:
+  - What are Claude Code plugins?
+  - Which plugin should I use for my use case?
+  - Can I use multiple plugins together?
+  - How do I customize plugin behavior?
+  - What if a plugin has bugs?
+  - How do I contribute?
+  - What's the difference between agent-loop, epti, and visual-iteration?
+  - Why do some plugins have known issues?
+  - When will plugin X be production-ready?
+- [ ] For each issue: Problem description, diagnosis steps, solution, workaround if no solution
+- [ ] Include commands to run for diagnostics
+- [ ] Link to relevant GitHub issues
+- [ ] Add "Still Stuck?" section with contact info
+- [ ] Commit with message: "docs: add troubleshooting guide and FAQ"
+
+### Technical Notes
+
+**Source Material**: Review all issues filed during P0-4 through P0-7. Every bug filed should have corresponding troubleshooting entry.
+
+**Format**: Question/Answer for FAQ, Problem/Solution for troubleshooting
+
+**Maintenance**: Update these docs whenever new issues discovered or fixed
+
+---
+
+## P2-4: Final Validation Pass
+
+**Status**: Not Started
+**Effort**: Medium (2-3 days)
+**Dependencies**: P1-4 (bugs fixed), P2-1, P2-2, P2-3 (documentation complete)
+**Spec Reference**: All sections • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §7 "PROD-1: Final Validation"
+
+### Description
+
+Before claiming 100% completion, execute final comprehensive validation. Test with fresh Claude Code installation, verify all documentation accurate, ensure polish and quality.
+
+### Acceptance Criteria
+
+#### Fresh Installation Test
+- [ ] Set up fresh Claude Code installation (new machine or clean profile)
+- [ ] Follow GETTING_STARTED.md step-by-step
+- [ ] Install marketplace
+- [ ] Install each production-ready plugin
+- [ ] Execute one workflow per plugin
+- [ ] Document any unclear steps or issues
+- [ ] Update GETTING_STARTED.md based on findings
+
+#### Documentation Accuracy Review
+- [ ] Read entire CLAUDE.md, verify all claims match reality
+- [ ] Read all plugin READMEs, verify examples work
+- [ ] Read TROUBLESHOOTING.md, verify solutions work
+- [ ] Read FAQ.md, verify answers accurate
+- [ ] Check all links (internal and external)
+- [ ] Verify code examples are correct and tested
+- [ ] Fix any inaccuracies found
+
+#### Quality Polish
+- [ ] Run structural tests one final time
+  - Target: 95%+ pass rate
+  - Document any remaining failures with justification
+- [ ] Run spell checker on all markdown files
+- [ ] Verify consistent terminology across docs
+- [ ] Ensure all screenshots/images are high quality (if used)
+- [ ] Check that all JSON files are valid
+- [ ] Verify marketplace.json is correct
+
+#### Cross-Plugin Testing
+- [ ] Test using multiple plugins in same project
+- [ ] Verify no conflicts between plugins
+- [ ] Test switching between plugin agents
+- [ ] Document any compatibility issues
+
+#### Performance Testing
+- [ ] Time plugin installation
+- [ ] Time command execution
+- [ ] Time workflow completion
+- [ ] Document if any operations are slow (> 5s)
+
+#### Final Checklist
+- [ ] All Critical bugs resolved: ✓/✗
+- [ ] All High bugs resolved or documented: ✓/✗
+- [ ] Structural test pass rate >= 95%: ✓/✗
+- [ ] Manual test pass rate >= 80%: ✓/✗
+- [ ] All documentation accurate: ✓/✗
+- [ ] Fresh install successful: ✓/✗
+- [ ] Per-plugin production readiness determined: ✓/✗
+- [ ] Known issues documented: ✓/✗
+
+#### Final Status Update
+- [ ] Update CLAUDE.md with final status
+  - If 100% criteria met: "Production Ready - Validated [date]"
+  - If not: "Beta - Known Limitations Documented [date]"
+- [ ] Commit with message: "validate: final validation complete, production ready"
+
+### Technical Notes
+
+**100% Criteria** (ALL must be true):
+1. All 14 structural issues resolved
+2. Manual testing executed (P0-4 through P0-6)
+3. Pass rate >= 80%
+4. All Critical bugs fixed
+5. All High bugs fixed or documented
+6. Documentation accurate and complete
+7. Fresh install successful
+8. Known issues documented
+
+**If Criteria Not Met**: Document what's missing and create plan to achieve 100% (may require additional sprint).
+
+**Evidence**: Final validation provides comprehensive evidence for production readiness claim.
+
+---
+
+## P2-5: Version Management and Release Preparation
+
+**Status**: Not Started
+**Effort**: Small (4-8 hours)
+**Dependencies**: P2-4 (final validation complete)
+**Spec Reference**: Plugin manifests • **Status Reference**: STATUS-100-percent-2025-11-06-234533.md §7 "PROD-3: Release Preparation"
+
+### Description
+
+Prepare marketplace for official release. Version bump, changelog, release notes, licensing.
+
+### Acceptance Criteria
+
+#### Version Decisions
+- [ ] Decide per-plugin versions based on production readiness:
+  - Production ready: 1.0.0
+  - Beta (known issues, < 80% pass): 0.9.0
+  - Alpha (significant issues, < 60% pass): 0.5.0
+- [ ] Update plugin.json for each plugin with chosen version
+- [ ] Update marketplace.json with plugin versions
+
+#### Changelog
+- [ ] Create `/CHANGELOG.md` with sections per plugin:
+  - **agent-loop**
+    - Added: Initial release
+    - Features: 4-stage workflow, 4 commands, 4 skills, 3 hooks
+    - Known Issues: [list from CLAUDE.md]
+  - **epti**
+    - Added: Initial release
+    - Features: TDD workflow, 6 commands, 5 skills, 3 hooks
+    - Known Issues: [list from CLAUDE.md]
+  - **visual-iteration**
+    - Added: Initial release
+    - Features: Visual iteration workflow, 6 commands, 4 skills, MCP integration
+    - Known Issues: [list from CLAUDE.md]
+  - **promptctl** (if production)
+    - Added: Initial release
+    - Features: Hook-based automation
+    - Known Issues: [list]
+- [ ] Use Keep a Changelog format (https://keepachangelog.com)
+- [ ] Date each version entry
+
+#### Release Notes
+- [ ] Create `/docs/RELEASE_NOTES.md` with:
+  - Version number and date
+  - Summary of what's included
+  - Installation instructions
+  - What's new (features)
+  - What's changed (breaking changes - none for initial release)
+  - Known limitations
+  - Links to documentation
+  - Credits and acknowledgments
+- [ ] Make release notes user-friendly (not developer-focused)
+
+#### Licensing
+- [ ] Verify LICENSE file exists in repo root (MIT)
+- [ ] Verify each plugin has license field in plugin.json
+- [ ] Add copyright headers to key files if desired
+- [ ] Document third-party dependencies and their licenses
+
+#### Distribution Package
+- [ ] Create distribution checklist:
+  - [ ] All JSON files valid
+  - [ ] All markdown files spell-checked
+  - [ ] All links working
+  - [ ] All examples tested
+  - [ ] README.md comprehensive
+  - [ ] GETTING_STARTED.md complete
+  - [ ] TROUBLESHOOTING.md and FAQ.md helpful
+  - [ ] CHANGELOG.md up to date
+- [ ] Consider creating .zip distribution package
+- [ ] Document installation from package
+
+#### Git Tagging
+- [ ] Create git tag for release: `v1.0.0` (or appropriate version)
+- [ ] Push tag to remote
+- [ ] Consider creating GitHub release with release notes
+
+#### Final Commit
+- [ ] Stage all release preparation changes
+- [ ] Commit with message: "release: prepare v1.0.0 for distribution"
+- [ ] Push to main branch
+
+### Technical Notes
+
+**Semantic Versioning**: Follow semver (https://semver.org)
+- v1.0.0 = production ready, stable API
+- v0.9.0 = beta, feature complete but with known issues
+- v0.5.0 = alpha, functional but significant limitations
+
+**Conservative Versioning**: If in doubt, use lower version (0.9.0) rather than claiming 1.0.0. Can always bump later.
+
+**GitHub Release**: Consider using GitHub's release feature for professional distribution.
+
+---
+
+## P3 (LOW) - Optional Enhancements
+
+These items are nice-to-have but not required for 100% completion.
+
+---
+
+## P3-1: Create Example Workflows with Screenshots
+
+**Status**: Not Started
+**Effort**: Medium (1-2 days)
+**Dependencies**: P2-4 (validation complete)
+**Spec Reference**: N/A (enhancement) • **Status Reference**: N/A
+
+### Description
+
+Create visual walkthrough guides showing real plugin usage with screenshots or screencasts. Makes documentation more accessible and engaging.
+
+### Acceptance Criteria
+
+- [ ] Create `/docs/examples/agent-loop-example.md` with:
+  - Real codebase example
+  - Screenshots of each workflow stage
+  - Agent output samples
+  - Final result
+- [ ] Create `/docs/examples/epti-example.md` with:
+  - TDD workflow walkthrough
+  - Failing test output
+  - Implementation process
+  - Passing test output
+  - Refactoring demonstration
+- [ ] Create `/docs/examples/visual-iteration-example.md` with:
+  - UI component creation
+  - Initial screenshot
+  - Feedback examples (specific measurements)
+  - Refinement iterations
+  - Before/after comparison
+- [ ] Optional: Create screencasts (video walkthroughs)
+- [ ] Update documentation to link to examples
+- [ ] Commit with message: "docs: add example workflows with screenshots"
+
+### Technical Notes
+
+**Quality**: Examples should be realistic, not toy examples. Show real value.
+
+**Visual**: Screenshots dramatically improve documentation accessibility. Worth the effort.
+
+**Maintenance**: Examples need updating if plugin behavior changes significantly.
+
+---
+
+## P3-2: Performance Optimization
+
+**Status**: Not Started
+**Effort**: Variable (depends on findings)
+**Dependencies**: P2-4 (baseline performance measured)
+**Spec Reference**: N/A (enhancement) • **Status Reference**: N/A
+
+### Description
+
+If performance issues discovered during testing, optimize slow operations.
+
+### Acceptance Criteria
+
+- [ ] Profile plugin installation time
+- [ ] Profile command execution time
+- [ ] Profile workflow completion time
+- [ ] Identify bottlenecks (> 5s operations)
+- [ ] Optimize slow operations
+  - Reduce file I/O
+  - Cache repeated operations
+  - Optimize large file operations
+- [ ] Re-measure performance
+- [ ] Document performance characteristics in README
+- [ ] Commit with message: "perf: optimize [specific operation]"
+
+### Technical Notes
+
+**Only optimize if needed**: Don't optimize prematurely. Only address actual performance problems.
+
+**Target**: Plugin installation < 10s, command execution < 2s, workflow completion time reasonable for task.
+
+---
+
+## P3-3: Contribution Guidelines
+
+**Status**: Not Started
+**Effort**: Small (2-4 hours)
+**Dependencies**: P2-5 (release complete)
+**Spec Reference**: N/A (enhancement) • **Status Reference**: N/A
+
+### Description
+
+If marketplace becomes public, create contribution guidelines for external contributors.
+
+### Acceptance Criteria
+
+- [ ] Create `/CONTRIBUTING.md` with:
+  - How to report bugs
+  - How to suggest features
+  - How to submit pull requests
+  - Code style guidelines
+  - Testing requirements
+  - Documentation requirements
+  - Review process
+- [ ] Create issue templates in `.github/ISSUE_TEMPLATE/`
+  - Bug report template
+  - Feature request template
+- [ ] Create pull request template in `.github/PULL_REQUEST_TEMPLATE.md`
+- [ ] Add Code of Conduct if needed
+- [ ] Update README.md to mention contributions welcome
+- [ ] Commit with message: "docs: add contribution guidelines"
+
+### Technical Notes
+
+**Decide first**: Is this marketplace open for external contributions? If personal use only, skip this work item.
+
+---
+
+## Dependency Graph
+
+```
+Foundation (Week 1)
+├── P0-1: Honesty Update (no dependencies)
+├── P0-2: Fix Structural Issues (no dependencies)
+├── P0-3: Document promptctl (no dependencies)
+└── P0-4, P0-5, P0-6: Manual Testing (depends on P0-2)
+    └── P0-7: Consolidate Results (depends on P0-4, P0-5, P0-6)
+
+Bug Fixing (Week 2-3)
+└── P1-1: Analyze & Prioritize (depends on P0-7)
+    ├── P1-2: Fix Critical Bugs (depends on P1-1)
+    │   └── P1-3: Fix High Bugs (depends on P1-2)
+    │       └── P1-4: Retest (depends on P1-2, P1-3)
+    │           └── P1-5: Update Status (depends on P1-4)
+
+Production Prep (Week 4)
+└── P2-1: Getting Started Guide (depends on P1-5)
+└── P2-2: Plugin User Guides (depends on P1-5)
+└── P2-3: Troubleshooting & FAQ (depends on P1-4)
+└── P2-4: Final Validation (depends on P1-4, P2-1, P2-2, P2-3)
+    └── P2-5: Release Prep (depends on P2-4)
+
+Optional Enhancements
+└── P3-1: Example Workflows (depends on P2-4)
+└── P3-2: Performance Optimization (depends on P2-4)
+└── P3-3: Contribution Guidelines (depends on P2-5)
+```
+
+### Critical Path
+
+The absolute minimum sequence to claim "100% complete":
+
+1. **P0-1**: Remove false "100%" claims (30 min) - IMMEDIATE
+2. **P0-2**: Fix 14 structural issues (2-3 hours) - CRITICAL
+3. **P0-4, P0-5, P0-6**: Execute manual testing (6-9 hours) - BLOCKS EVERYTHING
+4. **P0-7**: Consolidate results (1 hour)
+5. **P1-2**: Fix Critical bugs found (1-2 weeks)
+6. **P1-4**: Retest (3-5 hours)
+7. **P1-5**: Update documentation accurately (30 min)
+8. **P2-4**: Final validation (2-3 days)
+
+Everything else is supporting work that improves quality but isn't strictly required for "100% complete" claim.
+
+---
+
+## Recommended Sprint Planning
+
+### Sprint 1: Foundation (Week 1)
+
+**Goal**: Establish honest baseline and obtain first real evidence
+
+**Work Items**:
+- P0-1: Honesty Update (30 min) - Day 1
+- P0-2: Fix Structural Issues (2-3 hours) - Day 1
+- P0-3: Document promptctl (1-2 hours) - Day 1-2
+- P0-4: Test agent-loop (2-3 hours) - Day 2-3
+- P0-5: Test epti (2-3 hours) - Day 3-4
+- P0-6: Test visual-iteration (2-3 hours) - Day 4-5
+- P0-7: Consolidate Results (1 hour) - Day 5
+
+**Total Effort**: 9-12 hours (1.5-2 work days)
+
+**Success Criteria**: Manual testing executed, issue backlog created, honest documentation
+
+---
+
+### Sprint 2-3: Bug Fixing (Week 2-3)
+
+**Goal**: Achieve 80%+ pass rate by fixing all Critical and High bugs
+
+**Work Items**:
+- P1-1: Analyze & Prioritize (2-4 hours) - Day 6
+- P1-2: Fix Critical Bugs (40-80 hours) - Day 6-15
+- P1-3: Fix High Bugs (24-40 hours) - Day 16-20
+- P1-4: Retest (3-5 hours) - Day 20
+- P1-5: Update Status (30 min) - Day 20
+
+**Total Effort**: 30-45 hours (6-9 work days)
+
+**Success Criteria**: 80%+ pass rate, zero Critical bugs, documentation matches reality
+
+---
+
+### Sprint 4: Production Prep (Week 4)
+
+**Goal**: Polish for distribution, final validation
+
+**Work Items**:
+- P2-1: Getting Started Guide (8-16 hours) - Day 21-22
+- P2-2: Plugin User Guides (8-16 hours) - Day 22-23
+- P2-3: Troubleshooting & FAQ (4-8 hours) - Day 23-24
+- P2-4: Final Validation (16-24 hours) - Day 24-26
+- P2-5: Release Prep (4-8 hours) - Day 26-27
+
+**Total Effort**: 15-20 hours (3-4 work days)
+
+**Success Criteria**: 100% complete, production ready, validated
+
+---
+
+### Optional Sprint 5: Enhancements
+
+**Goal**: Polish and community readiness (if desired)
+
+**Work Items**:
+- P3-1: Example Workflows (8-16 hours)
+- P3-2: Performance Optimization (variable)
+- P3-3: Contribution Guidelines (2-4 hours)
+
+**Total Effort**: 10-20+ hours
+
+---
+
+## Risk Assessment
+
+### HIGH RISK - Items that could derail 100% completion
+
+**Risk 1: Manual Testing Discovers Critical Architectural Flaws**
+- Probability: Medium (30%)
+- Impact: Severe (requires re-design, delays 2-4 weeks)
+- Mitigation: Fix structural issues (P0-2) first, test incrementally
+- Contingency: If architectural flaw found, scope down to 2 plugins, mark third as experimental
+
+**Risk 2: MCP Integration Fundamentally Broken (visual-iteration)**
+- Probability: High (50%)
+- Impact: High (visual-iteration not production-ready)
+- Mitigation: Test MCP early (P0-6), have manual screenshot fallback documented
+- Contingency: Mark visual-iteration as "beta - MCP issues", focus on agent-loop and epti
+
+**Risk 3: Bug Count Exceeds Capacity (> 30 Critical+High bugs)**
+- Probability: Medium (40%)
+- Impact: High (delays 100% by 2-4 weeks)
+- Mitigation: Fix bugs incrementally, retest frequently, prioritize ruthlessly
+- Contingency: Reduce scope - focus on 1-2 plugins only, defer others
+
+**Risk 4: Fresh Installation Fails (P2-4)**
+- Probability: Low (20%)
+- Impact: High (distribution blocked)
+- Mitigation: Test installation early and frequently
+- Contingency: Debug installation, update documentation, consider alternative distribution
+
+---
+
+### MEDIUM RISK - Items that could delay but not derail
+
+**Risk 5: Documentation Takes Longer Than Estimated**
+- Probability: Medium (40%)
+- Impact: Medium (delays release by 3-5 days)
+- Mitigation: Use visual-iteration README as template, reuse testing examples
+- Contingency: Ship with minimal docs, iterate post-release
+
+**Risk 6: Retest Reveals New Bugs (P1-4)**
+- Probability: High (60%)
+- Impact: Medium (additional fix cycle needed)
+- Mitigation: Test incrementally, run regression suite after each fix
+- Contingency: Create Sprint 2.5 for additional bug fixes
+
+**Risk 7: Performance Issues Require Optimization**
+- Probability: Low (20%)
+- Impact: Low (P3-2 becomes required instead of optional)
+- Mitigation: Measure performance during P2-4
+- Contingency: Optimize critical path only, document known slow operations
+
+---
+
+### LOW RISK - Minor delays
+
+**Risk 8: Formatting/Polish Takes Extra Time**
+- Probability: High (70%)
+- Impact: Low (1-2 days delay)
+- Mitigation: Accept "good enough" polish, iterate post-release
+- Contingency: Ship with known minor polish issues
+
+---
+
+## Success Metrics
+
+### Objective Metrics for 100% Completion
+
+**MUST ACHIEVE (Non-negotiable)**:
+- [ ] All 14 structural issues resolved (95%+ structural test pass rate)
+- [ ] Manual testing executed for all plugins (100% of test scenarios attempted)
+- [ ] Overall pass rate >= 80%
+- [ ] Per-plugin pass rate >= 70% OR marked as beta
+- [ ] All Critical bugs fixed (0 remaining)
+- [ ] All High bugs fixed OR documented with workarounds
+- [ ] CLAUDE.md claims match evidence
+- [ ] Fresh installation successful
+- [ ] All 4 plugins documented (including promptctl)
+
+**SHOULD ACHIEVE (Strong preference)**:
+- [ ] Per-plugin pass rate >= 80%
+- [ ] User documentation complete (GETTING_STARTED, README, TROUBLESHOOTING, FAQ)
+- [ ] All plugin READMEs comprehensive (1500+ lines)
+- [ ] Known issues clearly documented
+- [ ] Release preparation complete (CHANGELOG, versions, tags)
+
+**NICE TO HAVE (Optional)**:
+- [ ] Visual examples with screenshots
+- [ ] Performance optimized (< 10s install, < 2s commands)
+- [ ] Contribution guidelines (if public)
+- [ ] Video walkthroughs
+
+---
+
+### Subjective Quality Metrics
+
+**User Experience**:
+- Can a new user install marketplace successfully? (Yes/No)
+- Can a new user complete a basic workflow? (Yes/No)
+- Is documentation clear and helpful? (5-point scale)
+- Are known issues openly communicated? (Yes/No)
+- Would you recommend this marketplace? (Yes/No/Maybe)
+
+**Developer Quality**:
+- Is code maintainable? (Yes/No)
+- Are tests comprehensive? (Yes/No)
+- Is documentation accurate? (Yes/No)
+- Are dependencies clear? (Yes/No)
+
+---
+
+## Blockers and Questions
+
+### Blockers Requiring Human Action
+
+**BLOCKER #1**: Manual testing requires human tester with Claude Code access
+- **Impact**: CRITICAL - Blocks entire project
+- **Resolution**: Human must execute P0-4, P0-5, P0-6
+- **Timeline**: Can begin immediately after P0-2 (fix structural issues)
+- **Owner**: Brandon Fryslie (or designated tester)
+
+**BLOCKER #2**: MCP integration unknown (visual-iteration)
+- **Impact**: HIGH - May block visual-iteration production readiness
+- **Resolution**: Test browser-tools MCP server during P0-6
+- **Timeline**: Week 1
+- **Owner**: Brandon Fryslie (or designated tester)
+
+**BLOCKER #3**: promptctl purpose unclear
+- **Impact**: MEDIUM - Need decision on production vs. experimental
+- **Resolution**: Review promptctl implementation, make decision (P0-3)
+- **Timeline**: Day 1-2
+- **Owner**: Brandon Fryslie (original implementer)
+
+---
+
+### Questions Requiring Decisions
+
+**QUESTION #1**: What is the distribution strategy?
+- Personal use only?
+- Public marketplace?
+- Anthropic submission?
+- Decision impacts: P3-3 (contribution guidelines), licensing, support expectations
+
+**QUESTION #2**: What is acceptable pass rate for production?
+- Recommendation: 80% overall, 70% per-plugin
+- Stricter: 90% overall, 80% per-plugin
+- More lenient: 70% overall, 60% per-plugin
+- Decision impacts: Sprint 2-3 effort and timeline
+
+**QUESTION #3**: Should visual-iteration be marked beta if MCP broken?
+- Option A: Mark as beta, ship with manual screenshot workflow documented
+- Option B: Delay release until MCP working
+- Option C: Remove from initial release, focus on agent-loop and epti
+- Decision impacts: Scope and timeline
+
+**QUESTION #4**: Is perfectionism or shipping more important?
+- Option A: Ship with known issues documented (faster, iterative)
+- Option B: Fix everything before release (slower, higher quality)
+- Recommendation: Option A (document known issues, iterate)
+- Decision impacts: Timeline and scope
+
+---
+
+## Appendix: Evidence from STATUS Report
+
+### Key Findings from STATUS-100-percent-2025-11-06-234533.md
+
+**Current Completion: 42%**
+- Implementation: 90% (files exist, 14 bugs)
+- Validation: 0% (no testing executed)
+- Documentation: 40% (stats accurate, claims false)
+
+**Critical Finding**: "ZERO testing has been performed in Claude Code (0 functional validation)"
+
+**Structural Issues (14 total)**:
+1. agent-loop: Missing hooks/hooks.json file (1 issue)
+2. epti: 4 broken command references, 2 TODO comments (6 issues)
+3. visual-iteration: 11 broken command references, MCP config incomplete, 2 XXX comments (14 total, but wait - count is 7 for visual-iteration)
+
+Wait, let me recalculate:
+- agent-loop: 1 (broken hooks) + TODOs
+- epti: 4 (cross-refs) + 2 (TODOs) = 6
+- visual-iteration: 11 (cross-refs) + 1 (MCP) + 2 (XXX) = 14
+
+That's 21 total, not 14. Let me check STATUS again... STATUS says "10 test failures" representing "14 structural issues". So the test failure count doesn't map 1:1 to issue count.
+
+**Clarification**: Trust STATUS's "14 structural issues" count. The breakdown is approximate - fix ALL issues found by structural tests.
+
+**False Claims in CLAUDE.md**:
+- "100% MVP COMPLETE - Production Ready" (line 9)
+- "100% COMPLETE ✅" for all 3 plugins
+- "Production ready" status
+- "Ready for manual testing and user deployment"
+
+**Reality**:
+- Files exist: TRUE
+- Functionality validated: FALSE
+- Production ready: FALSE (no evidence)
+- Testing executed: FALSE
+
+**Timeline to 100%**: 3-4 weeks (54-77 hours)
+
+---
+
+## File Management and Retention
+
+Per project-evaluator's retention policy, maintain EXACTLY 4 files per prefix (PLAN, SPRINT, STATUS).
+
+**Current Files**:
+- PLAN: 2 files (PLAN-testing-framework-next-steps, PLAN-verbosity-reduction)
+- SPRINT: 2 files (SPRINT-03, SPRINT-03-KICKOFF)
+- BACKLOG: 1 file
+- STATUS: 3 files
+
+**After Writing This Plan**:
+- PLAN: 3 files (existing 2 + this new one = PLAN-100-percent-2025-11-06-234955.md)
+- Retention: No action needed (< 4 files)
+
+**Archive Policy**:
+- Only archive when > 4 files exist for a prefix
+- Archive to `.agent_planning/archive/` with `.archived` suffix
+- Prioritize archiving oldest or superseded files
+
+---
+
+## Provenance
+
+**Source STATUS File**: STATUS-100-percent-2025-11-06-234533.md
+- Generated: 2025-11-06 23:45:33
+- Auditor: Ruthless Project Auditor (Zero-Optimism Policy)
+- Context: Testing framework 73% complete, 251/291 tests passing
+- True Completion: 42%
+
+**Specification**: CLAUDE.md
+- Last Modified: 2025-11-06
+- Contains false "100% complete" claims (to be corrected in P0-1)
+
+**Generation Time**: 2025-11-06 23:49:55
+
+**Planning Horizon**: 3-4 weeks
+
+**Critical Path**: Execute manual testing (P0-4 through P0-6) - BLOCKS EVERYTHING
+
+---
+
+**END OF PLAN**
+
+This plan is concrete, actionable, and grounded in STATUS evidence. Every work item has specific acceptance criteria, effort estimates, and dependencies. The critical path is clear: fix structural issues, execute manual testing, fix bugs, validate, document. Timeline is realistic: 3-4 weeks to legitimate 100%.
