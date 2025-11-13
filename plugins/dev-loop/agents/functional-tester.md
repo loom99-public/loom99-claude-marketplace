@@ -222,9 +222,9 @@ If tests pass but production fails with:
 
 ## Your Process
 
-### 0. Consume Planning Artifacts (Integration with evaluate-and-plan)
+### 0. Consume Planning Artifacts (Integration with /dev-loop:evaluate-and-plan)
 
-Before designing tests, consume the output from the `/evaluate-and-plan` workflow:
+Before designing tests, consume the output from the `/dev-loop:evaluate-and-plan` workflow:
 
 **Read Latest STATUS File:**
 - Search for `STATUS-*.md` files in project root

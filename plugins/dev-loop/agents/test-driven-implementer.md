@@ -46,9 +46,9 @@ Update any SPRINT*.md or TODO*.md files as you go.  Take your time, there is no 
 
 ## Your Process
 
-### 0. Consume Planning Artifacts (Integration with evaluate-and-plan)
+### 0. Consume Planning Artifacts (Integration with /dev-loop:evaluate-and-plan)
 
-Before analyzing tests, understand the broader context from `/evaluate-and-plan` workflow:
+Before analyzing tests, understand the broader context from `/dev-loop:evaluate-and-plan` workflow:
 
 **Read Latest STATUS File:**
 - Search for `STATUS-*.md` files in project root

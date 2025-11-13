@@ -1,10 +1,10 @@
 ---
 argument-hint: [area of focus]
-description: Write tests and then implement. Pass args to focus on something specific, or Claude will automatically use the most recent planning docs. Designed to work with /evaluate-and-plan. Pass 'plan-first' to tell Claude to run an initial /evaluate-and-plan cycle.
+description: Write tests and then implement. Pass args to focus on something specific, or Claude will automatically use the most recent planning docs. Designed to work with /dev-loop:evaluate-and-plan. Pass 'plan-first' to tell Claude to run an initial /dev-loop:valuate-and-plan cycle.
 ---
 
 IMPORTANT: if "$1" is set to "plan-first" you MUST run this slash command first:
-/evaluate-and-plan $ARGUMENTS
+/dev-loop:evaluate-and-plan $ARGUMENTS
 
 If specific areas of focus are defined below, focus entirely on those goals and architectural work to enable those goals.  If 'specific-areas-of-focus' is empty OR only contains 'plan-first', use the latest STATUS and PLAN files
 
@@ -13,7 +13,7 @@ Specific areas of focus:
 $ARGUMENTS
 </specific-areas-of-focus>
 
-This command integrates with the `/evaluate-and-plan` slash command. If there are no existing STATUS and PLAN files in the .agent_planning dir for our current goal, run the slash command `/evaluate-and-plan $ARGUMENTS` first.
+This command integrates with the `/dev-loop:evaluate-and-plan` slash command. If there are no existing STATUS and PLAN files in the .agent_planning dir for our current goal, run the slash command `/dev-loop:evaluate-and-plan $ARGUMENTS` first.
 
 This command runs two core loops: TestLoop and ImplementLoop. Each loop is repeated until the condition is satisfied. CRITICAL: ALL LOOPS END WITH AN 'EVALUATE' STEP.
 
@@ -52,4 +52,4 @@ There are no outstanding issues for which the solution is well defined / little 
 </LoopExitCondition>
 </ImplementLoop>
 
-**FINAL STEP*: AFTER we have run BOTH TestLoop and ImplementLoop to completion, run the command `/evaluate-and-plan $ARGUMENTS` to ensure we have up to date planning and status documents.
+**FINAL STEP*: AFTER we have run BOTH TestLoop and ImplementLoop to completion, run the command `/dev-loop:evaluate-and-plan $ARGUMENTS` to ensure we have up to date planning and status documents.
