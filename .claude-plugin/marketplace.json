@@ -51,6 +51,17 @@
       },
       "strict": true,
       "license": "MIT"
+    },
+    {
+      "name": "dev-loop",
+      "source": "./plugins/dev-loop",
+      "description": "Development workflow commands - evaluate, plan, test, implement, and propose features",
+      "version": "0.1.0",
+      "author": {
+        "name": "Brandon Fryslie"
+      },
+      "strict": true,
+      "license": "MIT"
     }
   ]
 }

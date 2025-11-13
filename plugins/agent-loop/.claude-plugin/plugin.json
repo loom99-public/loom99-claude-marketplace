@@ -8,8 +8,15 @@
   },
   "license": "MIT",
   "keywords": ["agent", "workflow", "engineering", "explore", "plan", "code", "commit"],
-  "commands": "./commands/",
-  "agents": "./agents/workflow-agent.md",
+  "commands": [
+    "./commands/explore.md",
+    "./commands/plan.md",
+    "./commands/code.md",
+    "./commands/commit.md"
+  ],
+  "agents": [
+    "./agents/workflow-agent.md"
+  ],
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"

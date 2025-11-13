@@ -1,0 +1,24 @@
+{
+  "name": "dev-loop",
+  "version": "0.1.0",
+  "description": "Development workflow commands - evaluate, plan, test, implement, and propose features",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
+  "commands": [
+    "./commands/evaluate-and-plan.md",
+    "./commands/feature-proposal.md",
+    "./commands/implement.md",
+    "./commands/test-and-implement.md"
+  ],
+  "agents": [
+    "./agents/functional-tester.md",
+    "./agents/product-visionary.md",
+    "./agents/project-evaluator.md",
+    "./agents/status-planner.md",
+    "./agents/test-driven-implementer.md"
+  ]
+}
