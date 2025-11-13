@@ -1,378 +1,283 @@
-# dev-loop Plugin for Claude Code
+# dev-loop
 
-**Structured development workflows with evaluation-driven iteration**
-
-A production-ready Claude Code plugin that provides two complementary development workflows: Test-Driven Development (TDD) and Iterative Implementation. Both workflows share a common foundation of rigorous evaluation and planning, ensuring you understand the problem before solving it.
+A Claude Code plugin that adds structured workflow commands for development. Two main approaches: write tests first (TDD), or implement and validate as you go.
 
 ---
 
-## 🎯 What is dev-loop?
-
-dev-loop transforms Claude Code into a systematic development environment by enforcing a structured workflow:
-
-1. **Evaluate** → Ruthless gap analysis of current state vs. requirements
-2. **Plan** → Convert gaps into prioritized, actionable backlog
-3. **Implement** → Build with either TDD or iterative validation
-4. **Verify** → Runtime evidence (tests, logs, screenshots) confirms completion
-
-**The Result**: Fewer bugs, better code, faster iteration, cleaner commits, higher quality.
-
----
-
-## 🚀 Installation
-
-### Step 1: Install the Plugin Marketplace
+## Quickstart
 
 ```bash
-# Clone the marketplace repository
+# Install the marketplace
 git clone https://github.com/loom99/loom99-claude-marketplace.git
 cd loom99-claude-marketplace
 
-# Add marketplace to Claude Code
-# (In Claude Code)
+# In Claude Code:
 /plugin marketplace add .
-```
-
-### Step 2: Install dev-loop Plugin
-
-```bash
-# In Claude Code
 /plugin install dev-loop
 ```
 
-### Step 3: Verify Installation
+### Build something with TDD
 
 ```bash
-# Check available commands (should show /evaluate-and-plan, etc.)
-/help
-```
+# Start with evaluation to understand current state
+/evaluate-and-plan user authentication
 
----
-
-## 🔄 Two Workflows, One Foundation
-
-### Workflow 1: TDD (Test-Driven Development)
-
-**Best for**: Features with clear requirements, API development, critical systems, refactoring
-
-**Process**:
-```
-User Request
-     ↓
-/evaluate-and-plan          → STATUS + PLAN generated
-     ↓
-/test-and-implement         → Two loops:
-     ├─ TestLoop:           functional-tester writes tests
-     │                      project-evaluator validates tests
-     └─ ImplementLoop:      test-driven-implementer implements
-                            project-evaluator validates implementation
-```
-
-**Key Principle**: Tests define the contract. Implementation must pass tests through real functionality, never shortcuts.
-
-### Workflow 2: Iterative Implementation (Non-TDD)
-
-**Best for**: UI/visual features, exploratory work, prototyping, when tests are impractical upfront
-
-**Process**:
-```
-User Request
-     ↓
-/evaluate-and-plan          → STATUS + PLAN generated
-     ↓
-/implement-and-iterate      → Loop until complete:
-     ├─ iterative-implementer builds incrementally
-     └─ work-evaluator validates with runtime evidence
-                            (screenshots, logs, execution)
-```
-
-**Key Principle**: Validation through manual testing and runtime evaluation. Visual proof for web UIs via chrome-devtools MCP.
-
----
-
-## 📋 Commands Reference
-
-### Core Workflow Commands
-
-#### `/evaluate-and-plan [area of focus]`
-Generates comprehensive status report and prioritized implementation plan.
-
-**What it does**:
-1. Runs `project-evaluator` agent → creates `STATUS-*.md`
-2. Runs `status-planner` agent → creates `PLAN-*.md`
-
-**When to use**: Start of any workflow, or after major changes to re-sync planning docs.
-
-**Example**:
-```
-/evaluate-and-plan user authentication feature
-```
-
----
-
-#### `/test-and-implement [area of focus | "plan-first"]`
-**TDD workflow** - Write tests first, then implement.
-
-**What it does**:
-1. Optional: Runs `/evaluate-and-plan` if "plan-first" or no STATUS/PLAN exists
-2. **TestLoop**:
-   - `functional-tester` writes comprehensive tests
-   - `project-evaluator` validates tests meet criteria
-   - Repeat until tests are production-quality
-3. **ImplementLoop**:
-   - `test-driven-implementer` implements functionality
-   - `project-evaluator` validates implementation
-   - Repeat until all tests pass with real functionality
-4. Final: Re-runs `/evaluate-and-plan` to update status
-
-**Exit Conditions**:
-- TestLoop: Tests meet all TestCriteria (useful, complete, flexible, automated)
-- ImplementLoop: No outstanding issues with well-defined solutions
-
-**Example**:
-```
-# Start fresh with evaluation
-/test-and-implement plan-first
-
-# Use existing STATUS/PLAN
-/test-and-implement API endpoints
-```
-
----
-
-#### `/implement-and-iterate [area of focus | "plan-first"]`
-**Non-TDD workflow** - Implement and validate through runtime evidence.
-
-**What it does**:
-1. Optional: Runs `/evaluate-and-plan` if "plan-first" or no STATUS/PLAN exists
-2. **Implementation Loop**:
-   - `iterative-implementer` builds functionality incrementally
-   - `work-evaluator` runs software and gathers evidence (screenshots, logs, output)
-   - Compares against acceptance criteria from PLAN
-   - Repeats until goals achieved
-3. Final: Re-runs `/evaluate-and-plan` to update status
-
-**Exit Conditions**:
-- COMPLETE: work-evaluator confirms all goals achieved
-- INCOMPLETE: Clear path forward exists, continue loop
-- BLOCKED: No clear path, pause and request user guidance
-
-**Example**:
-```
-# Start with fresh evaluation
-/implement-and-iterate plan-first
-
-# Use existing STATUS/PLAN
-/implement-and-iterate dashboard UI
-```
-
----
-
-#### `/feature-proposal [feature description]`
-Generates visionary, pragmatic feature designs.
-
-**What it does**: Runs `product-visionary` agent to create forward-thinking feature proposals.
-
-**Example**:
-```
-/feature-proposal real-time collaboration for documents
-```
-
----
-
-## 🎓 Getting Started
-
-### Example 1: Building a New Feature (TDD)
-
-```bash
-# 1. Start with evaluation and planning
-/evaluate-and-plan user registration system
-
-# 2. Read the generated plan
-# (Claude will create .agent_planning/STATUS-*.md and PLAN-*.md)
-
-# 3. Implement with TDD
+# Write tests, then implement
 /test-and-implement
 
 # Claude will:
-# - Write comprehensive tests first
-# - Validate tests are production-quality
-# - Implement functionality to pass tests
-# - Re-evaluate and update status
+# 1. Write tests that validate the behavior you need
+# 2. Implement code that makes those tests pass
+# 3. Re-evaluate to update status
 ```
 
-### Example 2: Building UI Features (Non-TDD)
+### Build something without tests upfront
 
 ```bash
-# 1. Start with evaluation and planning
-/evaluate-and-plan responsive navigation menu
+# Evaluate and plan first
+/evaluate-and-plan dashboard navigation
 
-# 2. Implement with runtime validation
+# Build incrementally with runtime validation
 /implement-and-iterate
 
 # Claude will:
-# - Build functionality incrementally
-# - Use chrome-devtools to capture screenshots (for web UIs)
-# - Validate against acceptance criteria
-# - Iterate until goals achieved
-# - Re-evaluate and update status
-```
-
-### Example 3: Quick Feature Proposal
-
-```bash
-# Get visionary feature design
-/feature-proposal AI-powered code suggestions
-
-# Review proposal, then proceed with evaluate-and-plan + implement
+# 1. Implement in small chunks
+# 2. Run the code and capture evidence (screenshots for web UIs, logs, output)
+# 3. Check if acceptance criteria are met
+# 4. Keep going until complete
 ```
 
 ---
 
-## 🧩 Architecture
+## What it does
 
-### Planning Document System
+Adds four slash commands to Claude Code:
 
-All workflow state lives in `.agent_planning/` directory:
+- **`/evaluate-and-plan`** - Analyzes current state, creates prioritized work plan
+- **`/test-and-implement`** - TDD workflow: write tests, then implement
+- **`/implement-and-iterate`** - Iterative workflow: build and validate incrementally
+- **`/feature-proposal`** - Generates design proposals for new features
 
-**Authoritative Sources** (READ-ONLY):
-- `PROJECT_SPEC.md` / `PROJECT.md` - Project requirements
-- `STATUS-<timestamp>.md` - Current state (project-evaluator output)
-- `PLAN-<timestamp>.md` - Work backlog (status-planner output)
+All workflows use `.agent_planning/` directory for status and planning documents.
 
-**Working Documents** (READ-WRITE):
-- `BACKLOG*.md`, `SPRINT*.md`, `TODO*.md` - Tracked during implementation
+---
+
+## Commands
+
+### `/evaluate-and-plan [focus area]`
+
+Runs two agents sequentially:
+1. `project-evaluator` - Assesses current state vs requirements → `STATUS-*.md`
+2. `status-planner` - Converts gaps into work backlog → `PLAN-*.md`
+
+Use this at the start of work, or when you want to re-sync planning docs with reality.
+
+**Example:**
+```bash
+/evaluate-and-plan API authentication
+```
+
+---
+
+### `/test-and-implement [focus area | "plan-first"]`
+
+TDD workflow with two loops:
+
+**TestLoop:**
+- `functional-tester` writes tests
+- `project-evaluator` validates tests are solid
+- Repeats until tests are good
+
+**ImplementLoop:**
+- `test-driven-implementer` makes tests pass
+- `project-evaluator` checks implementation
+- Repeats until no major issues
+
+Tests must fail before implementation. No shortcuts allowed - tests validate real behavior.
+
+**Example:**
+```bash
+/test-and-implement plan-first
+```
+
+**Pass "plan-first" to run `/evaluate-and-plan` first, otherwise uses existing STATUS/PLAN.**
+
+---
+
+### `/implement-and-iterate [focus area | "plan-first"]`
+
+Iterative workflow without tests:
+
+**Loop:**
+- `iterative-implementer` builds functionality
+- `work-evaluator` runs it and gathers evidence (screenshots, logs, output)
+- Compares evidence against acceptance criteria
+- Repeats until goals met
+
+For web UIs, uses chrome-devtools MCP to capture screenshots and browser console/network data.
+
+**Example:**
+```bash
+/implement-and-iterate plan-first
+```
+
+Exits when `work-evaluator` confirms completion, or pauses if blocked.
+
+---
+
+### `/feature-proposal [description]`
+
+Runs `product-visionary` agent to design new features.
+
+**Example:**
+```bash
+/feature-proposal real-time collaboration
+```
+
+---
+
+## How it works
+
+### Planning Documents
+
+Everything goes in `.agent_planning/`:
+
+**Generated by agents (don't edit these):**
+- `STATUS-<timestamp>.md` - Current state evaluation
+- `PLAN-<timestamp>.md` - Prioritized work items
 - `WORK-EVALUATION-<timestamp>.md` - Runtime validation results
 
-**File Retention**: Max 4 timestamped files per prefix. Oldest automatically deleted.
+**Optional (can be edited):**
+- `PROJECT_SPEC.md` / `PROJECT.md` - Requirements/specs
+- `BACKLOG.md`, `SPRINT.md`, etc. - Additional planning
 
-### Agent Coordination
+Max 4 timestamped files kept per prefix (oldest deleted automatically).
 
-Commands orchestrate specialized agents:
+### Agents
 
-| Agent | Role | Output |
-|-------|------|--------|
-| **project-evaluator** | Ruthless gap analysis | STATUS-*.md |
-| **status-planner** | Backlog generation | PLAN-*.md |
-| **functional-tester** | Test design (TDD) | Test files |
-| **test-driven-implementer** | TDD implementation | Code + commits |
-| **iterative-implementer** | Incremental implementation | Code + commits |
-| **work-evaluator** | Runtime validation | WORK-EVALUATION-*.md |
-| **product-visionary** | Feature proposals | Proposal docs |
+Commands orchestrate these agents:
 
----
+| Agent | What it does |
+|-------|--------------|
+| `project-evaluator` | Analyzes current state, finds gaps |
+| `status-planner` | Creates work backlog from gaps |
+| `functional-tester` | Writes tests (TDD workflow) |
+| `test-driven-implementer` | Implements to pass tests (TDD) |
+| `iterative-implementer` | Implements incrementally (non-TDD) |
+| `work-evaluator` | Validates with runtime evidence (non-TDD) |
+| `product-visionary` | Designs new features |
 
-## 🌐 MCP Integration
+### MCP Integration
 
-### chrome-devtools
-
-**Purpose**: Browser automation with screenshots and DevTools metadata for web application testing.
-
-**Used by**: `work-evaluator` agent during `/implement-and-iterate` workflow
-
-**Capabilities**:
-- Navigate web applications
+`work-evaluator` can use chrome-devtools MCP for web applications:
+- Navigate browsers
 - Capture screenshots
 - Extract console logs
 - Monitor network errors
-- Inspect DOM state
 
-**When it activates**: Automatically during runtime validation for browser-based features.
-
-**Configuration**: Pre-configured in `.mcp.json` - no setup required.
+Configured in `.mcp.json`, auto-installed via npx.
 
 ---
 
-## 🎯 Critical Rules
+## When to use which workflow
 
-### For All Workflows
+**Use TDD (`/test-and-implement`):**
+- APIs, backend services
+- Libraries, frameworks
+- When requirements are clear
+- When you want test coverage
 
-1. **File Management**: All planning work in `.agent_planning/`. Never modify completed work files.
-2. **Honesty**: No optimism, no shortcuts, no placeholders in production code.
-3. **Evidence**: Always cite file paths, line numbers, metrics.
-4. **Timestamping**: Use `YYYY-MM-DD-HHmmss` format consistently.
+**Use Iterative (`/implement-and-iterate`):**
+- UI/frontend work
+- Exploratory features
+- When visual validation matters
+- When tests are hard to write upfront
 
-### For Test Writing (TDD)
-
-1. **Never use MagicMock()** for external systems - use real objects with selective patching.
-2. **Never invent attributes/methods** that don't exist in real APIs.
-3. **Tests must fail with stubs** - un-gameable by design.
-4. **Validate real user workflows** - end-to-end, not implementation details.
-
-### For Implementation (Both Workflows)
-
-1. **No hardcoded test values** or test-specific branches.
-2. **No TODO comments** in completed code.
-3. **Explicit error handling** - no silent failures.
-4. **Real functionality** - no shortcuts to pass tests/validation.
+**Both start with `/evaluate-and-plan`** to understand current state.
 
 ---
 
-## 📚 Documentation
+## Examples
 
-- **[CLAUDE.md](./plugins/dev-loop/CLAUDE.md)** - Comprehensive plugin guide for Claude Code
-- **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Technical architecture and design decisions
+### Example 1: API endpoint (TDD)
 
----
+```bash
+/evaluate-and-plan user registration endpoint
+# Read STATUS-*.md and PLAN-*.md to see what's missing
 
-## 🔧 Technical Requirements
+/test-and-implement
+# Wait for completion, all tests passing
+```
 
-- **Claude Code** (latest version)
-- **git** (recommended for commit workflows)
-- **Node.js** (for chrome-devtools MCP server, auto-installed via npx)
+### Example 2: Dashboard UI (Iterative)
 
----
+```bash
+/evaluate-and-plan admin dashboard
 
-## 📊 What You Get
+/implement-and-iterate
+# Claude builds incrementally, uses chrome-devtools to capture screenshots
+# Validates against acceptance criteria
+# Repeats until done
+```
 
-- **2 production-ready workflows** (TDD + Iterative)
-- **7 specialized agents** with distinct responsibilities
-- **4 slash commands** for workflow orchestration
-- **1 MCP server integration** (chrome-devtools for web UI testing)
-- **Zero-optimism evaluation** - brutal honesty that saves projects
-- **Evidence-based validation** - runtime proof, not assumptions
+### Example 3: Feature design
 
----
-
-## 💡 Philosophy
-
-**Brutal honesty saves projects.** The workflows enforce reality-based development:
-
-- **TDD**: Tests fail if functionality is faked → forces real implementation
-- **Non-TDD**: Runtime evaluation fails if goals unmet → forces working software
-- **Evaluation**: Zero-optimism gap analysis → exposes actual state
-- **Planning**: Evidence-based backlog → tracks what remains
-
-No shortcuts. No optimism. Just working software.
+```bash
+/feature-proposal websocket-based notifications
+# Review proposal
+# Then use /evaluate-and-plan + implementation workflow
+```
 
 ---
 
-## 🤝 Contributing
+## Rules
 
-This is currently a personal marketplace by Brandon Fryslie. Feedback and suggestions welcome via issues.
+**Evaluation:**
+- No optimism - partial/incomplete work is flagged
+- Everything backed by evidence (file paths, line numbers)
+- Runs the code, doesn't just read it
+
+**Tests (TDD workflow):**
+- Must fail before implementation
+- Validate behavior, not implementation details
+- No mocking of the code being tested
+- No hardcoded test values in implementation
+
+**Implementation:**
+- No TODOs in completed code
+- Explicit error handling
+- No shortcuts to pass tests
+
+**Evidence (Iterative workflow):**
+- Screenshots for web UIs
+- Logs and output for everything
+- Actual execution, not assumptions
 
 ---
 
-## 📝 License
+## Requirements
+
+- Claude Code (latest)
+- git (for commit functionality)
+- Node.js (for chrome-devtools MCP, auto-installed)
+
+---
+
+## Documentation
+
+- `plugins/dev-loop/CLAUDE.md` - Detailed plugin guide
+- `COMING_SOON.md` - Other plugins in development
+
+---
+
+## Notes
+
+This plugin enforces a workflow. If you prefer ad-hoc development, you won't like it.
+
+The evaluation step can feel slow at first - it's doing real analysis. Worth it to avoid building the wrong thing.
+
+Status reports can be brutally honest. That's intentional.
+
+---
 
 MIT License
-
----
-
-## 👤 Author
-
-**Brandon Fryslie**
-- Email: 
-- Marketplace: loom99
-
----
-
-## 🔗 Resources
-
-- [Claude Code Documentation](https://docs.claude.com/en/docs/claude-code)
-- [Plugin Marketplaces Guide](https://docs.claude.com/en/docs/claude-code/plugin-marketplaces)
-- [Writing Plugins](https://docs.claude.com/en/docs/claude-code/plugins)
-
----
-
-**Ready to build better software? Install dev-loop and start with `/evaluate-and-plan`!**

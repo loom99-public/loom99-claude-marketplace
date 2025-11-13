@@ -79,4 +79,4 @@ If you're interested in any of these upcoming plugins:
 
 ---
 
-**Questions?** Open an issue or contact 
+**Questions?** Open an issue
