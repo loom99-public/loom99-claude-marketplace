@@ -1,0 +1,247 @@
+# MCP Integration Planning Summary
+**Generated**: 2025-11-13 03:43:42
+**Plugin**: dev-loop
+**Scope**: Integrate peekaboo and chrome-devtools MCP servers
+
+---
+
+## Overview
+
+This planning session addresses the MCP integration gaps identified in the dev-loop plugin evaluation. The plugin currently has NO MCP configuration despite agents referencing MCP tools, along with structural issues that prevent proper loading.
+
+**Key Files Generated**:
+1. `PLAN-2025-11-13-034342.md` - Complete prioritized backlog with 6 work items
+2. `SPRINT-2025-11-13-034342.md` - First executable sprint (P0 foundation work)
+3. This summary document
+
+---
+
+## Current State Analysis
+
+**Strengths**:
+- 7 agents fully implemented (1,566 lines)
+- 4 commands fully implemented
+- Clear workflow architecture (TDD + non-TDD)
+- Comprehensive agent prompts with anti-gaming guidelines
+
+**Critical Gaps**:
+1. NO `.mcp.json` file exists (BLOCKING)
+2. `plugin.json` references non-existent `./commands/implement.md` (BLOCKING)
+3. `work-evaluator.md` references wrong MCP tools (BLOCKING)
+4. No screenshot capability configured despite runtime validation needs
+
+**Impact**: Plugin cannot properly validate UI features or gather runtime evidence per its design spec.
+
+---
+
+## Integration Strategy
+
+### Philosophy: "Light Touch"
+
+Add MCP tools at **pivotal workflow points only**, with minimal prompt additions:
+
+**Pivotal Points Identified**:
+1. **project-evaluator** line 44-46: Runtime verification (needs peekaboo for desktop UI evidence)
+2. **work-evaluator** line 23: UI/Visual evidence gathering (needs chrome-devtools for web, peekaboo for desktop)
+
+**NOT pivotal** (no additions planned):
+- functional-tester: Optional for test research, not core workflow
+- Other agents: No runtime evidence needs identified
+
+### Tool Selection Rationale
+
+**peekaboo** (HIGH VALUE):
+- Native macOS screenshot capture
+- Used by: project-evaluator (runtime verification), work-evaluator (desktop UI fallback)
+- Integration points: 2 locations, minimal guidance
+
+**chrome-devtools** (MEDIUM-HIGH VALUE):
+- Browser automation + metadata (screenshots, console logs, network errors)
+- Used by: work-evaluator (web UI primary method)
+- Integration points: 1 location, specific tool guidance
+
+---
+
+## Work Breakdown
+
+### Sprint 1: Foundation (P0 - BLOCKING)
+**Duration**: 1 day
+**Items**: 3 work items totaling 1.5-2.5 hours
+
+1. **[P0-1]** Create `.mcp.json` configuration
+   - Configure peekaboo and chrome-devtools servers
+   - Use npx for automatic resolution
+   - File: `/plugins/dev-loop/.mcp.json` (create new)
+
+2. **[P0-2]** Fix plugin.json broken reference
+   - Remove non-existent `./commands/implement.md` line
+   - File: `/plugins/dev-loop/.claude-plugin/plugin.json` (edit line 14)
+
+3. **[P0-3]** Fix work-evaluator MCP tool references
+   - Update to reference actual servers (peekaboo, chrome-devtools)
+   - File: `/plugins/dev-loop/agents/work-evaluator.md` (edit line 4)
+
+**Exit Criteria**: Plugin loads without errors, MCP servers discoverable
+
+---
+
+### Sprint 2: Integration (P1 - HIGH VALUE)
+**Duration**: 2 days
+**Items**: 3 work items totaling 7-10 hours
+
+1. **[P1-1]** Update project-evaluator with screenshot guidance
+   - Add 3-5 lines at line 44-46 (runtime verification section)
+   - Specify WHEN to use peekaboo (desktop UI evidence)
+   - File: `/plugins/dev-loop/agents/project-evaluator.md` (lines 44-47)
+
+2. **[P1-2]** Add chrome-devtools guidance to work-evaluator
+   - Add 5-8 lines at line 23 (UI/Visual section)
+   - Specify chrome-devtools for web UI (navigate, screenshot, logs)
+   - File: `/plugins/dev-loop/agents/work-evaluator.md` (lines 22-30)
+
+3. **[P1-3]** Add peekaboo guidance for desktop UI fallback
+   - Add 2-3 lines in same section as P1-2
+   - Distinguish: chrome-devtools for web, peekaboo for desktop
+   - File: `/plugins/dev-loop/agents/work-evaluator.md` (integrated with P1-2)
+
+**Exit Criteria**: Both agents successfully use MCP tools for evidence gathering
+
+---
+
+### Sprint 3: Polish (P2 - DOCUMENTATION)
+**Duration**: 0.5 days
+**Items**: 1 work item totaling 2-3 hours
+
+1. **[P2-1]** Update CLAUDE.md with MCP integration
+   - Expand lines 216-230 with MCP details
+   - Document integration philosophy ("light touch")
+   - File: `/plugins/dev-loop/CLAUDE.md` (lines 216-230)
+
+**Exit Criteria**: Documentation accurately reflects implementation
+
+---
+
+## File Impact Summary
+
+**Files to CREATE** (1):
+- `/plugins/dev-loop/.mcp.json` - MCP server configuration
+
+**Files to EDIT** (4):
+- `/plugins/dev-loop/.claude-plugin/plugin.json` - Remove broken reference (1 line deletion)
+- `/plugins/dev-loop/agents/work-evaluator.md` - Update MCP tools (1 line + 7-11 lines)
+- `/plugins/dev-loop/agents/project-evaluator.md` - Add screenshot guidance (3-5 lines)
+- `/plugins/dev-loop/CLAUDE.md` - Expand MCP section (10-15 lines)
+
+**Total Code Impact**: ~30-40 new/modified lines across 5 files
+
+**Files UNCHANGED**: 6 agents, 4 commands, all other plugin files remain untouched
+
+---
+
+## Risk Management
+
+### Medium Risk
+- **MCP server path discovery**: Mitigated by using npx for automatic resolution
+- **Prompt integration balance**: Mitigated by strict line limits (3-5 or 5-8 lines max)
+
+### Low Risk
+- **plugin.json fix**: Simple deletion, JSON validation ensures correctness
+- **Tool name updates**: Query actual tools after .mcp.json creation
+- **Documentation**: Non-functional, reviewed for accuracy post-implementation
+
+### No High Risk Items Identified
+
+---
+
+## Success Metrics
+
+**Sprint 1 Success**:
+- [ ] Plugin loads in Claude Code without errors
+- [ ] 2 MCP servers appear in tool list (peekaboo, chrome-devtools)
+- [ ] 4 slash commands discoverable (/evaluate-and-plan, /feature-proposal, /implement-and-iterate, /test-and-implement)
+
+**Sprint 2 Success**:
+- [ ] project-evaluator captures screenshots for UI features during runtime verification
+- [ ] work-evaluator uses chrome-devtools for web UI evidence
+- [ ] work-evaluator uses peekaboo for desktop UI evidence
+- [ ] Both agents produce evidence with screenshot paths in output
+
+**Sprint 3 Success**:
+- [ ] CLAUDE.md MCP section clearly documents integration
+- [ ] "Light touch" philosophy explained
+- [ ] No redundant documentation (agent prompts not duplicated)
+
+---
+
+## Next Steps
+
+### Immediate (Developer):
+1. Review `PLAN-2025-11-13-034342.md` for detailed work item specifications
+2. Review `SPRINT-2025-11-13-034342.md` for Sprint 1 implementation details
+3. Begin with [P0-2] (quick win, independent) while planning [P0-1]
+
+### Sprint 1 Execution:
+```bash
+# Step 1: Fix plugin.json (15 min)
+# Edit /plugins/dev-loop/.claude-plugin/plugin.json line 14
+# Remove "./commands/implement.md" reference
+jq . plugin.json  # Validate
+
+# Step 2: Create .mcp.json (1-2 hours)
+# Create /plugins/dev-loop/.mcp.json with peekaboo + chrome-devtools
+npx -y @modelcontextprotocol/server-peekaboo --help  # Test availability
+npx -y @modelcontextprotocol/server-chrome-devtools --help
+
+# Step 3: Update work-evaluator (30 min)
+# Edit /plugins/dev-loop/agents/work-evaluator.md line 4
+# Update tools field with actual MCP tool patterns
+
+# Step 4: Integration test
+# Load plugin in Claude Code, verify MCP servers discoverable
+```
+
+### After Sprint 1:
+- Validate exit criteria met
+- Begin Sprint 2 (P1 items)
+- Do NOT skip validation
+
+---
+
+## Questions for User
+
+1. **MCP Installation**: Should we assume npx availability, or document manual installation paths?
+2. **Screenshot Storage**: Where should agents save screenshots (temp, .agent_planning/evidence/, user-specified)?
+3. **Test Project**: Should we create a validation project for testing MCP integration after Sprint 1?
+
+**Proceed with implementation as planned unless user raises concerns.**
+
+---
+
+## References
+
+**Planning Documents**:
+- Primary backlog: `PLAN-2025-11-13-034342.md`
+- Sprint 1 details: `SPRINT-2025-11-13-034342.md`
+- This summary: `PLANNING-SUMMARY-2025-11-13-034342.md`
+
+**Source Files** (read during planning):
+- `/plugins/dev-loop/.claude-plugin/plugin.json` - Plugin manifest
+- `/plugins/dev-loop/agents/project-evaluator.md` - Runtime verification agent
+- `/plugins/dev-loop/agents/work-evaluator.md` - Evidence gathering agent
+- `/plugins/dev-loop/CLAUDE.md` - Plugin documentation
+
+**External References**:
+- Claude Code MCP docs: https://docs.claude.com/en/docs/claude-code/mcp
+- MCP server packages: @modelcontextprotocol/server-peekaboo, @modelcontextprotocol/server-chrome-devtools
+
+---
+
+## Conclusion
+
+This planning session produced a comprehensive, actionable implementation plan for integrating peekaboo and chrome-devtools MCP servers into the dev-loop plugin. The plan follows the "light touch" philosophy, adding capabilities at pivotal workflow points without bloating agent prompts.
+
+**Total Work**: 6 items across 3 sprints, 10-18 hours total
+**Critical Path**: P0-1 → P0-3 → P1-2/P1-3 → P2-1
+**First Action**: Begin Sprint 1 with [P0-2] and [P0-1] in parallel
+
+**Ready to implement.**

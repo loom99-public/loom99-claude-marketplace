@@ -10,7 +10,7 @@ Specific areas of focus:
 $ARGUMENTS
 </specific-areas-of-focus>
 
-Step 1: Use the project-evaluator agent to evaluate the current status of the project.
+Step 1: Use the dev-loop:project-evaluator agent to evaluate the current status of the project.
 
-Step 2: Only after project-evaluator has completed, use the status-planner agent to plan the remaining work for the project based on the output of Step 1.
+Step 2: Only after project-evaluator has completed, use the dev-loop:status-planner agent to plan the remaining work for the project based on the output of Step 1.
 

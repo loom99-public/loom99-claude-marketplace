@@ -1,0 +1,169 @@
+# Sprint 1: MCP Integration Foundation
+**Generated**: 2025-11-13 03:43:42
+**Source Plan**: PLAN-2025-11-13-034342.md
+**Duration**: 1 day
+**Goal**: Resolve all blocking issues, establish MCP infrastructure
+
+---
+
+## Sprint Objective
+
+Unblock MCP integration by:
+1. Creating MCP configuration infrastructure (.mcp.json)
+2. Fixing structural plugin issues (broken references)
+3. Aligning agent tool declarations with actual MCP servers
+
+**Exit Criteria**: Plugin loads without errors, MCP servers (peekaboo, chrome-devtools) discoverable in Claude Code tool list.
+
+---
+
+## Sprint Backlog
+
+### Item 1: Create .mcp.json Configuration File
+**Priority**: P0 (BLOCKING)
+**Effort**: 1-2 hours
+**Owner**: Implementer
+**Status**: Not Started
+
+**Task**:
+Create `/plugins/dev-loop/.mcp.json` configuring peekaboo and chrome-devtools MCP servers using npx for automatic resolution.
+
+**Acceptance**:
+- [ ] File exists with valid JSON
+- [ ] peekaboo server configured: `npx -y @modelcontextprotocol/server-peekaboo`
+- [ ] chrome-devtools server configured: `npx -y @modelcontextprotocol/server-chrome-devtools`
+- [ ] Follows mcpServers format per Claude Code docs
+- [ ] Claude Code detects servers on plugin load
+
+**Files**: `/plugins/dev-loop/.mcp.json` (create new)
+
+---
+
+### Item 2: Fix plugin.json Broken Command Reference
+**Priority**: P0 (BLOCKING)
+**Effort**: 15 minutes
+**Owner**: Implementer
+**Status**: Not Started
+
+**Task**:
+Remove non-existent `./commands/implement.md` reference from plugin.json line 14.
+
+**Acceptance**:
+- [ ] plugin.json commands array has exactly 4 entries (not 5)
+- [ ] All referenced files exist
+- [ ] JSON validates with jq
+- [ ] Plugin loads without errors
+
+**Files**: `/plugins/dev-loop/.claude-plugin/plugin.json` (edit line 14)
+
+---
+
+### Item 3: Fix work-evaluator MCP Tool References
+**Priority**: P0 (BLOCKING)
+**Effort**: 30 minutes
+**Owner**: Implementer
+**Status**: Not Started
+**Dependencies**: Item 1 (needs actual MCP server tool names)
+
+**Task**:
+Update work-evaluator.md line 4 to reference correct MCP tools (peekaboo, chrome-devtools) instead of non-existent playwright-server.
+
+**Acceptance**:
+- [ ] Line 4 tools field updated with actual MCP tool patterns
+- [ ] References match .mcp.json server names
+- [ ] Follows `mcp__<servername>__*` naming convention
+- [ ] Rest of agent prompt unchanged
+
+**Files**: `/plugins/dev-loop/agents/work-evaluator.md` (edit line 4)
+
+**Note**: After Item 1 completes, verify actual tool names exposed by peekaboo/chrome-devtools and update accordingly.
+
+---
+
+## Implementation Order
+
+**Sequential**:
+1. Item 2 (independent, quick win)
+2. Item 1 (unblocks Item 3)
+3. Item 3 (depends on Item 1 for tool name discovery)
+
+**Parallel Option**:
+- Item 2 can be done anytime (no dependencies)
+- Items 1 and 3 must be sequential
+
+---
+
+## Testing Plan
+
+### After Item 1:
+```bash
+# Verify MCP servers configured
+cat /plugins/dev-loop/.mcp.json | jq .
+
+# Test server availability
+npx -y @modelcontextprotocol/server-peekaboo --help
+npx -y @modelcontextprotocol/server-chrome-devtools --help
+```
+
+### After Item 2:
+```bash
+# Validate plugin.json
+jq . /plugins/dev-loop/.claude-plugin/plugin.json
+
+# Check command count
+jq '.commands | length' /plugins/dev-loop/.claude-plugin/plugin.json
+# Expected: 4
+```
+
+### After Item 3:
+```bash
+# Verify agent frontmatter updated
+head -10 /plugins/dev-loop/agents/work-evaluator.md | grep "tools:"
+# Expected: tools: Read, Bash, mcp__peekaboo__*, mcp__chrome-devtools__*
+```
+
+### Integration Test:
+1. Load dev-loop plugin in Claude Code
+2. Verify no errors in plugin loading
+3. Check MCP servers appear in tool list
+4. Verify all 4 commands discoverable via slash completion
+
+---
+
+## Sprint Exit Criteria
+
+✅ **DONE WHEN**:
+1. `/plugins/dev-loop/.mcp.json` exists with 2 configured servers
+2. `plugin.json` references only 4 existing commands
+3. `work-evaluator.md` references correct MCP tools
+4. Plugin loads in Claude Code without errors
+5. MCP servers appear in available tools list
+6. All slash commands are discoverable
+
+**DO NOT PROCEED to Sprint 2 (P1 items) until ALL exit criteria met.**
+
+---
+
+## Risk Mitigation
+
+**Risk**: MCP server tool names differ from expected patterns
+**Mitigation**: After Item 1, query Claude Code MCP tool list and update Item 3 with actual names
+
+**Risk**: npx unavailable in environment
+**Mitigation**: Document manual installation paths in .mcp.json comments or use absolute paths
+
+**Risk**: Plugin validation errors after edits
+**Mitigation**: Use jq to validate JSON after each edit, test plugin loading immediately
+
+---
+
+## Next Sprint Preview
+
+**Sprint 2** will focus on:
+- [P1-1] Update project-evaluator with peekaboo screenshot guidance (3-4 hours)
+- [P1-2] Update work-evaluator with chrome-devtools guidance (3-4 hours)
+- [P1-3] Update work-evaluator with peekaboo desktop UI guidance (integrated with P1-2)
+
+**Estimated Duration**: 2 days
+
+**Do not start Sprint 2 until Sprint 1 exit criteria confirmed.**

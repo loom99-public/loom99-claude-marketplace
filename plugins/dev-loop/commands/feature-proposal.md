@@ -5,4 +5,4 @@ Specific areas of focus:
 $ARGUMENTS
 </specific-areas-of-focus>
 
-Use the product-visionary agent to turn this into a concrete proposal for improving our product.
+Use the dev-loop:product-visionary agent to turn this into a concrete proposal for improving our product.

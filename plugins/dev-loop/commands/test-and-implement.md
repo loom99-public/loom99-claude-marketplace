@@ -32,9 +32,9 @@ Tests MUST be (TestCriteria):
 
 <TestLoop>
 **Step 1: Design and write tests**
-Use the functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria.  Upon subsequent loops, iterate on the test to ensure they follow our defined TestCriteria.
+Use the dev-loop:functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria.  Upon subsequent loops, iterate on the test to ensure they follow our defined TestCriteria.
 **Step 2: Evaluate tests**
-Use the project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the tests that were just written). Evaluate them in context of the plan we are implementing to ensure they follow our TestCriteria.  If they do not, restart the loop.
+Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the tests that were just written). Evaluate them in context of the plan we are implementing to ensure they follow our TestCriteria.  If they do not, restart the loop.
 <LoopExitCondition>
 When TestCriteria are met with NO EXCEPTIONS, exit the loop and proceed
 </LoopExitCondition>
@@ -44,9 +44,9 @@ ONLY proceed after the first loop has been completed and the 'evaluate' step con
 
 <ImplementLoop>
 **Step 1**:
-Use the test-driven-implementer agent to implement the functionality that makes these tests pass.
+Use the dev-loop:test-driven-implementer agent to implement the functionality that makes these tests pass.
 **Step 2**:
-Use the project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation).  If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
+Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation).  If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
 <LoopExitCondition>
 There are no outstanding issues for which the solution is well defined / little to no ambiguity.
 </LoopExitCondition>

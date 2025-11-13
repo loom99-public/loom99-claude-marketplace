@@ -24,14 +24,14 @@ This command runs an implementation-evaluation cycle until goals are achieved.
 Repeat until complete:
 
 **Step 1: Implement**
-Use the iterative-implementer agent to build functionality incrementally. The agent will:
+Use the dev-loop:iterative-implementer agent to build functionality incrementally. The agent will:
 - Read STATUS/PLAN for context
 - Implement real, working functionality
 - Commit progress frequently
 - Update planning documents
 
 **Step 2: Evaluate**
-Use the work-evaluator agent to assess if goals are achieved. The agent will:
+Use the dev-loop:work-evaluator agent to assess if goals are achieved. The agent will:
 - Run the software
 - Collect evidence (screenshots, logs, output)
 - Compare against acceptance criteria
