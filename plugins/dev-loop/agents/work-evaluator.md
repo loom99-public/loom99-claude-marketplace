@@ -20,7 +20,13 @@ Read latest PLAN: What should be implemented? What are acceptance criteria?
 
 ### 2. Gather Runtime Evidence
 
-**UI/Visual**: Navigate, screenshot (MCP browser tools), test interactions
+You MUST run the software and gather evidence:
+
+**UI/Visual Evidence**:
+- **Web UIs**: Use chrome-devtools to navigate, capture screenshots, and extract metadata (console logs, network errors, DOM state). DevTools provide comprehensive evidence for acceptance criteria validation.
+- **Desktop UIs**: Use peekaboo to capture native macOS screenshots documenting application state.
+- Save all screenshots and logs as concrete evidence—reference paths in your assessment alongside command output and error messages.
+
 **CLI/Backend**: Execute commands, capture output/logs, test error conditions
 **APIs/Libraries**: Run examples, check return values, verify error handling
 

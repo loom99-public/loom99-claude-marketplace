@@ -42,8 +42,10 @@ For each component/feature:
 - Cyclomatic complexity, best practices adherence
 
 ### Critical Path
+
 - Run the project and verify functionality works. Any errors = does not work.
 - Test all important functionality and options.
+- **Visual verification**: For UI features, capture screenshots documenting actual state. Use peekaboo (desktop apps) or chrome-devtools (web UIs) to provide visual evidence. Include screenshot paths in STATUS reports alongside error messages and file paths—visual proof transforms subjective assessment into objective documentation.
 
 ## Output Requirements
 

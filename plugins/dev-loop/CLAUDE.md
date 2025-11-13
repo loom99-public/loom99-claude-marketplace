@@ -215,8 +215,20 @@ Planning Docs (.agent_planning/) - Shared state
 ## Integration Points
 
 ### MCP Servers
-- work-evaluator uses MCP browser tools (e.g., Playwright) for screenshot capture
-- Configured in plugin's `.mcp.json` if available
+
+The dev-loop plugin configures two MCP servers via `.mcp.json`:
+
+**peekaboo** (native macOS screenshots):
+- Used by: project-evaluator (runtime verification), work-evaluator (desktop UI evidence)
+- Purpose: Capture screenshots of native macOS applications during testing
+- When: Desktop UI features requiring visual verification
+
+**chrome-devtools** (browser automation + metadata):
+- Used by: work-evaluator (web UI evidence gathering)
+- Purpose: Navigate browser, capture screenshots, extract console logs/network errors
+- When: Web UI features in non-TDD workflow
+
+**Integration Philosophy**: "Light touch" - MCP tools integrated at pivotal workflow points (runtime verification, evidence gathering) with minimal prompt additions. Agents know when to use screenshots as evidence alongside logs and errors.
 
 ### Git Workflow
 - Agents use GitAdd, GitCommit tools
