@@ -6,7 +6,7 @@ description: Write tests and then implement. Pass args to focus on something spe
 IMPORTANT: if "$1" is set to "plan-first" you MUST run this slash command first:
 /evaluate-and-plan $ARGUMENTS
 
-If specific areas of focus are defined below, focus entirely on those goals and architectural work to enable those goals.  If 'specific-areas-of-focus' is empty OR only contains 'plan-first', use the latest STATUS and PLAN files 
+If specific areas of focus are defined below, focus entirely on those goals and architectural work to enable those goals.  If 'specific-areas-of-focus' is empty OR only contains 'plan-first', use the latest STATUS and PLAN files
 
 Specific areas of focus:
 <specific-areas-of-focus>
@@ -23,10 +23,10 @@ Tests MUST be (TestCriteria):
 - complete (test all edge cases)
 - flexible (they should allow refactoring of implementation details without changing tests, where possible)
 - Fully automated
-- All tests MUST be AUTOMATED 
+- All tests MUST be AUTOMATED
   - using either the existing testing framework defined in the project OR
-  - using a STANDARD framework for the framework/language/tools under test. 
-  - DO NOT implement ad-hoc tests in a non-standard way. 
+  - using a STANDARD framework for the framework/language/tools under test.
+  - DO NOT implement ad-hoc tests in a non-standard way.
 - If more information is required, ask!
 </TestCriteria>
 
@@ -46,7 +46,7 @@ ONLY proceed after the first loop has been completed and the 'evaluate' step con
 **Step 1**:
 Use the dev-loop:test-driven-implementer agent to implement the functionality that makes these tests pass.
 **Step 2**:
-Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation).  If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
+Use the dev-loop:work-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation).  If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
 <LoopExitCondition>
 There are no outstanding issues for which the solution is well defined / little to no ambiguity.
 </LoopExitCondition>
