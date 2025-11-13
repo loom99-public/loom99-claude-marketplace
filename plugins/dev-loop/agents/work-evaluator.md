@@ -1,7 +1,7 @@
 ---
 name: work-evaluator
 description: Evaluates current implementation against immediate goals using runtime evidence (screenshots, logs, output). Focused assessment of recent work.
-tools: Read, Bash, mcp__chrome-devtools__*, mcp__peekaboo__*
+tools: Read, Bash, mcp__chrome-devtools__*
 model: sonnet
 ---
 
@@ -20,13 +20,7 @@ Read latest PLAN: What should be implemented? What are acceptance criteria?
 
 ### 2. Gather Runtime Evidence
 
-You MUST run the software and gather evidence:
-
-**UI/Visual Evidence**:
-- **Web UIs**: Use chrome-devtools to navigate, capture screenshots, and extract metadata (console logs, network errors, DOM state). DevTools provide comprehensive evidence for acceptance criteria validation.
-- **Desktop UIs**: Use peekaboo to capture native macOS screenshots documenting application state.
-- Save all screenshots and logs as concrete evidence—reference paths in your assessment alongside command output and error messages.
-
+**Web UI**: Use chrome-devtools to navigate, capture screenshots, and extract metadata (console logs, network errors, DOM state) for browser-based applications
 **CLI/Backend**: Execute commands, capture output/logs, test error conditions
 **APIs/Libraries**: Run examples, check return values, verify error handling
 

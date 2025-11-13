@@ -105,7 +105,7 @@ Planning Docs (.agent_planning/) - Shared state
 - **Input**: PLAN-*.md acceptance criteria
 - **Output**: WORK-EVALUATION-<timestamp>.md
 - **Mission**: Runtime validation - run software, capture evidence, assess goals
-- **Evidence**: Screenshots (MCP browser tools), logs, command output
+- **Evidence**: Screenshots and browser metadata (chrome-devtools for web apps), logs, command output
 
 ### product-visionary (feature proposals)
 - **Input**: Current state, user needs
@@ -216,19 +216,14 @@ Planning Docs (.agent_planning/) - Shared state
 
 ### MCP Servers
 
-The dev-loop plugin configures two MCP servers via `.mcp.json`:
-
-**peekaboo** (native macOS screenshots):
-- Used by: project-evaluator (runtime verification), work-evaluator (desktop UI evidence)
-- Purpose: Capture screenshots of native macOS applications during testing
-- When: Desktop UI features requiring visual verification
+The dev-loop plugin configures the chrome-devtools MCP server via `.mcp.json`:
 
 **chrome-devtools** (browser automation + metadata):
 - Used by: work-evaluator (web UI evidence gathering)
-- Purpose: Navigate browser, capture screenshots, extract console logs/network errors
-- When: Web UI features in non-TDD workflow
+- Purpose: Navigate browser, capture screenshots, extract console logs/network errors for browser-based applications
+- When: Web UI features in non-TDD workflow during runtime evaluation
 
-**Integration Philosophy**: "Light touch" - MCP tools integrated at pivotal workflow points (runtime verification, evidence gathering) with minimal prompt additions. Agents know when to use screenshots as evidence alongside logs and errors.
+**Integration Philosophy**: "Light touch" - chrome-devtools integrated at pivotal workflow points (runtime verification, evidence gathering) with minimal prompt additions. The work-evaluator agent uses screenshots and browser metadata as evidence alongside logs and errors when evaluating web applications.
 
 ### Git Workflow
 - Agents use GitAdd, GitCommit tools
