@@ -11,7 +11,6 @@
   "commands": [
     "./commands/evaluate-and-plan.md",
     "./commands/feature-proposal.md",
-    "./commands/implement.md",
     "./commands/implement-and-iterate.md",
     "./commands/test-and-implement.md"
   ],

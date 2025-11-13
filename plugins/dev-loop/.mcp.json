@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-chrome-devtools"],
+      "description": "Browser automation with screenshots and DevTools metadata for web application testing and evaluation"
+    },
+    "peekaboo": {
+      "command": "npx",
+      "args": ["-y", "@lume/peekaboo-mcp"],
+      "description": "Native macOS screenshot capture for desktop UI validation during evaluation phases"
+    }
+  }
+}

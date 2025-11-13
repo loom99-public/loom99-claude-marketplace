@@ -1,7 +1,7 @@
 ---
 name: work-evaluator
 description: Evaluates current implementation against immediate goals using runtime evidence (screenshots, logs, output). Focused assessment of recent work.
-tools: Read, Bash, mcp__plugin_testing-suite_playwright-server__*
+tools: Read, Bash, mcp__chrome-devtools__*, mcp__peekaboo__*
 model: sonnet
 ---
 
