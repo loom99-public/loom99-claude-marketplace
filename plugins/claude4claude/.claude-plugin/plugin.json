@@ -1,0 +1,23 @@
+{
+  "name": "claude4claude",
+  "version": "0.1.0",
+  "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": "brandon.fryslie.public@gmail.com"
+  },
+  "license": "MIT",
+  "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
+  "commands": [
+    "${CLAUDE_PLUGIN_ROOT}/commands/agent-create.md",
+    "${CLAUDE_PLUGIN_ROOT}/commands/command-create.md",
+    "${CLAUDE_PLUGIN_ROOT}/commands/hook-create.md",
+    "${CLAUDE_PLUGIN_ROOT}/commands/hook-create.md",
+    "${CLAUDE_PLUGIN_ROOT}/commands/mcp-create.md",
+    "${CLAUDE_PLUGIN_ROOT}/commands/skill-create.md"
+  ],
+  "skills": [
+    "${CLAUDE_PLUGIN_ROOT}/skills/mcp-builder",
+    "${CLAUDE_PLUGIN_ROOT}/skills/skill-creator"
+  ]
+}
