@@ -1,7 +1,0 @@
-[2025-11-17 04:26:29] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
-[2025-11-17 04:26:29] Using database: /Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/.beads/beads.db
-[2025-11-17 04:26:30] Database opened: /Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/.beads/beads.db
-[2025-11-17 04:26:30] Repository fingerprint validated: 97e18a09
-[2025-11-17 04:26:30] Starting RPC server: /Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/.beads/bd.sock
-[2025-11-17 04:26:30] RPC server error: failed to initialize RPC listener: listen unix /Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/.beads/bd.sock: bind: invalid argument
-[2025-11-17 04:26:30] RPC server failed to start: failed to initialize RPC listener: listen unix /Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/.beads/bd.sock: bind: invalid argument
