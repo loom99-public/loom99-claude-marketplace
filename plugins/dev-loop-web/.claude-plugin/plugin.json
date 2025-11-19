@@ -1,0 +1,26 @@
+{
+  "name": "dev-loop",
+  "version": "0.1.0",
+  "description": "dev-loop plugin add-on - web dev",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
+  "commands": [
+    "./commands/evaluate-and-plan.md",
+    "./commands/feature-proposal.md",
+    "./commands/implement-and-iterate.md",
+    "./commands/test-and-implement.md"
+  ],
+  "agents": [
+    "./agents/functional-tester.md",
+    "./agents/iterative-implementer.md",
+    "./agents/product-visionary.md",
+    "./agents/project-evaluator.md",
+    "./agents/status-planner.md",
+    "./agents/test-driven-implementer.md",
+    "./agents/work-evaluator.md"
+  ]
+}
