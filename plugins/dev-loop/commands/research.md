@@ -20,9 +20,11 @@ Default to **focused** unless the question clearly affects project-wide architec
 
 ## Research Loop
 
-Repeat until research is SUFFICIENT:
+**Maximum 3 iterations.** Track iteration count and enforce limit.
 
-**Step 1: Research**
+Repeat until research is SUFFICIENT OR iteration limit reached:
+
+**Step 1: Research** (iteration n of 3)
 Use the dev-loop:researcher agent to explore the problem:
 - Gather context from codebase and external sources
 - Identify all viable options
@@ -47,10 +49,11 @@ Verdict: **SUFFICIENT** or **INSUFFICIENT**
 **Step 2b: Display results** - Show evaluator's verdict and any gaps identified.
 
 **Continue Condition**:
-If INSUFFICIENT, provide evaluator's feedback to researcher and continue loop.
+If INSUFFICIENT AND iteration < 3, provide evaluator's feedback to researcher and continue loop.
 
-**Exit Condition**:
-When evaluator returns SUFFICIENT, exit loop and proceed to decision.
+**Exit Conditions**:
+- **SUFFICIENT**: Evaluator satisfied → proceed to decision
+- **Iteration limit reached**: After 3 iterations still INSUFFICIENT → surface to user with best available research and explicit gaps. User must provide guidance before continuing.
 
 ## Decision Step
 
@@ -105,4 +108,7 @@ Next: /evaluate-and-plan to create implementation plan
 - Evaluator auto-selects recommendation based on project fit
 - Output is designed to feed directly into planning workflow
 - Use project-evaluator for architectural questions, work-evaluator for specific technical questions
-- Maximum 3 iterations to prevent infinite loops - if still INSUFFICIENT, surface to user
+- **Iteration limit enforced**: Maximum 3 iterations. If still INSUFFICIENT after 3 rounds, STOP and surface to user with:
+  - Best available research so far
+  - Specific gaps that couldn't be resolved
+  - Request for user guidance before continuing
