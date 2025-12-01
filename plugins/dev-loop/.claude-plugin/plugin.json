@@ -12,6 +12,7 @@
     "./commands/evaluate-and-plan.md",
     "./commands/feature-proposal.md",
     "./commands/implement-and-iterate.md",
+    "./commands/init-project.md",
     "./commands/research.md",
     "./commands/test-and-implement.md"
   ],
@@ -19,6 +20,7 @@
     "./agents/functional-tester.md",
     "./agents/iterative-implementer.md",
     "./agents/product-visionary.md",
+    "./agents/project-architect.md",
     "./agents/project-evaluator.md",
     "./agents/researcher.md",
     "./agents/status-planner.md",
