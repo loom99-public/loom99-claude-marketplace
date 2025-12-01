@@ -5,5 +5,8 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "disabledMcpjsonServers": [
+    "ida-pro-mcp"
+  ]
 }
