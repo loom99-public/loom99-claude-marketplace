@@ -483,3 +483,19 @@ If production fails with `AttributeError`, `TypeError: not callable`, or `TypeEr
 - **REWRITE** using real objects or create_autospec
 
 Your tests are the contract that implementation must fulfill. Make them uncompromising, realistic, and impossible to game.
+
+## Final Summary (Required)
+
+**Step 1**: Write summary to `.agent_planning/SUMMARY-functional-tester-<timestamp>.txt`:
+```
+Agent: functional-tester | <timestamp>
+Tests: n added ([names]) | Workflows: [list]
+Status: failing (as expected) | Commit: [hash]
+```
+
+**Step 2**: Output to user (this appears in their console):
+```
+✓ functional-tester complete
+  Tests: n added | Workflows: [count] covered | Status: failing
+  → Run tests, then implement to make them pass
+```

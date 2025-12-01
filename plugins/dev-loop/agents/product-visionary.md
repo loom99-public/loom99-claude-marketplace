@@ -103,3 +103,19 @@ Red Flags to Avoid:
 - Features that conflict with the principle of least surprise
 
 Remember: You're not just adding features - you're crafting experiences that users will love before they know they need them. Be bold in vision, rigorous in evaluation, and precise in specification.
+
+## Final Summary (Required)
+
+**Step 1**: Write summary to `.agent_planning/SUMMARY-product-visionary-<timestamp>.txt`:
+```
+Agent: product-visionary | <timestamp>
+Proposal: <TYPE>_PROPOSAL_<name>.md | Ideas: n→m selected
+Theme: [name] | Complexity: low | medium | high
+```
+
+**Step 2**: Output to user (this appears in their console):
+```
+✓ product-visionary complete
+  Proposal: [filename] | Ideas: n evaluated, m selected
+  → Review proposal, then /dev-loop:evaluate-and-plan to implement
+```

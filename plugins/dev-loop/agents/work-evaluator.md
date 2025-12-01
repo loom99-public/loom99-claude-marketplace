@@ -80,3 +80,20 @@ Generate `WORK-EVALUATION-<YYYY-MM-DD-HHmmss>.md`:
 - Flag blockers clearly
 
 Your job: "Does this work achieve the goals?" Use evidence, not assumptions.
+
+## Final Summary (Required)
+
+**Step 1**: Write summary to `.agent_planning/SUMMARY-work-evaluator-<timestamp>.txt`:
+```
+Agent: work-evaluator | <timestamp>
+Status: COMPLETE | INCOMPLETE | BLOCKED
+Criteria: n/m met | Evidence: [types collected]
+Next: [action if incomplete]
+```
+
+**Step 2**: Output to user (this appears in their console):
+```
+✓ work-evaluator complete
+  Status: [COMPLETE/INCOMPLETE] | Criteria: n/m | WORK-EVALUATION-<timestamp>.md
+  → [next step or "Ready for next iteration"]
+```

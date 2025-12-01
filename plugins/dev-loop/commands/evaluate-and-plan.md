@@ -12,5 +12,17 @@ $ARGUMENTS
 
 Step 1: Use the dev-loop:project-evaluator agent to evaluate the current status of the project.
 
-Step 2: Only after project-evaluator has completed, use the dev-loop:status-planner agent to plan the remaining work for the project based on the output of Step 1.
+Step 2: After project-evaluator completes, display its summary to the user before proceeding.
+
+Step 3: Use the dev-loop:status-planner agent to plan the remaining work based on the STATUS file from Step 1.
+
+Step 4: After status-planner completes, display its summary and show a final workflow summary:
+```
+═══════════════════════════════════════
+Evaluate & Plan Complete
+  STATUS: .agent_planning/STATUS-<ts>.md
+  PLAN: .agent_planning/PLAN-<ts>.md
+Next: /dev-loop:test-and-implement or /dev-loop:implement-and-iterate
+═══════════════════════════════════════
+```
 

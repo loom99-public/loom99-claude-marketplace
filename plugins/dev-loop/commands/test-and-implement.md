@@ -32,9 +32,11 @@ Tests MUST be (TestCriteria):
 
 <TestLoop>
 **Step 1: Design and write tests**
-Use the dev-loop:functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria.  Upon subsequent loops, iterate on the test to ensure they follow our defined TestCriteria.
+Use the dev-loop:functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria. Upon subsequent loops, iterate on tests to meet TestCriteria.
+**Step 1b: Display results** - Show functional-tester's summary to user before proceeding.
 **Step 2: Evaluate tests**
-Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the tests that were just written). Evaluate them in context of the plan we are implementing to ensure they follow our TestCriteria.  If they do not, restart the loop.
+Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the tests just written). Evaluate in context of the plan to ensure they follow TestCriteria. If they do not, restart the loop.
+**Step 2b: Display results** - Show project-evaluator's summary and loop decision (continue/exit) to user.
 <LoopExitCondition>
 When TestCriteria are met with NO EXCEPTIONS, exit the loop and proceed
 </LoopExitCondition>
@@ -45,11 +47,23 @@ ONLY proceed after the first loop has been completed and the 'evaluate' step con
 <ImplementLoop>
 **Step 1**:
 Use the dev-loop:test-driven-implementer agent to implement the functionality that makes these tests pass.
+**Step 1b: Display results** - Show test-driven-implementer's summary (tests passing/failing, files, commits) to user.
 **Step 2**:
-Use the dev-loop:work-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation).  If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
+Use the dev-loop:work-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation). If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
+**Step 2b: Display results** - Show work-evaluator's summary and loop decision (continue/exit) to user.
 <LoopExitCondition>
 There are no outstanding issues for which the solution is well defined / little to no ambiguity.
 </LoopExitCondition>
 </ImplementLoop>
 
-**FINAL STEP*: AFTER we have run BOTH TestLoop and ImplementLoop to completion, run the command `/dev-loop:evaluate-and-plan $ARGUMENTS` to ensure we have up to date planning and status documents.
+**FINAL STEP**: AFTER we have run BOTH TestLoop and ImplementLoop to completion, run the command `/dev-loop:evaluate-and-plan $ARGUMENTS` to ensure we have up to date planning and status documents.
+
+Then display a final summary:
+```
+═══════════════════════════════════════
+Test & Implement Complete
+  TestLoop: n iterations | ImplementLoop: m iterations
+  Tests: all passing | Files: [count] | Commits: [count]
+Next: Review STATUS/PLAN or continue development
+═══════════════════════════════════════
+```

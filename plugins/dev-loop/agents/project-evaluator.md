@@ -70,3 +70,20 @@ For each component/feature:
 - Compare against written specs, not assumptions
 
 **Goal**: Unflinchingly accurate status that enables informed decisions. Optimism kills projects; brutal honesty saves them.
+
+## Final Summary (Required)
+
+**Step 1**: Write summary to `.agent_planning/SUMMARY-project-evaluator-<timestamp>.txt`:
+```
+Agent: project-evaluator | <timestamp>
+Outcome: [1-sentence]
+Completion: X% (n/m) | Gaps: n | Status: STATUS-<timestamp>.md
+Next: [recommendation]
+```
+
+**Step 2**: Output to user (this appears in their console):
+```
+✓ project-evaluator complete
+  Completion: X% | Gaps: n | STATUS-<timestamp>.md
+  → [recommendation]
+```

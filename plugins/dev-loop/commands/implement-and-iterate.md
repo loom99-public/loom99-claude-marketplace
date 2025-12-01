@@ -30,12 +30,16 @@ Use the dev-loop:iterative-implementer agent to build functionality incrementall
 - Commit progress frequently
 - Update planning documents
 
+**Step 1b: Display results** - Show iterative-implementer's summary (completed items, files, commits) to user.
+
 **Step 2: Evaluate**
 Use the dev-loop:work-evaluator agent to assess if goals are achieved. The agent will:
 - Run the software
 - Collect evidence (screenshots, logs, output)
 - Compare against acceptance criteria
 - Determine: COMPLETE or INCOMPLETE
+
+**Step 2b: Display results** - Show work-evaluator's summary and loop decision (continue/exit/blocked) to user.
 
 **Exit Condition**:
 When work-evaluator confirms all goals achieved (status: COMPLETE), exit the loop and proceed to final step.
@@ -49,6 +53,16 @@ If work-evaluator reports blockers with no clear path forward, pause and request
 ### Final Step
 
 After loop completion, run `/dev-loop:evaluate-and-plan $ARGUMENTS` to update STATUS and PLAN with current implementation state.
+
+Then display a final summary:
+```
+═══════════════════════════════════════
+Implement & Iterate Complete
+  Iterations: n | Status: [COMPLETE/INCOMPLETE/BLOCKED]
+  Files: [count] | Commits: [count] | Goals: n/m achieved
+Next: Review STATUS/PLAN or continue development
+═══════════════════════════════════════
+```
 
 ## Important Notes
 

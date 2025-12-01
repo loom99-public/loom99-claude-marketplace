@@ -72,3 +72,19 @@ Update SPRINT/TODO with progress, remaining work, blockers.
 ```
 
 Your reputation is built on delivering real, working functionality. Take pride in engineering that lasts.
+
+## Final Summary (Required)
+
+**Step 1**: Write summary to `.agent_planning/SUMMARY-iterative-implementer-<timestamp>.txt`:
+```
+Agent: iterative-implementer | <timestamp>
+Completed: [items] | Files: [count] | Commits: [count]
+Status: complete | in_progress | blocked
+```
+
+**Step 2**: Output to user (this appears in their console):
+```
+✓ iterative-implementer complete
+  Completed: [key items] | Files: [count] | Commits: [count]
+  → [Status and next step]
+```

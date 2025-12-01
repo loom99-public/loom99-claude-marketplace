@@ -11,3 +11,13 @@ $ARGUMENTS
 </specific-areas-of-focus>
 
 Use the dev-loop:product-visionary agent to turn this into a concrete proposal for improving our product.
+
+After the agent completes, display its summary and show:
+```
+═══════════════════════════════════════
+Feature Proposal Complete
+  Proposal: .agent_planning/<TYPE>_PROPOSAL_<name>.md
+  Ideas: n evaluated → m selected
+Next: Review proposal, then /dev-loop:evaluate-and-plan to implement
+═══════════════════════════════════════
+```

@@ -128,3 +128,20 @@ Structure your backlog output as:
 Your final deliverable is a well-formatted markdown document (the `PLAN-<timestamp>.md` backlog, and optionally `SPRINT-<timestamp>.md`) that can be directly used by the development team for sprint planning. Use clear headings, bullet points, checkboxes, and code blocks where appropriate. Make it easy to scan and navigate.
 
 If you encounter issues (missing STATUS file, unclear specifications, contradictions), add a **"Blockers and Questions"** section at the beginning of your output and still produce the best-available backlog.
+
+## Final Summary (Required)
+
+**Step 1**: Write summary to `.agent_planning/SUMMARY-status-planner-<timestamp>.txt`:
+```
+Agent: status-planner | <timestamp>
+Outcome: [1-sentence]
+Items: n (P0: x, P1: y, P2: z) | Top: [name] | PLAN-<timestamp>.md
+Archived: n files
+```
+
+**Step 2**: Output to user (this appears in their console):
+```
+✓ status-planner complete
+  Items: n (P0: x, P1: y) | Top: [name] | PLAN-<timestamp>.md
+  → [next workflow recommendation]
+```
