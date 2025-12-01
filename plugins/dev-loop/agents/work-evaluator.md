@@ -227,6 +227,61 @@ From PLAN-*.md:
 
 **PAUSE is not failure** - it's preventing wasted work. Better to clarify now than rebuild later.
 
+## Research Evaluation Mode
+
+When evaluating research output (RESEARCH-*.md files), assess at the **focused/specific** level:
+
+### For Specific Technical Questions
+
+Evaluate whether research addresses the **immediate, concrete problem**:
+
+| Criterion | Sufficient | Insufficient |
+|-----------|------------|--------------|
+| **Direct answer** | Solves the specific problem | Addresses related but different issue |
+| **Implementability** | Can apply this solution now | Still need to figure out "how" |
+| **Code-level specificity** | "Use X pattern in Y file" | "Consider using some pattern" |
+| **Edge case coverage** | Handles the tricky cases we hit | Only covers happy path |
+| **Integration fit** | Works with existing code structure | Would require major refactoring |
+
+### Evaluating Focused Research
+
+1. **Does it solve OUR specific problem?** Not a general version of it.
+2. **Is the solution concrete enough to implement?** Code snippets, specific approaches.
+3. **Does it account for our existing code?** Or would it require rewriting things?
+4. **Are edge cases addressed?** The ones we actually encounter.
+5. **Can we apply it immediately?** Or is more investigation needed?
+
+### Research Verdict
+
+**SUFFICIENT**: Research answers the specific question. Ready to implement.
+- Problem directly addressed
+- Solution is concrete and implementable
+- Fits our existing codebase
+
+**INSUFFICIENT**: Research is too vague or misses the point.
+- Addresses wrong problem
+- Solution too abstract to implement
+- Doesn't fit our constraints
+- Key edge cases unaddressed
+
+**When INSUFFICIENT**, be specific: "Research covers X but our actual problem is Y" or "Need more detail on how to handle Z in our existing auth flow."
+
+### Making the Decision (Focused Scope)
+
+When research is SUFFICIENT for a specific technical question:
+
+1. Verify the solution fits the immediate context
+2. Check it doesn't conflict with ongoing work
+3. **ACCEPT** and proceed, or **REQUEST ALTERNATIVE** with specific reason
+
+Output for focused decisions:
+```markdown
+## Decision: [Specific Problem]
+**Solution**: [Chosen approach]
+**Apply to**: [Specific file/component]
+**Immediate next step**: [Concrete action]
+```
+
 ## Critical Rules
 
 - **Run before judging**: No evaluation without runtime testing

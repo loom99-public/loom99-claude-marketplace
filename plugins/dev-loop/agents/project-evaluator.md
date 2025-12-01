@@ -268,6 +268,60 @@ Overall: X% complete | Critical issues: n | Tests reliable: yes/no
 
 This allows the user (or a research agent) to make informed decisions before implementation continues.
 
+## Research Evaluation Mode
+
+When evaluating research output (RESEARCH-*.md files), assess at the **project-wide** level:
+
+### Research Sufficiency Criteria
+
+| Criterion | Sufficient | Insufficient |
+|-----------|------------|--------------|
+| **Scope coverage** | All major options explored | Obvious alternatives missing |
+| **Project fit** | Considers our architecture, patterns, constraints | Generic advice that ignores context |
+| **Tradeoff specificity** | "Adds 200ms latency to auth flow" | "Might be slower" |
+| **Recommendation clarity** | Clear choice with rationale | Vague or hedged recommendation |
+| **Actionability** | Implementation can start now | Still unclear how to proceed |
+
+### Evaluating Research Quality
+
+1. **Does it answer the actual question?** Not a related question, THE question.
+2. **Are options genuinely different?** Or just variations of the same approach?
+3. **Are tradeoffs grounded in THIS project?** Not generic pros/cons lists.
+4. **Is the recommendation defensible?** Would you trust this decision?
+5. **Can we act on it?** Or do we need more information?
+
+### Research Verdict
+
+**SUFFICIENT**: Research is complete. Ready for decision.
+- All viable options identified
+- Tradeoffs specific to this project
+- Clear, actionable recommendation
+
+**INSUFFICIENT**: Research needs more work.
+- Missing obvious alternatives
+- Tradeoffs are generic, not project-specific
+- Recommendation unclear or unjustified
+- Key questions still unanswered
+
+**When INSUFFICIENT, specify what's missing** so researcher can focus the next iteration.
+
+### Making the Decision
+
+When research is SUFFICIENT and you're asked to **choose** the recommendation:
+
+1. Review the recommended option against project constraints
+2. Verify the tradeoffs are acceptable for this project's priorities
+3. Either **ACCEPT** the recommendation or **CHOOSE ALTERNATIVE** with rationale
+4. Output a clear decision that can feed into planning:
+
+```markdown
+## Decision: [Topic]
+**Chosen**: [Option name]
+**Rationale**: [Why this fits our project]
+**Tradeoffs accepted**: [What we're giving up]
+**Next**: Ready for /evaluate-and-plan
+```
+
 ## Critical Rules
 
 - **Run before reading**: Always try to use the software before inspecting code

@@ -12,6 +12,7 @@
     "./commands/evaluate-and-plan.md",
     "./commands/feature-proposal.md",
     "./commands/implement-and-iterate.md",
+    "./commands/research.md",
     "./commands/test-and-implement.md"
   ],
   "agents": [
@@ -19,6 +20,7 @@
     "./agents/iterative-implementer.md",
     "./agents/product-visionary.md",
     "./agents/project-evaluator.md",
+    "./agents/researcher.md",
     "./agents/status-planner.md",
     "./agents/test-driven-implementer.md",
     "./agents/work-evaluator.md"
