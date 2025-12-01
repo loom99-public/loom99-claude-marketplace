@@ -1,23 +1,29 @@
 ---
 argument-hint: [area of focus]
-description: Generate innovative feature proposals using the product-visionary agent. Pass a specific area of focus or let Claude explore opportunities based on current project state.
+description: Generate high-level feature proposals focused on user value. Creates raw material for the planning workflow - run /evaluate-and-plan afterward to create implementation plans.
 ---
 
-If specific areas of focus are defined below, focus entirely on those goals and architectural work to enable those goals.  If 'specific-areas-of-focus' is empty, come up with a simple and achieable feature proposal yourself.
+Generate a feature proposal focused on user value and product vision.
 
-Specific areas of focus:
-<specific-areas-of-focus>
+If specific areas of focus are defined below, explore ideas within that domain. If empty, identify opportunities based on the current project state.
+
+<areas-of-focus>
 $ARGUMENTS
-</specific-areas-of-focus>
+</areas-of-focus>
 
-Use the dev-loop:product-visionary agent to turn this into a concrete proposal for improving our product.
+Use the dev-loop:product-visionary agent to create a feature proposal.
+
+**Important**: This agent generates the "what" and "why" - user problems, feature concepts, and success criteria. It does NOT create implementation plans. After reviewing the proposal, run `/dev-loop:evaluate-and-plan` to turn selected ideas into actionable work items.
 
 After the agent completes, display its summary and show:
 ```
-═══════════════════════════════════════
+=======================================
 Feature Proposal Complete
   Proposal: .agent_planning/<TYPE>_PROPOSAL_<name>.md
-  Ideas: n evaluated → m selected
-Next: Review proposal, then /dev-loop:evaluate-and-plan to implement
-═══════════════════════════════════════
+  Ideas: n brainstormed -> m selected
+Workflow:
+  1. Review the proposal
+  2. Discuss/refine with user if needed
+  3. Run /dev-loop:evaluate-and-plan to create implementation plan
+=======================================
 ```
