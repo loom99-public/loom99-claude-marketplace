@@ -33,27 +33,57 @@ Tests MUST be (TestCriteria):
 <TestLoop>
 **Step 1: Design and write tests**
 Use the dev-loop:functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria. Upon subsequent loops, iterate on tests to meet TestCriteria.
+
 **Step 1b: Display results** - Show functional-tester's summary to user before proceeding.
+
 **Step 2: Evaluate tests**
-Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the tests just written). Evaluate in context of the plan to ensure they follow TestCriteria. If they do not, restart the loop.
-**Step 2b: Display results** - Show project-evaluator's summary and loop decision (continue/exit) to user.
+Use the dev-loop:project-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the tests just written). Evaluate in context of the plan to ensure they follow TestCriteria.
+
+**Step 2b: Display results** - Show project-evaluator's summary and loop decision to user.
+
+**Step 2c: Handle PAUSE (if applicable)**
+If project-evaluator returns PAUSE with ambiguities about test design:
+1. Use dev-loop:researcher to explore the testing question (e.g., what to test, how to structure, what's appropriate scope)
+2. Use project-evaluator (research evaluation mode) to assess if research is sufficient
+3. If sufficient, project-evaluator makes the decision
+4. Continue TestLoop with resolved ambiguity
+
 <LoopExitCondition>
 When TestCriteria are met with NO EXCEPTIONS, exit the loop and proceed
 </LoopExitCondition>
+
+<LoopContinueCondition>
+If tests don't meet TestCriteria, restart the loop with specific feedback.
+</LoopContinueCondition>
 </TestLoop>
 
 ONLY proceed after the first loop has been completed and the 'evaluate' step confirms that we have properly implemented the tests according to the TestCriteria.  If this is not the case, restart TestLoop.
 
 <ImplementLoop>
-**Step 1**:
+**Step 1: Implement**
 Use the dev-loop:test-driven-implementer agent to implement the functionality that makes these tests pass.
+
 **Step 1b: Display results** - Show test-driven-implementer's summary (tests passing/failing, files, commits) to user.
-**Step 2**:
-Use the dev-loop:work-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation). If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
-**Step 2b: Display results** - Show work-evaluator's summary and loop decision (continue/exit) to user.
+
+**Step 2: Evaluate implementation**
+Use the dev-loop:work-evaluator agent to evaluate ONLY THE RESULT OF STEP 1 (the current implementation).
+
+**Step 2b: Display results** - Show work-evaluator's summary and loop decision to user.
+
+**Step 2c: Handle PAUSE (if applicable)**
+If work-evaluator returns PAUSE with ambiguities about implementation:
+1. Use dev-loop:researcher to explore the specific technical question
+2. Use work-evaluator (research evaluation mode) to assess if research is sufficient
+3. If sufficient, work-evaluator makes the decision
+4. Continue ImplementLoop with resolved ambiguity
+
 <LoopExitCondition>
 There are no outstanding issues for which the solution is well defined / little to no ambiguity.
 </LoopExitCondition>
+
+<LoopContinueCondition>
+If there are known outstanding issues and the solution is well defined, restart the ImplementLoop.
+</LoopContinueCondition>
 </ImplementLoop>
 
 **FINAL STEP**: AFTER we have run BOTH TestLoop and ImplementLoop to completion, run the command `/dev-loop:evaluate-and-plan $ARGUMENTS` to ensure we have up to date planning and status documents.
@@ -64,6 +94,13 @@ Then display a final summary:
 Test & Implement Complete
   TestLoop: n iterations | ImplementLoop: m iterations
   Tests: all passing | Files: [count] | Commits: [count]
+  Research: [n decisions made OR "none needed"]
 Next: Review STATUS/PLAN or continue development
 ═══════════════════════════════════════
 ```
+
+## Important Notes
+
+- **PAUSE triggers automatic research** - evaluators can trigger research to resolve ambiguities
+- User only involved if research cannot resolve after 3 iterations
+- Both loops must complete before final evaluation
