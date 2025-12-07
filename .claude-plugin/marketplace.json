@@ -37,9 +37,9 @@
       "strict": true
     },
     {
-      "name": "dev-loop",
-      "source": "./plugins/dev-loop",
-      "description": "The stuff you're already doing, but automatic",
+      "name": "do",
+      "source": "./plugins/do-more-now",
+      "description": "Do more now",
       "version": "0.1.0",
       "strict": true
     },

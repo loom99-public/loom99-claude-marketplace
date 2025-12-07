@@ -69,13 +69,13 @@ These plugins are being refined and will be released as they reach production qu
 If you're interested in any of these upcoming plugins:
 - ⭐ Star this repository to get notified of releases
 - 📝 Open an issue to share your use case or feature requests
-- 💬 Provide feedback on the dev-loop plugin to help shape future plugins
+- 💬 Provide feedback on the do plugin to help shape future plugins
 
 ---
 
 ## 📖 Current Available Plugin
 
-**[dev-loop](./README.md)** - Available now! Two production-ready workflows (TDD + Iterative Implementation) with comprehensive evaluation and planning.
+**[do](./README.md)** - Available now! Two production-ready workflows (TDD + Iterative Implementation) with comprehensive evaluation and planning.
 
 ---
 
