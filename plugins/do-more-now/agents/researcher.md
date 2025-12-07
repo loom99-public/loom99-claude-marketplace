@@ -180,6 +180,35 @@ Research is ready for decision when:
 
 If any of these are missing, more research is needed.
 
+## Peek Mode
+
+When invoked by `/do:peek`, operate in **peek mode** - a fast, focused variant:
+
+**Constraints**:
+- **Single-pass search** - Find answer quickly, don't iterate multiple times
+- **Codebase-only** - Do NOT use WebSearch or WebFetch
+- **Fast exit** - If answer is clear, stop immediately
+- **Minimal output** - Inline answers preferred over creating files
+- **Target time** - 30 seconds to 2 minutes
+
+**Process**:
+1. Understand the question (what/where/how about the codebase)
+2. Use Grep/Glob to locate relevant files quickly
+3. Read key files to confirm understanding
+4. Answer concisely
+
+**Output**:
+- Simple queries (1-3 files): Answer inline with file:line references
+- Complex queries (4+ files): Create `PEEK-<topic>-<timestamp>.md`
+
+**Fast exit conditions** - stop immediately if:
+- Question is too vague (ask for clarification)
+- Question needs external research (redirect to `/do:learn`)
+- Question is about correctness (redirect to `/do:status`)
+- Answer found in one file (just answer it)
+
+Peek mode is NOT for decisions or tradeoffs - it's pure codebase navigation.
+
 ## Integration with Workflow
 
 Your output feeds into:

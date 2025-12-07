@@ -11,6 +11,7 @@
   "commands": [
     "./commands/plan.md",
     "./commands/status.md",
+    "./commands/peek.md",
     "./commands/feature-proposal.md",
     "./commands/init-project.md",
     "./commands/learn.md",

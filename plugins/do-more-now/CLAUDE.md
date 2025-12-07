@@ -243,6 +243,28 @@ Quick project status check. Fast, read-only diagnostic.
 
 **When to use**: Quick status checks, verifying work completion, identifying blockers
 
+### `/do:peek [question about the codebase]`
+
+Fast codebase navigation for "where/how/what files" questions.
+
+**Target time**: 30 seconds - 2 minutes
+**Scope**: Codebase-only (no external research)
+
+**Good for**:
+- "Where is user authentication implemented?"
+- "How does the payment flow work?"
+- "What files are involved in database migrations?"
+- "Is there a pattern for error handling?"
+
+**Not for**:
+- Decisions/tradeoffs → Use `/do:learn`
+- Correctness checks → Use `/do:status`
+- Comprehensive evaluation → Use `/do:plan`
+
+**Output**: Inline answers (1-3 files) or PEEK-*.md (4+ files)
+
+**Philosophy**: Pure codebase navigation. Find things fast, understand structure quickly.
+
 ### `/do:it [area of focus | "plan-first" | "tdd" | "iterate"]`
 
 **TDD workflow**:
