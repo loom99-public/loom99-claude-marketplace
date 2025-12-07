@@ -225,6 +225,24 @@ Evaluate current project state and create implementation plan.
 
 **When to use**: After initialization, or continuing existing work
 
+### `/do:status [area of focus]`
+
+Quick project status check. Fast, read-only diagnostic.
+
+**No arguments**: Uses project-evaluator for full project assessment.
+- Surfaces major ambiguities, missing docs, unknowns, inconsistencies
+- Outputs STATUS-*.md with high-level project assessment
+- Does NOT auto-research (surfaces issues for awareness)
+
+**With arguments**: Uses work-evaluator focused on specified area.
+- Requires existing STATUS or PLAN files
+- Outputs WORK-EVALUATION-*.md with focused assessment
+- Provides verdict: COMPLETE, INCOMPLETE, PAUSE, or BLOCKED
+
+**Philosophy**: `/do:status` is the "check engine light" (fast diagnostic), `/do:plan` is the "full inspection" (comprehensive planning).
+
+**When to use**: Quick status checks, verifying work completion, identifying blockers
+
 ### `/do:it [area of focus | "plan-first" | "tdd" | "iterate"]`
 
 **TDD workflow**:
