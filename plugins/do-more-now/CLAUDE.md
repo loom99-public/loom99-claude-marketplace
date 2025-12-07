@@ -265,6 +265,43 @@ Fast codebase navigation for "where/how/what files" questions.
 
 **Philosophy**: Pure codebase navigation. Find things fast, understand structure quickly.
 
+### `/do:audit [area to audit]`
+
+Exhaustive, in-depth evaluation of the repository. Full forensic examination.
+
+**No arguments**: Audit entire project (architecture, quality, dependencies, security, docs, debt)
+**With arguments**: Focused audit on specified area with deep dive
+
+**Time**: 10-30 minutes
+**Output**: AUDIT-*.md with comprehensive findings and problem inventory (P0-P3)
+
+**When to use**: Before major releases, when taking over a codebase, periodic deep health checks
+
+### `/do:chores [quick|thorough] [specific chore]`
+
+Repository maintenance and housekeeping tasks.
+
+**Quick mode** (5-10 min):
+- Git hygiene (clean status, untracked files)
+- Planning file cleanup (archive old STATUS/PLAN files)
+- Quick code scan (TODOs, debug code, secrets)
+- Dependency quick check
+
+**Thorough mode** (20-40 min):
+- All quick chores plus:
+- Commit quality review
+- Dead code detection
+- Documentation sync
+- Dependency deep dive
+- Technical debt inventory (immediate/short/medium/long-term)
+- Actually fix simple issues found
+
+**Auto-selects mode** unless you specify `quick` or `thorough`.
+
+**Specific chores**: `git`, `planning`, `dead-code`, `deps`, `debt`
+
+**Frequency**: Quick every 1-2 sessions, thorough weekly or every 3-5 sessions
+
 ### `/do:it [area of focus | "plan-first" | "tdd" | "iterate"]`
 
 **TDD workflow**:

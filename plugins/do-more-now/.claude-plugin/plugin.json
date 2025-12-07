@@ -12,6 +12,8 @@
     "./commands/plan.md",
     "./commands/status.md",
     "./commands/peek.md",
+    "./commands/audit.md",
+    "./commands/chores.md",
     "./commands/feature-proposal.md",
     "./commands/init-project.md",
     "./commands/learn.md",
