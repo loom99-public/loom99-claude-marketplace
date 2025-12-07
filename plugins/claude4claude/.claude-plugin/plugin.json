@@ -7,14 +7,7 @@
     "email": "brandon.fryslie.public@gmail.com"
   },
   "license": "MIT",
-  "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
-  "commands": [
-    "./commands/agent-create.md",
-    "./commands/command-create.md",
-    "./commands/hook-create.md",
-    "./commands/mcp-create.md",
-    "./commands/skill-create.md"
-  ],
+  "keywords": ["mcp", "skills", "plugins", "agents", "claude-code"],
   "skills": [
     "./skills/mcp-builder",
     "./skills/skill-creator"
