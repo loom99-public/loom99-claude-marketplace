@@ -1,0 +1,30 @@
+{
+  "name": "do2",
+  "version": "0.1.0",
+  "description": "Streamlined development workflow - 5 commands: plan, it, peek, learn, track",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["development", "workflow", "streamlined"],
+  "commands": [
+    "./commands/plan.md",
+    "./commands/it.md",
+    "./commands/peek.md",
+    "./commands/learn.md",
+    "./commands/track.md"
+  ],
+  "agents": [
+    "./agents/execution-summarizer.md",
+    "./agents/functional-tester.md",
+    "./agents/iterative-implementer.md",
+    "./agents/product-visionary.md",
+    "./agents/project-architect.md",
+    "./agents/project-evaluator.md",
+    "./agents/researcher.md",
+    "./agents/status-planner.md",
+    "./agents/test-driven-implementer.md",
+    "./agents/work-evaluator.md"
+  ]
+}

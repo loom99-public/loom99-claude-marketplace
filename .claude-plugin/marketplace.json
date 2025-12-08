@@ -49,6 +49,13 @@
       "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
       "version": "0.1.0",
       "strict": true
+    },
+    {
+      "name": "do2",
+      "source": "./plugins/do2",
+      "description": "Streamlined development workflow - 5 commands: plan, it, peek, learn, track",
+      "version": "0.1.0",
+      "strict": true
     }
   ]
 }
