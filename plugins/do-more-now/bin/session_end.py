@@ -49,12 +49,109 @@ def log_info(hook_name, message):
         pass
 
 
+def validate_project_dir():
+    """
+    Validate that project directory exists and is accessible.
+    Returns (project_dir_path, error_message) tuple.
+    """
+    project_dir = os.environ.get('CLAUDE_PROJECT_DIR')
+
+    if not project_dir:
+        project_dir = os.getcwd()
+
+    project_path = Path(project_dir)
+
+    if not project_path.exists():
+        return None, f"Project directory does not exist: {project_dir}"
+
+    if not project_path.is_dir():
+        return None, f"Project path is not a directory: {project_dir}"
+
+    return project_path, None
+
+
+def validate_execution_id(execution_id):
+    """
+    Validate execution ID format to prevent path traversal.
+    Returns True if valid, False otherwise.
+    """
+    if not execution_id or not isinstance(execution_id, str):
+        return False
+
+    # Expected format: YYYYMMDD-HHMMSS (15 characters)
+    if len(execution_id) != 15:
+        return False
+
+    # Check format: 8 digits, dash, 6 digits
+    import re
+    if not re.match(r'^\d{8}-\d{6}$', execution_id):
+        return False
+
+    # No path separators
+    if '/' in execution_id or '\\' in execution_id or '..' in execution_id:
+        return False
+
+    return True
+
+
+def archive_partial_files(exec_dir, execution_id, partial_files):
+    """
+    Archive PARTIAL files with comprehensive error handling.
+    Returns (moved_count, failed_moves) tuple.
+    """
+    moved_count = 0
+    failed_moves = []
+
+    # Validate archive directory is writable
+    archive_base = exec_dir / 'archive'
+    try:
+        archive_base.mkdir(parents=True, exist_ok=True)
+    except PermissionError as e:
+        log_error('session_end', Exception(f"Permission denied creating archive directory: {e}"))
+        return 0, [(f.name, "Cannot create archive directory") for f in partial_files]
+    except Exception as e:
+        log_error('session_end', Exception(f"Failed to create archive directory: {e}"))
+        return 0, [(f.name, "Cannot create archive directory") for f in partial_files]
+
+    # Create execution-specific archive directory
+    archive_dir = archive_base / execution_id
+    try:
+        archive_dir.mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        log_error('session_end', Exception(f"Failed to create execution archive directory: {e}"))
+        return 0, [(f.name, "Cannot create execution directory") for f in partial_files]
+
+    # Check if archive directory is writable
+    if not os.access(archive_dir, os.W_OK):
+        log_error('session_end', Exception(f"Archive directory not writable: {archive_dir}"))
+        return 0, [(f.name, "Archive directory not writable") for f in partial_files]
+
+    # Move each PARTIAL file
+    for partial_file in partial_files:
+        try:
+            dest_path = archive_dir / partial_file.name
+            shutil.move(str(partial_file), str(dest_path))
+            moved_count += 1
+        except PermissionError as e:
+            failed_moves.append((partial_file.name, f"Permission denied: {e}"))
+            log_error('session_end', Exception(f"Permission denied moving {partial_file.name}: {e}"))
+        except Exception as e:
+            failed_moves.append((partial_file.name, f"Failed: {e}"))
+            log_error('session_end', Exception(f"Failed to move {partial_file.name}: {e}"))
+
+    return moved_count, failed_moves
+
+
 def main():
     """Archive PARTIAL files and clean up execution state."""
     try:
-        # Use CLAUDE_PROJECT_DIR if available
-        project_dir = os.environ.get('CLAUDE_PROJECT_DIR', os.getcwd())
-        exec_dir = Path(project_dir) / '.agent_planning' / '.exec'
+        # Validate project directory
+        project_path, error = validate_project_dir()
+        if error:
+            log_error('session_end', Exception(error))
+            sys.exit(0)
+
+        exec_dir = project_path / '.agent_planning' / '.exec'
 
         # Check if execution was in progress
         execution_id_file = exec_dir / 'CURRENT_EXECUTION_ID.txt'
@@ -63,41 +160,53 @@ def main():
             sys.exit(0)
 
         # Read execution ID
-        execution_id = execution_id_file.read_text().strip()
+        try:
+            execution_id = execution_id_file.read_text().strip()
+        except Exception as e:
+            log_error('session_end', Exception(f"Failed to read CURRENT_EXECUTION_ID.txt: {e}"))
+            sys.exit(0)
+
+        # Validate execution ID to prevent malicious path traversal
+        if not validate_execution_id(execution_id):
+            log_error('session_end', Exception(f"Invalid execution ID format: {execution_id}"))
+            sys.exit(0)
 
         # Find all PARTIAL files for this execution
-        partial_files = list(exec_dir.glob(f'PARTIAL-{execution_id}-*.txt'))
+        try:
+            partial_files = list(exec_dir.glob(f'PARTIAL-{execution_id}-*.txt'))
+        except Exception as e:
+            log_error('session_end', Exception(f"Failed to list PARTIAL files: {e}"))
+            partial_files = []
 
         if partial_files:
-            # Create archive directory
-            archive_dir = exec_dir / 'archive' / execution_id
-            archive_dir.mkdir(parents=True, exist_ok=True)
+            # Archive PARTIAL files with comprehensive error handling
+            moved_count, failed_moves = archive_partial_files(exec_dir, execution_id, partial_files)
 
-            # Move PARTIAL files to archive
-            moved_count = 0
-            for partial_file in partial_files:
-                try:
-                    shutil.move(str(partial_file), str(archive_dir / partial_file.name))
-                    moved_count += 1
-                except Exception as e:
-                    log_error('session_end', f'Failed to move {partial_file.name}: {e}')
+            if moved_count > 0:
+                log_info('session_end', f'Archived {moved_count} PARTIAL files for execution {execution_id}')
 
-            log_info('session_end', f'Archived {moved_count} PARTIAL files for execution {execution_id}')
+            if failed_moves:
+                for filename, error_msg in failed_moves:
+                    log_info('session_end', f'Failed to archive {filename}: {error_msg}')
         else:
             log_info('session_end', f'No PARTIAL files found for execution {execution_id}')
 
-        # Clean up state files
+        # Clean up state files (best effort - don't fail if we can't delete)
         try:
             execution_id_file.unlink()
-        except Exception:
-            pass
+        except PermissionError as e:
+            log_error('session_end', Exception(f"Permission denied deleting CURRENT_EXECUTION_ID.txt: {e}"))
+        except Exception as e:
+            log_error('session_end', Exception(f"Failed to delete CURRENT_EXECUTION_ID.txt: {e}"))
 
         sequence_file = exec_dir / 'CURRENT_SEQUENCE.txt'
         try:
             if sequence_file.exists():
                 sequence_file.unlink()
-        except Exception:
-            pass
+        except PermissionError as e:
+            log_error('session_end', Exception(f"Permission denied deleting CURRENT_SEQUENCE.txt: {e}"))
+        except Exception as e:
+            log_error('session_end', Exception(f"Failed to delete CURRENT_SEQUENCE.txt: {e}"))
 
         # Exit cleanly
         sys.exit(0)
