@@ -47,3 +47,7 @@ Thumbs.db
 # uv
 .uv/
 .beads
+
+# Agent execution logs
+.agent_planning/.exec/
+.agent_planning/_subagent_logs_leftover/
