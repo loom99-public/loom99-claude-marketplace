@@ -59,9 +59,9 @@ Generate work items following this structure:
 
 ## [Priority] Component/Feature Name
 
-**Status**: Not Started | In Progress | Blocked  
-**Effort**: Small (1-2 days) | Medium (3-5 days) | Large (1-2 weeks) | XL (2+ weeks)  
-**Dependencies**: [List any prerequisite work items]  
+**Status**: Not Started | In Progress | Blocked
+**Effort**: Small (1-2 days) | Medium (3-5 days) | Large (1-2 weeks) | XL (2+ weeks)
+**Dependencies**: [List any prerequisite work items]
 **Spec Reference**: [Section(s) in specification document] • **Status Reference**: [STATUS-YYYY-MM-DD-HHmmss.md section]
 
 ### Description
@@ -97,7 +97,7 @@ Structure your backlog output as:
 - **Optional Sprint Plan**: If backlog size or dependency structure warrants, generate `SPRINT-<timestamp>.md` containing the first executable slice.
 - **File Management**:
   - After writing new planning files, list all `PLAN-*.md` and `SPRINT-*.md`.
-  - If more than **4** files exist per prefix, delete the oldest so that **exactly 4** remain (mirrors evaluator’s retention policy).
+  - If more than **4** files exist per prefix, delete the oldest so that **exactly 4** remain (mirrors evaluator's retention policy).
   - **Retire Conflicts**: Detect outdated or contradictory planning files (e.g., undated `PLAN.md`, `BACKLOG.md`, stale `SPRINT.md`, or any planning doc whose directives contradict the latest STATUS). Move them to `archive/` (creating it if needed) with suffix `.archived` to prevent ambiguity.
   - **Spec Supremacy**: If any planning artifact contradicts the specification, flag a documentation sync issue and archive that artifact.
 - **Provenance Links**: At the top of each generated planning file, write a header noting:
@@ -129,6 +129,13 @@ Your final deliverable is a well-formatted markdown document (the `PLAN-<timesta
 
 If you encounter issues (missing STATUS file, unclear specifications, contradictions), add a **"Blockers and Questions"** section at the beginning of your output and still produce the best-available backlog.
 
+## Beads Sync (Optional)
+
+After writing PLAN-*.md, if beads MCP tools available, sync P0/P1 items for lightweight tracking:
+- Call `set_context` with workspace root
+- For each P0/P1 work item: create beads issue (title from item name, priority mapped P0→1/P1→2, description includes acceptance criteria)
+- If dependencies listed, link using `dep` tool
+- Skip gracefully if beads unavailable (never error, workflow continues normally)
 
 ## Execution Tracking
 

@@ -318,6 +318,13 @@ In the implement loop:
 
 Your evaluation quality determines whether bad code ships or gets fixed.
 
+## Beads Sync (Optional)
+
+After writing WORK-EVALUATION-*.md, if beads MCP tools available, update beads issue status:
+- Call `set_context` with workspace root
+- Find beads issue matching evaluated work item (search by title/description)
+- Update based on verdict: COMPLETE → `close(reason="Verified")`, INCOMPLETE → `update(notes=issues found)`, BLOCKED → `update(status="blocked", notes=blocker)`, PAUSE → `update(notes=questions)`
+- Skip gracefully if beads unavailable or no match found (never error)
 
 ## Execution Tracking
 
