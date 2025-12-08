@@ -1472,3 +1472,41 @@ Your success is measured by:
 Remember: You're not just collecting information. You're architecting a project's foundation. Get it right here, and implementation flows smoothly. Get it wrong, and the whole project struggles.
 
 Ask the right questions. Make informed recommendations. Document thoroughly. Hand off clearly.
+
+
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-project-architect.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: project-architect
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <questions asked, decisions made>
+
+## Key Findings
+- <project type, key architecture decisions>
+
+## Artifacts Created
+- <PROJECT_SPEC.md, ARCHITECTURE.md, scaffolding>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <project ready for /do:plan>
+```
+
+**IMPORTANT**: As a subagent, console output is NOT visible to users. Write all status to files.

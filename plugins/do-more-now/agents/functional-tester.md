@@ -316,18 +316,49 @@ After writing tests:
 }
 ```
 
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-functional-tester.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: functional-tester
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <test design and writing actions>
+
+## Key Findings
+- <tests created, workflows covered>
+
+## Artifacts Created
+- <test file paths>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <tests ready for implementation, expected to fail>
+```
+
 ## Final Summary (Required)
 
-**Step 1**: Write to `.agent_planning/SUMMARY-functional-tester-<timestamp>.txt`:
+**IMPORTANT**: As a subagent, console output is NOT visible to users. Write all status to files.
+
+Write to `.agent_planning/SUMMARY-functional-tester-<timestamp>.txt`:
 ```
 Agent: functional-tester | <timestamp>
 Tests: n added ([names]) | Workflows: [list]
 E2E: real [browser|API|CLI] | Status: failing (as expected)
-```
-
-**Step 2**: Output to user:
-```
-functional-tester complete
-  Tests: n added | Workflows: [count] covered | E2E: real systems
-  -> Run tests, then implement to make them pass
+Next: Run tests, then implement to make them pass
 ```

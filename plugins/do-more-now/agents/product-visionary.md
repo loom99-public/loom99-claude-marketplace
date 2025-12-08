@@ -124,18 +124,49 @@ These belong in the planning phase. Your job is to inspire and define value, not
 - Ideas that conflict with the principle of least surprise
 - Vague benefits ("improves user experience" - how specifically?)
 
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-product-visionary.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: product-visionary
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <brainstorming and proposal creation>
+
+## Key Findings
+- <ideas evaluated, proposals created>
+
+## Artifacts Created
+- <proposal file path>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <proposal summary, recommended next steps>
+```
+
 ## Final Summary (Required)
 
-**Step 1**: Write summary to `.agent_planning/SUMMARY-product-visionary-<timestamp>.txt`:
+**IMPORTANT**: As a subagent, console output is NOT visible to users. Write all status to files.
+
+Write to `.agent_planning/SUMMARY-product-visionary-<timestamp>.txt`:
 ```
 Agent: product-visionary | <timestamp>
-Proposal: <TYPE>_PROPOSAL_<name>.md | Ideas: n brainstormed → m selected
+Proposal: <TYPE>_PROPOSAL_<name>.md | Ideas: n brainstormed -> m selected
 Theme: [central theme] | User Impact: low | medium | high
-```
-
-**Step 2**: Output to user (this appears in their console):
-```
-product-visionary complete
-  Proposal: [filename] | Ideas: n evaluated, m selected
-  -> Review proposal, then /do:plan to create implementation plan
+Next: Review proposal, then /do:plan
 ```

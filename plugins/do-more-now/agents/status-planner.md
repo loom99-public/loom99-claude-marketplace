@@ -129,6 +129,41 @@ Your final deliverable is a well-formatted markdown document (the `PLAN-<timesta
 
 If you encounter issues (missing STATUS file, unclear specifications, contradictions), add a **"Blockers and Questions"** section at the beginning of your output and still produce the best-available backlog.
 
+
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-status-planner.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: status-planner
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <actions taken>
+
+## Key Findings
+- <key results>
+
+## Artifacts Created
+- <files created>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <next steps>
+```
 ## Final Summary (Required)
 
 **Step 1**: Write summary to `.agent_planning/SUMMARY-status-planner-<timestamp>.txt`:
@@ -141,7 +176,7 @@ Archived: n files
 
 **Step 2**: Output to user (this appears in their console):
 ```
-✓ status-planner complete
+status-planner complete
   Items: n (P0: x, P1: y) | Top: [name] | PLAN-<timestamp>.md
-  → [next workflow recommendation]
+  -> [next workflow recommendation]
 ```

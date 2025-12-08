@@ -318,22 +318,49 @@ In the implement loop:
 
 Your evaluation quality determines whether bad code ships or gets fixed.
 
+
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-work-evaluator.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: work-evaluator
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <actions taken>
+
+## Key Findings
+- <key results>
+
+## Artifacts Created
+- <files created>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <next steps>
+```
 ## Final Summary (Required)
 
-**Step 1**: Write to `.agent_planning/SUMMARY-work-evaluator-<timestamp>.txt`:
+**IMPORTANT**: As a subagent, console output is NOT visible to users. Write all status to files.
+
+Write to `.agent_planning/SUMMARY-work-evaluator-<timestamp>.txt`:
 ```
 Agent: work-evaluator | <timestamp>
 Verdict: COMPLETE | INCOMPLETE | PAUSE | BLOCKED
 Criteria: n/m working | Breaks found: n | Ambiguities: n
-```
-
-**Step 2**: Output to user:
-```
-work-evaluator complete
-  Verdict: [status] | Criteria: n/m | WORK-EVALUATION-<timestamp>.md
-  -> [next action]
-     COMPLETE: "Ready to proceed"
-     INCOMPLETE: "Fixes needed: X, Y, Z"
-     PAUSE: "n questions need answers before continuing"
-     BLOCKED: "Cannot proceed: [reason]"
+Next: [recommended action]
 ```

@@ -341,6 +341,41 @@ Be specific and actionable:
 **Bad**: "Implementation has issues"
 **Good**: "Session timeout hardcoded to 30min (config.js:12) with no documentation. Is this correct? If requirements specify different timeout, this is wrong."
 
+
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-project-evaluator.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: project-evaluator
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <actions taken>
+
+## Key Findings
+- <key results>
+
+## Artifacts Created
+- <files created>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <next steps>
+```
 ## Final Summary (Required)
 
 **Step 1**: Write to `.agent_planning/SUMMARY-project-evaluator-<timestamp>.txt`:

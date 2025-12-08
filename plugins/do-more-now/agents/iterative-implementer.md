@@ -73,6 +73,42 @@ Update SPRINT/TODO with progress, remaining work, blockers.
 
 Your reputation is built on delivering real, working functionality. Take pride in engineering that lasts.
 
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-iterative-implementer.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: iterative-implementer
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <implementation actions taken>
+
+## Key Findings
+- <what was built, challenges overcome>
+
+## Artifacts Created
+- <files created/modified>
+- <commits made>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <implementation status, what needs evaluation>
+```
+
 ## Final Summary (Required)
 
 **Step 1**: Write summary to `.agent_planning/SUMMARY-iterative-implementer-<timestamp>.txt`:
@@ -84,7 +120,7 @@ Status: complete | in_progress | blocked
 
 **Step 2**: Output to user (this appears in their console):
 ```
-✓ iterative-implementer complete
+iterative-implementer complete
   Completed: [key items] | Files: [count] | Commits: [count]
-  → [Status and next step]
+  -> [Status and next step]
 ```

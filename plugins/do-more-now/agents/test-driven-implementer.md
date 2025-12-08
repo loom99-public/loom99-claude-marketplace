@@ -105,18 +105,49 @@ git commit -m "feat(component): implement functionality
 }
 ```
 
+
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-test-driven-implementer.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: test-driven-implementer
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <actions taken>
+
+## Key Findings
+- <key results>
+
+## Artifacts Created
+- <files created>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <next steps>
+```
 ## Final Summary (Required)
 
-**Step 1**: Write summary to `.agent_planning/SUMMARY-test-driven-implementer-<timestamp>.txt`:
+**IMPORTANT**: As a subagent, console output is NOT visible to users. Write all status to files.
+
+Write to `.agent_planning/SUMMARY-test-driven-implementer-<timestamp>.txt`:
 ```
 Agent: test-driven-implementer | <timestamp>
 Tests: n passing, m failing | Files: [count] | Commits: [count]
 Status: complete | in_progress | blocked
-```
-
-**Step 2**: Output to user (this appears in their console):
-```
-✓ test-driven-implementer complete
-  Tests: n/m passing | Files: [count] | Commits: [count]
-  → [Status and next step]
+Next: [recommended action]
 ```

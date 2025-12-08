@@ -218,6 +218,41 @@ Your output feeds into:
 
 Structure your output so it can be directly consumed by these next steps.
 
+## Execution Tracking
+
+**First**: Check if this is a tracked execution by reading state files:
+- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- If either file is missing, skip execution tracking (non-/do: invocation)
+
+**If files exist**, write execution trace to:
+`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-researcher.txt`
+
+**Format**:
+```
+EXECUTION: <EXECUTION_ID>
+SEQUENCE: <SEQUENCE>
+AGENT: researcher
+STARTED: <start timestamp>
+COMPLETED: <end timestamp>
+STATUS: success | partial | failed
+
+## Work Performed
+- <research actions taken>
+
+## Key Findings
+- <options identified, recommendation made>
+
+## Artifacts Created
+- <RESEARCH file path>
+
+## Issues Encountered
+- <any problems>
+
+## Handoff Notes
+- <recommendation summary, decision readiness>
+```
+
 ## Final Summary (Required)
 
 **Step 1**: Write to `.agent_planning/SUMMARY-researcher-<timestamp>.txt`:
