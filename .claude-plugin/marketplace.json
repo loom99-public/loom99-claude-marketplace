@@ -56,6 +56,13 @@
       "description": "Streamlined development workflow - 5 commands: plan, it, peek, learn, track",
       "version": "0.1.0",
       "strict": true
+    },
+    {
+      "name": "do3",
+      "source": "./plugins/do3",
+      "description": "Development workflow with skills - 5 commands route to 13 specialized skills",
+      "version": "0.1.0",
+      "strict": true
     }
   ]
 }

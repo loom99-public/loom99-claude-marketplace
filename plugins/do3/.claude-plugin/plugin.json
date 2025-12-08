@@ -1,0 +1,44 @@
+{
+  "name": "do3",
+  "version": "0.1.0",
+  "description": "Development workflow - 5 commands + skills. Commands route to specialized skills.",
+  "author": {
+    "name": "Brandon Fryslie"
+  },
+  "license": "MIT",
+  "keywords": ["development", "workflow", "skills"],
+  "commands": [
+    "./commands/plan.md",
+    "./commands/it.md",
+    "./commands/peek.md",
+    "./commands/learn.md",
+    "./commands/track.md"
+  ],
+  "skills": [
+    "./skills/init-project.md",
+    "./skills/audit.md",
+    "./skills/status-check.md",
+    "./skills/feature-proposal.md",
+    "./skills/refactor.md",
+    "./skills/debug.md",
+    "./skills/fix.md",
+    "./skills/review.md",
+    "./skills/add-tests.md",
+    "./skills/chores.md",
+    "./skills/tdd-workflow.md",
+    "./skills/iterative-workflow.md",
+    "./skills/market-research.md"
+  ],
+  "agents": [
+    "./agents/execution-summarizer.md",
+    "./agents/functional-tester.md",
+    "./agents/iterative-implementer.md",
+    "./agents/product-visionary.md",
+    "./agents/project-architect.md",
+    "./agents/project-evaluator.md",
+    "./agents/researcher.md",
+    "./agents/status-planner.md",
+    "./agents/test-driven-implementer.md",
+    "./agents/work-evaluator.md"
+  ]
+}
