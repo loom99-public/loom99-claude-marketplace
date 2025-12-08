@@ -444,6 +444,27 @@ The do plugin configures the chrome-devtools MCP server via `.mcp.json`:
 
 **Integration Philosophy**: "Light touch" - chrome-devtools integrated at pivotal workflow points (runtime verification, evidence gathering) with minimal prompt additions. The work-evaluator agent uses screenshots and browser metadata as evidence alongside logs and errors when evaluating web applications.
 
+### Beads Integration (Light Touch)
+
+The do plugin optionally integrates with the **beads** issue tracker when available:
+
+**Philosophy**: Planning docs remain source of truth. Beads is a sync target, not a dependency.
+
+**How it works**:
+- If `mcp__plugin_beads_beads__*` tools are available, agents use them
+- If not available, agents work exactly as before (graceful degradation)
+
+**Integrated agents**:
+- **status-planner**: After creating PLAN, syncs P0/P1 items to beads
+- **work-evaluator**: After evaluation, updates beads issue status (COMPLETE→close, BLOCKED→blocked, etc.)
+
+**Quick capture command**: `/do:track [priority] [type] description`
+- Examples: `/do:track fix login bug`, `/do:track 1 bug Cannot save settings`
+- Creates beads issue with parsed priority (0-3) and type (bug/feature/task/chore)
+- Defaults: P2 priority, task type
+
+**No beads?** Everything works without it. The integration adds ~16 lines across 2 agents.
+
 ### Git Workflow
 
 - Agents use GitAdd, GitCommit tools
