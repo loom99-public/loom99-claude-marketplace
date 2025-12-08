@@ -326,6 +326,30 @@ Then implement using your preferred workflow:
 
 ---
 
+## Execution Summary (Final Step)
+
+After all agents complete:
+1. Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` to get execution ID
+2. If exists, invoke do:execution-summarizer agent to aggregate PARTIAL files into an EXEC report
+3. Display the executive summary from the generated EXEC report
+4. Show file path to full report
+
+**Display format**:
+```
+═══════════════════════════════════════
+Execution Summary: <EXECUTION_ID>
+  Agents: [count] | Duration: [approx]
+
+[Executive summary from EXEC report - 2-3 sentences]
+
+Full report: .agent_planning/EXEC-init-project-<timestamp>.md
+═══════════════════════════════════════
+```
+
+If state files don't exist, skip this step (non-tracked execution).
+
+---
+
 ## Error Handling
 
 ### Error 1: Missing or Empty Project Description

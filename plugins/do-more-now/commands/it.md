@@ -43,7 +43,7 @@ Use do:project-evaluator to evaluate tests meet TestCriteria.
 
 **Step 2b: Display results** and loop decision.
 
-**Step 2c: Handle PAUSE** - Use do:researcher if ambiguities, then project-evaluator to assess.
+**Step 2c: Handle PAUSE** - Use do:researcher if ambiguities, then project-evaluator to assess.  After do:researcher and exiting the loop, ALWAYS continue to implementation phase!
 
 <LoopExitCondition>TestCriteria met with NO EXCEPTIONS</LoopExitCondition>
 <LoopContinueCondition>Tests don't meet criteria → restart with feedback</LoopContinueCondition>
@@ -62,7 +62,7 @@ Use do:work-evaluator to evaluate implementation.
 
 **Step 2b: Display results** and loop decision.
 
-**Step 2c: Handle PAUSE** - Use do:researcher if ambiguities.
+**Step 2c: Handle PAUSE** - Use do:researcher if ambiguities.  ALWAYS continue to another implementation phase if we do research.
 
 <LoopExitCondition>No outstanding issues with well-defined solutions</LoopExitCondition>
 <LoopContinueCondition>Known issues with defined solution → restart</LoopContinueCondition>
@@ -112,6 +112,28 @@ Implementation Complete
 Next: Review STATUS/PLAN or continue
 ═══════════════════════════════════════
 ```
+
+## Execution Summary (Final Step)
+
+After all agents complete:
+1. Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` to get execution ID
+2. If exists, invoke do:execution-summarizer agent to aggregate PARTIAL files into an EXEC report
+3. Display the executive summary from the generated EXEC report
+4. Show file path to full report
+
+**Display format**:
+```
+═══════════════════════════════════════
+Execution Summary: <EXECUTION_ID>
+  Agents: [count] | Duration: [approx]
+
+[Executive summary from EXEC report - 2-3 sentences]
+
+Full report: .agent_planning/EXEC-it-<timestamp>.md
+═══════════════════════════════════════
+```
+
+If state files don't exist, skip this step (non-tracked execution).
 
 ## Notes
 
