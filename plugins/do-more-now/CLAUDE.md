@@ -340,6 +340,41 @@ Repository maintenance and housekeeping tasks.
 
 **Use**: Resolve unclear requirements or explore technology options
 
+### `/do:research [topic]`
+
+External/market research - competitive landscape, viability assessment, approach comparison.
+
+**No arguments** (competitive analysis):
+- Reads PROJECT_SPEC.md to understand project vision
+- Searches for similar tools/projects online
+- Assesses demand signals (stars, downloads, discussions)
+- Compares approaches between project and alternatives
+- Identifies opportunities and threats
+
+**With arguments** (focused external research):
+- Researches the specific topic using web sources
+- Grounds findings in project context
+- Identifies best practices, common patterns, pitfalls
+
+**Output**: RESEARCH-market-*.md or RESEARCH-<topic>-*.md
+
+**Difference from `/do:learn`**:
+| Command | Focus | Sources |
+|---------|-------|---------|
+| `/do:learn` | Technical decisions, design ambiguities | Codebase + docs |
+| `/do:research` | Market viability, competitive landscape | Web search |
+
+### `/do:track [priority] [type] description`
+
+Quick capture of backlog items to beads issue tracker.
+
+**Examples**:
+- `/do:track fix login bug` - Creates P2 task
+- `/do:track 1 bug Cannot save settings` - Creates P1 bug
+- `/do:track 0 feature Add CSV export` - Creates P0 feature
+
+**Requires**: beads MCP tools available. Errors gracefully if not installed.
+
 ## Critical Rules
 
 ### For All Agents
