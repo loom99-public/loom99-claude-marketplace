@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "chrome-devtools": {
-      "command": "npx",
-      "args": ["-y", "chrome-devtools-mcp@latest"],
-      "description": "Browser automation with screenshots and DevTools metadata for web application testing and evaluation"
-    }
-  }
-}

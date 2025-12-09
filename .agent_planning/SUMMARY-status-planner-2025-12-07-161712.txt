@@ -1,0 +1,4 @@
+Agent: status-planner | 2025-12-07-161712
+Outcome: Created implementation plan for /do:peek command
+Items: 3 (P0: 3, P1: 0, P2: 0) | Top: Create peek.md command file | PLAN-do-peek-command-2025-12-07-161712.md
+Archived: 0 files

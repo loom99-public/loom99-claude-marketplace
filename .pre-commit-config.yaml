@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: validate-plugin-json
+        name: Validate Claude Plugin JSON files
+        entry: claude plugin validate
+        language: system
+        files: 'plugin\.json$'
+        pass_filenames: true

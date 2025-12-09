@@ -1,0 +1,9 @@
+Agent: project-evaluator | 2025-12-09-043855
+Scope: Evaluator effectiveness deep dive (meta-evaluation)
+Critical Issues: 3 high-severity false positive risks identified
+Token Efficiency: Moderate - 950-1200 tokens wasted per evaluation
+Confidence Calibration: Weak - no VERIFIED vs ASSUMED distinction
+Validation Enforcement: Missing - no gates to prevent proceeding without validation
+Profile Integration: Successful (~60% waste eliminated) but not enforced
+Workflow: PAUSE - Need user prioritization of 12 recommendations (P0-P3)
+Next: User confirms P0 priorities → implement runtime verification + confidence levels + test quality enforcement

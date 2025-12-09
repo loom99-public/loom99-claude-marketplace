@@ -13,55 +13,56 @@
       "source": "./plugins/agent-loop",
       "description": "Agentic Software Engineering Loop",
       "version": "0.1.0",
-      "author": {
-        "name": "Brandon Fryslie"
-      },
-      "strict": true,
-      "license": "MIT"
+      "strict": true
     },
     {
       "name": "epti",
       "source": "./plugins/epti",
       "description": "'Evaluate - Plan - Test - Implement' Agent",
       "version": "0.1.0",
-      "author": {
-        "name": "Brandon Fryslie"
-      },
-      "strict": true,
-      "license": "MIT"
+      "strict": true
     },
     {
       "name": "visual-iteration",
       "source": "./plugins/visual-iteration",
       "description": "Visual iteration workflow - Screenshot-driven UI development",
       "version": "0.1.0",
-      "author": {
-        "name": "Brandon Fryslie"
-      },
-      "strict": true,
-      "license": "MIT"
+      "strict": true
     },
     {
       "name": "promptctl",
       "source": "./plugins/promptctl",
       "description": "A tool for prompt control",
       "version": "0.1.0",
-      "author": {
-        "name": "Brandon Fryslie"
-      },
-      "strict": true,
-      "license": "MIT"
+      "strict": true
     },
     {
-      "name": "dev-loop",
-      "source": "./plugins/dev-loop",
-      "description": "Development workflow commands - evaluate, plan, test, implement, and propose features",
+      "name": "do",
+      "source": "./plugins/do",
+      "description": "Development workflow - 5 commands + 13 skills with natural language routing",
+      "version": "0.2.0",
+      "strict": true
+    },
+    {
+      "name": "do-legacy",
+      "source": "./plugins/do-legacy",
+      "description": "Legacy do plugin (11 explicit commands) - use 'do' instead",
       "version": "0.1.0",
-      "author": {
-        "name": "Brandon Fryslie"
-      },
-      "strict": true,
-      "license": "MIT"
+      "strict": true
+    },
+    {
+      "name": "do2",
+      "source": "./plugins/do2",
+      "description": "Streamlined development workflow - 5 commands with explicit mode keywords",
+      "version": "0.1.0",
+      "strict": true
+    },
+    {
+      "name": "claude4claude",
+      "source": "./plugins/claude4claude",
+      "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
+      "version": "0.1.0",
+      "strict": true
     }
   ]
 }
