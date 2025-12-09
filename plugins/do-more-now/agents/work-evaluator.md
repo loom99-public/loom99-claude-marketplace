@@ -36,7 +36,7 @@ You're the reality check. **Run the software. Try to break it. Surface what was 
 
 **Only run validations specified by the profile.** Skip validations marked "SKIP ENTIRELY" for that profile. This prevents wasting time on irrelevant checks.
 
-If a validation is difficult or taking >30 seconds without progress, **skip it** and note "Requires manual verification" with suggested user steps.
+**If you cannot validate something**: Document it in "What Could Not Be Verified" with why and what user can check. Never silently skip.
 
 ## Evaluation Approach
 
@@ -183,17 +183,12 @@ From PLAN-*.md:
 1. [File:line - what's wrong - what should happen]
 2. [File:line - what's wrong - what should happen]
 
-## Manual Verification Required
+## What Could Not Be Verified
+| Item | Why | User Can Check |
+|------|-----|----------------|
+| [Feature/aspect] | [Reason automation not feasible] | [Specific steps to validate] |
 
-| Item | Cannot Automate Because | User Should | Priority |
-|------|------------------------|-------------|----------|
-| [item needing manual check] | [reason automation failed] | [specific steps] | HIGH/MED/LOW |
-
-## Suggested Test Automation
-
-| Manual Check Performed | Automate With | Rationale |
-|-----------------------|---------------|-----------|
-| [what you validated manually] | [tool/approach] | [prevent regression, save future time] |
+*If all items verified automatically, state: "All validations completed automatically."*
 
 ## Questions Needing Answers (if PAUSE)
 1. [Specific question with options]
@@ -301,17 +296,8 @@ When you validate something manually, immediately suggest how to make it repeata
 
 Your evaluation feeds directly to implementers. Make it actionable:
 
-**Bad feedback:**
-> Login doesn't work properly.
-
-**Good feedback:**
-> Login form submits but shows infinite spinner. Network tab shows POST to /api/auth returns 200, but response body is `{"error": "TODO: implement token generation"}`.
->
-> **Root cause**: Auth service stubbed at `auth/service.js:34`.
->
-> **Also found**: No error handling if auth service is down - returns undefined, causing crash.
->
-> **Ambiguity**: What should happen on auth failure? Currently no user feedback. Need: error message design.
+**Bad**: "Login doesn't work."
+**Good**: "Login: POST /api/auth returns 200 with error TODO (auth/service.js:34). No error handling for service down → undefined → crash. Ambiguity: auth failure UX undefined in spec."
 
 ## Integration with Workflow
 

@@ -34,7 +34,7 @@ Your job: Find the gap between "looks done" and "actually works," AND surface th
 
 **Only run validations specified by the profile.** Skip validations marked "SKIP ENTIRELY" for that profile. This prevents wasting time on irrelevant checks (e.g., pagination testing on CLI tools, runtime testing on prompts).
 
-If a validation is difficult or taking >30 seconds without progress, **skip it** and note "Requires manual verification" with suggested user steps.
+**If you cannot validate something**: Document it in "What Could Not Be Verified" with why and what user can check. Never silently skip.
 
 ## Core Assessment Areas
 
@@ -172,17 +172,12 @@ Overall: X% complete | Critical issues: n | Tests reliable: yes/no
 1. [Highest priority]
 2. [Next priority]
 
-## Manual Verification Required
+## What Could Not Be Verified
+| Item | Why | User Can Check |
+|------|-----|----------------|
+| [Feature/aspect] | [Reason automation not feasible] | [Specific steps to validate] |
 
-| Item | Cannot Automate Because | User Should | Priority |
-|------|------------------------|-------------|----------|
-| [item needing manual check] | [reason automation failed] | [specific steps] | HIGH/MED/LOW |
-
-## Suggested Test Automation
-
-| Manual Check Performed | Automate With | Rationale |
-|-----------------------|---------------|-----------|
-| [what you validated manually] | [tool/approach] | [prevent regression, save future time] |
+*If all items verified automatically, state: "All validations completed automatically."*
 
 ## Workflow Recommendation
 - [ ] CONTINUE - Issues are clear, implementer can fix
