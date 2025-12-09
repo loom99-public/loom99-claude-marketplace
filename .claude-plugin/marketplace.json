@@ -38,8 +38,22 @@
     },
     {
       "name": "do",
-      "source": "./plugins/do-more-now",
-      "description": "Do more now",
+      "source": "./plugins/do",
+      "description": "Development workflow - 5 commands + 13 skills with natural language routing",
+      "version": "0.2.0",
+      "strict": true
+    },
+    {
+      "name": "do-legacy",
+      "source": "./plugins/do-legacy",
+      "description": "Legacy do plugin (11 explicit commands) - use 'do' instead",
+      "version": "0.1.0",
+      "strict": true
+    },
+    {
+      "name": "do2",
+      "source": "./plugins/do2",
+      "description": "Streamlined development workflow - 5 commands with explicit mode keywords",
       "version": "0.1.0",
       "strict": true
     },
@@ -47,20 +61,6 @@
       "name": "claude4claude",
       "source": "./plugins/claude4claude",
       "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
-      "name": "do2",
-      "source": "./plugins/do2",
-      "description": "Streamlined development workflow - 5 commands: plan, it, peek, learn, track",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
-      "name": "do3",
-      "source": "./plugins/do3",
-      "description": "Development workflow with skills - 5 commands route to 13 specialized skills",
       "version": "0.1.0",
       "strict": true
     }

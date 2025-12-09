@@ -1,7 +1,7 @@
 {
-  "name": "do3",
-  "version": "0.1.0",
-  "description": "Development workflow - 5 commands + skills. Commands route to specialized skills.",
+  "name": "do",
+  "version": "0.2.0",
+  "description": "Development workflow - 5 commands + 14 skills with natural language routing",
   "author": {
     "name": "Brandon Fryslie"
   },
@@ -27,7 +27,8 @@
     "./skills/chores.md",
     "./skills/tdd-workflow.md",
     "./skills/iterative-workflow.md",
-    "./skills/market-research.md"
+    "./skills/market-research.md",
+    "./skills/evaluation-profiles"
   ],
   "agents": [
     "./agents/execution-summarizer.md",

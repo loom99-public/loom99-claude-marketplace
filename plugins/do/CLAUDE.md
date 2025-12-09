@@ -1,20 +1,20 @@
-# do3 - Development Workflow with Skills
+# do - Development Workflow with Skills
 
-5 commands + 13 skills. Commands route to specialized skills based on intent.
+5 commands + 14 skills. Commands route to specialized skills based on intent.
 
 ## Commands (visible in autocomplete)
 
 | Command | Purpose |
 |---------|---------|
-| `/do3:plan` | Planning & evaluation |
-| `/do3:it` | Implementation & action |
-| `/do3:peek` | Fast codebase questions |
-| `/do3:learn` | Research |
-| `/do3:track` | Quick backlog capture |
+| `/do:plan` | Planning & evaluation |
+| `/do:it` | Implementation & action |
+| `/do:peek` | Fast codebase questions |
+| `/do:learn` | Research |
+| `/do:track` | Quick backlog capture |
 
 ## Skills (invoked by commands based on intent)
 
-### Planning Skills (via `/do3:plan`)
+### Planning Skills (via `/do:plan`)
 | Skill | Triggers | Purpose |
 |-------|----------|---------|
 | `init-project` | "init", "new project", "start" | Initialize project |
@@ -22,7 +22,7 @@
 | `status-check` | "status", "check", "progress" | Quick diagnostic |
 | `feature-proposal` | "feature", "proposal", "design" | Feature design |
 
-### Implementation Skills (via `/do3:it`)
+### Implementation Skills (via `/do:it`)
 | Skill | Triggers | Purpose |
 |-------|----------|---------|
 | `refactor` | "refactor", "restructure", "clean up" | Safe restructuring |
@@ -34,40 +34,45 @@
 | `tdd-workflow` | "tdd", "test first" | TDD implementation |
 | `iterative-workflow` | "iterate", "iterative" | Iterative implementation |
 
-### Research Skills (via `/do3:learn`)
+### Research Skills (via `/do:learn`)
 | Skill | Triggers | Purpose |
 |-------|----------|---------|
 | `market-research` | "market", "competitors", "external" | External/market research |
+
+### Evaluator Skills (internal)
+| Skill | Purpose |
+|-------|---------|
+| `evaluation-profiles` | Context-aware validation criteria for evaluators |
 
 ## Quick Reference
 
 ```bash
 # Planning
-/do3:plan                    # Evaluate + plan (default)
-/do3:plan init my app        # → init-project skill
-/do3:plan audit security     # → audit skill
-/do3:plan status             # → status-check skill
-/do3:plan feature payments   # → feature-proposal skill
+/do:plan                    # Evaluate + plan (default)
+/do:plan init my app        # → init-project skill
+/do:plan audit security     # → audit skill
+/do:plan status             # → status-check skill
+/do:plan feature payments   # → feature-proposal skill
 
 # Implementation
-/do3:it auth system          # Auto-select TDD/iterative
-/do3:it refactor auth        # → refactor skill
-/do3:it debug login failing  # → debug skill
-/do3:it fix issue #123       # → fix skill
-/do3:it review               # → review skill
-/do3:it test auth module     # → add-tests skill
-/do3:it chores               # → chores skill
-/do3:it tdd new feature      # → tdd-workflow skill
+/do:it auth system          # Auto-select TDD/iterative
+/do:it refactor auth        # → refactor skill
+/do:it debug login failing  # → debug skill
+/do:it fix issue #123       # → fix skill
+/do:it review               # → review skill
+/do:it test auth module     # → add-tests skill
+/do:it chores               # → chores skill
+/do:it tdd new feature      # → tdd-workflow skill
 
 # Fast questions
-/do3:peek where is auth      # Direct execution
+/do:peek where is auth      # Direct execution
 
 # Research
-/do3:learn jwt vs sessions   # Internal research (default)
-/do3:learn market            # → market-research skill
+/do:learn jwt vs sessions   # Internal research (default)
+/do:learn market            # → market-research skill
 
 # Quick capture
-/do3:track fix login bug     # Direct execution
+/do:track fix login bug     # Direct execution
 ```
 
 ## How It Works
@@ -83,14 +88,14 @@
 ## File Structure
 
 ```
-plugins/do3/
+plugins/do/
 ├── commands/        # 5 visible commands
 │   ├── plan.md
 │   ├── it.md
 │   ├── peek.md
 │   ├── learn.md
 │   └── track.md
-├── skills/          # 13 invisible skills
+├── skills/          # 14 skills (13 workflow + 1 internal)
 │   ├── init-project.md
 │   ├── audit.md
 │   ├── status-check.md
@@ -103,31 +108,16 @@ plugins/do3/
 │   ├── chores.md
 │   ├── tdd-workflow.md
 │   ├── iterative-workflow.md
-│   └── market-research.md
+│   ├── market-research.md
+│   └── evaluation-profiles/  # Internal skill for evaluators
 └── agents/          # 10 agents (execution engines)
 ```
 
 ## Beads Integration
 
 If beads MCP tools available:
-- `/do3:track` creates issues directly
-- `/do3:plan` syncs P0/P1 items after planning
-- `/do3:it` updates issue status after implementation
+- `/do:track` creates issues directly
+- `/do:plan` syncs P0/P1 items after planning
+- `/do:it` updates issue status after implementation
 
 No beads? Everything still works.
-
-## Migration
-
-| do-more-now (11 commands) | do3 (5 commands) |
-|---------------------------|------------------|
-| `/do:plan` | `/do3:plan` |
-| `/do:status` | `/do3:plan status` |
-| `/do:audit` | `/do3:plan audit` |
-| `/do:init-project` | `/do3:plan init` |
-| `/do:feature-proposal` | `/do3:plan feature` |
-| `/do:it` | `/do3:it` |
-| `/do:chores` | `/do3:it chores` |
-| `/do:peek` | `/do3:peek` |
-| `/do:learn` | `/do3:learn` |
-| `/do:research` | `/do3:learn market` |
-| `/do3:track` | `/do3:track` |
