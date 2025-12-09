@@ -29,5 +29,9 @@
     "./agents/status-planner.md",
     "./agents/test-driven-implementer.md",
     "./agents/work-evaluator.md"
+  ],
+  "skills": [
+    "./skills/evaluation-profiles",
+    "./skills/execution-tracking.md"
   ]
 }
