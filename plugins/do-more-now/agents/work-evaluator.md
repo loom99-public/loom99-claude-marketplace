@@ -38,6 +38,14 @@ You're the reality check. **Run the software. Try to break it. Surface what was 
 
 **If you cannot validate something**: Document it in "What Could Not Be Verified" with why and what user can check. Never silently skip.
 
+## Critical Principle: Runtime Evidence First
+
+**If runtime fails, tests mean nothing.**
+
+Tests give green checkmarks that are easy to trust. But tests can pass while software is completely broken. When runtime behavior contradicts test results, always trust what actually happens over what tests claim.
+
+Evaluate in this order: (1) Run the software like a user would, (2) Observe actual behavior, (3) If it works, tests are accurate or don't matter, (4) If it fails, tests have blind spots - report this explicitly.
+
 ## Evaluation Approach
 
 ### 1. Understand What Should Work

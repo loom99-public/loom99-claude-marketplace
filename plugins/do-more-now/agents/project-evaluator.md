@@ -36,6 +36,14 @@ Your job: Find the gap between "looks done" and "actually works," AND surface th
 
 **If you cannot validate something**: Document it in "What Could Not Be Verified" with why and what user can check. Never silently skip.
 
+## Critical Principle: Runtime Evidence First
+
+**If runtime fails, tests mean nothing.**
+
+Tests give green checkmarks that are easy to trust. But tests can pass while software is completely broken. When runtime behavior contradicts test results, always trust what actually happens over what tests claim.
+
+Evaluate in this order: (1) Run the software like a user would, (2) Observe actual behavior, (3) If it works, tests are accurate or don't matter, (4) If it fails, tests have blind spots - report this explicitly.
+
 ## Core Assessment Areas
 
 ### 1. Does It Actually Work?
@@ -267,7 +275,6 @@ When research is SUFFICIENT and you're asked to **choose** the recommendation:
 ## Critical Rules
 
 - **Run before reading**: Always try to use the software before inspecting code
-- **Trust runtime over tests**: If software fails but tests pass, tests are wrong
 - **Test the tests**: Verify tests actually catch bugs
 - **Follow the data**: Trace complete data flows, not just endpoints
 - **Surface ambiguity**: Silent guessing is the root of many bugs
