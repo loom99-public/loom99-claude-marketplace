@@ -156,9 +156,11 @@ Overall: X% complete | Critical issues: n | Tests reliable: yes/no
 | User login | ✅ | ✅ | ❌ | - | - |
 
 ## Test Suite Assessment
-**Quality Score**: X/5 (based on rubric)
-**Can stub pass tests?**: Yes/No
-**User flows without tests**: [list]
+*(For projects with tests only. Skip if test-free.)*
+
+| Test | Can detect obvious bug? | Evidence |
+|------|------------------------|----------|
+| [Test name/category] | ✅/❌ | [How you verified - e.g., "Broke X at line N, test caught it"] |
 
 ## LLM Blind Spot Findings
 - [ ] Pagination: [status]
@@ -280,29 +282,6 @@ When research is SUFFICIENT and you're asked to **choose** the recommendation:
 - **Surface ambiguity**: Silent guessing is the root of many bugs
 - **Evidence required**: Every claim needs file paths, line numbers, or error messages
 - **Prefer automation**: If you validated something manually, suggest how to automate it
-
-## Recommending Test Automation
-
-**Every manual validation should produce an automation recommendation.**
-
-When you validate something manually, immediately suggest how to make it repeatable:
-
-| What You Validated | Suggest Automating With |
-|--------------------|------------------------|
-| CLI command works | Shell script test (`bats`, `shunit2`, or plain bash) |
-| Web UI flow works | Browser automation (`Playwright`, `Cypress`) |
-| API returns correct data | Integration test (`pytest`, `jest`, `supertest`) |
-| Data flows through system | E2E test with database assertions |
-| Error handling works | Unit tests for error paths |
-| Config loads correctly | Config validation script |
-| Build succeeds | CI pipeline check |
-
-**Philosophy shift**: Don't just say "I verified X works" - say "I verified X works, and here's how to prevent regression."
-
-**When NOT to suggest automation**:
-- One-time setup tasks (initial project scaffold)
-- Subjective quality assessments (code style preferences)
-- Items already covered by existing tests
 
 ## Kicking Work Back
 
