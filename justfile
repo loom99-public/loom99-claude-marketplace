@@ -7,9 +7,41 @@ default:
 
 # Validate marketplace structure and all plugins
 validate:
-    @echo "🔍 Validating marketplace structure..."
-    claude plugin validate .
-    @echo "✅ Validation complete!"
+    @echo "🔍 Validating marketplace..."
+    @claude plugin validate .
+    @echo "✅ Marketplace validation complete!"
+
+# Validate each plugin individually (more thorough)
+validate-all:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "🔍 Validating marketplace and all plugins..."
+    echo ""
+    echo "Marketplace:"
+    if claude plugin validate . 2>/dev/null; then
+        echo "  ✓ marketplace.json"
+    else
+        echo "  ✗ marketplace.json"
+    fi
+    echo ""
+    echo "Plugins:"
+    for plugin in plugins/*/; do
+        if [ -f "$plugin/.claude-plugin/plugin.json" ]; then
+            name=$(basename "$plugin")
+            if claude plugin validate "$plugin" 2>/dev/null; then
+                echo "  ✓ $name"
+            else
+                echo "  ✗ $name"
+            fi
+        fi
+    done
+    echo ""
+    echo "✅ Validation complete!"
+
+# Validate a specific plugin
+validate-plugin plugin:
+    @echo "🔍 Validating plugin: {{plugin}}..."
+    @claude plugin validate "plugins/{{plugin}}"
 
 # Run comprehensive test suite
 test:

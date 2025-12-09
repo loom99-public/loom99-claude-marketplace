@@ -1,12 +1,16 @@
 {
   "name": "do",
   "version": "0.2.0",
-  "description": "Development workflow - 5 commands + 14 skills with natural language routing",
+  "description": "Flexible development system makes it easy to Do More Now.  What you alreaady know you should be doing - only better",
   "author": {
     "name": "Brandon Fryslie"
   },
   "license": "MIT",
-  "keywords": ["development", "workflow", "skills"],
+  "keywords": [
+    "development",
+    "workflow",
+    "skills"
+  ],
   "commands": [
     "./commands/plan.md",
     "./commands/it.md",

@@ -9,7 +9,7 @@
   "license": "MIT",
   "keywords": ["agent", "tdd", "test-driven", "evaluate", "plan", "test", "implement"],
   "commands": "./commands/",
-  "agents": "./agents/",
+  "agents": ["./agents/tdd-agent.md"],
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"

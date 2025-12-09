@@ -1,13 +1,17 @@
 {
   "name": "do2",
   "version": "0.1.0",
-  "description": "Streamlined development workflow - 5 commands: plan, it, peek, learn, track",
+  "description": "Less charm than do-classic, not as advanced as the new do-more-now, this is rarely used.  Try it!",
   "author": {
     "name": "Brandon Fryslie",
     "email": ""
   },
   "license": "MIT",
-  "keywords": ["development", "workflow", "streamlined"],
+  "keywords": [
+    "development",
+    "workflow",
+    "streamlined"
+  ],
   "commands": [
     "./commands/plan.md",
     "./commands/it.md",

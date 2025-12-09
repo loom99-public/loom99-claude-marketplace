@@ -9,7 +9,7 @@
   "license": "MIT",
   "keywords": ["visual", "ui", "screenshot", "iteration", "design", "frontend"],
   "commands": "./commands/",
-  "agents": "./agents/",
+  "agents": ["./agents/visual-iteration-agent.md"],
   "skills": "./skills/",
   "hooks": "./hooks/hooks.json",
   "mcpServers": "./.mcp.json"

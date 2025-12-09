@@ -2,26 +2,12 @@
   "name": "loom99",
   "owner": {
     "name": "Brandon Fryslie",
-    "email": ""
+    "email": "530235+brandon-fryslie@users.noreply.github.com"
   },
   "metadata": {
-    "description": "the loom99 public claude plugin marketplace"
+    "description": "the loom99 public Claude Code plugin marketplace.  Enterprise-Grade Generative Engineering Platform.  Home of 'Do More Now', the plugin that takes Claude from star to rockstar"
   },
   "plugins": [
-    {
-      "name": "agent-loop",
-      "source": "./plugins/agent-loop",
-      "description": "Agentic Software Engineering Loop",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
-      "name": "epti",
-      "source": "./plugins/epti",
-      "description": "'Evaluate - Plan - Test - Implement' Agent",
-      "version": "0.1.0",
-      "strict": true
-    },
     {
       "name": "visual-iteration",
       "source": "./plugins/visual-iteration",
@@ -38,22 +24,21 @@
     },
     {
       "name": "do",
-      "source": "./plugins/do",
-      "description": "Development workflow - 5 commands + 13 skills with natural language routing",
+      "source": "./plugins/do-more-now",
+      "description": "Flexible development system makes it easy to Do More Now.  What you alreaady know you should be doing - only better",
       "version": "0.2.0",
       "strict": true
     },
     {
-      "name": "do-legacy",
+      "name": "do-classic",
       "source": "./plugins/do-legacy",
-      "description": "Legacy do plugin (11 explicit commands) - use 'do' instead",
+      "description": "Classic+ do plugin.  11 commands.  Limitless flexibility.  The legend that started it all",
       "version": "0.1.0",
       "strict": true
     },
     {
       "name": "do2",
       "source": "./plugins/do2",
-      "description": "Streamlined development workflow - 5 commands with explicit mode keywords",
       "version": "0.1.0",
       "strict": true
     },
