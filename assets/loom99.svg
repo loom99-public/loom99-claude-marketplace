@@ -1,0 +1,72 @@
+<svg id="logo" viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        @keyframes fadeIn {
+        from {
+        opacity: 0;
+        transform: translateY(20px);
+        }
+        to {
+        opacity: 1;
+        transform: translateY(0);
+        }
+        }
+
+        .line {
+        fill: none;
+        stroke-width: 4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        }
+
+        .animated-element {
+        opacity: 0;
+        animation: fadeIn 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+    </style>
+
+    <defs>
+        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%"   stop-color="rgb(0, 212, 255)" stop-opacity="1" />
+            <stop offset="50%"  stop-color="rgb(123, 47, 247)" stop-opacity="1" />
+            <stop offset="100%" stop-color="rgb(255, 45, 117)" stop-opacity="1" />
+        </linearGradient>
+    </defs>
+
+    <path
+            class="line animated-element"
+            stroke="rgb(0, 212, 255)"
+            d="M 40 40 L 40 160 L 100 160 L -100 100"
+    />
+
+    <path
+            class="line animated-element"
+            stroke="rgb(123, 47, 247)"
+            d="M 150 60 A 40 40 0 1 1 150 140 A 40 40 0 1 1 150 60 L -100 100"
+    />
+
+    <path
+            class="line animated-element"
+            stroke="rgb(123, 47, 247)"
+            d="M 240 60 A 40 40 0 1 1 240 140 A 40 40 0 1 1 240 60 L 240 -50"
+    />
+
+    <path
+            class="line animated-element"
+            stroke="rgb(255, 45, 117)"
+            d="M 300 160 L 300 40 L 350 100 L 400 40 L 400 160 L 350 -50"
+    />
+
+    <path
+            class="line animated-element"
+            stroke="rgb(0, 212, 255)"
+            d="M 460 70 Q 460 45 480 45 Q 500 45 500 70 Q 500 95 480 95 Q 460 95 460 70
+       L 500 70 Q 500 110 485 135 Q 470 160 445 165 L 700 100"
+    />
+
+    <path
+            class="line animated-element"
+            stroke="rgb(0, 212, 255)"
+            d="M 540 70 Q 540 45 560 45 Q 580 45 580 70 Q 580 95 560 95 Q 540 95 540 70
+       L 580 70 Q 580 110 565 135 Q 550 160 525 165 L 650 250"
+    />
+</svg>

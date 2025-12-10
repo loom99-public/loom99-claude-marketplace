@@ -1,0 +1,130 @@
+<!-- Animated SVG - Staggered for GitHub -->
+
+<svg id="text" viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .line {
+        fill: none;
+        stroke-width: 6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        }
+
+        .animated-group {
+        opacity: 0;
+        animation: fadeIn 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .group-red {
+        animation-delay: 0s;
+        }
+
+        .group-orange {
+        animation-delay: 0.5s;
+        }
+
+        .group-yellow {
+        animation-delay: 1s;
+        }
+    </style>
+
+    <!-- Red group -->
+    <g class="animated-group group-red">
+        <path class="line"
+              stroke="rgb(255, 45, 45)"
+              d="M 100 20 L 100 100" />
+        <path class="line"
+              stroke="rgb(255, 45, 45)"
+              d="M 100 20 Q 160 20 160 60 Q 160 100 100 100" />
+        <path class="line"
+              stroke="rgb(255, 45, 45)"
+              d="M 200 60 Q 200 20 240 20 Q 280 20 280 60" />
+        <path class="line"
+              stroke="rgb(255, 45, 45)"
+              d="M 280 60 Q 280 100 240 100 Q 200 100 200 60" />
+    </g>
+
+    <!-- Orange group -->
+    <g class="animated-group group-orange">
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 80 200 L 80 140" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 80 140 L 110 180" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 110 180 L 140 140" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 140 140 L 140 200" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 175 170 Q 175 140 200 140 Q 225 140 225 170" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 225 170 Q 225 200 200 200 Q 175 200 175 170" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 260 140 L 260 200" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 260 140 Q 300 140 300 160 Q 300 175 260 175" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 270 175 L 300 200" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 330 140 L 330 200" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 330 140 L 370 140" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 330 170 L 360 170" />
+        <path class="line"
+              stroke="rgb(255, 107, 0)"
+              d="M 330 200 L 370 200" />
+    </g>
+
+    <!-- Yellow group -->
+    <g class="animated-group group-yellow">
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 80 220 L 80 280" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 80 220 L 140 280" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 140 220 L 140 280" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 180 250 Q 180 220 215 220 Q 250 220 250 250" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 250 250 Q 250 280 215 280 Q 180 280 180 250" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 280 220 L 300 280" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 300 280 L 320 250" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 320 250 L 340 280" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 340 280 L 360 220" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 390 220 L 390 265" />
+        <path class="line"
+              stroke="rgb(255, 221, 0)"
+              d="M 390 275 L 390 280" />
+    </g>
+</svg>
