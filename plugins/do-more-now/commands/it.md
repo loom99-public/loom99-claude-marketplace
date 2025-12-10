@@ -1,6 +1,6 @@
 ---
 argument-hint: [what to do]
-description: [Optional: refactor|debug|fix|test|tdd|iterate] Implement or fix.  Describe what you want, refer to a plan, or let Claude figure it out 
+description: [Optional: refactor|debug|fix|test|tdd|iterate] Implement or fix.  Describe what you want, refer to a plan, or let Claude figure it out
 ---
 
 Implementation command. Detects intent and invokes the appropriate skill.
@@ -8,6 +8,14 @@ Implementation command. Detects intent and invokes the appropriate skill.
 <user-input>
 $ARGUMENTS
 </user-input>
+
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:explore`, `/do:research`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+Example: "First run /do:plan, then implement the auth system" → runs plan, then implements.
+
+---
 
 ## Intent Detection
 

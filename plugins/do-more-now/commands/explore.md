@@ -9,6 +9,12 @@ Explore the codebase. Internal-only - no external research.
 $ARGUMENTS
 </question>
 
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:it`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+---
+
 ## Scope
 
 **Codebase-only**. Learn from internal sources, ask about the project, compare ideas within the project.

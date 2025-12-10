@@ -9,6 +9,12 @@ Maintenance and housekeeping. Cleanup of any sort.
 $ARGUMENTS
 </chore-input>
 
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:it`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+---
+
 ## Modes
 
 | Mode | Trigger | Duration | Scope |

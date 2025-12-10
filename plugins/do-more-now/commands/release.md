@@ -9,6 +9,12 @@ Release management. Versioning, changelog, release notes, tagging.
 $ARGUMENTS
 </release-input>
 
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:it`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+---
+
 ## Status
 
 **STUB** - This command is a placeholder for future implementation.

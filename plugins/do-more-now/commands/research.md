@@ -9,6 +9,12 @@ Research from external sources. Web search, market analysis, competitor comparis
 $ARGUMENTS
 </research-topic>
 
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:it`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+---
+
 ## Scope
 
 **External-only**. Learn from web, compare with external tools/projects, market viability.

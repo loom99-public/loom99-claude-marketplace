@@ -9,6 +9,12 @@ Documentation tasks. Create, update, or improve project documentation.
 $ARGUMENTS
 </doc-input>
 
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:it`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+---
+
 ## Intent Detection
 
 | Intent signals | Action |

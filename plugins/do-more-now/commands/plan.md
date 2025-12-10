@@ -9,6 +9,14 @@ Planning command. Evaluate where we are, plan where we want to be, track work it
 $ARGUMENTS
 </user-input>
 
+## Subcommand Detection
+
+If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:explore`, `/do:research`), run that command first with its relevant arguments, then continue with this command's main workflow.
+
+Example: "First /do:research best practices, then plan the implementation" → runs research, then plans.
+
+---
+
 ## Intent Detection
 
 | Intent signals | Action |
