@@ -1,0 +1,110 @@
+<!-- Animated SVG - Looping Fade + Tiny Bounce -->
+
+<svg id="text" viewBox="0 10 700 280" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <style>
+            .line {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            }
+
+            @keyframes fadeBounce {
+            0% {
+            opacity: 0;
+            transform: translateY(3px);
+            }
+            15% {
+            opacity: 1;
+            transform: translateY(0);
+            }
+            50% {
+            opacity: 1;
+            transform: translateY(-3px); /* tiny upward bounce */
+            }
+            85% {
+            opacity: 1;
+            transform: translateY(0);
+            }
+            100% {
+            opacity: 0;
+            transform: translateY(3px);
+            }
+            }
+
+            .animated {
+            opacity: 0;
+            animation-name: fadeBounce;
+            animation-duration: 6s;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            transform-box: fill-box;
+            transform-origin: center;
+            }
+
+            /* stagger delays for “writing” effect */
+            .d0  { animation-delay: 0.0s; }
+            .d1  { animation-delay: 0.1s; }
+            .d2  { animation-delay: 0.2s; }
+            .d3  { animation-delay: 0.3s; }
+            .d4  { animation-delay: 0.4s; }
+            .d5  { animation-delay: 0.5s; }
+            .d6  { animation-delay: 0.6s; }
+            .d7  { animation-delay: 0.7s; }
+            .d8  { animation-delay: 0.8s; }
+            .d9  { animation-delay: 0.9s; }
+            .d10 { animation-delay: 1.0s; }
+            .d11 { animation-delay: 1.1s; }
+            .d12 { animation-delay: 1.2s; }
+            .d13 { animation-delay: 1.3s; }
+            .d14 { animation-delay: 1.4s; }
+            .d15 { animation-delay: 1.5s; }
+            .d16 { animation-delay: 1.6s; }
+            .d17 { animation-delay: 1.7s; }
+            .d18 { animation-delay: 1.8s; }
+            .d19 { animation-delay: 1.9s; }
+            .d20 { animation-delay: 2.0s; }
+            .d21 { animation-delay: 2.1s; }
+            .d22 { animation-delay: 2.2s; }
+            .d23 { animation-delay: 2.3s; }
+            .d24 { animation-delay: 2.4s; }
+            .d25 { animation-delay: 2.5s; }
+            .d26 { animation-delay: 2.6s; }
+        </style>
+    </defs>
+
+    <!-- Red -->
+    <path class="line animated d0" stroke="rgb(255,45,45)" d="M100 20 L100 100" />
+    <path class="line animated d1" stroke="rgb(255,45,45)" d="M100 20 Q160 20 160 60 Q160 100 100 100" />
+    <path class="line animated d2" stroke="rgb(255,45,45)" d="M200 60 Q200 20 240 20 Q280 20 280 60" />
+    <path class="line animated d3" stroke="rgb(255,45,45)" d="M280 60 Q280 100 240 100 Q200 100 200 60" />
+
+    <!-- Orange -->
+    <path class="line animated d4"  stroke="rgb(255,107,0)" d="M80 200 L80 140" />
+    <path class="line animated d5"  stroke="rgb(255,107,0)" d="M80 140 L110 180" />
+    <path class="line animated d6"  stroke="rgb(255,107,0)" d="M110 180 L140 140" />
+    <path class="line animated d7"  stroke="rgb(255,107,0)" d="M140 140 L140 200" />
+    <path class="line animated d8"  stroke="rgb(255,107,0)" d="M175 170 Q175 140 200 140 Q225 140 225 170" />
+    <path class="line animated d9"  stroke="rgb(255,107,0)" d="M225 170 Q225 200 200 200 Q175 200 175 170" />
+    <path class="line animated d10" stroke="rgb(255,107,0)" d="M260 140 L260 200" />
+    <path class="line animated d11" stroke="rgb(255,107,0)" d="M260 140 Q300 140 300 160 Q300 175 260 175" />
+    <path class="line animated d12" stroke="rgb(255,107,0)" d="M270 175 L300 200" />
+    <path class="line animated d13" stroke="rgb(255,107,0)" d="M330 140 L330 200" />
+    <path class="line animated d14" stroke="rgb(255,107,0)" d="M330 140 L370 140" />
+    <path class="line animated d15" stroke="rgb(255,107,0)" d="M330 170 L360 170" />
+    <path class="line animated d16" stroke="rgb(255,107,0)" d="M330 200 L370 200" />
+
+    <!-- Yellow -->
+    <path class="line animated d17" stroke="rgb(255,221,0)" d="M80 220 L80 280" />
+    <path class="line animated d18" stroke="rgb(255,221,0)" d="M80 220 L140 280" />
+    <path class="line animated d19" stroke="rgb(255,221,0)" d="M140 220 L140 280" />
+    <path class="line animated d20" stroke="rgb(255,221,0)" d="M180 250 Q180 220 215 220 Q250 220 250 250" />
+    <path class="line animated d21" stroke="rgb(255,221,0)" d="M250 250 Q250 280 215 280 Q180 280 180 250" />
+    <path class="line animated d22" stroke="rgb(255,221,0)" d="M280 220 L300 280" />
+    <path class="line animated d23" stroke="rgb(255,221,0)" d="M300 280 L320 250" />
+    <path class="line animated d24" stroke="rgb(255,221,0)" d="M320 250 L340 280" />
+    <path class="line animated d25" stroke="rgb(255,221,0)" d="M340 280 L360 220" />
+    <path class="line animated d26" stroke="rgb(255,221,0)" d="M390 220 L390 265" />
+    <path class="line animated d26" stroke="rgb(255,221,0)" d="M390 275 L390 280" />
+</svg>

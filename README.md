@@ -1,6 +1,4 @@
-# do-more-now
-
-![do-more-now](https://raw.githubusercontent.com/loom99-public/loom99-claude-marketplace/refs/heads/bmf_update_license/assets/do-more-now.svg)
+![do-more-now](https://raw.githubusercontent.com/loom99-public/loom99-claude-marketplace/refs/heads/master/assets/do-more-now-2.svg)
 
 Do More Now is a Claude Code plugin that adds structured workflow commands for development.  This is not designed for one particular language or way of working.  It's a
 simple, flexible, and incredibly powerful toolkit for all type of software engineering.
