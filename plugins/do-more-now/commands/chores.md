@@ -1,6 +1,6 @@
 ---
 argument-hint: [quick | thorough | specific-chore]
-description: Chores - maintenance, cleanup, housekeeping tasks.
+description: [quick|thorough|git|planning|dead-code|deps|debt] Chores - maintenance, cleanup, housekeeping.
 ---
 
 Maintenance and housekeeping. Cleanup of any sort.

@@ -1,6 +1,6 @@
 ---
 argument-hint: [what to document]
-description: Docs - README, API docs, architecture documentation.
+description: [readme|api|architecture|changelog] Docs - README, API docs, architecture documentation.
 ---
 
 Documentation tasks. Create, update, or improve project documentation.

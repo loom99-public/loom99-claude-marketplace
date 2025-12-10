@@ -1,6 +1,6 @@
 ---
 argument-hint: [topic to research]
-description: Research external sources - market analysis, competitors, external docs.
+description: [market|docs|patterns] Research external sources - market analysis, competitors, external docs.
 ---
 
 Research from external sources. Web search, market analysis, competitor comparison.

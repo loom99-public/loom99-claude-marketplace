@@ -1,6 +1,6 @@
 ---
 argument-hint: [focus area]
-description: Plan & track - evaluate status, create plans, track backlog items.
+description: [init|audit|status|feature|track] Plan & track - evaluate status, create plans, track backlog items.
 ---
 
 Planning command. Evaluate where we are, plan where we want to be, track work items.

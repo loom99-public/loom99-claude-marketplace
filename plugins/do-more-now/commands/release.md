@@ -1,6 +1,6 @@
 ---
 argument-hint: [version | action]
-description: Release - versioning, changelog, release notes (stub).
+description: [bump|changelog|notes|tag|publish] Release - versioning, changelog, release notes (stub).
 ---
 
 Release management. Versioning, changelog, release notes, tagging.

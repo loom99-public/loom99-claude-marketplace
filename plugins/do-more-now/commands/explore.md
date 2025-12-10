@@ -1,6 +1,6 @@
 ---
 argument-hint: [question about the codebase]
-description: Explore codebase - ask questions, compare ideas, understand internals.
+description: Explore codebase - ask questions, compare ideas, understand internals. Internal only.
 ---
 
 Explore the codebase. Internal-only - no external research.
