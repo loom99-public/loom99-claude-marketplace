@@ -18,7 +18,7 @@ When a `/do:*` command runs, it may invoke multiple subagents (project-evaluator
 
 ## File Locations
 
-**Input**: `.agent_planning/.exec/` directory
+**Input**: `.agent_planning/do-command-logs/` directory
 - Partial files: `PARTIAL-<execution-id>-<sequence>-<agent>.txt`
 - Format: execution-id links all partials from one command invocation
 
@@ -58,7 +58,7 @@ STATUS: <success|partial|failed|skipped>
 ### Step 1: Collect Partials
 
 ```bash
-ls .agent_planning/.exec/PARTIAL-<execution-id>-*.txt | sort
+ls .agent_planning/do-command-logs/partials/<execution-id>-PARTIAL-*.txt | sort
 ```
 
 Read all partials for the given execution-id in sequence order.
@@ -149,7 +149,7 @@ Run `/do:it` to implement the planned work.
 Delete all PARTIAL-<execution-id>-*.txt files after successful aggregation.
 
 ```bash
-rm .agent_planning/.exec/PARTIAL-<execution-id>-*.txt
+rm .agent_planning/do-command-logs/partials/<execution-id>-PARTIAL-*.txt
 ```
 
 ## Quality Standards

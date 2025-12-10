@@ -6,6 +6,7 @@
     "name": "Brandon Fryslie"
   },
   "license": "MIT",
+  "hooks": "./hooks/hooks.json",
   "keywords": [
     "development",
     "workflow",
@@ -30,6 +31,8 @@
     "./skills/fix.md",
     "./skills/review.md",
     "./skills/add-tests.md",
+    "./skills/setup-testing.md",
+    "./skills/route-subcommands.md",
     "./skills/tdd-workflow.md",
     "./skills/iterative-workflow.md",
     "./skills/market-research.md",

@@ -5,28 +5,31 @@ description: [bump|changelog|notes|tag|publish] Release - versioning, changelog,
 
 Release management. Versioning, changelog, release notes, tagging.
 
-<release-input>
-$ARGUMENTS
-</release-input>
+<user-input>$ARGUMENTS</user-input>
+<current-command>release</current-command>
 
-## Subcommand Detection (REQUIRED)
+## Step 1: Route Subcommands (REQUIRED)
 
-**STOP. Check $ARGUMENTS for any `/do:` command references.**
+**Invoke `do:route-subcommands` skill FIRST.**
 
-If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:research`, `/do:chores`, or `/do:docs`:
-1. **IMMEDIATELY** use the SlashCommand tool to run that command first
-2. Wait for it to complete
-3. Then continue with this command's main workflow below
+This skill will:
+1. Analyze `$ARGUMENTS` for any `/do:*` commands
+2. Execute pre-commands (commands that should run before main workflow)
+3. Return `main_instructions` and `post_commands`
 
-**Do NOT skip this step.**
+If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
+
+**Store the returned `post_commands` for later.**
 
 ---
 
-## Status
+## Step 2: Main Workflow
+
+### Status
 
 **STUB** - This command is a placeholder for future implementation.
 
-## Planned Features
+### Planned Features
 
 | Action | Description |
 |--------|-------------|
@@ -36,7 +39,7 @@ If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:research`, `/do
 | `tag` | Create git tag for release |
 | `publish` | Full release workflow |
 
-## Current Behavior
+### Current Behavior
 
 ```
 ═══════════════════════════════════════
@@ -52,3 +55,9 @@ Release (Stub)
   For now, use manual release workflow.
 ═══════════════════════════════════════
 ```
+
+---
+
+## Step 3: Execute Post-Commands
+
+If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.

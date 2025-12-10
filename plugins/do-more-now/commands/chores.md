@@ -1,28 +1,33 @@
 ---
-argument-hint: [quick | thorough | specific-chore]
+argument-hint: [quick|thorough|git|planning|dead-code|deps|debt]
 description: [quick|thorough|git|planning|dead-code|deps|debt] Chores - maintenance, cleanup, housekeeping.
 ---
 
 Maintenance and housekeeping. Cleanup of any sort.
 
-<chore-input>
-$ARGUMENTS
-</chore-input>
+<user-input>$ARGUMENTS</user-input>
+<current-command>chores</current-command>
 
-## Subcommand Detection (REQUIRED)
+## Step 1: Route Subcommands (REQUIRED)
 
-**STOP. Check $ARGUMENTS for any `/do:` command references.**
+**Invoke `do:route-subcommands` skill FIRST.**
 
-If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:research`, `/do:docs`, or `/do:release`:
-1. **IMMEDIATELY** use the SlashCommand tool to run that command first
-2. Wait for it to complete
-3. Then continue with this command's main workflow below
+This skill will:
+1. Analyze `$ARGUMENTS` for any `/do:*` commands
+2. Execute pre-commands (commands that should run before main workflow)
+3. Return `main_instructions` and `post_commands`
 
-**Do NOT skip this step.**
+If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
+
+**Store the returned `post_commands` for later.**
 
 ---
 
-## Modes
+## Step 2: Main Workflow
+
+### Modes
+
+Using `main_instructions`:
 
 | Mode | Trigger | Duration | Scope |
 |------|---------|----------|-------|
@@ -32,9 +37,11 @@ If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:research`, `/do
 
 **Specific chores**: `git`, `planning`, `dead-code`, `deps`, `debt`, `docs`
 
-## Process
+### Process
 
-Use do:iterative-implementer to execute chores, actually fixing issues found.
+Use do:iterative-implementer to execute chores.
+- If there are minor issues or standard tasks to tidy up, do them immediately.
+- If there are larger concerns or a large amount of ambiguity, use /do:plan track to add an item to the backlog (print in summary)
 
 **Quick chores**:
 - Git hygiene (clean status, stale branches)
@@ -42,21 +49,35 @@ Use do:iterative-implementer to execute chores, actually fixing issues found.
 - Quick code scan (TODOs, debug code, secrets)
 - Dependency quick check
 
-**Thorough adds**:
+**Thorough chores**:
+- All quick chores AND
 - Dead code detection
 - Documentation sync
 - Technical debt inventory
 - Actually fix simple issues found
 
-## Output
+### Output
+
+Use subagent do:execution-summarizer to generate summary of work completed.
 
 ```
 ═══════════════════════════════════════
-Chores Complete
-  Mode: [quick | thorough | specific]
-  Fixed: [count] issues
-  Flagged: [count] for later
+Chores Complete ([quick | thorough | specific])
+  Cleaned up:
+   - [list items cleaned up]
+  Fixed:
+   - [list issues]
+  Addl work tracked:
+    - [list items]
+  Flagged:
+    - [list items]
 
   [Summary of what was done]
 ═══════════════════════════════════════
 ```
+
+---
+
+## Step 3: Execute Post-Commands
+
+If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.

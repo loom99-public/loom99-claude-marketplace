@@ -109,12 +109,12 @@ git commit -m "feat(component): implement functionality
 ## Execution Tracking
 
 **First**: Check if this is a tracked execution by reading state files:
-- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
-- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- Read `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/do-command-logs/CURRENT_SEQUENCE.txt` → SEQUENCE
 - If either file is missing, skip execution tracking (non-/do: invocation)
 
 **If files exist**, write execution trace to:
-`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-test-driven-implementer.txt`
+`.agent_planning/do-command-logs/partials/<EXECUTION_ID>-<SEQUENCE>-PARTIAL-test-driven-implementer.txt`
 
 **Format**:
 ```

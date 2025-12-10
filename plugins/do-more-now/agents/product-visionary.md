@@ -127,12 +127,12 @@ These belong in the planning phase. Your job is to inspire and define value, not
 ## Execution Tracking
 
 **First**: Check if this is a tracked execution by reading state files:
-- Read `.agent_planning/.exec/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
-- Read `.agent_planning/.exec/CURRENT_SEQUENCE.txt` → SEQUENCE
+- Read `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_planning/do-command-logs/CURRENT_SEQUENCE.txt` → SEQUENCE
 - If either file is missing, skip execution tracking (non-/do: invocation)
 
-**If files exist**, write execution trace to:
-`.agent_planning/.exec/PARTIAL-<EXECUTION_ID>-<SEQUENCE>-product-visionary.txt`
+**If files exist**, ensure the partials directory exists (create if needed), then write execution trace to:
+`.agent_planning/do-command-logs/partials/<EXECUTION_ID>-<SEQUENCE>-PARTIAL-product-visionary.txt`
 
 **Format**:
 ```

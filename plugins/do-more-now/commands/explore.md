@@ -5,30 +5,29 @@ description: Explore codebase - ask questions, compare ideas, understand interna
 
 Explore the codebase. Internal-only - no external research.
 
-<question>
-$ARGUMENTS
-</question>
+<user-input>$ARGUMENTS</user-input>
+<current-command>explore</current-command>
 
-## Subcommand Detection (REQUIRED)
+## Step 1: Route Subcommands (REQUIRED)
 
-**STOP. Check $ARGUMENTS for any `/do:` command references.**
+**Invoke `do:route-subcommands` skill FIRST.**
 
-If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:research`, `/do:chores`, `/do:docs`, or `/do:release`:
-1. **IMMEDIATELY** use the SlashCommand tool to run that command first
-2. Wait for it to complete
-3. Then continue with this command's main workflow below
+This skill will:
+1. Analyze `$ARGUMENTS` for any `/do:*` commands
+2. Execute pre-commands (commands that should run before main workflow)
+3. Return `main_instructions` and `post_commands`
 
-**Do NOT skip this step.**
+If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
+
+**Store the returned `post_commands` for later.**
 
 ---
 
-## Scope
+## Step 2: Main Workflow
 
-**Codebase-only**. Learn from internal sources, ask about the project, compare ideas within the project.
+**Scope**: Codebase-only. Learn from internal sources, ask about the project, compare ideas within the project.
 
-## Process
-
-Use do:researcher in **explore mode**:
+Use do:researcher in **explore mode** with `main_instructions`:
 
 1. **Understand**: What/where/how is being asked?
 2. **Search**: Grep/Glob to locate files quickly
@@ -49,3 +48,9 @@ Use do:researcher in **explore mode**:
 
 - Needs external research → "Use `/do:research`"
 - Needs correctness/status check → "Use `/do:plan status`"
+
+---
+
+## Step 3: Execute Post-Commands
+
+If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.

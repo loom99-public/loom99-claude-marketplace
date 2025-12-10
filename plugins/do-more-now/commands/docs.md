@@ -5,24 +5,29 @@ description: [readme|api|architecture|changelog] Docs - README, API docs, archit
 
 Documentation tasks. Create, update, or improve project documentation.
 
-<doc-input>
-$ARGUMENTS
-</doc-input>
+<user-input>$ARGUMENTS</user-input>
+<current-command>docs</current-command>
 
-## Subcommand Detection (REQUIRED)
+## Step 1: Route Subcommands (REQUIRED)
 
-**STOP. Check $ARGUMENTS for any `/do:` command references.**
+**Invoke `do:route-subcommands` skill FIRST.**
 
-If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:research`, `/do:chores`, or `/do:release`:
-1. **IMMEDIATELY** use the SlashCommand tool to run that command first
-2. Wait for it to complete
-3. Then continue with this command's main workflow below
+This skill will:
+1. Analyze `$ARGUMENTS` for any `/do:*` commands
+2. Execute pre-commands (commands that should run before main workflow)
+3. Return `main_instructions` and `post_commands`
 
-**Do NOT skip this step.**
+If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
+
+**Store the returned `post_commands` for later.**
 
 ---
 
-## Intent Detection
+## Step 2: Main Workflow
+
+### Intent Detection
+
+Using `main_instructions`:
 
 | Intent signals | Action |
 |----------------|--------|
@@ -33,7 +38,7 @@ If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:research`, `/do
 | "contributing", "CONTRIBUTING" | Update CONTRIBUTING.md |
 | *(default)* | Assess docs and suggest improvements |
 
-## Process
+### Process
 
 **Step 1: Assess**
 - Check what documentation exists
@@ -51,7 +56,7 @@ Use do:iterative-implementer to:
 - Check links work
 - Verify examples run
 
-## Output
+### Output
 
 ```
 ═══════════════════════════════════════
@@ -62,3 +67,9 @@ Docs Complete
   [Summary of changes]
 ═══════════════════════════════════════
 ```
+
+---
+
+## Step 3: Execute Post-Commands
+
+If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.

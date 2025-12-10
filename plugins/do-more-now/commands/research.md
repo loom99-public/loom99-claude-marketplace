@@ -5,30 +5,33 @@ description: [market|docs|patterns] Research external sources - market analysis,
 
 Research from external sources. Web search, market analysis, competitor comparison.
 
-<research-topic>
-$ARGUMENTS
-</research-topic>
+<user-input>$ARGUMENTS</user-input>
+<current-command>research</current-command>
 
-## Subcommand Detection (REQUIRED)
+## Step 1: Route Subcommands (REQUIRED)
 
-**STOP. Check $ARGUMENTS for any `/do:` command references.**
+**Invoke `do:route-subcommands` skill FIRST.**
 
-If $ARGUMENTS contains `/do:plan`, `/do:it`, `/do:explore`, `/do:chores`, `/do:docs`, or `/do:release`:
-1. **IMMEDIATELY** use the SlashCommand tool to run that command first
-2. Wait for it to complete
-3. Then continue with this command's main workflow below
+This skill will:
+1. Analyze `$ARGUMENTS` for any `/do:*` commands
+2. Execute pre-commands (commands that should run before main workflow)
+3. Return `main_instructions` and `post_commands`
 
-**Do NOT skip this step.**
+If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
+
+**Store the returned `post_commands` for later.**
 
 ---
 
-## Scope
+## Step 2: Main Workflow
 
-**External-only**. Learn from web, compare with external tools/projects, market viability.
+**Scope**: External-only. Learn from web, compare with external tools/projects, market viability.
 
 For internal codebase questions → Use `/do:explore`
 
-## Intent Detection
+### Intent Detection
+
+Using `main_instructions`:
 
 | Intent signals | Workflow |
 |----------------|----------|
@@ -37,7 +40,7 @@ For internal codebase questions → Use `/do:explore`
 | "best practices", "patterns", "how others do" | Industry research |
 | *(default)* | General external research |
 
-## Process
+### Process
 
 Use do:researcher in **external mode**:
 
@@ -46,7 +49,7 @@ Use do:researcher in **external mode**:
 3. **Compare**: Contrast with project context
 4. **Synthesize**: Form recommendations with tradeoffs
 
-## Output
+### Output
 
 ```
 ═══════════════════════════════════════
@@ -57,3 +60,9 @@ Research Complete
 Next: /do:plan to incorporate findings
 ═══════════════════════════════════════
 ```
+
+---
+
+## Step 3: Execute Post-Commands
+
+If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.
