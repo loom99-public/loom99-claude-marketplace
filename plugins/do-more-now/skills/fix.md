@@ -9,15 +9,15 @@ Bug fix with verification.
 
 ## Process
 
-**Step 1**: If bug not already understood, use do3:researcher to investigate.
+**Step 1**: If bug not already understood, use do:researcher to investigate.
 
-**Step 2**: Use do3:iterative-implementer to:
+**Step 2**: Use do:iterative-implementer to:
 - Write failing test that reproduces bug (if testable)
 - Implement the fix
 - Verify test passes
 - Check for regressions
 
-**Step 3**: Use do3:work-evaluator to confirm:
+**Step 3**: Use do:work-evaluator to confirm:
 - Bug is fixed
 - No regressions introduced
 - Tests pass

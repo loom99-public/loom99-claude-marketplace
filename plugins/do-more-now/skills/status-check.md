@@ -10,8 +10,8 @@ Fast, read-only diagnostic.
 ## Process
 
 Determine scope from context:
-- **Project-wide**: Use do3:project-evaluator for high-level assessment
-- **Focused area**: Use do3:work-evaluator for specific assessment
+- **Project-wide**: Use do:project-evaluator for high-level assessment
+- **Focused area**: Use do:work-evaluator for specific assessment
 
 ## Output
 

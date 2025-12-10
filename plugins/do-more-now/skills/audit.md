@@ -9,7 +9,7 @@ Exhaustive, in-depth evaluation. Full forensic examination.
 
 ## Process
 
-Use do3:project-evaluator in **audit mode**:
+Use do:project-evaluator in **audit mode**:
 
 1. **Scope**: If area specified, focus there. Otherwise, audit entire project.
 2. **Examine**: Architecture, code quality, dependencies, security, documentation, technical debt

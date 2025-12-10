@@ -9,14 +9,14 @@ Safe restructuring. No behavior changes, just improved structure.
 
 ## Process
 
-**Step 1**: Use do3:project-evaluator to understand current structure and identify targets.
+**Step 1**: Use do:project-evaluator to understand current structure and identify targets.
 
-**Step 2**: Use do3:iterative-implementer in **refactor mode**:
+**Step 2**: Use do:iterative-implementer in **refactor mode**:
 - Incremental structural changes
 - Run existing tests after each change
 - Commit frequently with clear messages
 
-**Step 3**: Use do3:work-evaluator to verify:
+**Step 3**: Use do:work-evaluator to verify:
 - All existing tests still pass
 - No functionality changed
 - Code quality improved

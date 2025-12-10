@@ -9,14 +9,14 @@ Add tests to existing code. NOT TDD - this is retroactive testing.
 
 ## Process
 
-**Step 1**: Use do3:project-evaluator to identify untested code in target area.
+**Step 1**: Use do:project-evaluator to identify untested code in target area.
 
-**Step 2**: Use do3:functional-tester to design and write tests:
+**Step 2**: Use do:functional-tester to design and write tests:
 - Focus on real user workflows
 - Verify actual behavior
 - Meaningful coverage, not 100%
 
-**Step 3**: Use do3:work-evaluator to verify:
+**Step 3**: Use do:work-evaluator to verify:
 - Tests pass against current code
 - Tests would fail if functionality broke
 - No tautological tests

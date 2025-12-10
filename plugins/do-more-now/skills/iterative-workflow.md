@@ -10,13 +10,13 @@ Build incrementally, validate with runtime evidence.
 ## Loop
 
 **Step 1: Implement**
-Use do3:iterative-implementer to:
+Use do:iterative-implementer to:
 - Read STATUS/PLAN for context
 - Build working functionality
 - Commit frequently
 
 **Step 2: Evaluate**
-Use do3:work-evaluator to validate:
+Use do:work-evaluator to validate:
 - Run the software
 - Capture evidence (screenshots, logs, output)
 - Compare against acceptance criteria
@@ -36,6 +36,6 @@ Use do3:work-evaluator to validate:
 Iterative Implementation Complete
   Iterations: [count]
   Files: [count] | Commits: [count]
-Next: /do3:plan to update status
+Next: /do:plan to update status
 ═══════════════════════════════════════
 ```

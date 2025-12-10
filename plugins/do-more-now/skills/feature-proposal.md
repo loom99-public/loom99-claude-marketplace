@@ -9,7 +9,7 @@ Design high-value features that are innovative yet pragmatic.
 
 ## Process
 
-Use do3:product-visionary agent to:
+Use do:product-visionary agent to:
 
 1. **Understand**: What problem does this solve? Who benefits?
 2. **Design**: Core functionality, user experience, technical approach
@@ -31,6 +31,6 @@ Feature Proposal Complete
   Feature: [name]
   Value: [1-sentence benefit]
   Report: FEATURE-<name>-<timestamp>.md
-Next: /do3:plan to incorporate into roadmap
+Next: /do:plan to incorporate into roadmap
 ═══════════════════════════════════════
 ```

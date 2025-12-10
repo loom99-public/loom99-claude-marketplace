@@ -9,7 +9,7 @@ Code review and quality assessment.
 
 ## Process
 
-Use do3:project-evaluator in **review mode**:
+Use do:project-evaluator in **review mode**:
 
 **Determine target**:
 - PR/diff specified → review those changes

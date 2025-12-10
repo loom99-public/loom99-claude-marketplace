@@ -11,7 +11,7 @@ External research: competitors, demand, alternatives.
 
 **Step 1**: Gather project context from PROJECT_SPEC.md or CLAUDE.md.
 
-**Step 2**: Use do3:researcher with WebSearch/WebFetch:
+**Step 2**: Use do:researcher with WebSearch/WebFetch:
 
 **If no specific topic** (competitive analysis):
 - Search for similar tools/projects
@@ -35,6 +35,6 @@ Market Research Complete
   Key insight: [1-sentence]
 
   Report: RESEARCH-market-<timestamp>.md
-Next: /do3:plan to incorporate findings
+Next: /do:plan to incorporate findings
 ═══════════════════════════════════════
 ```

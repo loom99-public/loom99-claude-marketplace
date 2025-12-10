@@ -9,7 +9,7 @@ Transform user intent into concrete project foundation.
 
 ## Process
 
-Use do3:project-architect agent to:
+Use do:project-architect agent to:
 
 1. **Classify scenario**: New project, architectural change, greenfield addition, migration, or feature design
 2. **Adaptive interview**: 15-25 relevant questions with options and tradeoffs
@@ -24,6 +24,6 @@ Display summary:
 Project Initialized
   Spec: .agent_planning/PROJECT_SPEC.md
   Type: [new project | architectural change | ...]
-Next: /do3:plan to start implementation planning
+Next: /do:plan to start implementation planning
 ═══════════════════════════════════════
 ```
