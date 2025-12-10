@@ -1,9 +1,9 @@
 ---
 argument-hint: [focus area]
-description: Planning & evaluation. Routes to specialized skills based on intent.
+description: Plan & track - evaluate status, create plans, track backlog items.
 ---
 
-Planning command. Detects intent and invokes the appropriate skill.
+Planning command. Evaluate where we are, plan where we want to be, track work items.
 
 <user-input>
 $ARGUMENTS
@@ -11,33 +11,51 @@ $ARGUMENTS
 
 ## Intent Detection
 
-Analyze the user's input to determine which skill to invoke:
+| Intent signals | Action |
+|----------------|--------|
+| "init", "new project", "start", "create project" | `do:init-project` skill |
+| "audit", "deep dive", "forensic", "comprehensive" | `do:audit` skill |
+| "status", "check", "how's it going", "progress" | `do:status-check` skill |
+| "feature", "proposal", "new feature", "design" | `do:feature-proposal` skill |
+| "track [priority] [type] description" | Quick capture (see below) |
+| *(default - any other planning request)* | Evaluate+plan workflow |
 
-| Intent signals | Skill to invoke |
-|----------------|-----------------|
-| "init", "new project", "start", "create project" | `do3:init-project` |
-| "audit", "deep dive", "forensic", "comprehensive" | `do3:audit` |
-| "status", "check", "how's it going", "progress" | `do3:status-check` |
-| "feature", "proposal", "new feature", "design" | `do3:feature-proposal` |
-| *(default - any other planning request)* | Default evaluate+plan workflow below |
+**Use the Skill tool** to invoke skills. Otherwise, run workflow below.
 
-**Use the Skill tool** to invoke the detected skill with the user's arguments.
+---
+
+## Track: Quick Backlog Capture
+
+If input starts with "track", parse and create issue:
+
+- **Priority** (optional): 0-3 (defaults to 2)
+- **Type** (optional): bug/feature/task/chore (defaults to task)
+- **Description**: everything else
+
+If `mcp__plugin_beads_beads__create` available, create issue. Otherwise:
+```
+Beads not available. Install beads plugin for tracking.
+```
+
+**Output**:
+```
+Tracked: [description]
+  Type: [type] | Priority: P[n]
+```
 
 ---
 
 ## Default: Evaluate + Plan Workflow
 
-If no specialized skill matches, run the standard planning cycle:
-
 **Step 1: Evaluate**
-Use do3:project-evaluator to assess current state → STATUS-*.md
+Use do:project-evaluator to assess current state → STATUS-*.md
 
-If evaluator returns PAUSE with ambiguities, use do3:researcher to resolve, then re-evaluate.
+If evaluator returns PAUSE with ambiguities, use do:researcher to resolve, then re-evaluate.
 
 **Step 1b**: Display evaluator's summary.
 
 **Step 2: Plan**
-Use do3:status-planner to create implementation plan → PLAN-*.md
+Use do:status-planner to create implementation plan → PLAN-*.md
 
 **Step 2b**: Display planner's summary.
 
@@ -47,7 +65,7 @@ Use do3:status-planner to create implementation plan → PLAN-*.md
 Plan Complete
   STATUS: .agent_planning/STATUS-<ts>.md
   PLAN: .agent_planning/PLAN-<ts>.md
-Next: /do3:it to implement
+Next: /do:it to implement
 ═══════════════════════════════════════
 ```
 

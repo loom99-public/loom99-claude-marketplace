@@ -12,11 +12,13 @@
     "skills"
   ],
   "commands": [
-    "./commands/plan.md",
     "./commands/it.md",
-    "./commands/peek.md",
-    "./commands/learn.md",
-    "./commands/track.md"
+    "./commands/plan.md",
+    "./commands/explore.md",
+    "./commands/research.md",
+    "./commands/chores.md",
+    "./commands/docs.md",
+    "./commands/release.md"
   ],
   "skills": [
     "./skills/init-project.md",
@@ -28,7 +30,6 @@
     "./skills/fix.md",
     "./skills/review.md",
     "./skills/add-tests.md",
-    "./skills/chores.md",
     "./skills/tdd-workflow.md",
     "./skills/iterative-workflow.md",
     "./skills/market-research.md",

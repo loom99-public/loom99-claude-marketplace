@@ -1,101 +1,111 @@
-# do - Development Workflow with Skills
+# do - Development Workflow
 
-5 commands + 14 skills. Commands route to specialized skills based on intent.
+7 commands organized by functional area.
 
-## Commands (visible in autocomplete)
+## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `/do:plan` | Planning & evaluation |
-| `/do:it` | Implementation & action |
-| `/do:peek` | Fast codebase questions |
-| `/do:learn` | Research |
-| `/do:track` | Quick backlog capture |
-
-## Skills (invoked by commands based on intent)
-
-### Planning Skills (via `/do:plan`)
-| Skill | Triggers | Purpose |
-|-------|----------|---------|
-| `init-project` | "init", "new project", "start" | Initialize project |
-| `audit` | "audit", "deep dive", "forensic" | Deep examination |
-| `status-check` | "status", "check", "progress" | Quick diagnostic |
-| `feature-proposal` | "feature", "proposal", "design" | Feature design |
-
-### Implementation Skills (via `/do:it`)
-| Skill | Triggers | Purpose |
-|-------|----------|---------|
-| `refactor` | "refactor", "restructure", "clean up" | Safe restructuring |
-| `debug` | "debug", "investigate", "root cause" | Bug investigation |
-| `fix` | "fix", "bug", "broken" | Bug fix |
-| `review` | "review", "PR", "code review" | Code review |
-| `add-tests` | "test", "add tests", "coverage" | Retroactive testing |
-| `chores` | "chores", "cleanup", "maintenance" | Housekeeping |
-| `tdd-workflow` | "tdd", "test first" | TDD implementation |
-| `iterative-workflow` | "iterate", "iterative" | Iterative implementation |
-
-### Research Skills (via `/do:learn`)
-| Skill | Triggers | Purpose |
-|-------|----------|---------|
-| `market-research` | "market", "competitors", "external" | External/market research |
-
-### Evaluator Skills (internal)
-| Skill | Purpose |
-|-------|---------|
-| `evaluation-profiles` | Context-aware validation criteria for evaluators |
+| Command | Category | Purpose |
+|---------|----------|---------|
+| `/do:it` | Implement | Build, fix, refactor, debug, test, review |
+| `/do:plan` | Plan | Evaluate status, create plans, track backlog |
+| `/do:explore` | Explore | Ask questions about codebase, compare internal ideas |
+| `/do:research` | Research | Learn from external sources, market analysis |
+| `/do:chores` | Chores | Maintenance, cleanup, housekeeping |
+| `/do:docs` | Docs | README, API docs, architecture docs |
+| `/do:release` | Release | Versioning, changelog, release notes (stub) |
 
 ## Quick Reference
 
+### `/do:it` - Implement
+
 ```bash
-# Planning
-/do:plan                    # Evaluate + plan (default)
-/do:plan init my app        # → init-project skill
-/do:plan audit security     # → audit skill
-/do:plan status             # → status-check skill
-/do:plan feature payments   # → feature-proposal skill
-
-# Implementation
 /do:it auth system          # Auto-select TDD/iterative
-/do:it refactor auth        # → refactor skill
-/do:it debug login failing  # → debug skill
-/do:it fix issue #123       # → fix skill
-/do:it review               # → review skill
-/do:it test auth module     # → add-tests skill
-/do:it chores               # → chores skill
-/do:it tdd new feature      # → tdd-workflow skill
-
-# Fast questions
-/do:peek where is auth      # Direct execution
-
-# Research
-/do:learn jwt vs sessions   # Internal research (default)
-/do:learn market            # → market-research skill
-
-# Quick capture
-/do:track fix login bug     # Direct execution
+/do:it tdd new feature      # Explicit TDD workflow
+/do:it iterate ui work      # Explicit iterative workflow
+/do:it fix issue #123       # Bug fix
+/do:it refactor auth        # Refactoring
+/do:it debug login failing  # Debug investigation
+/do:it test auth module     # Add tests
+/do:it review               # Code review
 ```
 
-## How It Works
+### `/do:plan` - Plan & Track
 
-1. User types command with natural language
-2. Command detects intent from keywords
-3. Command invokes appropriate skill using the Skill tool
-4. Skill has access to conversation context
-5. Skill executes specialized workflow
+```bash
+/do:plan                    # Evaluate + plan (default)
+/do:plan status             # Quick status check
+/do:plan audit security     # Deep audit
+/do:plan init my app        # Initialize new project
+/do:plan feature payments   # Feature proposal
+/do:plan track fix bug      # Quick backlog capture (requires beads)
+```
 
-**Progressive disclosure**: Only 5 commands in autocomplete. Skills are invisible but discoverable via docs.
+### `/do:explore` - Internal Questions
+
+```bash
+/do:explore where is auth   # Find code locations
+/do:explore how does X work # Understand internals
+/do:explore compare A vs B  # Compare internal approaches
+```
+
+### `/do:research` - External Research
+
+```bash
+/do:research jwt best practices    # Industry patterns
+/do:research competitors           # Market analysis
+/do:research react docs hooks      # External documentation
+```
+
+### `/do:chores` - Maintenance
+
+```bash
+/do:chores                  # Quick cleanup (default)
+/do:chores thorough         # Deep cleanup
+/do:chores git              # Git hygiene only
+/do:chores deps             # Dependencies only
+/do:chores debt             # Tech debt inventory
+```
+
+### `/do:docs` - Documentation
+
+```bash
+/do:docs                    # Assess and suggest
+/do:docs readme             # Update README
+/do:docs api                # Generate API docs
+/do:docs architecture       # Update architecture docs
+```
+
+### `/do:release` - Release (Stub)
+
+```bash
+/do:release                 # Shows stub message
+```
+
+## Category Philosophy
+
+| Category | Focus | Sources |
+|----------|-------|---------|
+| **Implement** | Build and change code | Codebase |
+| **Plan** | Where are we, where to go | Status, specs, backlog |
+| **Explore** | Learn from project | Codebase only |
+| **Research** | Learn from outside | Web, docs, competitors |
+| **Chores** | Keep things clean | Git, deps, code |
+| **Docs** | Keep docs current | README, API, arch |
+| **Release** | Ship it | Version, changelog, tags |
 
 ## File Structure
 
 ```
-plugins/do/
-├── commands/        # 5 visible commands
-│   ├── plan.md
-│   ├── it.md
-│   ├── peek.md
-│   ├── learn.md
-│   └── track.md
-├── skills/          # 14 skills (13 workflow + 1 internal)
+plugins/do-more-now/
+├── commands/           # 7 commands
+│   ├── it.md           # Implement
+│   ├── plan.md         # Plan & track
+│   ├── explore.md      # Internal exploration
+│   ├── research.md     # External research
+│   ├── chores.md       # Maintenance
+│   ├── docs.md         # Documentation
+│   └── release.md      # Release (stub)
+├── skills/             # Specialized workflows
 │   ├── init-project.md
 │   ├── audit.md
 │   ├── status-check.md
@@ -105,19 +115,33 @@ plugins/do/
 │   ├── fix.md
 │   ├── review.md
 │   ├── add-tests.md
-│   ├── chores.md
 │   ├── tdd-workflow.md
 │   ├── iterative-workflow.md
 │   ├── market-research.md
-│   └── evaluation-profiles/  # Internal skill for evaluators
-└── agents/          # 10 agents (execution engines)
+│   └── evaluation-profiles/
+└── agents/             # 10 execution engines
 ```
+
+## Agents
+
+| Agent | Used By | Purpose |
+|-------|---------|---------|
+| project-architect | `plan init` | Project initialization |
+| project-evaluator | `plan`, `plan audit` | Gap analysis |
+| status-planner | `plan` | Backlog generation |
+| functional-tester | `it tdd`, `it test` | Test design |
+| test-driven-implementer | `it tdd` | TDD implementation |
+| iterative-implementer | `it`, `chores`, `docs` | Iterative work |
+| work-evaluator | `it`, `plan status` | Runtime validation |
+| researcher | `explore`, `research` | Investigation |
+| product-visionary | `plan feature` | Feature proposals |
+| execution-summarizer | All commands | Execution logging |
 
 ## Beads Integration
 
 If beads MCP tools available:
-- `/do:track` creates issues directly
-- `/do:plan` syncs P0/P1 items after planning
-- `/do:it` updates issue status after implementation
+- `/do:plan track` creates issues
+- `/do:plan` syncs P0/P1 items
+- `/do:it` updates issue status
 
 No beads? Everything still works.
