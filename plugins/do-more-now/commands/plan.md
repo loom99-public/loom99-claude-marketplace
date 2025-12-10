@@ -9,11 +9,16 @@ Planning command. Evaluate where we are, plan where we want to be, track work it
 $ARGUMENTS
 </user-input>
 
-## Subcommand Detection
+## Subcommand Detection (REQUIRED)
 
-If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:explore`, `/do:research`), run that command first with its relevant arguments, then continue with this command's main workflow.
+**STOP. Check $ARGUMENTS for any `/do:` command references.**
 
-Example: "First /do:research best practices, then plan the implementation" → runs research, then plans.
+If $ARGUMENTS contains `/do:it`, `/do:explore`, `/do:research`, `/do:chores`, `/do:docs`, or `/do:release`:
+1. **IMMEDIATELY** use the SlashCommand tool to run that command first
+2. Wait for it to complete
+3. Then continue with this command's main workflow below
+
+**Do NOT skip this step. Do NOT proceed to planning until subcommands complete.**
 
 ---
 

@@ -9,11 +9,19 @@ Implementation command. Detects intent and invokes the appropriate skill.
 $ARGUMENTS
 </user-input>
 
-## Subcommand Detection
+## Subcommand Detection (REQUIRED)
 
-If $ARGUMENTS contains any `/do:` command reference (e.g., `/do:plan`, `/do:explore`, `/do:research`), run that command first with its relevant arguments, then continue with this command's main workflow.
+**STOP. Check $ARGUMENTS for any `/do:` command references.**
 
-Example: "First run /do:plan, then implement the auth system" → runs plan, then implements.
+If $ARGUMENTS contains `/do:plan`, `/do:explore`, `/do:research`, `/do:chores`, `/do:docs`, or `/do:release`:
+1. **IMMEDIATELY** use the SlashCommand tool to run that command first
+2. Wait for it to complete
+3. Then continue with this command's main workflow below
+
+Example: "First run /do:plan, then implement the auth system"
+→ Use SlashCommand with `/do:plan` first, THEN proceed to implementation.
+
+**Do NOT skip this step. Do NOT proceed to implementation until subcommands complete.**
 
 ---
 
