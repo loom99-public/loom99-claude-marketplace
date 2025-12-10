@@ -180,9 +180,9 @@ Research is ready for decision when:
 
 If any of these are missing, more research is needed.
 
-## Peek Mode
+## Quick Mode
 
-When invoked by `/do:peek`, operate in **peek mode** - a fast, focused variant:
+When invoked by `/do:explore` with simple questions, operate in **quick mode** - a fast, focused variant:
 
 **Constraints**:
 - **Single-pass search** - Find answer quickly, don't iterate multiple times
@@ -203,11 +203,11 @@ When invoked by `/do:peek`, operate in **peek mode** - a fast, focused variant:
 
 **Fast exit conditions** - stop immediately if:
 - Question is too vague (ask for clarification)
-- Question needs external research (redirect to `/do:learn`)
-- Question is about correctness (redirect to `/do:status`)
+- Question needs external research (redirect to `/do:research`)
+- Question is about correctness (redirect to `/do:plan status`)
 - Answer found in one file (just answer it)
 
-Peek mode is NOT for decisions or tradeoffs - it's pure codebase navigation.
+Quick mode is NOT for decisions or tradeoffs - it's pure codebase navigation.
 
 ## Integration with Workflow
 

@@ -8,24 +8,18 @@ Planning command. Evaluate where we are, plan where we want to be, track work it
 <user-input>$ARGUMENTS</user-input>
 <current-command>plan</current-command>
 
-## Step 1: Route Subcommands (REQUIRED)
+## Subcommand Detection
 
-**Invoke `do:route-subcommands` skill FIRST.**
+**Quick check**: Does `$ARGUMENTS` contain `/do:` patterns (other than the current command)?
 
-This skill will:
-1. Analyze `$ARGUMENTS` for any `/do:*` commands
-2. Execute pre-commands (commands that should run before main workflow)
-3. Return `main_instructions` and `post_commands`
-
-If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
-
-**Store the returned `post_commands` for later.**
+- **If NO** → `main_instructions = $ARGUMENTS`, proceed to Intent Detection
+- **If YES** → Invoke `do:route-subcommands` skill, then proceed with returned `main_instructions`
 
 ---
 
-## Step 2: Intent Detection
+## Intent Detection
 
-Using `main_instructions` from Step 1:
+Analyze `main_instructions`:
 
 | Intent signals | Action |
 |----------------|--------|
@@ -87,9 +81,9 @@ Next: /do:it to implement
 
 ---
 
-## Step 3: Execute Post-Commands
+## Post-Commands
 
-If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.
+If subcommands were detected earlier and `post_commands` is non-empty, execute them now.
 
 ---
 

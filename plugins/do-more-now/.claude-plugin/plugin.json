@@ -1,6 +1,6 @@
 {
   "name": "do",
-  "version": "0.2.0",
+  "version": "0.5.0",
   "description": "Flexible development system makes it easy to Do More Now.  What you alreaady know you should be doing - only better",
   "author": {
     "name": "Brandon Fryslie"
@@ -22,21 +22,23 @@
     "./commands/release.md"
   ],
   "skills": [
-    "./skills/init-project.md",
-    "./skills/audit.md",
-    "./skills/status-check.md",
-    "./skills/feature-proposal.md",
-    "./skills/refactor.md",
-    "./skills/debug.md",
-    "./skills/fix.md",
-    "./skills/review.md",
-    "./skills/add-tests.md",
-    "./skills/setup-testing.md",
-    "./skills/route-subcommands.md",
-    "./skills/tdd-workflow.md",
-    "./skills/iterative-workflow.md",
-    "./skills/market-research.md",
-    "./skills/evaluation-profiles"
+    "./skills/init-project",
+    "./skills/audit",
+    "./skills/status-check",
+    "./skills/feature-proposal",
+    "./skills/refactor",
+    "./skills/debug",
+    "./skills/fix",
+    "./skills/review",
+    "./skills/add-tests",
+    "./skills/setup-testing",
+    "./skills/route-subcommands",
+    "./skills/tdd-workflow",
+    "./skills/iterative-workflow",
+    "./skills/market-research",
+    "./skills/evaluation-profiles",
+    "./skills/gating-controller",
+    "./skills/advanced-skill-builder"
   ],
   "agents": [
     "./agents/execution-summarizer.md",

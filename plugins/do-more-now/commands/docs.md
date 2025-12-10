@@ -8,22 +8,16 @@ Documentation tasks. Create, update, or improve project documentation.
 <user-input>$ARGUMENTS</user-input>
 <current-command>docs</current-command>
 
-## Step 1: Route Subcommands (REQUIRED)
+## Subcommand Detection
 
-**Invoke `do:route-subcommands` skill FIRST.**
+**Quick check**: Does `$ARGUMENTS` contain `/do:` patterns?
 
-This skill will:
-1. Analyze `$ARGUMENTS` for any `/do:*` commands
-2. Execute pre-commands (commands that should run before main workflow)
-3. Return `main_instructions` and `post_commands`
-
-If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
-
-**Store the returned `post_commands` for later.**
+- **If NO** → `main_instructions = $ARGUMENTS`, proceed
+- **If YES** → Invoke `do:route-subcommands` skill first
 
 ---
 
-## Step 2: Main Workflow
+## Main Workflow
 
 ### Intent Detection
 
@@ -70,6 +64,6 @@ Docs Complete
 
 ---
 
-## Step 3: Execute Post-Commands
+## Post-Commands
 
-If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.
+If subcommands were detected and `post_commands` is non-empty, execute them now.

@@ -1,0 +1,3 @@
+Agent: project-evaluator | 2025-12-10T09:25:17Z
+Completion: 85% | Gaps: 3 large skills need progressive disclosure, 3 broken refs | Test Quality: N/A
+Ambiguities: 0 found | Workflow: CONTINUE

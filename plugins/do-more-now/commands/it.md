@@ -8,24 +8,69 @@ Implementation command. Detects intent and invokes the appropriate skill.
 <user-input>$ARGUMENTS</user-input>
 <current-command>it</current-command>
 
-## Step 1: Route Subcommands (REQUIRED)
+## Step 0: Detect Gate Mode
 
-**Invoke `do:route-subcommands` skill FIRST.**
+Analyze `$ARGUMENTS` for gate intent signals using LLM (NOT flag parsing):
 
-This skill will:
-1. Analyze `$ARGUMENTS` for any `/do:*` commands
-2. Execute pre-commands (commands that should run before main workflow)
-3. Return `main_instructions` and `post_commands`
+**Intent Detection Table**:
 
-If no subcommands found, it returns immediately with `main_instructions = $ARGUMENTS`.
+| User Signals | Gate Mode |
+|--------------|-----------|
+| "carefully", "approve each", "manual", "review everything", "ask me about", "check with me" | BLOCKING |
+| "guided", "review major", "help with risks", "important decisions only", "significant choices" | HYBRID |
+| "autonomous", "auto", "just do it", "move fast", "trust your judgment", "auto-approve" | NONBLOCKING |
 
-**Store the returned `post_commands` for Step 4.**
+**If multiple signals or ambiguous**: Prefer more conservative (BLOCKING > HYBRID > NONBLOCKING)
+
+**If no gate signals detected**:
+Use AskUserQuestion to prompt:
+```
+How should I handle decisions during this work?
+
+Options:
+1. BLOCKING - Ask you to approve every significant choice
+2. HYBRID - Ask about major/risky decisions, auto-approve obvious ones (Recommended)
+3. NONBLOCKING - Make all decisions autonomously and document them for review
+```
+
+## Step 0b: Initialize Gate State (If Gate Mode Selected)
+
+If a gate mode was detected or selected:
+
+1. Read EXEC_ID from `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt`
+   - If file doesn't exist, generate a new UUID
+
+2. Create state directory structure:
+   ```
+   .agent_planning/do-command-state/<EXEC_ID>/
+   .agent_planning/do-command-state/<EXEC_ID>/DECISIONS/
+   ```
+
+3. Write GATE_CONFIG.txt:
+   ```
+   GATE_MODE: <detected-or-selected-mode>
+   EXEC_ID: <exec-id>
+   CREATED: <iso-timestamp>
+   COMMAND: /do:it
+   USER_ARGS: $ARGUMENTS
+   ```
+
+**Continue to Step 1...**
 
 ---
 
-## Step 2: Intent Detection
+## Subcommand Detection
 
-Using `main_instructions` from Step 1, determine which skill to invoke:
+**Quick check**: Does `$ARGUMENTS` contain `/do:` patterns (other than `/do:it`)?
+
+- **If NO** → `main_instructions = $ARGUMENTS`, proceed to Intent Detection
+- **If YES** → Invoke `do:route-subcommands` skill, then proceed with returned `main_instructions`
+
+---
+
+## Intent Detection
+
+Analyze `main_instructions` to determine which skill to invoke:
 
 | Intent signals | Skill to invoke |
 |----------------|-----------------|
@@ -51,14 +96,12 @@ Using `main_instructions` from Step 1, determine which skill to invoke:
 
 ---
 
-## Step 4: Execute Post-Commands
+## Post-Commands
 
-If `post_commands` from Step 1 is non-empty, execute each one now using `SlashCommand` tool.
-
-Pass `main_instructions` as arguments to each post-command.
+If subcommands were detected and `post_commands` is non-empty, execute them now.
 
 ---
 
-## Step 5: Beads Sync (Optional)
+## Beads Sync (Optional)
 
 If beads MCP tools available, update issue status after implementation completes.
