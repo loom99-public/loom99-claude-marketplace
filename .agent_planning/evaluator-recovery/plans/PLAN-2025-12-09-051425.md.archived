@@ -1,0 +1,656 @@
+# Implementation Plan: Evaluator Effectiveness Improvements
+## Generated: 2025-12-09-051425
+
+**Source Documents**:
+- STATUS: `.agent_planning/STATUS-2025-12-09-043855.md`
+- SPEC: `plugins/do-more-now/CLAUDE.md`
+- Generation Timestamp: 2025-12-09-051425
+
+**User Requirements Clarified**:
+1. **Workflow Gates**: User-specified (command arg or prompt), not fixed
+2. **Validation Debt Tracking**: Yes, use VALIDATION_DEBT.md ledger
+3. **Skip Policy**: REMOVE time-based skipping. New policy:
+   - LLM evaluates if validation can be done deterministically
+   - If CANNOT validate → escalate immediately (no time wasted)
+   - If CAN validate → do it (even if slower)
+   - User confirmation required EACH TIME for manual validations
+   - Goal: 100% reliable validation
+
+---
+
+## Executive Summary
+
+**Current State**: Evaluators have been streamlined through profile integration (~60% token reduction in validation guidance), but **false positive risks remain the primary concern**. The STATUS report identifies 3 high-severity gaps where evaluators may report COMPLETE without sufficient evidence.
+
+**Total Gap**: 12 work items across 3 priority levels
+**Critical Issues**: 4 items (P0) directly addressing false positives
+**Token Efficiency**: 3 items (P2) consolidating remaining duplicates
+**Validation Enforcement**: 5 items adding reliability mechanisms
+
+**Recommended Focus**: P0 items first (false positive prevention), then P1 (workflow integration), then P2 (efficiency polish).
+
+**Risk Assessment**:
+- **HIGH RISK**: Runtime verification not enforced, tests may be worthless but trusted
+- **MODERATE RISK**: "Skip if difficult" provides easy escape hatch
+- **LOW RISK**: Ambiguity detection relies on LLM judgment (already has good guidance)
+
+---
+
+## Backlog by Priority
+
+### P0 (Critical): Eliminate False Positive Risks
+
+These items directly address the user's #1 concern about false positives by requiring evidence and elevating critical validation principles.
+
+---
+
+#### [P0-1] Enforce Runtime Verification with Evidence Table
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: None
+**Spec Reference**: CLAUDE.md lines 148-149 (project-evaluator: "Runtime verification") • **Status Reference**: STATUS-2025-12-09-043855.md section 2 (Critical Risk #1, lines 120-172)
+
+##### Description
+
+Currently, evaluators SAY "run the software" but provide no mechanism to enforce it. LLMs can report COMPLETE after reading code and running tests without ever executing the actual software. This creates false confidence that leads to shipping broken code.
+
+**New Requirement**: Add mandatory runtime verification section requiring evidence table for each user flow tested. If runtime testing is impossible for the profile (e.g., agent-prompt profile), must explicitly mark "N/A - structural validation only". If runtime testing is possible but not performed, evaluation is INVALID.
+
+##### Acceptance Criteria
+
+- [ ] project-evaluator.md includes "Runtime Verification (REQUIRED)" section before "Does It Actually Work?" with evidence table template
+- [ ] work-evaluator.md includes same runtime verification requirements
+- [ ] Evidence table has columns: Flow | Command/Action | Expected | Actual | Evidence | Status
+- [ ] Instructions specify: "You MUST provide runtime evidence. No evaluation valid without it."
+- [ ] Profile exception documented: "If runtime testing impossible (agent-prompt profile): Mark 'N/A - structural validation only'"
+- [ ] Invalid evaluation rule: "If runtime testing possible but not performed: Evaluation INVALID"
+- [ ] Tested with sample evaluation showing evidence table populated with actual runtime results
+- [ ] Tested with agent-prompt profile showing "N/A - structural validation only" for runtime section
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (lines 41-50)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (lines 51-59)
+
+**Implementation approach**:
+Replace the current "Does It Actually Work?" guidance with explicit template requiring documentation of:
+1. Exact command/action attempted
+2. Expected outcome
+3. Actual outcome
+4. Evidence location (logs, screenshots, error messages)
+5. Pass/fail status
+
+Add clear INVALID evaluation rule when runtime evidence is missing but was possible to obtain.
+
+---
+
+#### [P0-2] Add Confidence Level Markers (VERIFIED/LIKELY/UNCERTAIN/BROKEN/UNKNOWN)
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: None
+**Spec Reference**: CLAUDE.md lines 148-149, 561 (Conservative completion, Status taxonomy) • **Status Reference**: STATUS-2025-12-09-043855.md section 3 (Confidence Calibration, lines 279-316)
+
+##### Description
+
+Current evaluations report ✅ or ❌ without indicating confidence level. Users cannot distinguish between "I ran this and it works" vs "tests pass so probably works" vs "code looks reasonable" vs "can't verify, user should check". This ambiguity leads to wasted time on validation attempts and unclear risk assessment.
+
+**New Requirement**: All assessments must use explicit confidence markers. Executive Summary must report confidence distribution and recommend user testing session if UNCERTAIN + UNKNOWN > 40%.
+
+##### Acceptance Criteria
+
+- [ ] Both evaluator agents include "Assessment Confidence Levels" section defining 5 markers
+- [ ] Markers defined: ✅ VERIFIED (ran it, works), ✅ LIKELY (tests pass, code reasonable), ⚠️ UNCERTAIN (can't verify), ❌ BROKEN (ran it, fails), ❓ UNKNOWN (not evaluated)
+- [ ] STATUS template includes confidence distribution in Executive Summary (VERIFIED: X%, LIKELY: Y%, etc.)
+- [ ] Workflow rule documented: "If UNCERTAIN + UNKNOWN > 40% → recommend user manual testing session"
+- [ ] Examples provided for each confidence level with specific evidence types
+- [ ] Tested with sample evaluation showing mixed confidence levels across features
+- [ ] Tested that confidence distribution appears in Executive Summary with recommendation when >40% uncertain/unknown
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (lines 110-118)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (lines 107-116)
+
+**Integration point**: Confidence levels work with evidence tables from P0-1. Evidence type determines confidence level:
+- Screenshot/log showing success → VERIFIED
+- Tests pass, no runtime → LIKELY
+- Missing config/blocked → UNCERTAIN
+- Error in logs → BROKEN
+- Not checked this iteration → UNKNOWN
+
+---
+
+#### [P0-3] Require Test Quality Verification with Evidence
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: None
+**Spec Reference**: CLAUDE.md lines 396-402 (Never use MagicMock, Tests must fail with stubs) • **Status Reference**: STATUS-2025-12-09-043855.md section 4 (Validation Enforcement, lines 420-460)
+
+##### Description
+
+Both evaluators say "test the tests" but don't enforce it. Current guidance is ADVICE ("Quick test: Break something obvious"), not REQUIREMENT. LLMs can skip this step and trust worthless tests that always pass regardless of implementation correctness.
+
+**New Requirement**: For any project with tests, evaluator MUST verify tests actually catch bugs by introducing obvious bugs and documenting whether tests fail. If this step is skipped, test quality must be marked "UNKNOWN - not verified".
+
+##### Acceptance Criteria
+
+- [ ] Both evaluators include "Test Quality Verification (REQUIRED)" section
+- [ ] Process documented: 1) Identify critical function, 2) Introduce obvious bug, 3) Run test suite, 4) Document result
+- [ ] Evidence table template provided: Function Modified | Bug Introduced | Tests Run | Result | Verdict
+- [ ] Examples provided showing tests that catch bugs (✅) vs tests that miss bugs (❌)
+- [ ] STATUS template includes "Test Quality" section with: Verified modules, Blind spots, Recommendations
+- [ ] Rule documented: "If you skip this step: Mark test quality as 'UNKNOWN - not verified'"
+- [ ] Tested with sample evaluation showing test quality verification results
+- [ ] Tested that blind spots are reported when tests pass despite introduced bugs
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (line 70, expand to full section)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (similar addition)
+
+**Critical insight**: This directly prevents trusting test suites that are "theater" - they run and pass but don't actually validate functionality. The evidence table forces documentation of what was tested and whether tests are real.
+
+---
+
+#### [P0-4] Replace "Skip if Difficult" with Deterministic Validation Check
+
+**Status**: Not Started
+**Effort**: Large (1-2 weeks)
+**Dependencies**: None
+**Spec Reference**: User requirement #3 (REMOVE time-based skipping) • **Status Reference**: STATUS-2025-12-09-043855.md section 2 (Moderate Risk #3, lines 213-256)
+
+##### Description
+
+Current "skip if difficult or taking >30 seconds" policy is too subjective and provides easy escape hatch. LLMs may skip validation at first obstacle. User requirement: **REMOVE time-based skipping entirely**.
+
+**New Policy**:
+1. LLM evaluates: Can this validation be done in a **reliable deterministic way**?
+2. If YES → Do it (even if slower, prioritize reliability over speed)
+3. If NO (validation impossible in principle) → Escalate immediately to user with:
+   - (a) Request concrete validation method, OR
+   - (b) User must validate manually themselves
+4. For user-validated items: User confirmation required **EACH TIME** validation is needed (no "validated once, trust forever")
+
+**Goal**: 100% reliable validation, even if slower. Never waste time attempting impossible validation. Never silently defer validation without user acknowledgment.
+
+##### Acceptance Criteria
+
+- [ ] Both evaluators have "Validation Feasibility Assessment" section replacing "skip if difficult" guidance
+- [ ] New policy documented: Evaluate deterministic feasibility before attempting validation
+- [ ] Three outcomes defined: CAN_VALIDATE (do it), CANNOT_VALIDATE (escalate immediately), USER_VALIDATES (manual, requires confirmation each time)
+- [ ] Escalation template provided: What cannot be validated, why, what information/method is needed from user
+- [ ] Manual validation tracking added: Document what user validated, when, and require re-confirmation in next evaluation
+- [ ] Time-based "30 second" threshold completely removed from both agents
+- [ ] Rule documented: "If validation fundamentally impossible (e.g., requires production load, external service, specific hardware) → CANNOT_VALIDATE, escalate immediately"
+- [ ] Rule documented: "If validation possible but requires user judgment (e.g., visual design quality) → USER_VALIDATES, create checklist requiring user sign-off each evaluation"
+- [ ] Tested with scenario where validation is impossible (e.g., production load testing) - evaluator escalates immediately
+- [ ] Tested with scenario requiring user validation (e.g., email formatting) - evaluator creates checklist and tracks sign-off across evaluations
+- [ ] Tested that evaluators never use "too difficult" or time-based rationale to skip validation
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (line 37, replace entirely)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (line 39, replace entirely)
+
+**Integration with P1-2 (VALIDATION_DEBT.md)**: When evaluation result is USER_VALIDATES, item is added to validation debt ledger with escalation details. User must explicitly check off items in ledger, and evaluators verify sign-off in subsequent runs.
+
+**Critical principle shift**: From "skip if hard" → "escalate if impossible, do if possible". This eliminates subjective "difficult" judgment and forces clear categorization: deterministic (automate), impossible (escalate), requires human judgment (track).
+
+---
+
+### P1 (High): Workflow Integration & Enforcement
+
+These items prevent wasted time by integrating validation requirements into workflow gates and ensuring runtime evidence trumps test results.
+
+---
+
+#### [P1-1] Add User-Specified Workflow Gate Strictness
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: P0-2 (Confidence Levels)
+**Spec Reference**: User requirement #1 (User-specified gates) • **Status Reference**: STATUS-2025-12-09-043855.md section 4 (Validation Enforcement, lines 461-503)
+
+##### Description
+
+Current STATUS report has no enforcement mechanism preventing implementers from proceeding when validation is incomplete. User requirement: **Workflow gates should be user-specified**, either:
+- Inline in slash command (e.g., `/do:it --strict` vs `/do:it --advisory`)
+- Or user is prompted to pick strictness if not specified
+
+Gates check: Critical issues resolved, validation confidence threshold, manual debt bounded, no active PAUSE.
+
+##### Acceptance Criteria
+
+- [ ] Both evaluator agents include "Workflow Gates" section defining 4 gates
+- [ ] Gates defined: 1) Critical Issues Resolved (no P0/P1 bugs, no BROKEN features), 2) Validation Confidence Threshold (VERIFIED+LIKELY >= 60%, UNCERTAIN+UNKNOWN < 30%), 3) Manual Debt Bounded (<=5 items, no HIGH >3 days), 4) No Active PAUSE
+- [ ] Gate strictness levels defined: BLOCKING (must pass to proceed), ADVISORY (warn but allow), DISABLED (no gates)
+- [ ] Commands (/do:it, /do:it) accept `--gates=blocking|advisory|disabled` parameter
+- [ ] If `--gates` not specified, command prompts user: "Choose workflow gate strictness: [blocking/advisory/disabled]"
+- [ ] Implementer agents (test-driven-implementer, iterative-implementer) check gates before starting work
+- [ ] BLOCKING mode: If gates fail, implementers output STOP message with details and refuse to proceed
+- [ ] ADVISORY mode: If gates fail, implementers output warning but continue
+- [ ] DISABLED mode: Gates not checked
+- [ ] Example STOP message template provided showing which gates failed and why
+- [ ] Tested with BLOCKING mode: Implementer stops when confidence <60%
+- [ ] Tested with ADVISORY mode: Implementer warns but continues
+- [ ] Tested with DISABLED mode: No gate checks performed
+- [ ] Tested user prompt appears when --gates not specified
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (add Workflow Gates section after Critical Rules)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (add Workflow Gates section)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/test-driven-implementer.md` (add gate check at start)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/iterative-implementer.md` (add gate check at start)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/commands/it.md` (add --gates parameter and prompt logic)
+
+**User experience**: Default prompt provides clear explanation of each mode:
+- BLOCKING: "Ensures high validation confidence before implementation (recommended for production)"
+- ADVISORY: "Warns about validation gaps but allows proceeding (useful for rapid prototyping)"
+- DISABLED: "No validation gates (use only when you understand current state)"
+
+---
+
+#### [P1-2] Create VALIDATION_DEBT.md Ledger File
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: P0-4 (Deterministic Validation Check)
+**Spec Reference**: User requirement #2 (Validation debt tracking) • **Status Reference**: STATUS-2025-12-09-043855.md section 3 (Confidence Calibration, lines 351-378)
+
+##### Description
+
+User requirement: **Use VALIDATION_DEBT.md ledger file** to track items never validated across sessions. Currently, if 5 evaluations each defer 2-3 manual items, user has 10-15 unvalidated items with no consolidated list. Prevents items from being forgotten.
+
+Evaluators update ledger after each evaluation. When debt >5 items OR 2+ HIGH priority, recommend user "validation session" to clear debt.
+
+##### Acceptance Criteria
+
+- [ ] Ledger template created: `.agent_planning/VALIDATION_DEBT.md`
+- [ ] Template includes table: Item | Why Not Automated | Suggested User Steps | Added | Priority | Status
+- [ ] Template includes Debt Score summary: N items (X HIGH, Y MED, Z LOW)
+- [ ] Both evaluators documented to update ledger after each evaluation
+- [ ] Process documented: 1) Read existing ledger, 2) Add new USER_VALIDATES items, 3) Check for user sign-offs (Status changed from "Pending" to "Validated: YYYY-MM-DD"), 4) Carry forward unvalidated items
+- [ ] Recommendation rule: "When debt >5 items OR 2+ HIGH: Recommend user validation session"
+- [ ] Implementer agents check ledger for unvalidated HIGH priority items before proceeding
+- [ ] BLOCKING gate mode prevents proceeding when >5 items or 2+ HIGH unvalidated (integrates with P1-1)
+- [ ] Tested: Evaluator adds new manual item to ledger
+- [ ] Tested: User marks item "Validated: 2025-12-09" in ledger, next evaluation recognizes sign-off
+- [ ] Tested: Debt accumulates across multiple evaluations
+- [ ] Tested: Recommendation appears when thresholds exceeded
+
+##### Technical Notes
+
+**Files to create**:
+- `/Users/bmf/icode/loom99-claude-marketplace/.agent_planning/VALIDATION_DEBT.md` (template)
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (add ledger update step)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (add ledger update step)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/test-driven-implementer.md` (add ledger check)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/iterative-implementer.md` (add ledger check)
+
+**Ledger workflow**:
+1. Evaluator determines item requires USER_VALIDATES (per P0-4 policy)
+2. Evaluator adds row to ledger with Priority (based on impact), Suggested Steps (specific instructions)
+3. User executes validation steps, edits ledger to change Status from "Pending" to "Validated: YYYY-MM-DD"
+4. Next evaluation reads ledger, sees sign-off, proceeds with confidence
+5. If user doesn't validate, item persists in ledger and counts toward debt threshold
+
+**Integration**: This ledger is the mechanism that enforces user confirmation requirement from P0-4. Each evaluation checks ledger for pending HIGH priority items and includes debt score in gate calculations.
+
+---
+
+#### [P1-3] Elevate "Runtime Trumps Tests" to Top-Level Principle
+
+**Status**: Not Started
+**Effort**: Small (1-2 days)
+**Dependencies**: P0-1 (Runtime Verification)
+**Spec Reference**: CLAUDE.md lines 396-402 (Test Writing rules), 559-569 (Quality Standards) • **Status Reference**: STATUS-2025-12-09-043855.md section 2 (Critical Risk #2, lines 174-211)
+
+##### Description
+
+Critical principle "Trust runtime over tests" currently buried as bullet point at line 275 in project-evaluator. This is easily ignored by LLMs despite being fundamental. Tests are easier to verify than runtime (just run pytest), so LLMs take path of least resistance and trust passing tests even when runtime fails.
+
+**New Requirement**: Elevate to top-level H2 section "Critical Principle: Runtime Trumps Tests" appearing BEFORE main evaluation sections. Require explicit runtime vs test reconciliation in STATUS output.
+
+##### Acceptance Criteria
+
+- [ ] Both evaluators include new H2 section "Critical Principle: Runtime Trumps Tests" near top of prompt (before evaluation sections)
+- [ ] Section states: "ALWAYS ALWAYS ALWAYS: If runtime fails, tests mean nothing"
+- [ ] Verification process documented: 1) Run tests → document pass/fail, 2) Run software → document works/broken, 3) Reconcile
+- [ ] Reconciliation rule: "If tests pass BUT runtime fails → tests are WORTHLESS (report this explicitly)"
+- [ ] STATUS template includes "Runtime vs Tests Reconciliation" section
+- [ ] Reconciliation section shows: Tests (X/Y passing), Runtime (flows tested with results), Verdict (blind spots when tests pass but runtime fails)
+- [ ] Example provided showing tests passing but feature broken, explicitly calling out test blind spot
+- [ ] Tested with scenario where tests pass but runtime fails - evaluator reports "Tests have BLIND SPOT" in Reconciliation section
+- [ ] Old buried bullet point (line 275) removed from Critical Rules section to avoid duplication
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (move line 275 → new H2 section before line 41, expand significantly)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (add same H2 section)
+
+**Position**: Place immediately after "Profile Loading" section (from Status recommendation) but before "Does It Actually Work?" section. This ensures principle is seen early and influences evaluation approach throughout.
+
+**Integration with P0-1**: Runtime verification evidence tables (P0-1) provide the data for runtime vs tests reconciliation. If evidence shows runtime failure but tests pass, this principle mandates explicit reporting of test inadequacy.
+
+---
+
+### P2 (Moderate): Efficiency & Polish
+
+These items improve token efficiency by consolidating duplicates and add mechanisms to pause workflows when uncertainty is high.
+
+---
+
+#### [P2-1] Consolidate Duplicate Content to evaluation-profiles Skill
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: None
+**Spec Reference**: N/A (Internal efficiency improvement) • **Status Reference**: STATUS-2025-12-09-043855.md section 1 (Token Efficiency, lines 67-86)
+
+##### Description
+
+~600-800 tokens duplicated between project-evaluator and work-evaluator agents: profile selection table (100% identical), test automation table (100% identical), kicking work back guidance (95% overlap), critical rules (80% overlap). Move shared content to evaluation-profiles skill to reduce agent prompt size.
+
+##### Acceptance Criteria
+
+- [ ] Profile selection table (lines 26-33 in project-evaluator, 28-35 in work-evaluator) moved to evaluation-profiles/SKILL.md
+- [ ] Test automation recommendations (lines 286-297 in project-evaluator, 283-294 in work-evaluator) moved to new skill section "Automation Patterns"
+- [ ] "Kicking work back" guidance moved to evaluation-profiles/SKILL.md section "Feedback Guidelines"
+- [ ] Critical Rules consolidated: Keep only agent-specific rules in prompts, reference skill for shared rules
+- [ ] Both agents updated to reference skill sections instead of duplicating content
+- [ ] Single "see skill" reminder at top of each agent: "Invoke evaluation-profiles skill and read appropriate reference file BEFORE proceeding"
+- [ ] All inline "see skill" pointers (8 occurrences per STATUS report) removed
+- [ ] Tested: Agent still performs all validations correctly after content moved to skill
+- [ ] Token count verification: ~600-800 tokens saved across both agents
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (remove duplicated content, add skill references)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (remove duplicated content, add skill references)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/skills/evaluation-profiles/SKILL.md` (add new sections: Automation Patterns, Feedback Guidelines, consolidate shared Critical Rules)
+
+**Before/After token counts** (approximate):
+- project-evaluator.md: 6,800 → 6,200 tokens (600 saved)
+- work-evaluator.md: 7,200 → 6,600 tokens (600 saved)
+- evaluation-profiles/SKILL.md: 3,100 → 3,700 tokens (600 added, but loaded once and shared)
+
+**Net savings**: ~1,200 tokens across both agents, ~600 tokens net (since skill grows by 600)
+
+---
+
+#### [P2-2] Add PAUSE Uncertainty Thresholds
+
+**Status**: Not Started
+**Effort**: Medium (3-5 days)
+**Dependencies**: P0-2 (Confidence Levels)
+**Spec Reference**: CLAUDE.md lines 193-215 (Pausing for Clarification) • **Status Reference**: STATUS-2025-12-09-043855.md section 3 (Confidence Calibration, lines 318-350)
+
+##### Description
+
+Evaluators have guidance on WHAT to output when pausing (lines 193-215 in project-evaluator) but unclear WHEN to pause. work-evaluator recommends PAUSE reactively (after bugs found) not proactively (before wasting time). Add automatic PAUSE triggers based on uncertainty thresholds.
+
+##### Acceptance Criteria
+
+- [ ] Both evaluators include "When to PAUSE (Stop Workflow)" section
+- [ ] Four automatic PAUSE triggers defined:
+  - [ ] Ambiguity with no clear resolution: 3+ magic numbers/assumptions and unclear which are correct
+  - [ ] Runtime broken with unclear fix: Failure root cause ambiguous (config vs bug vs spec)
+  - [ ] Multiple valid paths: 2+ implementation approaches equally reasonable, need user choice
+  - [ ] Validation confidence <50%: Majority of features UNCERTAIN or UNKNOWN
+- [ ] PAUSE output requirements: Specific questions, Why continuing wastes time (what needs rebuilding), Options with tradeoffs
+- [ ] Philosophy documented: "PAUSE is not failure. It's preventing waste."
+- [ ] Workflow integration: If evaluator outputs PAUSE recommendation, implementers must not proceed until user resolves (integrates with P1-1 Gate 4)
+- [ ] Tested with scenario triggering each PAUSE condition
+- [ ] Tested that PAUSE output includes required elements (questions, waste explanation, options)
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (expand lines 193-215 with WHEN triggers)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (add WHEN triggers to PAUSE guidance)
+
+**Integration with confidence levels**: "Validation confidence <50%" trigger uses confidence distribution from P0-2. If VERIFIED + LIKELY < 50%, automatic PAUSE recommended.
+
+**Integration with workflow gates**: Gate 4 (No Active PAUSE) from P1-1 checks whether latest STATUS includes PAUSE recommendation. If yes, implementers cannot proceed until user addresses questions.
+
+---
+
+#### [P2-3] Make Examples More Terse
+
+**Status**: Not Started
+**Effort**: Small (1-2 days)
+**Dependencies**: None
+**Spec Reference**: N/A (Internal efficiency improvement) • **Status Reference**: STATUS-2025-12-09-043855.md section 1 (Token Efficiency, lines 87-114)
+
+##### Description
+
+work-evaluator.md lines 303-315 contains 13-line verbose example demonstrating "be specific" in feedback. Example is pedagogically valuable but verbose. Compress to 3-5 lines while keeping pedagogical value.
+
+##### Acceptance Criteria
+
+- [ ] Verbose example (lines 303-315 in work-evaluator.md) compressed to ≤5 lines
+- [ ] Compressed example still shows clear contrast between bad and good feedback
+- [ ] Good feedback example includes: Root cause with file/line, Additional issues found, Ambiguity noted
+- [ ] Similar verbose examples in project-evaluator.md identified and compressed
+- [ ] Token savings: ~100-150 tokens per agent
+- [ ] Tested: Compressed examples still convey "be specific" principle clearly
+
+##### Technical Notes
+
+**Files to modify**:
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/work-evaluator.md` (lines 303-315)
+- `/Users/bmf/icode/loom99-claude-marketplace/plugins/do-more-now/agents/project-evaluator.md` (scan for similar verbose examples)
+
+**Example compression** (from STATUS report):
+```markdown
+**Bad**: "Login doesn't work properly."
+**Good**: "Login: POST /api/auth returns 200 with `{"error": "TODO"}` (auth/service.js:34). No error handling for service down → undefined → crash. Ambiguity: auth failure UX undefined."
+```
+
+This preserves all key elements (specificity, root cause, file location, additional issues, ambiguity) in 2 lines instead of 13.
+
+---
+
+## Dependency Graph
+
+```
+P0-1 (Runtime Verification)
+  ↓
+P1-3 (Runtime Trumps Tests) - Depends on runtime evidence tables
+
+P0-2 (Confidence Levels)
+  ↓
+P1-1 (Workflow Gates) - Uses confidence distribution in Gate 2
+  ↓
+P2-2 (PAUSE Thresholds) - Uses confidence levels for <50% trigger
+
+P0-4 (Deterministic Validation)
+  ↓
+P1-2 (VALIDATION_DEBT.md) - Tracks USER_VALIDATES items from feasibility assessment
+
+P2-1 (Consolidate Duplicates) - Independent
+P2-3 (Terse Examples) - Independent
+```
+
+**Critical path**: P0-4 → P1-2 → P1-1 (longest dependency chain)
+
+**Parallel work opportunities**:
+- P0-1, P0-2, P0-3 can be done in parallel (no dependencies)
+- P2-1 and P2-3 can be done anytime (no dependencies)
+- After P0-2 completes, P1-1 and P2-2 can run in parallel
+
+---
+
+## Recommended Sprint Planning
+
+### Sprint 1: False Positive Prevention (P0 Items)
+
+**Goal**: Eliminate high-severity false positive risks through evidence requirements and policy changes.
+
+**Items**:
+- P0-1: Runtime Verification Evidence Tables
+- P0-2: Confidence Level Markers
+- P0-3: Test Quality Verification
+- P0-4: Deterministic Validation Check (CRITICAL - largest change)
+
+**Duration**: 2 weeks
+**Risk**: P0-4 is large effort and involves significant policy change - may need user feedback during implementation
+
+**Exit criteria**:
+- All P0 items implemented and tested
+- Sample evaluations show evidence tables populated
+- Confidence levels appear in STATUS reports
+- "Skip if difficult" removed, replaced with feasibility assessment
+
+### Sprint 2: Workflow Integration (P1 Items)
+
+**Goal**: Integrate validation requirements into workflow through gates, debt tracking, and principle elevation.
+
+**Items**:
+- P1-1: User-Specified Workflow Gates
+- P1-2: VALIDATION_DEBT.md Ledger
+- P1-3: Elevate Runtime Trumps Tests
+
+**Duration**: 1.5 weeks
+**Dependencies**: Requires P0-2 and P0-4 from Sprint 1
+
+**Exit criteria**:
+- Workflow gates functional with blocking/advisory/disabled modes
+- Validation debt ledger working across multiple evaluations
+- Runtime vs tests reconciliation appears in STATUS
+
+### Sprint 3: Efficiency & Polish (P2 Items)
+
+**Goal**: Reduce token usage and add proactive pause mechanisms.
+
+**Items**:
+- P2-1: Consolidate Duplicates to Skill
+- P2-2: Add PAUSE Uncertainty Thresholds
+- P2-3: Make Examples Terse
+
+**Duration**: 1 week
+**Dependencies**: P2-2 requires P0-2 from Sprint 1
+
+**Exit criteria**:
+- Token counts reduced by ~600-800 tokens per agent
+- PAUSE triggers functional
+- Examples compressed but still clear
+
+---
+
+## Risk Assessment
+
+### HIGH RISK Items
+
+**P0-4: Deterministic Validation Check**
+- **Risk**: Largest policy change, requires LLM to make nuanced feasibility judgments
+- **Mitigation**: Provide clear decision tree and examples for each outcome (CAN_VALIDATE, CANNOT_VALIDATE, USER_VALIDATES)
+- **Contingency**: If LLM struggles with feasibility assessment, add explicit heuristics (e.g., "requires production environment" → CANNOT_VALIDATE)
+
+**P1-1: User-Specified Workflow Gates**
+- **Risk**: Gate thresholds may be too strict or too lenient
+- **Mitigation**: Start with ADVISORY mode as default, let users opt into BLOCKING after understanding behavior
+- **Contingency**: Make thresholds configurable (e.g., confidence threshold 60% → user can adjust to 50% or 70%)
+
+### MODERATE RISK Items
+
+**P1-2: VALIDATION_DEBT.md Ledger**
+- **Risk**: Requires user discipline to update ledger (mark items validated)
+- **Mitigation**: Clear instructions, simple format (just change "Pending" to "Validated: DATE")
+- **Contingency**: Add reminder in evaluator output when debt >3 days old
+
+**P2-2: PAUSE Uncertainty Thresholds**
+- **Risk**: Thresholds may trigger too often (annoying) or too rarely (miss issues)
+- **Mitigation**: Conservative thresholds (3+ ambiguities, <50% confidence) based on STATUS analysis
+- **Contingency**: Make thresholds configurable
+
+### LOW RISK Items
+
+**P0-1, P0-2, P0-3**: Additive changes, clear templates, low ambiguity
+**P1-3**: Simple reorganization of existing content
+**P2-1, P2-3**: Internal efficiency improvements, no behavior change
+
+---
+
+## Blockers and Questions
+
+None at this time. All requirements clarified by user:
+1. ✅ Workflow gates: User-specified (not fixed)
+2. ✅ Validation debt: Use VALIDATION_DEBT.md ledger
+3. ✅ Skip policy: Remove time-based, use deterministic feasibility assessment
+
+---
+
+## File Changes Summary
+
+### Files to Create (1)
+- `.agent_planning/VALIDATION_DEBT.md` - Validation debt ledger template
+
+### Files to Modify (7)
+
+**Agents (6)**:
+- `plugins/do-more-now/agents/project-evaluator.md` - All P0, P1, P2 changes
+- `plugins/do-more-now/agents/work-evaluator.md` - All P0, P1, P2 changes
+- `plugins/do-more-now/agents/test-driven-implementer.md` - Gate checks (P1-1), ledger checks (P1-2)
+- `plugins/do-more-now/agents/iterative-implementer.md` - Gate checks (P1-1), ledger checks (P1-2)
+
+**Commands (1)**:
+- `plugins/do-more-now/commands/it.md` - Add --gates parameter and user prompt (P1-1)
+
+**Skills (1)**:
+- `plugins/do-more-now/skills/evaluation-profiles/SKILL.md` - Consolidate duplicate content (P2-1)
+
+**Total estimated changes**: ~150-200 lines added/modified across agents, ~50 lines added to skill, ~20 lines to commands
+
+---
+
+## Next Steps
+
+**Immediate**:
+1. User reviews and approves plan priorities
+2. Confirm P0-4 deterministic validation policy is clear (largest change)
+3. Confirm P1-1 workflow gate defaults (suggest ADVISORY as default, BLOCKING opt-in)
+
+**After approval**:
+1. Start Sprint 1 with P0 items (focus on P0-4 first as it's most complex)
+2. Validate P0 changes with test evaluations before proceeding to P1
+3. Iterate on thresholds/policies based on real usage
+
+**Questions for user** (optional clarifications):
+1. Workflow gate default mode: ADVISORY (warn but allow) or BLOCKING (stop if fail)? Recommend ADVISORY for gradual adoption.
+2. Confidence threshold in Gate 2: 60% VERIFIED+LIKELY acceptable? Or prefer 70%/50%?
+3. Validation debt threshold: >5 items acceptable? Or prefer stricter (>3) or looser (>10)?
+4. Should evaluators attempt validation even if it will take >2 minutes? (User said "reliable even if slower" but want to confirm no practical time limit)
+
+---
+
+## Provenance
+
+**Generated by**: status-planner agent
+**Source STATUS**: STATUS-2025-12-09-043855.md
+**Spec version**: plugins/do-more-now/CLAUDE.md (last modified: 2025-12-09)
+**Generation timestamp**: 2025-12-09-051425
+
+**User requirements incorporated**:
+1. Workflow gates: User-specified via command arg or prompt (not fixed) - P1-1
+2. Validation debt: VALIDATION_DEBT.md ledger file - P1-2
+3. Skip policy: Remove time-based, use deterministic feasibility assessment - P0-4
+
+**Alignment verification**:
+- ✅ All STATUS recommendations (P0-P3) mapped to backlog items
+- ✅ User clarifications integrated into acceptance criteria
+- ✅ Spec principles maintained (brutal honesty, evidence-based, zero optimism)
+- ✅ No contradictions with existing planning docs (latest STATUS is authoritative)
