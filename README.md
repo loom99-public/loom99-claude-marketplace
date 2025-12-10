@@ -1,8 +1,73 @@
 # do-more-now
 
-![loom99](https://raw.githubusercontent.com/loom99-public/loom99-claude-marketplace/refs/heads/bmf_update_license/assets/do-more-now.svg)
+![do-more-now](https://raw.githubusercontent.com/loom99-public/loom99-claude-marketplace/refs/heads/bmf_update_license/assets/do-more-now.svg)
 
-A Claude Code plugin that adds structured workflow commands for development. Two main approaches: write tests first (TDD), or implement and validate as you go.
+Do More Now is a Claude Code plugin that adds structured workflow commands for development.  This is not designed for one particular language or way of working.  It's a
+simple, flexible, and incredibly powerful toolkit for all type of software engineering.
+
+### What makes it great?
+
+#### Minimal
+
+Just 7 powerful commands and minimal intrusion on your context.  Do More Now makes heavy use of Claude Skills to abstract common functionality and only brings it in when needed
+
+We do not include any MCP servers, but we do recommend installing the Beads MCP server to improve structured planning.  Works great without it too.
+
+#### So easy
+
+Here's how to use the plugin in it's most basic form:
+
+```bash
+/do:it
+```
+
+That's all you need.  That will kick off a structured workflow that will find the most important work and work on it.
+
+You can pass a specific topic:
+
+```bash
+/do:it Fix that bug!
+```
+
+Internally, the plugins name is 'do'.  This allows us to type `/do:<command>`, which is easy and memorable.  
+
+In docs and online, the plugin is named Do More Now.  Because it's the quickest way to make that happen. 
+
+Note: This document is under heavy revision and is not currently fully up to date.  Better docs coming soon.  
+
+Here's a quick overview of the commands:
+
+```bash
+# All commands follow this pattern:
+/do:<command> [Intent signal] [Area of focus]
+
+# type this into claude. /do:it is used for implementing
+/do:it [Area of focus]
+
+# used for planning
+/do:plan [init|audit|status|feature|track] [Area of focus]
+
+# Exploring the codebase (internal learning)
+/do:explore [Area of focus]
+
+# External learning (googling stuff, comparing projects, finding answers online, etc
+/do:research [market|docs|patterns] [Area of focus]
+
+# Write docs
+/do:docs [readme|api|architecture|changelog] [Area of focus]
+
+# Maintenance and housekeeping. Tidying up of any sort.
+/do:chores [quick|thorough|git|planning|dead-code|deps|debt] [Area of focus]
+
+```
+
+Both `[Intent signal]` and `[Area of focus]` are optional.  Claude will figure it out.
+
+`[Intent signal]` does not need to match exactly.  Claude will use those keywords to pull in the right skills and route you to the right agent.
+
+`[Area of focus]` Can be anything you want, from 1 word to 5 paragraphs of prompt.  Take whatever you'd normally send to Claude and enter it here.  It will get you further and the results will be better.
+
+You can even enter more slash commands in your prompt and claude will execute all of them, allowing you to easily chain workflows.  Claude will rewrite the input to each command intelligently.
 
 ---
 
@@ -10,10 +75,12 @@ A Claude Code plugin that adds structured workflow commands for development. Two
 
 ```bash
 # Install the marketplace
-git clone https://github.com/loom99/loom99-claude-marketplace.git
-cd loom99-claude-marketplace
+claude plugin marketplace add loom99-public/loom99-claude-marketplace
 
-# In Claude Code:
+# On the cli
+claude plugin install do
+
+# Or in Claude Code:
 /plugin marketplace add .
 /plugin install do
 ```
