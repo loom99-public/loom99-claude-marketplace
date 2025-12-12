@@ -7,7 +7,7 @@ description: Parse and execute inline /do: subcommands before/after the main wor
 
 Parse user input for inline `/do:*` commands and execute them in correct order.
 
-**IMPORTANT: Be silent.** If no subcommands found, return immediately without any output or explanation. Only output if there ARE subcommands to process.
+**IMPORTANT: Be silent.** If no subcommands found, return immediately without any output or explanation. If there ARE subcommands to process, minimal concise output only.
 
 ## Process
 
@@ -31,5 +31,6 @@ Parse user input for inline `/do:*` commands and execute them in correct order.
 - `main_instructions`: cleaned task
 - `post_commands`: list for parent to execute after
 
-For detailed examples, see `references/examples.md`.
+IMPORTANT: Skip these unless strictly needed:
+For detailed examples, see `references/detailed-examples.md`.
 For edge cases, see `references/edge-cases.md`.

@@ -1,128 +1,76 @@
-# do - Development Workflow
+# CLAUDE.md
 
-7 commands organized by functional area.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Overview
+
+`do-more-now` (plugin name: `do`) is a Claude Code plugin providing structured development workflows. Seven commands orchestrate work via: commands (intent detection) → skills (workflows) → agents (execution).
+
+## Architecture
+
+```
+User Command → Command (intent detection) → Skill (workflow) → Agent(s) (execution)
+     ↓
+  Hooks (SessionStart/Stop) manage execution state and logging
+```
+
+**Execution Flow Example**: `/do:it fix auth bug`
+1. `commands/it.md` detects "fix" intent
+2. Invokes `do:fix` skill
+3. Skill spawns `researcher` agent (investigation) then `iterative-implementer` (fix)
+4. Agents write partial logs; Stop hook aggregates into final report
 
 ## Commands
 
-| Command | Category | Purpose |
-|---------|----------|---------|
-| `/do:it` | Implement | Build, fix, refactor, debug, test, review |
-| `/do:plan` | Plan | Evaluate status, create plans, track backlog |
-| `/do:explore` | Explore | Ask questions about codebase, compare internal ideas |
-| `/do:research` | Research | Learn from external sources, market analysis |
-| `/do:chores` | Chores | Maintenance, cleanup, housekeeping |
-| `/do:docs` | Docs | README, API docs, architecture docs |
-| `/do:release` | Release | Versioning, changelog, release notes (stub) |
+| Command | Purpose |
+|---------|---------|
+| `/do:it [args]` | Implement: build, fix, refactor, debug, test, review |
+| `/do:plan [args]` | Plan: evaluate status, create plans, track backlog |
+| `/do:handoff [topic]` | Create context handoff document for agent transfer |
+| `/do:explore [question]` | Explore: codebase questions, internal investigation |
+| `/do:research [topic]` | Research: external sources, web search, market analysis |
+| `/do:chores [type]` | Chores: maintenance, cleanup, housekeeping |
+| `/do:docs [type]` | Docs: README, API, architecture documentation |
+| `/do:release` | Release: versioning, changelog (stub) |
 
-## Quick Reference
+### `/do:it` Intent Detection
 
-### `/do:it` - Implement
+| Intent signals | Invokes skill |
+|----------------|---------------|
+| "refactor", "restructure", "clean up" | `do:refactor` |
+| "debug", "investigate", "root cause" | `do:debug` |
+| "fix", "bug", "broken", "not working" | `do:fix` |
+| "review", "PR", "code review" | `do:review` |
+| "test", "add tests", "coverage" | `do:add-tests` |
+| "setup testing", "add test framework" | `do:setup-testing` |
+| "tdd", "test first" | `do:tdd-workflow` |
+| "iterate", "build incrementally" | `do:iterative-workflow` |
+| *(default)* | Auto-select TDD or iterative based on context |
 
-```bash
-/do:it auth system          # Auto-select TDD/iterative
-/do:it tdd new feature      # Explicit TDD workflow
-/do:it iterate ui work      # Explicit iterative workflow
-/do:it fix issue #123       # Bug fix
-/do:it refactor auth        # Refactoring
-/do:it debug login failing  # Debug investigation
-/do:it test auth module     # Add tests
-/do:it review               # Code review
-```
+### `/do:plan` Intent Detection
 
-### `/do:plan` - Plan & Track
+| Intent signals | Invokes skill |
+|----------------|---------------|
+| "init", "initialize", "new project" | `do:init-project` |
+| "audit", "deep analysis", "forensic" | `do:audit` |
+| "status", "where are we", "check" | `do:status-check` |
+| "feature", "proposal", "design" | `do:feature-proposal` |
+| "track" | Beads issue creation (if available) |
+| *(default)* | Evaluate + plan workflow |
 
-```bash
-/do:plan                    # Evaluate + plan (default)
-/do:plan status             # Quick status check
-/do:plan audit security     # Deep audit
-/do:plan init my app        # Initialize new project
-/do:plan feature payments   # Feature proposal
-/do:plan track fix bug      # Quick backlog capture (requires beads)
-```
+### `/do:chores` Intent Detection
 
-### `/do:explore` - Internal Questions
+| Intent signals | Action |
+|----------------|--------|
+| "thorough", "deep" | Comprehensive cleanup |
+| "git", "branches" | Git hygiene only |
+| "planning", "docs" | Planning file cleanup |
+| "dead-code", "unused" | Dead code removal |
+| "deps", "dependencies" | Dependency updates |
+| "debt", "tech debt" | Tech debt inventory |
+| *(default)* | Quick cleanup |
 
-```bash
-/do:explore where is auth   # Find code locations
-/do:explore how does X work # Understand internals
-/do:explore compare A vs B  # Compare internal approaches
-```
-
-### `/do:research` - External Research
-
-```bash
-/do:research jwt best practices    # Industry patterns
-/do:research competitors           # Market analysis
-/do:research react docs hooks      # External documentation
-```
-
-### `/do:chores` - Maintenance
-
-```bash
-/do:chores                  # Quick cleanup (default)
-/do:chores thorough         # Deep cleanup
-/do:chores git              # Git hygiene only
-/do:chores deps             # Dependencies only
-/do:chores debt             # Tech debt inventory
-```
-
-### `/do:docs` - Documentation
-
-```bash
-/do:docs                    # Assess and suggest
-/do:docs readme             # Update README
-/do:docs api                # Generate API docs
-/do:docs architecture       # Update architecture docs
-```
-
-### `/do:release` - Release (Stub)
-
-```bash
-/do:release                 # Shows stub message
-```
-
-## Category Philosophy
-
-| Category | Focus | Sources |
-|----------|-------|---------|
-| **Implement** | Build and change code | Codebase |
-| **Plan** | Where are we, where to go | Status, specs, backlog |
-| **Explore** | Learn from project | Codebase only |
-| **Research** | Learn from outside | Web, docs, competitors |
-| **Chores** | Keep things clean | Git, deps, code |
-| **Docs** | Keep docs current | README, API, arch |
-| **Release** | Ship it | Version, changelog, tags |
-
-## File Structure
-
-```
-plugins/do-more-now/
-├── commands/           # 7 commands
-│   ├── it.md           # Implement
-│   ├── plan.md         # Plan & track
-│   ├── explore.md      # Internal exploration
-│   ├── research.md     # External research
-│   ├── chores.md       # Maintenance
-│   ├── docs.md         # Documentation
-│   └── release.md      # Release (stub)
-├── skills/             # Specialized workflows
-│   ├── init-project.md
-│   ├── audit.md
-│   ├── status-check.md
-│   ├── feature-proposal.md
-│   ├── refactor.md
-│   ├── debug.md
-│   ├── fix.md
-│   ├── review.md
-│   ├── add-tests.md
-│   ├── tdd-workflow.md
-│   ├── iterative-workflow.md
-│   ├── market-research.md
-│   └── evaluation-profiles/
-└── agents/             # 10 execution engines
-```
-
-## Agents
+## Agent Mapping
 
 | Agent | Used By | Purpose |
 |-------|---------|---------|
@@ -137,11 +85,179 @@ plugins/do-more-now/
 | product-visionary | `plan feature` | Feature proposals |
 | execution-summarizer | All commands | Execution logging |
 
+## Planning Files
+
+Agents coordinate via `.agent_planning/`:
+
+| File Pattern | Access | Purpose |
+|--------------|--------|---------|
+| `STATUS-*.md` | Read-only | Current project state |
+| `PLAN-*.md` | Read-only | Implementation plans |
+| `BACKLOG-*.md` | Read-only | Prioritized work items |
+| `SPRINT-*.md` | Read-write | Current sprint items |
+| `TODO-*.md` | Read-write | Immediate tasks |
+| `do-command-logs/` | Read-write | Execution tracking |
+
+## Gate Mode System
+
+Commands can operate in three decision-handling modes:
+
+| Mode | Behavior | User signals |
+|------|----------|--------------|
+| BLOCKING | Ask for every significant choice | "carefully", "approve each", "manual" |
+| HYBRID | Ask about major/risky, auto-approve obvious | "guided", "review major", "help with risks" |
+| NONBLOCKING | Full autonomy, document for review | "autonomous", "auto", "just do it" |
+
+Gate state stored in `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`
+
+## Execution Tracking
+
+**State Files** (in `.agent_planning/do-command-logs/`):
+- `CURRENT_EXECUTION_ID.txt` - Active execution UUID
+- `CURRENT_SEQUENCE.txt` - Agent sequence counter
+
+**Partial Logs** (in `do-command-logs/partials/`):
+- `<EXEC_ID>-<SEQ>-PARTIAL-<agent>.txt` - Per-agent execution trace
+
+**Final Reports**:
+- `EXEC-<cmd>-<timestamp>.md` - Aggregated execution report (created by Stop hook)
+
+**Debug Logs**:
+- `<session-id>-DEBUG.log` - Timestamped debug output per session
+
+## Hooks
+
+**SessionStart** (`bin/init.py`, `bin/bd-session-start.sh`):
+- Creates directory structure
+- Initializes beads if needed
+- Injects workflow context from `skills/beads/context/session-start.md`
+- Shows ready work from `bd ready --json`
+
+**PreCompact** (`bin/bd-pre-compact.sh`):
+- Injects full beads reference from `skills/beads/context/pre-compact.md`
+- Preserves workflow context before compaction
+
+**Stop** (`bin/aggregate-exec.py`): Aggregates partial logs into final report, cleans up state files
+
+## Subcommand Chaining
+
+Commands detect `/do:` patterns in arguments and route them:
+```
+/do:plan feature auth /do:it tdd
+```
+Executes plan feature first, then it tdd with context from plan.
+
 ## Beads Integration
 
-If beads MCP tools available:
-- `/do:plan track` creates issues
-- `/do:plan` syncs P0/P1 items
-- `/do:it` updates issue status
+Beads (`bd` CLI) provides persistent issue tracking that survives context window resets and session boundaries. The plugin integrates beads with a clear division of labor:
 
-No beads? Everything still works.
+### Division of Labor
+
+| Tool | Use For |
+|------|---------|
+| `.agent_planning/` docs | Strategy, evaluations, research, ARDs, architecture decisions, STATUS reports |
+| Beads (`bd`) | Concrete work items: stories, bugs, tasks, epics, dependencies |
+
+**Rule of thumb**: If work needs context in 2+ weeks or spans multiple sessions, use beads. Otherwise planning docs are sufficient.
+
+**Cross-referencing**: Reference beads issues in planning docs, and reference planning docs in beads descriptions for full context.
+
+**Context files**: Workflow reminders are in `skills/beads/context/`:
+- `BEADS_WORKFLOW.md` - Complete workflow guide
+- `session-start.md` - Brief reminders (injected at session start)
+- `pre-compact.md` - Full reference (injected before compaction)
+
+### Beads in Commands
+
+| Command | Beads Integration |
+|---------|------------------|
+| `/do:plan` | Checks `bd ready`/`bd stale` at start, syncs PLAN items to beads after planning |
+| `/do:plan track <desc>` | Quick issue creation: `bd create` with parsed priority/type |
+| `/do:it` | Claims issue at start (`in_progress`), closes on completion, syncs discovered issues |
+| `/do:it bd-xxx` | Work on specific beads issue by ID |
+
+### Beads in Agents
+
+| Agent | Beads Behavior |
+|-------|----------------|
+| project-evaluator | Cross-references issues with implementation, creates CLARIFY issues for ambiguities |
+| status-planner | Creates beads issues for ALL backlog items, links dependencies, creates epics for large features |
+| iterative-implementer | Claims issues, creates `discovered-from` linked issues, closes on completion |
+| test-driven-implementer | Same as iterative, with test-specific notes |
+
+### Session Lifecycle
+
+**Start**:
+```bash
+bd ready --json       # Find unblocked work
+bd stale --days 14    # Find forgotten issues
+```
+
+**During work**:
+```bash
+bd update <id> --status in_progress --json  # Claim
+bd create "Found: <issue>" --deps discovered-from:<parent> --json  # Discovered work
+```
+
+**End (CRITICAL)**:
+```bash
+bd sync  # Force immediate export/commit/push - NEVER skip
+```
+
+### Graceful Degradation
+
+Everything works without beads installed. If `bd` commands fail, the plugin:
+- Skips beads steps silently
+- Continues with planning docs as the source of truth
+- Never errors or blocks workflow
+
+## Skills Reference
+
+| Skill | Purpose |
+|-------|---------|
+| `do:init-project` | New project initialization |
+| `do:audit` | Deep forensic analysis |
+| `do:status-check` | Quick status diagnostic |
+| `do:feature-proposal` | Feature design proposals |
+| `do:refactor` | Safe code restructuring |
+| `do:debug` | Root cause investigation |
+| `do:fix` | Bug fix workflow |
+| `do:review` | Code review |
+| `do:add-tests` | Add test coverage |
+| `do:setup-testing` | Configure test framework |
+| `do:tdd-workflow` | Test-driven development |
+| `do:iterative-workflow` | Incremental implementation |
+| `do:market-research` | External/market research |
+| `do:evaluation-profiles` | Context-aware validation |
+| `do:gating-controller` | Decision approval routing |
+| `do:route-subcommands` | Subcommand parsing |
+| `do:advanced-skill-builder` | Skill creation helper |
+| `do:beads` | Persistent issue tracking via bd CLI |
+
+## Common Patterns
+
+### Plan → Handoff → Execute (Recommended)
+```bash
+/do:plan auth system         # Creates PLAN with acceptance criteria
+/do:handoff auth             # Creates handoff doc with all context
+/do:it auth                  # Executes (spawns agent or works interactively)
+```
+Ensures solid plan before implementation, enables efficient agent execution.
+
+### Quick Handoff for Current Work
+```bash
+/do:handoff current          # Creates handoff for current conversation topic
+```
+Captures context before spawning agent or switching tasks.
+
+### Scoped Implementation
+```bash
+/do:it fix login (only email validation, leave UI alone)
+```
+Parenthetical constraints are respected.
+
+### Full Autonomous Run
+```bash
+/do:it autonomous refactor everything
+```
+NONBLOCKING mode, documents decisions for review.

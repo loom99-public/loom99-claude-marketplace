@@ -8,11 +8,23 @@ Release management. Versioning, changelog, release notes, tagging.
 <user-input>$ARGUMENTS</user-input>
 <current-command>release</current-command>
 
+## Topic Resolution
+
+Determine release scope:
+
+1. **If `$ARGUMENTS` provided** → Use `$ARGUMENTS` as the release action/version
+2. **If no arguments, check conversation context** → If we were just discussing a release, use that context
+3. **If no obvious subject in conversation** → Show release status and prompt for action
+
+Set `main_instructions` to the resolved scope.
+
+---
+
 ## Subcommand Detection
 
-**Quick check**: Does `$ARGUMENTS` contain `/do:` patterns?
+**Quick check**: Does `main_instructions` contain `/do:` patterns?
 
-- **If NO** → `main_instructions = $ARGUMENTS`, proceed
+- **If NO** → Proceed
 - **If YES** → Invoke `do:route-subcommands` skill first
 
 ---
@@ -54,4 +66,14 @@ Release (Stub)
 
 ## Post-Commands
 
-If subcommands were detected and `post_commands` is non-empty, execute them now.
+If `route-subcommands` returned `post_commands`, execute each one now:
+
+**For each command in post_commands**:
+- Use the `SlashCommand` tool
+- Format: `<command> <main_instructions>`
+- Example: If post_commands = `["/do:chores"]` and main_instructions = `"release v1.0"`, execute:
+  ```
+  SlashCommand("/do:chores release v1.0")
+  ```
+
+**Important**: Append main_instructions to preserve context for downstream commands.

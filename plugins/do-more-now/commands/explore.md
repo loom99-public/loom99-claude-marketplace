@@ -8,11 +8,23 @@ Explore the codebase. Internal-only - no external research.
 <user-input>$ARGUMENTS</user-input>
 <current-command>explore</current-command>
 
+## Topic Resolution
+
+Determine what to explore:
+
+1. **If `$ARGUMENTS` provided** → Use `$ARGUMENTS` as the topic
+2. **If no arguments, check conversation context** → If we were just discussing a subject, explore that
+3. **If no obvious subject in conversation** → Ask what to explore
+
+Set `main_instructions` to the resolved topic.
+
+---
+
 ## Subcommand Detection
 
-**Quick check**: Does `$ARGUMENTS` contain `/do:` patterns?
+**Quick check**: Does `main_instructions` contain `/do:` patterns?
 
-- **If NO** → `main_instructions = $ARGUMENTS`, proceed
+- **If NO** → Proceed
 - **If YES** → Invoke `do:route-subcommands` skill first
 
 ---
@@ -47,4 +59,14 @@ Use do:researcher in **explore mode** with `main_instructions`:
 
 ## Post-Commands
 
-If subcommands were detected and `post_commands` is non-empty, execute them now.
+If `route-subcommands` returned `post_commands`, execute each one now:
+
+**For each command in post_commands**:
+- Use the `SlashCommand` tool
+- Format: `<command> <main_instructions>`
+- Example: If post_commands = `["/do:chores"]` and main_instructions = `"understand auth"`, execute:
+  ```
+  SlashCommand("/do:chores understand auth")
+  ```
+
+**Important**: Append main_instructions to preserve context for downstream commands.

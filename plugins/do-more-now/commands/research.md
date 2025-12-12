@@ -8,11 +8,30 @@ Research from external sources. Web search, market analysis, competitor comparis
 <user-input>$ARGUMENTS</user-input>
 <current-command>research</current-command>
 
+## Step 0: Load Gate Configuration
+
+Load gate config from: command → session → CLAUDE.md → prompt.
+See `/do:it` Step 0 for full gate loading logic.
+
+---
+
+## Topic Resolution
+
+Determine what to research:
+
+1. **If `$ARGUMENTS` provided** → Use `$ARGUMENTS` as the topic
+2. **If no arguments, check conversation context** → If we were just discussing a subject, research that
+3. **If no obvious subject in conversation** → Ask what to research
+
+Set `main_instructions` to the resolved topic.
+
+---
+
 ## Subcommand Detection
 
-**Quick check**: Does `$ARGUMENTS` contain `/do:` patterns?
+**Quick check**: Does `main_instructions` contain `/do:` patterns?
 
-- **If NO** → `main_instructions = $ARGUMENTS`, proceed
+- **If NO** → Proceed
 - **If YES** → Invoke `do:route-subcommands` skill first
 
 ---
@@ -59,6 +78,41 @@ Next: /do:plan to incorporate findings
 
 ---
 
+## Step 2b: Process Decision Gates
+
+After researcher returns, process any logged recommendation decisions.
+See `/do:it` Step 3b for full logic.
+
+Researcher may trigger decision-gate when:
+- Recommending a technology/framework choice
+- Recommending an architecture pattern
+- Making HIGH-risk recommendations
+
+Research doesn't trigger security-gate (research only, no implementation).
+
+---
+
 ## Post-Commands
 
-If subcommands were detected and `post_commands` is non-empty, execute them now.
+If `route-subcommands` returned `post_commands`, execute each one now:
+
+**For each command in post_commands**:
+- Use the `SlashCommand` tool
+- Format: `<command> <main_instructions>`
+- Example: If post_commands = `["/do:plan"]` and main_instructions = `"research auth options"`, execute:
+  ```
+  SlashCommand("/do:plan research auth options")
+  ```
+
+**Important**: Append main_instructions to preserve context for downstream commands.
+
+---
+
+## Step 3: Checkpoint Gate
+
+After research completes, process `checkpoint-gate` per config.
+See `/do:it` Step 4 for checkpoint handling logic.
+
+For research commands, checkpoint presents:
+- Research findings summary
+- Recommendation and alternatives considered

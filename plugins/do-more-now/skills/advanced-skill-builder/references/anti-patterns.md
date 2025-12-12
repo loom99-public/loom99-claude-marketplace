@@ -2,6 +2,23 @@
 
 Common mistakes that make skills ineffective or broken.
 
+## Quick Reference: Don't Do This
+
+| Anti-Pattern | Why It's Bad |
+|--------------|--------------|
+| Nested references >1 level | Content may be partially read |
+| Windows paths (`\`) | Breaks on Unix |
+| README.md, CHANGELOG.md | Unnecessary clutter |
+| First/second person descriptions | Breaks system prompt injection |
+| "Helps with X" descriptions | Too vague for discovery |
+| Multiple tools without default | Decision paralysis |
+| Time-dependent instructions | Becomes incorrect |
+| Inconsistent terminology | Confusing |
+| Explaining common knowledge | Wastes tokens |
+| Error-prone scripts | Unhelpful failures |
+| Magic numbers | Unclear intent |
+| Untested skills | Unknown reliability |
+
 ## Structure Anti-Patterns
 
 ### Deeply Nested References
@@ -20,7 +37,17 @@ SKILL.md → validation.md
 SKILL.md → examples.md
 ```
 
-All content one level deep, directly linked from SKILL.md.
+**RARELY (only large skills):**
+```
+SKILL.md → test-implementation-plan.md -> scenarios/cli.md
+SKILL.md → test-implementation-plan.md -> scenarios/microservices.md
+SKILL.md → test-implementation-plan.md -> refactoring/dependency-injectiono.md
+SKILL.md → test-coverage-audit.md -> concepts/interactive-testing.md
+SKILL.md → test-converage-audit.md -> languages/go.md
+```
+
+HIGHLY PREFER content one level deep, directly linked from SKILL.md.
+Skills covering extremely log topics, two levels of nesting from SKILL.md is acceptable.
 
 ### Windows-Style Paths
 
@@ -113,10 +140,25 @@ What it does, but not when to use it.
 description: PDF text extraction and form filling. Use when working with PDF files or when the user mentions PDFs, forms, or document extraction.
 ```
 
-Explicit "Use when..." clause.
+MUST: Explicit "Use when..." clause.
 
 ## Content Anti-Patterns
 
+### Vague criteria
+
+**BAD:**
+```markdown
+Use interactive-testing.md when you need to test an application.
+Use web-application.md when you need to test a user facing web application.
+Use application.md when you need to test that a user can use an application.
+```
+
+**GOOD:**
+```markdown
+Use interactive-testing.md when you need to test an interactive cli application, or a complex web frontend
+Use full-stack-application.md when you need to test a web application that includes both a front-end and a back-end component 
+Use ios-application.md when you need to test an application that runs on Apple's iOS platform
+```
 ### Too Many Options
 
 **BAD:**
@@ -263,9 +305,9 @@ Every value justified.
 **BAD:**
 ```markdown
 Use the pdf library to process the file:
-```python
+\```python
 from pdf import extract
-```
+\```
 ```
 
 What if `pdf` isn't installed?
@@ -273,14 +315,14 @@ What if `pdf` isn't installed?
 **GOOD:**
 ```markdown
 Install required package:
-```bash
+\```bash
 pip install pdfplumber
-```
+\```
 
 Then extract text:
-```python
+\```python
 import pdfplumber
-```
+\```
 ```
 
 Explicit installation instructions.
@@ -324,19 +366,3 @@ Tested with Haiku → Needs more guidance, added details
 
 Different models need different levels of guidance.
 
-## Quick Reference: Don't Do This
-
-| Anti-Pattern | Why It's Bad |
-|--------------|--------------|
-| Nested references >1 level | Content may be partially read |
-| Windows paths (`\`) | Breaks on Unix |
-| README.md, CHANGELOG.md | Unnecessary clutter |
-| First/second person descriptions | Breaks system prompt injection |
-| "Helps with X" descriptions | Too vague for discovery |
-| Multiple tools without default | Decision paralysis |
-| Time-dependent instructions | Becomes incorrect |
-| Inconsistent terminology | Confusing |
-| Explaining common knowledge | Wastes tokens |
-| Error-prone scripts | Unhelpful failures |
-| Magic numbers | Unclear intent |
-| Untested skills | Unknown reliability |

@@ -39,7 +39,7 @@ If input is ALL commands with no clear main task:
 
 **Result**:
 - Execute commands in order
-- Main workflow gets empty/minimal instructions
+- Main workflow gets empty/minimal instructions, which means look at the last 2-3 messages in the context for the instructions.
 
 ---
 

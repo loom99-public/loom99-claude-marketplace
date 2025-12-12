@@ -24,6 +24,10 @@
   "skills": [
     "./skills/init-project",
     "./skills/audit",
+    "./skills/deep-audit",
+    "./skills/planning-audit",
+    "./skills/competitive-audit",
+    "./skills/security-audit",
     "./skills/status-check",
     "./skills/feature-proposal",
     "./skills/refactor",
@@ -38,7 +42,11 @@
     "./skills/market-research",
     "./skills/evaluation-profiles",
     "./skills/gating-controller",
-    "./skills/advanced-skill-builder"
+    "./skills/advanced-skill-builder",
+    "./skills/beads",
+    "./skills/test-coverage-audit",
+    "./skills/test-recommendations",
+    "./skills/test-implementation-plan"
   ],
   "agents": [
     "./agents/execution-summarizer.md",
