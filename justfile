@@ -7,12 +7,6 @@ default:
 
 # Validate marketplace structure and all plugins
 validate:
-    @echo "🔍 Validating marketplace..."
-    @claude plugin validate .
-    @echo "✅ Marketplace validation complete!"
-
-# Validate each plugin individually (more thorough)
-validate-all:
     #!/usr/bin/env bash
     set -euo pipefail
     echo "🔍 Validating marketplace and all plugins..."
