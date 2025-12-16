@@ -51,3 +51,7 @@ Thumbs.db
 # Agent execution logs
 .agent_planning/.exec/
 .agent_planning/_subagent_logs_leftover/
+
+# Agent logs (centralized location)
+.agent_logs/
+!.agent_logs/.gitignore

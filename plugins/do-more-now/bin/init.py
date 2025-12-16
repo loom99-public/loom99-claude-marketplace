@@ -12,7 +12,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(".agent_planning/do-command-logs")
+BASE_DIR = Path(".agent_logs/do-more-now")
 
 
 def get_log_file(session_id: str) -> Path:
