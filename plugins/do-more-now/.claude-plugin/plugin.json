@@ -1,12 +1,11 @@
 {
   "name": "do",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Flexible development system makes it easy to Do More Now.  What you alreaady know you should be doing - only better",
   "author": {
     "name": "Brandon Fryslie"
   },
   "license": "MIT",
-  "hooks": "./hooks/hooks.json",
   "keywords": [
     "development",
     "workflow",
@@ -19,7 +18,10 @@
     "./commands/research.md",
     "./commands/chores.md",
     "./commands/docs.md",
-    "./commands/release.md"
+    "./commands/release.md",
+    "./commands/handoff.md",
+    "./commands/audit.md",
+    "./commands/test.md"
   ],
   "skills": [
     "./skills/init-project",
@@ -58,6 +60,7 @@
     "./agents/researcher.md",
     "./agents/status-planner.md",
     "./agents/test-driven-implementer.md",
-    "./agents/work-evaluator.md"
+    "./agents/work-evaluator.md",
+    "./agents/test-auditor.md"
   ]
 }

@@ -32,6 +32,7 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | `/do:chores [type]` | Chores: maintenance, cleanup, housekeeping |
 | `/do:docs [type]` | Docs: README, API, architecture documentation |
 | `/do:release` | Release: versioning, changelog (stub) |
+| `/do:test [args]` | Test: audit coverage, recommendations, implementation |
 
 ### `/do:it` Intent Detection
 
@@ -57,6 +58,19 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | "feature", "proposal", "design" | `do:feature-proposal` |
 | "track" | Beads issue creation (if available) |
 | *(default)* | Evaluate + plan workflow |
+
+### `/do:test` Intent Detection
+
+| Intent signals | Invokes skill |
+|----------------|---------------|
+| "status", "quick" | Quick status check |
+| "audit" | `do:test-coverage-audit` |
+| "recommend" | `do:test-recommendations` |
+| "plan" | `do:test-implementation-plan` |
+| "setup" | `do:setup-testing` |
+| "add [target]" | `do:add-tests` |
+| "fix [issue]" | Targeted test quality fix |
+| *(default)* | Full pipeline: audit → recommend → plan |
 
 ### `/do:chores` Intent Detection
 
@@ -84,6 +98,7 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | researcher | `explore`, `research` | Investigation |
 | product-visionary | `plan feature` | Feature proposals |
 | execution-summarizer | All commands | Execution logging |
+| test-auditor | `test`, `test audit` | Test coverage forensics |
 
 ## Planning Files
 
@@ -233,6 +248,9 @@ Everything works without beads installed. If `bd` commands fail, the plugin:
 | `do:route-subcommands` | Subcommand parsing |
 | `do:advanced-skill-builder` | Skill creation helper |
 | `do:beads` | Persistent issue tracking via bd CLI |
+| `do:test-coverage-audit` | Forensic test analysis |
+| `do:test-recommendations` | Prioritized test recommendations |
+| `do:test-implementation-plan` | Test implementation plan with refactoring |
 
 ## Common Patterns
 
@@ -261,3 +279,21 @@ Parenthetical constraints are respected.
 /do:it autonomous refactor everything
 ```
 NONBLOCKING mode, documents decisions for review.
+
+### Test Coverage Audit
+```bash
+/do:test                       # Full pipeline: audit → recommend → plan
+/do:test status                # Quick status check
+/do:test audit                 # Forensic analysis only
+/do:test recommend             # Generate recommendations (needs audit)
+/do:test plan                  # Generate implementation plan (needs recommendations)
+/do:test setup                 # Set up test framework
+/do:test add auth              # Add tests to specific area
+```
+Detects existing test infrastructure, respects conventions, works incrementally from any starting point.
+
+**Critical**: The testing audit system:
+1. **Detects before recommending** - Finds existing framework, conventions, patterns
+2. **Respects existing structure** - Never creates competing test directories
+3. **Asks before new patterns** - Gets approval for new test types (e.g., contract tests)
+4. **Works incrementally** - Starts from wherever the project is
