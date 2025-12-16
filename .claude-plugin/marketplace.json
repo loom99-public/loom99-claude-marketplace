@@ -44,13 +44,6 @@
       "strict": true
     },
     {
-      "name": "do3",
-      "source": "./plugins/do3",
-      "description": "Intermediate do plugin - 9 commands with evaluation profiles and execution tracking",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
       "name": "claude4claude",
       "source": "./plugins/claude4claude",
       "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
