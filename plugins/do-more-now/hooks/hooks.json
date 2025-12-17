@@ -36,8 +36,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "true",
-            "timeout": 1
+            "command": "python3 \"${CLAUDE_PLUGIN_ROOT}/bin/aggregate-exec.py\"",
+            "timeout": 30
           }
         ]
       }
