@@ -29,6 +29,47 @@ Set `main_instructions` to the resolved topic.
 
 ---
 
+## Step: Resolve Topic Directory
+
+All planning files for a topic live in `.agent_planning/<topic-slug>/`.
+
+**Process:**
+
+1. Generate a slug from the topic (lowercase, hyphenated, short)
+   - "user authentication" → `auth` or `user-auth`
+   - "payment processing" → `payments`
+   - "general project evaluation" → `general`
+
+2. List existing topic directories:
+   ```bash
+   ls -d .agent_planning/*/
+   ```
+
+3. Check for matches:
+
+   **Exact match exists** → Use it, proceed to next step
+
+   **Similar directories found** → Ask user:
+   ```
+   ┌─ Topic: "user authentication" ─────────────────────┐
+   │                                                    │
+   │ Similar existing topics found:                     │
+   │ 1. auth/ (3 files, last modified: 2024-12-12)     │
+   │ 2. login/ (1 file, last modified: 2024-12-10)     │
+   │ 3. Create new: user-auth/                          │
+   │                                                    │
+   └────────────────────────────────────────────────────┘
+   ```
+
+   **No similar directories** → Create new directory:
+   ```bash
+   mkdir -p .agent_planning/<topic-slug>
+   ```
+
+**Output:** Topic directory path (e.g., `.agent_planning/auth/`)
+
+---
+
 ## Subcommand Detection
 
 **Quick check**: Does `main_instructions` contain `/do:` patterns (other than the current command)?
@@ -93,24 +134,102 @@ Tracked: [description]
 ## Default: Evaluate + Plan Workflow
 
 **Step 1: Evaluate**
-Use do:project-evaluator to assess current state → STATUS-*.md
+Use do:project-evaluator to assess current state:
+
+```
+Topic: $TOPIC
+Topic Directory: .agent_planning/<topic-slug>/
+
+Evaluate the current state of this topic area.
+Write STATUS-<timestamp>.md to the topic directory.
+```
+
+Creates `.agent_planning/<topic-slug>/STATUS-<timestamp>.md`
 
 If evaluator returns PAUSE with ambiguities, use do:researcher to resolve, then re-evaluate.
 
 **Step 1b**: Display evaluator's summary.
 
 **Step 2: Plan**
-Use do:status-planner to create implementation plan → PLAN-*.md
+Use do:status-planner to create implementation plan:
+
+```
+Topic: $TOPIC
+Topic Directory: .agent_planning/<topic-slug>/
+
+Read the evaluation files in the topic directory.
+Generate:
+1. PLAN-<timestamp>.md - Full plan
+2. DOD-<timestamp>.md - Acceptance criteria only (separate file)
+
+Both files go in the topic directory.
+```
+
+Creates:
+- `.agent_planning/<topic-slug>/PLAN-<timestamp>.md`
+- `.agent_planning/<topic-slug>/DOD-<timestamp>.md`
 
 **Step 2b**: Display planner's summary.
+
+**Step 3: User Approval**
+
+Present plan summary for approval:
+
+```
+┌─ Please Review: Plan for $TOPIC ───────────────────┐
+│ Sprint Goal: [one sentence]                        │
+│                                                    │
+│ Deliverables:                                      │
+│ - [Deliverable 1]                                  │
+│ - [Deliverable 2]                                  │
+│                                                    │
+│ Acceptance Criteria:                               │
+│ - [ ] [Criterion 1]                                │
+│ - [ ] [Criterion 2]                                │
+│                                                    │
+│ Options:                                           │
+│ 1. Approve - looks good!                           │
+│ 2. Revise - adjust scope or add context            │
+│ 3. Reject - start over with different approach     │
+└────────────────────────────────────────────────────┘
+```
+
+- **Approve**: Record approval, proceed to completion
+- **Adjust scope**: Modify and re-validate
+- **Reject**: Return to evaluation with new direction
+
+**Step 4: Record Approval**
+
+On user approval, create `.agent_planning/<topic-slug>/USER-RESPONSE-<timestamp>.md`:
+
+```markdown
+# User Response - <timestamp>
+
+**Status**: APPROVED | ADJUST | REJECT
+
+**Context**: [User's explanation for the decision]
+
+**Files in Approved Plan**:
+- PLAN-<timestamp>.md
+- DOD-<timestamp>.md
+
+**Timestamp**: <YYYY-MM-DD-HHmmss>
+```
 
 **Output**:
 ```
 ═══════════════════════════════════════
 Plan Complete
-  STATUS: .agent_planning/STATUS-<ts>.md
-  PLAN: .agent_planning/PLAN-<ts>.md
-Next: /do:it to implement
+  Topic: $TOPIC
+  Directory: .agent_planning/<topic-slug>/
+
+  Files created:
+   ├── STATUS-<timestamp>.md   # Evaluation
+   ├── PLAN-<timestamp>.md     # Full plan
+   ├── DOD-<timestamp>.md      # Acceptance criteria
+   └── USER-RESPONSE-<timestamp>.md  # Approval record
+
+Next: /do:it $TOPIC to implement
 ═══════════════════════════════════════
 ```
 
@@ -132,7 +251,7 @@ If `route-subcommands` returned `post_commands`, execute each one now:
 
 ---
 
-## Step 3: Checkpoint Gate
+## Step 5: Checkpoint Gate
 
 After workflow completes, process `checkpoint-gate` per config.
 See `/do:it` Step 4 for checkpoint handling logic.
