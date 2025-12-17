@@ -139,6 +139,49 @@ Set `main_instructions` to the resolved topic.
 
 ---
 
+## Step 1.1: Resolve Topic Directory
+
+All planning files for a topic live in `.agent_planning/<topic-slug>/`.
+
+**Process:**
+
+1. Generate a slug from the topic (lowercase, hyphenated, short)
+   - "user authentication" → `auth` or `user-auth`
+   - "payment processing" → `payments`
+   - "fix login bug" → `login-bug`
+
+2. List existing topic directories:
+   ```bash
+   ls -d .agent_planning/*/
+   ```
+
+3. Check for matches:
+
+   **Exact match exists** → Use it, proceed to next step
+
+   **Similar directories found** → Ask user:
+   ```
+   ┌─ Topic: "fix login bug" ────────────────────────┐
+   │                                                  │
+   │ Similar existing topics found:                   │
+   │ 1. auth/ (5 files, last modified: 2024-12-12)   │
+   │ 2. login/ (2 files, last modified: 2024-12-10)  │
+   │ 3. Create new: login-bug/                        │
+   │                                                  │
+   └──────────────────────────────────────────────────┘
+   ```
+
+   **No similar directories** → Create new directory:
+   ```bash
+   mkdir -p .agent_planning/<topic-slug>
+   ```
+
+**Output:** Topic directory path (e.g., `.agent_planning/auth/`)
+
+**Store for later use**: Set `topic_directory` variable to the resolved path.
+
+---
+
 ## Step 1.5: Check for Solid Plan
 
 **Critical**: We ALWAYS need a solid plan before implementation. Never code without clear direction.
@@ -154,7 +197,7 @@ A plan is solid if it has ALL of these:
 
 ### Check Existing Planning Artifacts
 
-Look for a solid plan in these locations (in order):
+Look for a solid plan in the **topic directory** (in order):
 
 **1. Beads issue** (if user referenced issue ID in `main_instructions`):
 ```bash
@@ -165,9 +208,9 @@ Check if description contains:
 - Acceptance criteria (or link to PLAN doc)
 - Scope definition
 
-**2. Recent PLAN-*.md** in `.agent_planning/`:
+**2. Recent PLAN-*.md** in topic directory:
 ```bash
-ls -t .agent_planning/PLAN-*.md | head -1
+ls -t <topic-directory>/PLAN-*.md | head -1
 ```
 Check if plan contains:
 - Related to current topic (keyword match with `main_instructions`)
@@ -175,9 +218,9 @@ Check if plan contains:
 - Has scope section
 - Has approach/constraints section
 
-**3. Recent STATUS-*.md** (provides current state context):
+**3. Recent STATUS-*.md** in topic directory (provides current state context):
 ```bash
-ls -t .agent_planning/STATUS-*.md | head -1
+ls -t <topic-directory>/STATUS-*.md | head -1
 ```
 Provides understanding of current implementation state.
 
@@ -215,30 +258,47 @@ Detect what's missing and spawn agents to fill gaps. Can run multiple agents in 
 
 ### Spawn Gap-Filling Agents
 
+**ALL agents must receive the topic directory path.**
+
 **Spawn in parallel when possible** (multiple independent gaps):
 
 ```
 // Example: Missing both STATUS and technical details
-Task(subagent_type="project-evaluator", prompt="Analyze current auth system implementation...")
-Task(subagent_type="researcher", prompt="Research OAuth 2.0 best practices for Node.js...")
+Task(subagent_type="project-evaluator", prompt="Topic: <topic>
+Topic Directory: <topic-directory>
+
+Analyze current auth system implementation...")
+
+Task(subagent_type="researcher", prompt="Topic: <topic>
+Topic Directory: <topic-directory>
+
+Research OAuth 2.0 best practices for Node.js...")
 ```
 
 **Sequential when dependent**:
 ```
 // Example: Need STATUS before creating PLAN
-Task(subagent_type="project-evaluator", ...)
+Task(subagent_type="project-evaluator", prompt="Topic: <topic>
+Topic Directory: <topic-directory>
+
+Evaluate the current state...")
+
 // Wait for result
-Task(subagent_type="status-planner", prompt="Create implementation plan based on STATUS-...")
+
+Task(subagent_type="status-planner", prompt="Topic: <topic>
+Topic Directory: <topic-directory>
+
+Create implementation plan based on STATUS-<timestamp>.md in the topic directory...")
 ```
 
 ### Wait for Agents to Complete
 
 All gap-filling agents must complete before proceeding.
 
-Agents will create:
-- `STATUS-<topic>-<timestamp>.md` (from project-evaluator)
-- `PLAN-<topic>-<timestamp>.md` (from status-planner)
-- `RESEARCH-<topic>-<timestamp>.md` (from researcher)
+Agents will create files in the topic directory:
+- `<topic-directory>/STATUS-<timestamp>.md` (from project-evaluator)
+- `<topic-directory>/PLAN-<timestamp>.md` (from status-planner)
+- `<topic-directory>/RESEARCH-<topic>-<timestamp>.md` (from researcher)
 
 ---
 
@@ -332,11 +392,11 @@ Use AskUserQuestion:
 
 #### Option A: Use Existing Handoff Document (Preferred)
 
-Check if a recent handoff document exists:
+Check if a recent handoff document exists in the topic directory:
 
 ```bash
 # Find most recent handoff for this topic
-ls -t .agent_planning/HANDOFF-*.md | head -1
+ls -t <topic-directory>/HANDOFF-*.md | head -1
 ```
 
 If handoff exists and is recent (< 1 hour old) and related to topic:
@@ -345,16 +405,16 @@ If handoff exists and is recent (< 1 hour old) and related to topic:
 
 #### Option B: Create Execution Brief
 
-If no handoff exists, gather context from planning artifacts:
+If no handoff exists, gather context from planning artifacts **in the topic directory**:
 
 1. **Read latest PLAN-*.md** (created by status-planner):
    ```bash
-   ls -t .agent_planning/PLAN-*.md | head -1
+   ls -t <topic-directory>/PLAN-*.md | head -1
    ```
 
 2. **Read latest STATUS-*.md** (created by project-evaluator):
    ```bash
-   ls -t .agent_planning/STATUS-*.md | head -1
+   ls -t <topic-directory>/STATUS-*.md | head -1
    ```
 
 3. **Read beads issue** (if applicable):
@@ -383,8 +443,9 @@ If no handoff exists, gather context from planning artifacts:
    - [From PLAN - what to avoid, patterns to use]
 
    REFERENCES:
-   - PLAN: <filename>
-   - STATUS: <filename>
+   - Topic Directory: <topic-directory>
+   - PLAN: <topic-directory>/PLAN-<timestamp>.md
+   - STATUS: <topic-directory>/STATUS-<timestamp>.md
    - Beads: <issue IDs>
    ```
 
@@ -401,21 +462,25 @@ If no handoff exists, gather context from planning artifacts:
    - Test framework exists + API/logic work → `test-driven-implementer`
    - Otherwise → `iterative-implementer`
 
-2. **Spawn implementation agent**:
+2. **Spawn implementation agent WITH TOPIC DIRECTORY**:
 
    **If using HANDOFF document**:
    ```
    Task(
      subagent_type="test-driven-implementer" OR "iterative-implementer",
      description="Implement: <objective from handoff>",
-     prompt="Read and execute the handoff document at .agent_planning/HANDOFF-<topic>-<timestamp>.md
+     prompt="Topic Directory: <topic-directory>
+
+Read and execute the handoff document at <topic-directory>/HANDOFF-<topic>-<timestamp>.md
 
 This contains complete context including:
 - Objective and acceptance criteria
 - Current state and what's been done
 - Implementation approach and constraints
-- Reference materials (PLAN, STATUS, beads issues)
+- Reference materials (PLAN, DOD, STATUS, beads issues)
 - Known gotchas and patterns to follow
+
+All planning files (PLAN, DOD, STATUS) are in the topic directory.
 
 Follow the recommended steps in the handoff. Update the beads issue as you progress.
 "
@@ -427,9 +492,11 @@ Follow the recommended steps in the handoff. Update the beads issue as you progr
    Task(
      subagent_type="test-driven-implementer" OR "iterative-implementer",
      description="Implement: <objective from plan>",
-     prompt="<contents of EXECUTION_BRIEF.md>
+     prompt="Topic Directory: <topic-directory>
 
-Please implement according to the plan above. Reference the detailed PLAN and STATUS docs in .agent_planning/ as needed.
+<contents of EXECUTION_BRIEF.md>
+
+Please implement according to the plan above. Read the detailed PLAN and STATUS docs from the topic directory as needed.
 
 Beads tracking: <if applicable, reference issue ID>
 "
@@ -437,9 +504,10 @@ Beads tracking: <if applicable, reference issue ID>
    ```
 
 3. **Agent will**:
-   - Read full PLAN/STATUS for complete context
+   - Read full PLAN/DOD/STATUS from topic directory
    - Implement according to acceptance criteria
    - Run tests/validation
+   - Invalidate eval-cache for modified files
    - Update beads issue with progress
    - Return summary of what was implemented
 
