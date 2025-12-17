@@ -127,7 +127,7 @@ Gate state stored in `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt
 
 ## Execution Tracking
 
-**State Files** (in `.agent_planning/do-command-logs/`):
+**State Files** (in `.agent_logs/do-more-now/`):
 - `CURRENT_EXECUTION_ID.txt` - Active execution UUID
 - `CURRENT_SEQUENCE.txt` - Agent sequence counter
 

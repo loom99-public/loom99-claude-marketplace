@@ -74,4 +74,4 @@ Tracks current execution for continuity.
 <uuid>
 ```
 
-**Location**: `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt`
+**Location**: `.agent_logs/do-more-now/CURRENT_EXECUTION_ID.txt`

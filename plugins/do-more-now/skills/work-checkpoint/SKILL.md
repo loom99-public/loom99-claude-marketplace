@@ -22,14 +22,14 @@ Invoke at the **end of every `/do:*` command** when gate mode is BLOCKING or VER
 
 **Step 1**: Read execution context
 
-Get EXEC_ID from `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt`.
+Get EXEC_ID from `.agent_logs/do-more-now/CURRENT_EXECUTION_ID.txt`.
 Read GATE_CONFIG from `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`.
 
 If gate mode is NONBLOCKING or HYBRID, return immediately with "CONTINUE: Checkpoint skipped (non-blocking mode)".
 
 **Step 2**: Gather completed work
 
-Read partial files from `.agent_planning/do-command-logs/partials/<EXEC_ID>-*.txt`.
+Read partial files from `.agent_logs/do-more-now/partials/<EXEC_ID>-*.txt`.
 Read any SUMMARY files from `.agent_planning/SUMMARY-*.txt` (recent ones).
 
 Extract:

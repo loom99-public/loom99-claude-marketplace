@@ -162,7 +162,7 @@ Everything works without Beads. It just works *better* with it.
 
 ### Nothing is happening
 
-Check `.agent_planning/do-command-logs/` for debug logs.
+Check `.agent_logs/do-more-now/` for debug logs.
 
 ### Claude is stuck in a loop
 
@@ -187,7 +187,7 @@ Use BLOCKING mode:
 
 ### Where did my work go?
 
-Execution reports: `.agent_planning/do-command-logs/EXEC-<command>-<timestamp>.md`
+Execution reports: `.agent_logs/do-more-now/EXEC-<command>-<timestamp>.md`
 
 ## Next Steps
 

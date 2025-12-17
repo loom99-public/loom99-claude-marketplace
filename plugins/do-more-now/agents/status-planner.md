@@ -249,12 +249,12 @@ bd sync  # Force immediate export/commit/push
 ## Execution Tracking
 
 **First**: Check if this is a tracked execution by reading state files:
-- Read `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
-- Read `.agent_planning/do-command-logs/CURRENT_SEQUENCE.txt` → SEQUENCE
+- Read `.agent_logs/do-more-now/CURRENT_EXECUTION_ID.txt` → EXECUTION_ID
+- Read `.agent_logs/do-more-now/CURRENT_SEQUENCE.txt` → SEQUENCE
 - If either file is missing, skip execution tracking (non-/do: invocation)
 
 **If files exist**, ensure the partials directory exists (create if needed), then write execution trace to:
-`.agent_planning/do-command-logs/partials/<EXECUTION_ID>-<SEQUENCE>-PARTIAL-status-planner.txt`
+`.agent_logs/do-more-now/partials/<EXECUTION_ID>-<SEQUENCE>-PARTIAL-status-planner.txt`
 
 **Format**:
 ```

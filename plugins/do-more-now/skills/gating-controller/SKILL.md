@@ -23,7 +23,7 @@ Process gates based on user-configured rules for each gate type.
 **Step 1**: Load gate config
 
 Read from `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`.
-Get EXEC_ID from `.agent_planning/do-command-logs/CURRENT_EXECUTION_ID.txt`.
+Get EXEC_ID from `.agent_logs/do-more-now/CURRENT_EXECUTION_ID.txt`.
 
 If no config exists, return "CONTINUE: No gating active".
 

@@ -313,7 +313,7 @@ Each command execution has:
 - **SEQUENCE**: Counter for agent invocations
 - **GATE_CONFIG**: Decision checkpoint configuration
 
-State files in `.agent_planning/do-command-logs/`:
+State files in `.agent_logs/do-more-now/`:
 ```
 CURRENT_EXECUTION_ID.txt   # Active execution UUID
 CURRENT_SEQUENCE.txt       # Current agent sequence number

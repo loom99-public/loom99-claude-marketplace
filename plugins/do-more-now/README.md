@@ -224,7 +224,7 @@ Example: `/do:it fix auth bug`
 4. Then `iterative-implementer` agent (fix)
 5. Stop hook aggregates execution report
 
-You don't need to know any of this. But if something goes wrong, `.agent_planning/do-command-logs/` has the receipts.
+You don't need to know any of this. But if something goes wrong, `.agent_logs/do-more-now/` has the receipts.
 
 ---
 
@@ -261,7 +261,7 @@ Everything works without Beads. It just works *better* with it.
 
 ### "Nothing is happening"
 
-Check `.agent_planning/do-command-logs/` for debug logs. The `*-DEBUG.log` files show what Claude is doing.
+Check `.agent_logs/do-more-now/` for debug logs. The `*-DEBUG.log` files show what Claude is doing.
 
 ### "Claude is stuck in a loop"
 
@@ -295,7 +295,7 @@ Use BLOCKING mode:
 
 Execution reports are saved to:
 ```
-.agent_planning/do-command-logs/EXEC-<command>-<timestamp>.md
+.agent_logs/do-more-now/EXEC-<command>-<timestamp>.md
 ```
 
 ---

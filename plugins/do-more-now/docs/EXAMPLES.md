@@ -351,7 +351,7 @@ Claude will:
 ### Review What It Did
 
 ```bash
-cat .agent_planning/do-command-logs/EXEC-*.md
+cat .agent_logs/do-more-now/EXEC-*.md
 ```
 
 See exactly what happened.

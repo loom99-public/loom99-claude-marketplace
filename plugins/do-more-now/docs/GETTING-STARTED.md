@@ -290,7 +290,7 @@ Use careful mode:
 Check the execution logs:
 
 ```bash
-cat .agent_planning/do-command-logs/EXEC-*.md
+cat .agent_logs/do-more-now/EXEC-*.md
 ```
 
 ### Something went wrong
@@ -298,7 +298,7 @@ cat .agent_planning/do-command-logs/EXEC-*.md
 Debug logs are in:
 
 ```bash
-cat .agent_planning/do-command-logs/*-DEBUG.log
+cat .agent_logs/do-more-now/*-DEBUG.log
 ```
 
 ---
