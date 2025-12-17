@@ -2,179 +2,181 @@
 
 ![do-more-now](https://raw.githubusercontent.com/loom99-public/loom99-claude-marketplace/refs/heads/master/assets/do-more-now-2.svg)
 
-Do More Now is a Claude Code plugin that adds structured workflow commands for development.  This is not designed for one particular language or way of working.  It's a
-simple, flexible, and incredibly powerful toolkit for all type of software engineering.
+**What you already know you should be doing - only better.**
 
-### What makes it great?
+A Claude Code plugin that adds structured workflow commands for development. Seven commands. Ten specialized agents. Zero opinions about your stack.
 
-#### Minimal
+---
 
-Just 7 powerful commands and minimal intrusion on your context.  Do More Now makes heavy use of Claude Skills to abstract common functionality and only brings it in when needed
-
-We do not include any MCP servers, but we do recommend installing the Beads MCP server to improve structured planning.  Works great without it too.
-
-#### So easy
-
-Here's how to use the plugin in it's most basic form:
+## The Pitch
 
 ```bash
 /do:it
 ```
 
-That's all you need.  That will kick off a structured workflow that will find the most important work and work on it.
+That's it. That kicks off a structured workflow that finds the most important work and does it.
 
-You can pass a specific topic:
-
-```bash
-/do:it Fix that bug!
-```
-
-Internally, the plugins name is 'do'.  This allows us to type `/do:<command>`, which is easy and memorable.  
-
-In docs and online, the plugin is named Do More Now.  Because it's the quickest way to make that happen. 
-
-Note: This document is under heavy revision and is not currently fully up to date.  Better docs coming soon.  
-
-Here's a quick overview of the commands:
+Want to be more specific?
 
 ```bash
-# All commands follow this pattern:
-/do:<command> [Intent signal] [Area of focus]
-
-# type this into claude. /do:it is used for implementing
-/do:it [Area of focus]
-
-# used for planning
-/do:plan [init|audit|status|feature|track] [Area of focus]
-
-# Exploring the codebase (internal learning)
-/do:explore [Area of focus]
-
-# External learning (googling stuff, comparing projects, finding answers online, etc
-/do:research [market|docs|patterns] [Area of focus]
-
-# Write docs
-/do:docs [readme|api|architecture|changelog] [Area of focus]
-
-# Maintenance and housekeeping. Tidying up of any sort.
-/do:chores [quick|thorough|git|planning|dead-code|deps|debt] [Area of focus]
-
+/do:it fix the auth bug
+/do:it add user preferences
+/do:it refactor the database layer
 ```
 
-Both `[Intent signal]` and `[Area of focus]` are optional.  Claude will figure it out.
+Claude figures out the intent, pulls in the right skills, and executes. You get consistent, repeatable workflows instead of "it depends on how you phrased your prompt."
 
-`[Intent signal]` does not need to match exactly.  Claude will use those keywords to pull in the right skills and route you to the right agent.
-
-`[Area of focus]` Can be anything you want, from 1 word to 5 paragraphs of prompt.  Take whatever you'd normally send to Claude and enter it here.  It will get you further and the results will be better.
-
-You can even enter more slash commands in your prompt and claude will execute all of them, allowing you to easily chain workflows.  Claude will rewrite the input to each command intelligently.
+Think of it as mise en place for software engineering. Everything in its place, ready to use. No hunting around, no crossed wires, no "oops I refactored your entire codebase when you asked me to fix a typo."
 
 ---
 
-## Quickstart
+## Installation
 
 ```bash
-# Install the marketplace
+# Add the marketplace
 claude plugin marketplace add loom99-public/loom99-claude-marketplace
 
-# On the cli
+# Install the plugin
 claude plugin install do
+```
 
-# Or in Claude Code:
-/plugin marketplace add .
+Or from within Claude Code:
+```bash
+/plugin marketplace add loom99-public/loom99-claude-marketplace
 /plugin install do
 ```
 
-### Build something with TDD
+**Requirements:** Claude Code (latest), git
+
+**Optional:** [Beads](https://github.com/loom99-public/beads) for issue tracking integration
+
+---
+
+## The Seven Commands
+
+All commands follow: `/do:<command> [intent] [area]`. Both optional. Claude figures it out.
+
+| Command | What it does |
+|---------|--------------|
+| `/do:it` | **Implement**: build, fix, refactor, debug, test, review |
+| `/do:plan` | **Plan**: evaluate status, create plans, manage backlog |
+| `/do:explore` | **Explore**: ask questions about codebase internals |
+| `/do:research` | **Research**: learn from external sources, web search |
+| `/do:chores` | **Chores**: maintenance, cleanup, housekeeping |
+| `/do:docs` | **Docs**: README, API, architecture documentation |
+| `/do:release` | **Release**: versioning, changelog (stub) |
+
+---
+
+## Quick Examples
+
+### Planning First
 
 ```bash
-# Start with evaluation to understand current state
-/do:plan user authentication
-
-# Implement (auto-selects TDD or iterative)
-/do:it
-
-# Or force TDD mode:
-/do:it tdd
+/do:plan user authentication    # Evaluate state, create plan
+/do:it                          # Execute the plan
 ```
 
-### Build something without tests upfront
+### Specific Tasks
 
 ```bash
-# Evaluate and plan first
-/do:plan dashboard navigation
+/do:it fix login validation
+/do:it refactor the cache layer
+/do:it add tests for payment processing
+```
 
-# Build incrementally with runtime validation
-/do:it iterate
+### Workflow Modes
+
+```bash
+/do:it tdd new API endpoint     # Tests first, then implement
+/do:it iterate dashboard UI     # Build incrementally, validate visually
+/do:it                          # Auto-select based on context
+```
+
+### Research & Exploration
+
+```bash
+/do:explore where is auth handled
+/do:research JWT best practices 2024
+```
+
+### Maintenance
+
+```bash
+/do:chores                      # Quick cleanup
+/do:chores thorough             # Deep cleanup
+/do:chores deps                 # Update dependencies
 ```
 
 ---
 
-## Commands
+## How It Works
 
-- **`/do:plan`** - Analyzes current state, creates prioritized work plan
-- **`/do:it`** - Implement (auto-selects TDD or iterative, or pass 'tdd'/'iterate')
-- **`/do:learn`** - Research a question or problem
-- **`/do:init-project`** - Initialize a new project with guided interview
-- **`/do:feature-proposal`** - Generates design proposals for new features
+Do More Now uses a three-tier architecture:
 
-All workflows use `.agent_planning/` directory for status and planning documents.
+**Commands** (7) detect intent from natural language.
 
----
+**Skills** (17) define workflows for specific tasks.
 
-## Agents
+**Agents** (10) execute the actual work.
 
 | Agent | What it does |
 |-------|--------------|
 | `project-evaluator` | Analyzes current state, finds gaps |
-| `status-planner` | Creates work backlog from gaps |
-| `functional-tester` | Writes tests (TDD workflow) |
-| `test-driven-implementer` | Implements to pass tests (TDD) |
-| `iterative-implementer` | Implements incrementally (non-TDD) |
-| `work-evaluator` | Validates with runtime evidence (non-TDD) |
+| `status-planner` | Creates prioritized backlog |
+| `functional-tester` | Writes tests (TDD mode) |
+| `test-driven-implementer` | Implements to pass tests |
+| `iterative-implementer` | Implements incrementally |
+| `work-evaluator` | Validates with runtime evidence |
 | `product-visionary` | Designs new features |
 | `project-architect` | Initializes new projects |
-| `researcher` | Explores ambiguities and options |
+| `researcher` | Explores options and ambiguities |
+| `execution-summarizer` | Logs execution traces |
+
+You don't need to know any of this. But if something goes wrong, `.agent_planning/do-command-logs/` has the receipts.
 
 ---
 
-## When to use which mode
+## When to Use Which Mode
 
-**Use TDD (`/do:it tdd`):**
-- APIs, backend services
-- Libraries, frameworks
-- When requirements are clear
+**TDD** (`/do:it tdd`): APIs, backend services, libraries, clear requirements
 
-**Use Iterative (`/do:it iterate`):**
-- UI/frontend work
-- Exploratory features
-- When visual validation matters
+**Iterative** (`/do:it iterate`): UI work, exploratory features, visual validation
 
-**Auto mode (`/do:it`):**
-- Let Claude decide based on context
+**Auto** (`/do:it`): Let Claude decide based on context. Usually correct.
 
 ---
 
-## Requirements
+## Decision Handling
 
-- Claude Code (latest)
-- git (for commit functionality)
+Some commands ask how autonomous Claude should be:
+
+| Mode | Behavior |
+|------|----------|
+| **BLOCKING** | Ask before every significant choice |
+| **HYBRID** | Ask about major decisions, auto-approve obvious ones |
+| **NONBLOCKING** | Full autonomy, document decisions for review |
+
+Signal your preference: "carefully" → BLOCKING, "guided" → HYBRID, "autonomous" → NONBLOCKING
 
 ---
 
 ## Documentation
 
-- `plugins/do-more-now/CLAUDE.md` - Detailed plugin guide
+Full documentation in `plugins/do-more-now/`:
+- `README.md` - User guide
+- `CLAUDE.md` - Technical reference
 
 ---
 
 ## License
 
-This software is licensed under: **PolyForm Internal Use License 1.0.0** 
+**PolyForm Internal Use License 1.0.0**
 
-This Claude Code plugin is free to use by individuals and organizations for internal purposes.
-You’re welcome to load it into Claude, use it in your workflows, and adapt it for your own internal needs.
+Free for individuals and organizations for internal purposes. Don't redistribute or repackage without permission.
 
-Please don’t redistribute, repackage, or publish derivative versions without permission.
-If you’d like to do that, reach out and let's chat. I'm open to licensing or possibly even contributing directly to
-your excellent organization.
+Questions? Reach out.
+
+---
+
+**Version**: 0.5.0 | **Author**: Brandon Fryslie

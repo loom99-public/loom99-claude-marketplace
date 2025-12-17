@@ -1,0 +1,10 @@
+2025-12-12T16:08:08.659948 ============================================================
+2025-12-12T16:08:08.660283 init.py: SESSION START
+2025-12-12T16:08:08.660670 init.py: session_id=7f9486a6-5804-42b8-8e9c-d2ce224223a8
+2025-12-12T16:08:08.671042 init.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace
+2025-12-12T16:08:08.671493 init.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'hook_event_name', 'source']
+2025-12-12T16:08:08.671769 init.py: hook_event_name=SessionStart
+2025-12-12T16:08:08.672071 init.py: transcript_path=/Users/bmf/.claude/projects/-Users-bmf-Library-Mobile-Documents-com-apple-CloudDocs--mine-icode-loom99-claude-marketplace/7f9486a6-5804-42b8-8e9c-d2ce224223a8.jsonl
+2025-12-12T16:08:08.672374 init.py: directory exists: .agent_planning/do-command-logs
+2025-12-12T16:08:08.672920 init.py: directory exists: .agent_planning/do-command-logs/partials
+2025-12-12T16:08:08.673148 init.py: initialization complete

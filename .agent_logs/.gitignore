@@ -1,0 +1,12 @@
+# Session logs (ignored)
+*.DEBUG.log
+*.tmp
+partials/
+*PARTIAL-*
+
+# Hook logs (tracked for continuity)
+stop-hook.log
+hook.log
+
+# Execution reports (tracked)
+EXEC-*.md

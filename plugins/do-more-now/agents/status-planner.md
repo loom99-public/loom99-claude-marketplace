@@ -129,13 +129,82 @@ Your final deliverable is a well-formatted markdown document (the `PLAN-<timesta
 
 If you encounter issues (missing STATUS file, unclear specifications, contradictions), add a **"Blockers and Questions"** section at the beginning of your output and still produce the best-available backlog.
 
-## Beads Sync (Optional)
+## Beads Integration
 
-After writing PLAN-*.md, if beads MCP tools available, sync P0/P1 items for lightweight tracking:
-- Call `set_context` with workspace root
-- For each P0/P1 work item: create beads issue (title from item name, priority mapped P0→1/P1→2, description includes acceptance criteria)
-- If dependencies listed, link using `dep` tool
-- Skip gracefully if beads unavailable (never error, workflow continues normally)
+**Division of Labor**:
+- `.agent_planning/` docs → Strategy, evaluations, research, ARDs, architecture decisions
+- Beads (`bd`) → Concrete work items: stories, bugs, tasks, epics, dependencies
+
+After writing PLAN-*.md, sync ALL work items to beads for persistent tracking:
+
+### Step 1: Initialize Context
+```bash
+bd set_context --workspace .
+```
+
+### Step 2: Check for Existing Issues
+Before creating new issues, check for duplicates:
+```bash
+bd list --status open --json
+bd duplicates --json
+```
+
+### Step 3: Create/Update Issues
+
+**Priority Mapping**:
+| Plan Priority | Beads Priority | Type |
+|---------------|----------------|------|
+| P0 (Critical) | 0 | bug or task |
+| P1 (High) | 1 | feature or bug |
+| P2 (Medium) | 2 | feature or task |
+| P3 (Low) | 3 | task or chore |
+
+**For each backlog item**:
+```bash
+# Simple item
+bd create "Item title" \
+  --description="Full description with acceptance criteria" \
+  -t <type> -p <priority> --json
+
+# Large feature → Create as epic with children
+bd create "Epic: Feature Name" -t epic -p <priority> --json
+# Returns bd-xxx, then create children (auto-numbered as bd-xxx.1, bd-xxx.2, etc.)
+bd create "Subtask 1" -p <priority> --json
+bd create "Subtask 2" -p <priority> --json
+```
+
+### Step 4: Link Dependencies
+
+**Dependency Type Selection**:
+| Relationship in PLAN | Beads dep type |
+|---------------------|----------------|
+| "requires", "needs", "blocked by" | `blocks` |
+| "related to", "see also" | `related` |
+| "part of", "child of" | `parent-child` |
+| "found while working on" | `discovered-from` |
+
+```bash
+# Remember: bd dep add <dependent> <prerequisite>
+# "Task B needs Task A" → bd dep add task-b task-a
+bd dep add <new-issue-id> <prerequisite-id> --type blocks
+```
+
+**CRITICAL**: Temporal language inverts dependency direction!
+- "Phase 1 before Phase 2" → Phase 2 depends on Phase 1
+- Correct: `bd dep add phase2 phase1`
+
+### Step 5: Verify Dependencies
+```bash
+bd blocked --json  # Verify blocked items make sense
+bd ready --json    # Verify ready items are truly unblocked
+```
+
+### Step 6: Sync to Git
+```bash
+bd sync  # Force immediate export/commit/push
+```
+
+**Graceful Degradation**: If beads unavailable (bd command fails), log warning and continue. PLAN-*.md remains the authoritative planning document; beads adds persistent tracking.
 
 ## Execution Tracking
 

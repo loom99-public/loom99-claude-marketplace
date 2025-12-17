@@ -26,20 +26,14 @@
       "name": "do",
       "source": "./plugins/do-more-now",
       "description": "Flexible development system makes it easy to Do More Now.  What you alreaady know you should be doing - only better",
-      "version": "0.2.0",
+      "version": "0.5.1",
       "strict": true
     },
     {
-      "name": "do-classic",
-      "source": "./plugins/do-legacy",
-      "description": "Classic+ do plugin.  11 commands.  Limitless flexibility.  The legend that started it all",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
-      "name": "do2",
-      "source": "./plugins/do2",
-      "version": "0.1.0",
+      "name": "dev-loop",
+      "source": "./plugins/dev-loop",
+      "description": "dev-loop: ideate, evaluate, research, plan, test, implement, verify",
+      "version": "0.2.1",
       "strict": true
     },
     {

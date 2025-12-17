@@ -6,7 +6,7 @@ Called by Stop hook - checks if partials exist and aggregates them.
 No external dependencies - uses only Python 3 standard library.
 
 Directory structure:
-  .agent_planning/do-command-logs/
+  .agent_logs/do-more-now/
     CURRENT_EXECUTION_ID.txt   # State file
     CURRENT_SEQUENCE.txt       # State file
     EXEC-<cmd>-<timestamp>.md  # Final reports
@@ -24,7 +24,7 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
-BASE_DIR = Path(".agent_planning/do-command-logs")
+BASE_DIR = Path(".agent_logs/do-more-now")
 
 
 def get_log_file(session_id: str) -> Path:

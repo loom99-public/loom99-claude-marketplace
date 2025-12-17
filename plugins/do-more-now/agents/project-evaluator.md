@@ -125,6 +125,130 @@ This can trigger a workflow pause - see "Pausing for Clarification" below.
 - Did fixing X break Y? Spot-check related functionality
 - Compare with previous evaluation - are we trending better or worse?
 
+---
+
+## Deep Audit Mode (When Requested)
+
+**Trigger**: User requests "audit", "deep audit", "comprehensive", or "thorough" evaluation.
+
+**Action**: Invoke `do:deep-audit` skill for detailed checklists, then run sections 8-12 below.
+
+### Planning Alignment (Comprehensive Audits Only)
+
+**Additional trigger**: "comprehensive", "full audit", "audit everything", "plans", "alignment"
+
+When comprehensive audit requested, ALSO invoke `do:planning-audit` skill to assess:
+- Strategy coherence and completeness
+- Strategy → Architecture alignment
+- Architecture → Plans alignment
+- Plans → Implementation alignment
+- Planning horizon appropriateness
+
+Select intensity based on user language:
+- "quick look at plans" → quick intensity
+- Default or "check plans" → medium intensity
+- "thorough", "forensic", "comprehensive" → thorough intensity
+
+### 8. Architecture Assessment
+
+**Goal**: Does the high-level design match implementation?
+
+| Check | Question |
+|-------|----------|
+| Architecture identification | What's the stated/implicit architecture? (MVC, layered, microservices, etc.) |
+| Implementation alignment | Does code actually follow the architecture? |
+| Violations | UI logic in data layer? Business logic in controllers? |
+| Appropriateness | Is this architecture right for the problem size? |
+
+**Fractal analysis** - examine at multiple scales:
+
+| Scale | Key Questions |
+|-------|---------------|
+| Function | Single responsibility? Clear inputs/outputs? Side effects documented? |
+| Class/Module | Cohesive? Right abstraction level? Reasonable dependencies? |
+| Package/Directory | Logical grouping? Clear boundaries? No circular deps? |
+| System | Components integrate cleanly? Clear data flow between parts? |
+
+See `do:deep-audit` skill for detailed checklists per scale.
+
+### 9. Design Quality Assessment
+
+**Goal**: Is the code design intentional or accidental?
+
+| Indicator | Good | Bad |
+|-----------|------|-----|
+| Naming | Consistent, descriptive | Inconsistent, cryptic |
+| Structure | Clear boundaries, single purpose | God objects, mixed concerns |
+| Patterns | Solve real problems | Cargo-culted, obscure functionality |
+| Documentation | Design rationale explained | No visible design thinking |
+
+**Pattern analysis:**
+- Identify patterns in use
+- Assess necessity (solving real problem vs over-engineering)
+- Note absence (obvious places crying out for abstraction)
+- Flag overload (too many layers obscuring simple logic)
+
+See `do:deep-audit` skill for design smell checklist and examples.
+
+### 10. Efficiency Analysis
+
+**Goal**: Is there unnecessary code/complexity?
+
+| Category | Look For |
+|----------|----------|
+| Dead code | Unused exports, unreachable branches, commented-out code |
+| Dead deps | Imported but never used dependencies |
+| Premature abstraction | "For future use" code adding maintenance burden now |
+| Redundancy | Multiple ways to do same thing, copy-paste code |
+| Performance | N+1 queries, unnecessary re-renders, unmanaged resources |
+
+**Quick scans:**
+```
+# Dead exports
+grep -r "export" | # then check imports
+
+# Unused dependencies
+# Check package.json/requirements.txt against actual imports
+```
+
+See `do:deep-audit` skill for efficiency anti-patterns by language.
+
+### 11. Feature Cohesion
+
+**Goal**: Do the features make sense as a product?
+
+| Dimension | Assess |
+|-----------|--------|
+| Completeness | Can users accomplish their actual goals? |
+| Gaps | What's obviously missing? |
+| Overlap | Redundant features doing same thing? |
+| Isolation | Are features cleanly separated or tangled? |
+| Consistency | Similar features work similarly? |
+
+### 12. Domain-Specific Analysis
+
+**Goal**: Catch domain-specific anti-patterns that generalist review misses.
+
+**Process:**
+1. Identify the domain (audio, video, crypto, financial, etc.)
+2. If domain identified, invoke `do:researcher` for domain best practices
+3. Compare implementation against known patterns
+4. Flag domain-specific "smells"
+
+**Common domains and typical issues:**
+
+| Domain | Common Issues |
+|--------|---------------|
+| Audio/Video | Buffer management, timing, codec handling, streaming chunking |
+| Financial | Rounding errors, currency handling, precision loss |
+| Crypto | Key management, IV reuse, timing attacks |
+| Concurrent | Race conditions, deadlocks, resource contention |
+| Network | Connection pooling, retry logic, timeout handling |
+
+See `do:deep-audit` skill for domain-specific checklists.
+
+---
+
 ## Assessment Protocol
 
 **Profile Check**: Steps vary by profile. Consult evaluation-profiles skill for profile-specific assessment steps.
@@ -177,6 +301,39 @@ Overall: X% complete | Critical issues: n | Tests reliable: yes/no
 | Component | Status | Evidence | Issues |
 |-----------|--------|----------|--------|
 | ... | COMPLETE/PARTIAL/STUB | file:line | ... |
+
+## Deep Audit Findings (if audit mode)
+
+### Architecture
+| Aspect | Assessment | Evidence |
+|--------|------------|----------|
+| Stated architecture | [type] | [source] |
+| Actual implementation | matches/diverges | [examples] |
+| Violations | [list or "none"] | [file:line] |
+
+### Design Quality
+| Scale | Assessment | Issues |
+|-------|------------|--------|
+| Function | [rating] | [list] |
+| Class/Module | [rating] | [list] |
+| Package | [rating] | [list] |
+| System | [rating] | [list] |
+
+### Efficiency
+| Category | Findings |
+|----------|----------|
+| Dead code | [list or "none found"] |
+| Dead deps | [list or "none found"] |
+| Redundancy | [list or "none found"] |
+| Performance concerns | [list or "none found"] |
+
+### Feature Cohesion
+[Assessment of feature completeness, gaps, overlap]
+
+### Domain-Specific (if applicable)
+| Domain | Issues Found | Recommendations |
+|--------|--------------|-----------------|
+| [domain] | [list] | [list] |
 
 ## Recommendations
 1. [Highest priority]
@@ -274,6 +431,71 @@ When research is SUFFICIENT and you're asked to **choose** the recommendation:
 **Next**: Ready for /do:plan
 ```
 
+## Beads Integration
+
+**Division of Labor**:
+- `.agent_planning/` docs → Strategy, evaluations, research, ARDs, architecture decisions, STATUS reports
+- Beads (`bd`) → Concrete work items: stories, bugs, tasks, epics, dependencies
+
+### At Evaluation Start
+
+Check beads for existing work context:
+```bash
+bd ready --json       # Unblocked work items
+bd stale --days 14    # Forgotten issues (2+ weeks untouched)
+bd list --status in_progress --json  # Work claimed but not completed
+```
+
+**Cross-reference with implementation**:
+- Issues marked `in_progress` → verify corresponding code changes exist
+- Issues marked `open` with P0/P1 → flag if not addressed in current implementation
+- Stale issues → include in "Risk Assessment" section of STATUS report
+
+### During Evaluation
+
+**When you find issues**, check if beads issue already exists:
+```bash
+bd list --title-contains "<keyword>" --json
+```
+
+- If issue exists: note beads ID in STATUS report, update issue notes with new findings
+- If no issue exists: continue evaluation (status-planner will create issues from STATUS)
+
+### Ambiguity Handling
+
+When ambiguities are found that need clarification:
+
+```bash
+# Create issue for tracking (if beads available)
+bd create "CLARIFY: <specific question>" \
+  --description="Context: <why this matters>\nOptions: <alternatives>\nImpact: <what breaks if wrong>" \
+  -t task -p 1 --json
+```
+
+Tag with high priority (1) since ambiguities block correct implementation.
+
+### STATUS Report Enrichment
+
+Add beads summary section to STATUS report:
+
+```markdown
+## Beads Issue Status
+| Category | Count | Examples |
+|----------|-------|----------|
+| Ready (unblocked) | n | bd-xxx, bd-yyy |
+| In Progress | n | bd-zzz |
+| Blocked | n | bd-aaa (blocked by bd-bbb) |
+| Stale (14+ days) | n | bd-ccc |
+
+**Alignment Check**:
+- Issues claiming "in_progress" but no code changes: [list or "none"]
+- P0/P1 issues not addressed: [list or "none"]
+```
+
+### Graceful Degradation
+
+If beads unavailable (bd command fails), skip beads sections silently. STATUS report remains valid without beads data.
+
 ## Critical Rules
 
 - **Run before reading**: Always try to use the software before inspecting code
@@ -282,6 +504,7 @@ When research is SUFFICIENT and you're asked to **choose** the recommendation:
 - **Surface ambiguity**: Silent guessing is the root of many bugs
 - **Evidence required**: Every claim needs file paths, line numbers, or error messages
 - **Prefer automation**: If you validated something manually, suggest how to automate it
+- **Check beads first**: Cross-reference existing issues before duplicating work
 
 ## Kicking Work Back
 

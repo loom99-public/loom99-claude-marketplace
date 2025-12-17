@@ -1,0 +1,208 @@
+2025-12-10T14:48:43.337927 ============================================================
+2025-12-10T14:48:43.339794 init.py: SESSION START
+2025-12-10T14:48:43.341339 init.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T14:48:43.343286 init.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T14:48:43.345234 init.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'hook_event_name', 'source']
+2025-12-10T14:48:43.347114 init.py: hook_event_name=SessionStart
+2025-12-10T14:48:43.348452 init.py: transcript_path=/Users/bmf/.claude/projects/-Users-bmf-Library-Mobile-Documents-com-apple-CloudDocs--mine-icode-loom99-claude-marketplace-plugins-do-more-now/3e976c4f-60c0-4114-b73a-47f96fc0c69f.jsonl
+2025-12-10T14:48:43.349870 init.py: directory exists: .agent_planning/do-command-logs
+2025-12-10T14:48:43.354868 init.py: created directory: .agent_planning/do-command-logs/partials
+2025-12-10T14:48:43.355653 init.py: initialization complete
+2025-12-10T14:50:05.623946 ------------------------------------------------------------
+2025-12-10T14:50:05.626698 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T14:50:05.627652 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T14:50:05.629364 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T14:50:05.630469 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T14:50:05.631058 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T14:50:05.631671 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T14:50:05.632657 aggregate-exec.py: stop_hook_active=False
+2025-12-10T14:50:05.633414 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T14:50:05.633721 aggregate-exec.py: scanning for partial files...
+2025-12-10T14:50:05.634662 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T14:50:05.635531 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T15:01:53.511462 ------------------------------------------------------------
+2025-12-10T15:01:53.511929 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T15:01:53.512176 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T15:01:53.512709 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T15:01:53.513060 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T15:01:53.513246 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T15:01:53.513417 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T15:01:53.514451 aggregate-exec.py: stop_hook_active=False
+2025-12-10T15:01:53.515172 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T15:01:53.515823 aggregate-exec.py: scanning for partial files...
+2025-12-10T15:01:53.516715 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T15:01:53.517041 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T15:48:43.751067 ------------------------------------------------------------
+2025-12-10T15:48:43.751455 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T15:48:43.751548 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T15:48:43.751684 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T15:48:43.751757 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T15:48:43.751830 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T15:48:43.751903 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T15:48:43.751972 aggregate-exec.py: stop_hook_active=False
+2025-12-10T15:48:43.752089 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T15:48:43.752190 aggregate-exec.py: scanning for partial files...
+2025-12-10T15:48:43.752476 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T15:48:43.752556 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T16:10:49.220841 ------------------------------------------------------------
+2025-12-10T16:10:49.221262 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T16:10:49.221406 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T16:10:49.221643 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T16:10:49.221794 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T16:10:49.221903 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T16:10:49.221990 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T16:10:49.222072 aggregate-exec.py: stop_hook_active=False
+2025-12-10T16:10:49.222175 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T16:10:49.222258 aggregate-exec.py: scanning for partial files...
+2025-12-10T16:10:49.222592 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T16:10:49.222674 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T16:29:09.604233 ------------------------------------------------------------
+2025-12-10T16:29:09.604766 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T16:29:09.604889 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T16:29:09.605052 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T16:29:09.605137 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T16:29:09.605211 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T16:29:09.605285 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T16:29:09.605357 aggregate-exec.py: stop_hook_active=False
+2025-12-10T16:29:09.605439 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T16:29:09.605510 aggregate-exec.py: scanning for partial files...
+2025-12-10T16:29:09.605748 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T16:29:09.605829 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T16:41:02.864418 ============================================================
+2025-12-10T16:41:02.866308 init.py: SESSION START
+2025-12-10T16:41:02.867045 init.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T16:41:02.867867 init.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T16:41:02.869074 init.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'hook_event_name', 'source']
+2025-12-10T16:41:02.869850 init.py: hook_event_name=SessionStart
+2025-12-10T16:41:02.871360 init.py: transcript_path=/Users/bmf/.claude/projects/-Users-bmf-Library-Mobile-Documents-com-apple-CloudDocs--mine-icode-loom99-claude-marketplace-plugins-do-more-now/3e976c4f-60c0-4114-b73a-47f96fc0c69f.jsonl
+2025-12-10T16:41:02.871575 init.py: directory exists: .agent_planning/do-command-logs
+2025-12-10T16:41:02.872771 init.py: directory exists: .agent_planning/do-command-logs/partials
+2025-12-10T16:41:02.873998 init.py: initialization complete
+2025-12-10T16:41:25.455726 ------------------------------------------------------------
+2025-12-10T16:41:25.456187 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T16:41:25.456355 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T16:41:25.457050 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T16:41:25.457601 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T16:41:25.457774 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T16:41:25.458251 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T16:41:25.458559 aggregate-exec.py: stop_hook_active=False
+2025-12-10T16:41:25.458972 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T16:41:25.459247 aggregate-exec.py: scanning for partial files...
+2025-12-10T16:41:25.459872 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T16:41:25.460079 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T19:51:37.287441 ------------------------------------------------------------
+2025-12-10T19:51:37.288518 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T19:51:37.289365 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T19:51:37.290180 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T19:51:37.290513 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T19:51:37.290784 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T19:51:37.290971 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T19:51:37.291475 aggregate-exec.py: stop_hook_active=False
+2025-12-10T19:51:37.291985 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T19:51:37.292093 aggregate-exec.py: scanning for partial files...
+2025-12-10T19:51:37.292627 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T19:51:37.292836 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T19:53:08.609536 ------------------------------------------------------------
+2025-12-10T19:53:08.609916 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T19:53:08.610050 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T19:53:08.610285 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T19:53:08.610444 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T19:53:08.610608 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T19:53:08.610782 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T19:53:08.610914 aggregate-exec.py: stop_hook_active=False
+2025-12-10T19:53:08.611047 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T19:53:08.611159 aggregate-exec.py: scanning for partial files...
+2025-12-10T19:53:08.611457 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T19:53:08.611576 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-10T22:47:15.307640 ------------------------------------------------------------
+2025-12-10T22:47:15.308076 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-10T22:47:15.308159 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-10T22:47:15.308301 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-10T22:47:15.308392 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-10T22:47:15.308496 aggregate-exec.py: hook_event_name=Stop
+2025-12-10T22:47:15.308578 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-10T22:47:15.308662 aggregate-exec.py: stop_hook_active=False
+2025-12-10T22:47:15.308757 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-10T22:47:15.308840 aggregate-exec.py: scanning for partial files...
+2025-12-10T22:47:15.309077 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-10T22:47:15.309172 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-11T05:28:46.931910 ------------------------------------------------------------
+2025-12-11T05:28:46.932971 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-11T05:28:46.933108 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-11T05:28:46.933298 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-11T05:28:46.933400 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-11T05:28:46.933499 aggregate-exec.py: hook_event_name=Stop
+2025-12-11T05:28:46.933592 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-11T05:28:46.933699 aggregate-exec.py: stop_hook_active=False
+2025-12-11T05:28:46.933800 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-11T05:28:46.933891 aggregate-exec.py: scanning for partial files...
+2025-12-11T05:28:46.934171 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-11T05:28:46.934278 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-11T05:30:07.296146 ------------------------------------------------------------
+2025-12-11T05:30:07.306385 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-11T05:30:07.306622 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-11T05:30:07.307540 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-11T05:30:07.308359 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-11T05:30:07.308591 aggregate-exec.py: hook_event_name=Stop
+2025-12-11T05:30:07.309727 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-11T05:30:07.309946 aggregate-exec.py: stop_hook_active=False
+2025-12-11T05:30:07.310731 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-11T05:30:07.311316 aggregate-exec.py: scanning for partial files...
+2025-12-11T05:30:07.312033 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-11T05:30:07.312437 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-11T05:42:37.693081 ============================================================
+2025-12-11T05:42:37.693691 init.py: SESSION START
+2025-12-11T05:42:37.693792 init.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-11T05:42:37.693938 init.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-11T05:42:37.694024 init.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'hook_event_name', 'source']
+2025-12-11T05:42:37.694104 init.py: hook_event_name=SessionStart
+2025-12-11T05:42:37.694183 init.py: transcript_path=/Users/bmf/.claude/projects/-Users-bmf-Library-Mobile-Documents-com-apple-CloudDocs--mine-icode-loom99-claude-marketplace-plugins-do-more-now/3e976c4f-60c0-4114-b73a-47f96fc0c69f.jsonl
+2025-12-11T05:42:37.694276 init.py: directory exists: .agent_planning/do-command-logs
+2025-12-11T05:42:37.694368 init.py: directory exists: .agent_planning/do-command-logs/partials
+2025-12-11T05:42:37.694443 init.py: initialization complete
+2025-12-11T05:55:13.140923 ------------------------------------------------------------
+2025-12-11T05:55:13.141886 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-11T05:55:13.141993 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-11T05:55:13.142148 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-11T05:55:13.142275 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-11T05:55:13.142405 aggregate-exec.py: hook_event_name=Stop
+2025-12-11T05:55:13.142569 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-11T05:55:13.142688 aggregate-exec.py: stop_hook_active=False
+2025-12-11T05:55:13.142780 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-11T05:55:13.142866 aggregate-exec.py: scanning for partial files...
+2025-12-11T05:55:13.143145 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-11T05:55:13.143213 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-13T00:44:06.592961 ------------------------------------------------------------
+2025-12-13T00:44:06.616530 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-13T00:44:06.625078 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-13T00:44:06.698843 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-13T00:44:06.699355 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-13T00:44:06.699726 aggregate-exec.py: hook_event_name=Stop
+2025-12-13T00:44:06.705195 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-13T00:44:06.706268 aggregate-exec.py: stop_hook_active=False
+2025-12-13T00:44:06.707169 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-13T00:44:06.709550 aggregate-exec.py: scanning for partial files...
+2025-12-13T00:44:06.714386 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-13T00:44:06.716785 aggregate-exec.py: no partial files, nothing to aggregate
+2025-12-13T03:18:28.288945 ============================================================
+2025-12-13T03:18:28.292657 init.py: SESSION START
+2025-12-13T03:18:28.294506 init.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-13T03:18:28.299553 init.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-13T03:18:28.302292 init.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'hook_event_name', 'source']
+2025-12-13T03:18:28.308151 init.py: hook_event_name=SessionStart
+2025-12-13T03:18:28.309318 init.py: transcript_path=/Users/bmf/.claude/projects/-Users-bmf-Library-Mobile-Documents-com-apple-CloudDocs--mine-icode-loom99-claude-marketplace-plugins-do-more-now/3e976c4f-60c0-4114-b73a-47f96fc0c69f.jsonl
+2025-12-13T03:18:28.309810 init.py: directory exists: .agent_planning/do-command-logs
+2025-12-13T03:18:28.314072 init.py: directory exists: .agent_planning/do-command-logs/partials
+2025-12-13T03:18:28.315579 init.py: initialization complete
+2025-12-13T03:21:25.193892 ------------------------------------------------------------
+2025-12-13T03:21:25.194761 aggregate-exec.py: STOP HOOK TRIGGERED
+2025-12-13T03:21:25.195108 aggregate-exec.py: session_id=3e976c4f-60c0-4114-b73a-47f96fc0c69f
+2025-12-13T03:21:25.195449 aggregate-exec.py: cwd=/Users/bmf/Library/Mobile Documents/com~apple~CloudDocs/_mine/icode/loom99-claude-marketplace/plugins/do-more-now
+2025-12-13T03:21:25.195798 aggregate-exec.py: hook_input keys=['session_id', 'transcript_path', 'cwd', 'permission_mode', 'hook_event_name', 'stop_hook_active']
+2025-12-13T03:21:25.196099 aggregate-exec.py: hook_event_name=Stop
+2025-12-13T03:21:25.196315 aggregate-exec.py: permission_mode=bypassPermissions
+2025-12-13T03:21:25.196588 aggregate-exec.py: stop_hook_active=False
+2025-12-13T03:21:25.197054 aggregate-exec.py: checking partials_dir=.agent_planning/do-command-logs/partials
+2025-12-13T03:21:25.197626 aggregate-exec.py: scanning for partial files...
+2025-12-13T03:21:25.198288 aggregate-exec.py: found 0 files matching *-PARTIAL-*.txt
+2025-12-13T03:21:25.198955 aggregate-exec.py: no partial files, nothing to aggregate

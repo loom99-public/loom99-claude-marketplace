@@ -23,12 +23,19 @@ This is ALL Claude sees until the skill triggers. Make it count.
 
 ### Level 2: SKILL.md Body (On Trigger)
 
+ALWAYS include a table at the BEGINNING listing all references with concise, descriptive language that makes it easy for claude to determine
+when to pull in a reference.  Make it easy for Claude to find the reference it needs, like a TOC.
+
 The main instructions. Keep under 500 lines. Contains:
+- Table as described above FIRST
 - Quick start / core workflow
-- Navigation to reference files
+- More detailed explanations of when to use reference files if needed
 - Essential constraints
 
 ### Level 3: References (On Demand)
+
+INCLUDE A TABLE OF CONTENTS IN ALL LEVEL 3 REFERENCE FILES
+THE TOC MUST BE FIRST
 
 Detailed content Claude reads only when needed:
 - Domain-specific schemas
@@ -38,12 +45,10 @@ Detailed content Claude reads only when needed:
 
 ## When to Split Content
 
-| Content Size | Structure |
-|--------------|-----------|
-| <100 lines total | SKILL.md only |
-| 100-300 lines | SKILL.md + 1 reference file |
-| 300-500 lines | SKILL.md + 2-3 reference files |
-| >500 lines | Must split - SKILL.md body limit |
+| Content Size     | Structure                                                                                |
+|------------------|------------------------------------------------------------------------------------------|
+| <100 lines total | SKILL.md only                                                                            |
+| 100+ lines       | SKILL.md + reference files by topic/category/subject (split as needed to maintain focus) |
 
 ## Pattern 1: High-Level Guide with References
 
@@ -152,16 +157,16 @@ For simple text changes, modify the XML directly in `word/document.xml`.
 
 Claude reads advanced files only when user needs those features.
 
-## Critical Rule: One Level Deep
+## Rule: One Level Deep
 
-References must link directly from SKILL.md. Never nest references.
+References should link directly from SKILL.md. Only nest references in rare cases when a skill is very large.
 
 **BAD - Too deep:**
 ```
-SKILL.md → advanced.md → details.md → actual-info.md
+SKILL.md → advanced.md → details.md → actual-info.md -> implementation-details.md
 ```
 
-Claude may use `head -100` on nested files, missing content.
+Claude may use `head -100` on nested files, missing content.  This is why a TOC MUST BE INCLUDED.
 
 **GOOD - Flat:**
 ```
@@ -172,7 +177,7 @@ SKILL.md → ocr.md
 
 All information accessible in one read.
 
-## Table of Contents for Long References
+## Critical rule: Table of Contents MUST be included for ALL Level 2 AND Level 3 files!
 
 For reference files >100 lines, include TOC at top:
 

@@ -1473,6 +1473,103 @@ Remember: You're not just collecting information. You're architecting a project'
 
 Ask the right questions. Make informed recommendations. Document thoroughly. Hand off clearly.
 
+## Gate Integration
+
+As a subagent, you CANNOT ask the user questions directly. Instead, log decisions that need review - the calling command will invoke `gating-controller` to process them.
+
+**Check for gating**: Read `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`
+- If file doesn't exist, skip gate logging (gating not active)
+- If gating is active, log decisions for the gates you trigger
+
+### Gate Types You Trigger
+
+| Gate | When to Log | Examples |
+|------|-------------|----------|
+| **decision-gate** | Architecture/technology choices | Language, framework, database, architecture patterns |
+| **security-gate** | Security-related architecture | Auth strategy, credential storage, API security |
+
+Project-architect makes HIGH-IMPACT decisions. Most should trigger decision-gate.
+
+### Decision Gate Logging
+
+Log to `.agent_planning/do-command-state/<EXEC_ID>/DECISIONS/<SEQ>-project-architect-<id>.txt`:
+
+| Category | Examples | Risk Level |
+|----------|----------|------------|
+| technology | Language, framework, database selection | HIGH |
+| architecture | System structure, component boundaries | HIGH |
+| implementation | Development workflow, tooling | MEDIUM |
+
+### Security Gate Logging
+
+Log to `.agent_planning/do-command-state/<EXEC_ID>/SECURITY/<SEQ>-project-architect-<id>.txt` when:
+- Choosing authentication strategy (OAuth, JWT, sessions)
+- Selecting credential storage approach
+- Designing API security model
+- Choosing third-party services with data access
+
+Format:
+```
+SECURITY_EVENT_ID: <uuid>
+EXEC_ID: <exec_id>
+SEQUENCE: <n>
+AGENT: project-architect
+TIMESTAMP: <iso-timestamp>
+EVENT_TYPE: auth-strategy | credential-storage | api-security | third-party
+
+## Decision
+<What was decided>
+
+## Security Implications
+<What are the security tradeoffs>
+
+## Alternatives Considered
+<Other options and why not chosen>
+```
+
+**Write decision file** to `.agent_planning/do-command-state/<EXEC_ID>/DECISIONS/<SEQ>-project-architect-<decision-id>.txt`:
+```
+DECISION_ID: <uuid>
+EXEC_ID: <exec_id>
+SEQUENCE: <n>
+AGENT: project-architect
+TIMESTAMP: <iso-timestamp>
+RISK_LEVEL: HIGH | MEDIUM | LOW
+CATEGORY: technology | architecture | implementation
+
+## Questions Asked
+<What questions led to this decision? What constraints/preferences were gathered?>
+- Q1: <question asked to user or inferred from context>
+- Q2: <question>
+
+## Decision
+<What was decided>
+
+## Options Considered
+- A: <option> - <tradeoffs>
+- B: <option> - <tradeoffs>
+- C: <option> - <tradeoffs>
+
+## Chosen
+<Which option and why>
+
+## Impact If Wrong
+<Consequences of wrong choice - e.g., costly rewrite, scaling issues>
+
+## Auto-Approve Rationale
+<Why this can be auto-approved in non-BLOCKING mode - e.g., user explicitly chose, industry standard>
+```
+
+**Log decisions for**:
+- Language and framework choices
+- Database and infrastructure selections
+- Architecture patterns (monolith vs microservices)
+- Major tooling choices (CI/CD, testing frameworks)
+
+**Do NOT log**:
+- Documentation formatting choices
+- Minor tooling preferences (linter rules, etc.)
+- Decisions where user explicitly provided the answer (no alternatives considered)
 
 ## Execution Tracking
 

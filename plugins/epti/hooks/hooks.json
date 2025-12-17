@@ -1,0 +1,22 @@
+[
+  {
+    "event": "pre-implementation",
+    "command": "echo '\n⚠️  TDD Checkpoint: Before writing implementation code...\n' && if ! find tests/ -name '*.py' -o -name '*.test.js' -o -name '*_test.go' -o -name '*.spec.js' -o -name '*_spec.rb' 2>/dev/null | grep -q .; then echo '❌ Error: No test files found in tests/ directory' && echo 'TDD requires tests to be written FIRST.' && echo 'Run /write-tests to create tests before implementing.' && exit 1; fi && echo '✓ Tests exist. Verifying they fail...' && (pytest --tb=no -q 2>/dev/null || npm test --silent 2>/dev/null || go test ./... 2>/dev/null || mvn test -q 2>/dev/null || rspec --format progress 2>/dev/null || echo '⚠️  Could not run tests automatically. Please verify tests fail before implementing.') && echo '\n✓ Proceed with /implement command'",
+    "description": "Verify tests exist and fail before allowing implementation"
+  },
+  {
+    "event": "post-code",
+    "command": "echo '\n✓ Code changes detected. Running test suite...\n' && TEST_OUTPUT=$(mktemp) && if [ -f pytest.ini ] || [ -f pyproject.toml ] || grep -q pytest requirements.txt 2>/dev/null; then pytest -v --tb=short 2>&1 | tee $TEST_OUTPUT; RESULT=$?; elif [ -f package.json ] && grep -q jest package.json 2>/dev/null; then npm test 2>&1 | tee $TEST_OUTPUT; RESULT=$?; elif [ -f go.mod ]; then go test -v ./... 2>&1 | tee $TEST_OUTPUT; RESULT=$?; elif [ -f pom.xml ]; then mvn test 2>&1 | tee $TEST_OUTPUT; RESULT=$?; elif [ -f Gemfile ] && grep -q rspec Gemfile 2>/dev/null; then rspec --format documentation 2>&1 | tee $TEST_OUTPUT; RESULT=$?; else echo '⚠️  Could not detect test framework. Please run tests manually.' && RESULT=0; fi && if [ $RESULT -eq 0 ]; then echo '\n✅ All tests passing! Ready to commit with /commit-code'; else echo '\n❌ Tests failing. Use /iterate to fix implementation.'; fi && rm -f $TEST_OUTPUT",
+    "description": "Automatically run test suite after code changes"
+  },
+  {
+    "event": "pre-commit",
+    "command": "echo '\n🔒 TDD Pre-Commit Check...\n' && if [ -f pytest.ini ] || [ -f pyproject.toml ] || grep -q pytest requirements.txt 2>/dev/null; then pytest --tb=no -q; RESULT=$?; elif [ -f package.json ] && grep -q jest package.json 2>/dev/null; then npm test --silent; RESULT=$?; elif [ -f go.mod ]; then go test ./... -v; RESULT=$?; elif [ -f pom.xml ]; then mvn test -q; RESULT=$?; elif [ -f Gemfile ] && grep -q rspec Gemfile 2>/dev/null; then rspec --format progress; RESULT=$?; else echo '⚠️  Could not detect test framework.' && RESULT=0; fi && if [ $RESULT -ne 0 ]; then echo '\n❌ Error: Cannot commit with failing tests!' && echo 'TDD requires all tests to pass before committing.' && echo 'Run /iterate to fix failing tests, or use /commit-tests if committing tests only.' && exit 1; fi && echo '\n✓ All tests passing. Commit allowed.'",
+    "description": "Block commits if tests are failing"
+  },
+  {
+    "event": "commit-msg",
+    "command": "COMMIT_MSG=$(cat \"$1\") && if echo \"$COMMIT_MSG\" | grep -qE '^(test|impl|refactor|fix)\\('; then echo '✓ TDD commit format valid'; exit 0; fi && if echo \"$COMMIT_MSG\" | grep -qiE '^(test:|tests:)'; then echo '✓ Test commit detected'; exit 0; fi && if echo \"$COMMIT_MSG\" | grep -qE '^(feat|fix|refactor|test|docs|style|perf|chore|ci|build)\\('; then echo '✓ Conventional commit format valid'; exit 0; fi && echo '\n❌ Error: Commit message must follow TDD or conventional format' && echo '' && echo 'TDD Format (recommended):' && echo '  test(scope): description    - For test-only commits' && echo '  impl(scope): description    - For implementation commits' && echo '  refactor(scope): description - For refactoring commits' && echo '' && echo 'Conventional Format (also accepted):' && echo '  feat(scope): description' && echo '  fix(scope): description' && echo '' && echo 'Examples:' && echo '  test(auth): add authentication test cases' && echo '  impl(auth): implement JWT token generation' && echo '  refactor(auth): extract validation logic' && exit 1",
+    "description": "Enforce TDD-friendly commit message format"
+  }
+]

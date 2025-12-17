@@ -218,6 +218,76 @@ Your output feeds into:
 
 Structure your output so it can be directly consumed by these next steps.
 
+## Gate Integration
+
+As a subagent, you CANNOT ask the user questions directly. Instead, log decisions that need review - the calling command will invoke `gating-controller` to process them.
+
+**Check for gating**: Read `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`
+- If file doesn't exist, skip gate logging (gating not active)
+- If gating is active, log decisions for the gates you trigger
+
+### Gate Types You Trigger
+
+| Gate | When to Log | Examples |
+|------|-------------|----------|
+| **decision-gate** | Technology/architecture recommendations | Framework choice, database recommendation, API design |
+
+Note: Researcher typically doesn't trigger security-gate (that's for implementation changes).
+
+### Decision Gate Logging
+
+Log to `.agent_planning/do-command-state/<EXEC_ID>/DECISIONS/<SEQ>-researcher-<id>.txt`:
+
+| Category | Examples | Risk Level |
+|----------|----------|------------|
+| technology | Framework/library recommendations | HIGH |
+| architecture | System design recommendations | HIGH |
+| implementation | Approach recommendations | MEDIUM |
+
+**Write decision file** to `.agent_planning/do-command-state/<EXEC_ID>/DECISIONS/<SEQ>-researcher-<decision-id>.txt`:
+```
+DECISION_ID: <uuid>
+EXEC_ID: <exec_id>
+SEQUENCE: <n>
+AGENT: researcher
+TIMESTAMP: <iso-timestamp>
+RISK_LEVEL: HIGH | MEDIUM | LOW
+CATEGORY: technology | architecture | implementation
+
+## Questions Asked
+<What questions led to this research? What was I trying to answer?>
+- Q1: <question>
+- Q2: <question>
+
+## Decision
+<What was decided/recommended>
+
+## Options Considered
+- A: <option> - <tradeoffs>
+- B: <option> - <tradeoffs>
+- C: <option> - <tradeoffs>
+
+## Chosen
+<Which option recommended and why>
+
+## Impact If Wrong
+<Consequences of wrong choice>
+
+## Auto-Approve Rationale
+<Why this can be auto-approved in non-BLOCKING mode - e.g., clear best practice, team expertise>
+```
+
+**Log decisions for**:
+- Technology/framework recommendations
+- Architecture pattern recommendations
+- API design recommendations
+- When recommending one option over viable alternatives
+
+**Do NOT log**:
+- Gathering information (only log the final recommendation)
+- Documenting facts without recommendations
+- Quick mode queries (pure navigation)
+
 ## Execution Tracking
 
 **First**: Check if this is a tracked execution by reading state files:
