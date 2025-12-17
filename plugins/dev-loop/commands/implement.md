@@ -7,6 +7,8 @@ description: Implement a feature with automatic planning, human-in-the-loop veri
 
 Iterative implementation workflow: resolve topic, get plan, approve DoD, spawn agent to build functionality, validate through runtime evaluation.
 
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `dev-loop:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
+
 ## Step 1: Determine What to Work On
 
 <task-focus>
@@ -78,11 +80,19 @@ Check topic directory for a plan.
 
 **Search:**
 1. List files in topic directory: `ls .agent_planning/<topic>/`
-2. Look for `PLAN-*.md` (newest by timestamp)
-3. Look for `DOD-*.md` (must exist alongside plan)
-   - DOD = Definition of Done.  If it does not exist, we must generate one
+2. Look for all plan files, find the latest timestamp, and ensure each file exists for that timestamp:
+   - `STATUS-*.md`
+   - `EVAL-*.md`
+   - `PLAN-*.md`
+   - `USER-*.md`
+   - `DOD-*.md`
+3. If it contains ALL plan files, the plan is complete.  Otherwise it is incomplete.
 
 **Decision:**
+
+- **Plan is complete** → Note topic directory, proceed to next step
+- **No plan** → Run `/dev-loop:plan $TOPIC`, then proceed with new plan
+- **Plan is incomplete** → Run `/dev-loop:plan Please complete or update this plan: $PLAN_PATH`, then proceed
 
 - **Plan + DoD exist** → Note filepaths, proceed to Step 4
 - **No plan** → Run `/dev-loop:plan $TOPIC`, then proceed with new plan
@@ -94,34 +104,14 @@ Check topic directory for a plan.
 
 ## Step 4: Definition of Done (Main Context Approval)
 
-Before spawning the agent, get user approval on completion criteria.
+Before spawning the agent, check for exiting user approval on completion criteria.
 
-**Read the DoD file** (it's small, just acceptance criteria).
+To do this, check the `.agent_planning/<topic>/` directory for files named:
+`USER-RESPONSE-*.md`.  For the latest timestamp, read that file.  This will contain the user's approval or rejection of the plan.  If a plan was approved here, automatically proceed to implementation.  
 
-**Present for approval:**
+**IMPORTANT**: If the file specifies the user rejected the plan, it may have been revised later without updating this file, so read the planning documents, provide a summary to the user, and ask them for approval.  Upon approval, proceed to **Step 5**.
 
-```
-┌─ Definition of Done: $TOPIC ───────────────────────┐
-│                                                    │
-│ Acceptance Criteria:                               │
-│ - [ ] [Criterion 1]                                │
-│ - [ ] [Criterion 2]                                │
-│ - [ ] [Criterion 3]                                │
-│                                                    │
-│ Sprint Scope: [2-3 deliverables max]               │
-│                                                    │
-│ 1. Approve - spawn agent to implement              │
-│ 2. Revise - adjust criteria first                  │
-│ 3. Reduce - fewer items this sprint                │
-└────────────────────────────────────────────────────┘
-```
-
-Incorporate feedback until user approves.
-
-IMPORTANT: If not present, please present this tip to the user:
-**Tip:** Add to CLAUDE.md to customize: `dev-loop: auto-proceed on fresh plans with clear criteria`
-
-**Output:** User approval confirmed.
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `dev-loop:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
 
 ---
 
@@ -179,10 +169,10 @@ If work-evaluator reports PAUSE with ambiguities that need resolution:
 3. If sufficient, work-evaluator makes the decision
 4. Continue the implementation loop with resolved ambiguity
 
-This auto-research step removes user from the ambiguity resolution loop. Only surface to user if research cannot resolve after 3 iterations.
+**CRITICAL: YOU MUST ALWAYS REQUEST FEEDBACK FROM THE USER ON ALL UNANSWERED QUESTIONS, UNLESS THE USER REQUESTS OTHERWISE.**
 
 **Blocked Condition (BLOCKED)**:
-If work-evaluator reports BLOCKED with no clear path forward (external dependency, fundamental issue), pause and request user guidance.
+If work-evaluator reports BLOCKED with no clear path forward (external dependency, fundamental issue, unanswered questions, matter of personal taste), pause and request user guidance.
 
 ---
 
@@ -244,6 +234,8 @@ Next: Review STATUS or continue with /dev-loop:implement [next topic]
 
 ## Summary
 
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `dev-loop:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
+
 **Main context handles:**
 - Topic resolution (Step 1)
 - Topic directory resolution (Step 2) - ask user if ambiguous
@@ -272,9 +264,9 @@ Next: Review STATUS or continue with /dev-loop:implement [next topic]
 
 ## Important Notes
 
-- This workflow does not require tests to be written first
-- Validation happens through runtime evaluation (running the software)
+- This workflow does not *require* tests to be written first, but we highly encourage automated testing and recommend that all implementation be covered by automated tests
+- Runtime validation trumps automated testing for verification.  If the tests pass but the software doesn't run, this is a sign we need to update the tests
 - Work-evaluator uses actual software execution to verify functionality
-- Quality standards are maintained through iterative-implementer's engineering practices
+- Exceptional quality standards are maintained through iterative-implementer's strict, no-compromise engineering practices
 - **PAUSE triggers automatic research** - user only involved if research gets stuck
 - User may test and provide feedback during any iteration

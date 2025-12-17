@@ -37,13 +37,6 @@
       "strict": true
     },
     {
-      "name": "do-simple",
-      "source": "./plugins/do-simple",
-      "description": "Streamlined do plugin - 5 commands, smart mode detection",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
       "name": "claude4claude",
       "source": "./plugins/claude4claude",
       "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",

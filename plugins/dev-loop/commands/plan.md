@@ -194,10 +194,10 @@ Use dev-loop:work-evaluator agent to check:
 
 ## Step 6: User Approval
 
-Present plan summary for approval:
+Present Deliverable and Definition of Done summary for approval:
 
 ```
-┌─ Sprint Plan Ready for Review ─────────────────────┐
+┌─ Please Review: Sprint Plan for $TOPIC ────────────┐
 │ Task: [name]                                       │
 │ Sprint Goal: [one sentence]                        │
 │                                                    │
@@ -206,14 +206,18 @@ Present plan summary for approval:
 │ 2. [Deliverable 2]                                 │
 │ 3. [Deliverable 3, if any]                         │
 │                                                    │
+│ Acceptance Criteria:                               │
+│ - [ ] [Criterion 1]                                │
+│ - [ ] [Criterion 2]                                │
+│ - [ ] [Criterion 3]                                │
+│                                                    │
 │ Deferred to future sprints:                        │
 │ - [List of out-of-scope items]                     │
 │                                                    │
 │ Options:                                           │
-│ 1. Approve - plan looks good                       │
-│ 2. Adjust scope - change what's included           │
-│ 3. Add context - more info needed                  │
-│ 4. Reject - start over with different approach     │
+│ 1. Approve - looks good!                           │
+│ 2. Revise - adjust, add context, give feedback     │
+│ 3. Reject - start over with different approach     │
 └────────────────────────────────────────────────────┘
 ```
 
@@ -226,15 +230,16 @@ Present plan summary for approval:
 
 ---
 
-## Step 7: Completion
+## Step 7: Completion and Auto-Chain
 
 Once user approves:
 
-1. Confirm files saved to topic directory:
+1. Record user response to approval question in `.agent_planning/<topic>/USER-RESPONSE-<timestamp>.md`.  This should be either 'APPROVED', 'ADJUST', or 'REJECT' with appropriate context about the answer (why it was rejected or how it was adjusted, if it was).  This file is critical to proceeding and serves as a full user approval of the plan as written.  Include the specific filenames that are part of the plan that was approved.
+
+2. Confirm files saved to topic directory:
    - `.agent_planning/<topic>/PLAN-<timestamp>.md`
    - `.agent_planning/<topic>/DOD-<timestamp>.md`
-
-2. Archive old plans (keep max 4 per type)
+   - ...
 
 3. Display summary:
 
@@ -242,38 +247,46 @@ Once user approves:
 ═══════════════════════════════════════════════════════
 Plan Complete
   Topic: [name]
-  Directory: .agent_planning/<topic>/
+  
+  Directory structure:
+   .agent_planning/
+   ├── <topic>/
+   │   ├── STATUS-<timestamp>.md          # Evaluation snapshots
+   │   ├── EVAL-<timestamp>.md            # Gap analysis
+   │   ├── PLAN-<timestamp>.md            # Full plan
+   │   ├── USER-RESPONSE-<timestamp>.md   # User response to plan (Approved/Rejected)
+   │   └── DOD-<timestamp>.md             # Definition of Done / Acceptance Criteria
+   └── <topic>/
+       └── ...
 
-  Files:
-  - PLAN-<timestamp>.md
-  - DOD-<timestamp>.md
-
-  Sprint Scope: [n] deliverables
+  Sprint Deliverables:
+   - Item1
+   - Item2
+   - ...
 
 Next: /dev-loop:implement $TOPIC
 ═══════════════════════════════════════════════════════
 ```
 
+4. **Auto-chain to implementation**:
+
+Display to user:
+
+**Tip:** You can specify the criteria under which we should automatically plan, such as the risk level, complexity, or uncertainty that is acceptable by adding a note to your CLAUDE.md file.  e.g., `dev-loop: auto-chain plan to implement for all low risk, low complexity plans with little uncertainty`.  By default it will ask you about every plan.
+
+Perform this action:
+
+**ONLY** when a user has requested auto-chain to implementation for some plans:
+   Automatically execute command `/dev-loop:implement $TOPIC`.  Do NOT ask for permission - immediately begin implementation using the approved plan.
+   This ONLY takes effect for plans that match the users criteria for automatic implementation, e.g., the risk level, complexity, and uncertainty is within the user's acceptable range.
+
 ---
 
-## Summary
 
-**Directory structure:**
-```
-.agent_planning/
-├── auth/
-│   ├── STATUS-<timestamp>.md   # Evaluation snapshots
-│   ├── EVAL-<timestamp>.md     # Gap analysis
-│   ├── PLAN-<timestamp>.md     # Full plan
-│   └── DOD-<timestamp>.md      # Acceptance criteria only
-├── payments/
-│   └── ...
-└── do-command-logs/            # Execution tracking (unchanged)
-```
+## Key principles:
 
-**Key principles:**
 1. Evaluate first - fresh context required
 2. One sprint only - 2-3 deliverables max
-3. Resolve ambiguity - don't plan around unclear requirements
-4. Acceptance criteria mandatory - plans without them are invalid
-5. User approval required - plan must be accepted before implementation
+3. All open questions must be resolved - don't plan around unclear requirements
+4. DOD (Acceptance criteria) mandatory - plans without them are invalid
+5. User approval required - plan & DOD must be accepted BEFORE WE EXIT PLANNING
