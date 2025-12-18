@@ -14,12 +14,14 @@
     "./commands/init-project.md",
     "./commands/plan.md",
     "./commands/research.md",
+    "./commands/roadmap.md",
     "./commands/status.md",
     "./commands/tdd.md"
   ],
   "skills": [
     "./skills/prompt-questioning",
-    "./skills/eval-cache"
+    "./skills/eval-cache",
+    "./skills/roadmap"
   ],
   "agents": [
     "./agents/functional-tester.md",
