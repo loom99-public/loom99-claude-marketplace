@@ -1,7 +1,7 @@
 {
-  "name": "dev-loop",
-  "version": "0.2.3",
-  "description": "dev-loop: ideate, evaluate, research, plan, test, implement, verify",
+  "name": "lp",
+  "version": "0.2.2",
+  "description": "dev-loop (lp): ideate, evaluate, research, plan, test, implement, verify",
   "author": {
     "name": "Brandon Fryslie",
     "email": ""
@@ -10,7 +10,7 @@
   "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
   "commands": [
     "./commands/feature-proposal.md",
-    "./commands/implement.md",
+    "./commands/impl.md",
     "./commands/init-project.md",
     "./commands/plan.md",
     "./commands/research.md",

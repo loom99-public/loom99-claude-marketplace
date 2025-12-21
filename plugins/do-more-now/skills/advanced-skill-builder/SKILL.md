@@ -1,6 +1,6 @@
 ---
 name: advanced-skill-builder
-description: Creates production-quality Claude skills from URLs, documentation, or domain knowledge. Fetches content, analyzes patterns, applies progressive disclosure, and outputs properly-structured skill directories. Use when building new skills, converting documentation to skills, or improving existing skills.
+description: Use when building new Claude skills, converting documentation to Claude skills, or improving existing Claude skills.
 ---
 
 # Advanced Skill Builder

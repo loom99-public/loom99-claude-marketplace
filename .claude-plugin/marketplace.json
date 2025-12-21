@@ -5,23 +5,9 @@
     "email": "530235+brandon-fryslie@users.noreply.github.com"
   },
   "metadata": {
-    "description": "the loom99 public Claude Code plugin marketplace.  Enterprise-Grade Generative Engineering Platform.  Home of 'Do More Now', the plugin that takes Claude from star to rockstar"
+    "description": "the loom99 public Claude Code plugin marketplace.  Flow-Optimized Generative Engineering Platform.  Enterprise-Grade.  10x your org: loom99.com"
   },
   "plugins": [
-    {
-      "name": "visual-iteration",
-      "source": "./plugins/visual-iteration",
-      "description": "Visual iteration workflow - Screenshot-driven UI development",
-      "version": "0.1.0",
-      "strict": true
-    },
-    {
-      "name": "promptctl",
-      "source": "./plugins/promptctl",
-      "description": "A tool for prompt control",
-      "version": "0.1.0",
-      "strict": true
-    },
     {
       "name": "do",
       "source": "./plugins/do-more-now",
@@ -30,10 +16,10 @@
       "strict": true
     },
     {
-      "name": "dev-loop",
+      "name": "lp",
       "source": "./plugins/dev-loop",
-      "description": "dev-loop: ideate, evaluate, research, plan, test, implement, verify",
-      "version": "0.2.1",
+      "description": "dev-loop (lp): ideate, evaluate, research, plan, test, implement, verify",
+      "version": "0.2.2",
       "strict": true
     },
     {
