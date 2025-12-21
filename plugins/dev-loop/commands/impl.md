@@ -3,7 +3,7 @@ argument-hint: [feature or task to implement]
 description: Implement a feature with automatic planning, human-in-the-loop verification, and feedback cycles. Chains to /plan if no plan exists.
 ---
 
-# Implement Command
+# Impl Command
 
 Iterative implementation workflow: resolve topic, get plan, approve DoD, spawn agent to build functionality, validate through runtime evaluation.
 
