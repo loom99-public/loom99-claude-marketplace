@@ -251,7 +251,7 @@ bd list --format json | jq -r '.[] | "\(.key): \(.epic)"'
 
 ### For New Projects
 
-Run `/dev-loop:roadmap <first-topic>` to auto-create ROADMAP.md with:
+Run `/lp:roadmap <first-topic>` to auto-create ROADMAP.md with:
 - Initial "Phase 1: MVP" phase
 - First topic with auto-created beads epic
 - Proper directory structure
@@ -281,7 +281,7 @@ Run `/dev-loop:roadmap <first-topic>` to auto-create ROADMAP.md with:
 
 **Maintenance:**
 - Update `updated` timestamp when modifying
-- Keep states current (run `/dev-loop:roadmap` to sync)
+- Keep states current (run `/lp:roadmap` to sync)
 - Archive completed topics periodically
 
 ## Troubleshooting

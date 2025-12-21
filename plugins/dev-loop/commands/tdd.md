@@ -31,7 +31,7 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 3. **Exact match exists** → Use it
    **Similar directories found** → Ask user to choose
-   **No match** → Create new directory and chain to `/dev-loop:plan $TOPIC`
+   **No match** → Create new directory and chain to `/lp:plan $TOPIC`
 
 **Output:** Topic directory path (e.g., `.agent_planning/auth/`)
 
@@ -42,7 +42,7 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 Check topic directory for `PLAN-*.md` (newest by timestamp).
 
 - **Plan exists** → Proceed to TestLoop
-- **No plan** → Run `/dev-loop:plan $TOPIC`, then proceed
+- **No plan** → Run `/lp:plan $TOPIC`, then proceed
 
 ---
 
@@ -104,7 +104,7 @@ If work-evaluator returns PAUSE with ambiguities about implementation:
 
 ## Final Step
 
-After BOTH loops complete, run `/dev-loop:status` to show current state.
+After BOTH loops complete, run `/lp:status` to show current state.
 
 Display summary:
 ```

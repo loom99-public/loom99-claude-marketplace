@@ -258,7 +258,7 @@ Next Steps
 
 **Scenario A: New Project from Scratch**
 ```
-/dev-loop:plan
+/lp:plan
 
 This will:
   • Evaluate current state (will show ~0% complete - that's expected!)
@@ -266,13 +266,13 @@ This will:
   • Create implementation plan
 
 Then choose your workflow:
-  • /dev-loop:tdd (for TDD approach)
-  • /dev-loop:implement (for iterative approach)
+  • /lp:tdd (for TDD approach)
+  • /lp:impl (for iterative approach)
 ```
 
 **Scenario B: Major Architectural Change**
 ```
-/dev-loop:plan "architectural-migration"
+/lp:plan "architectural-migration"
 
 This will:
   • Analyze gap between current and target architecture
@@ -285,7 +285,7 @@ validate thoroughly, then proceed to Phase 2.
 
 **Scenario C: Greenfield Component Addition**
 ```
-/dev-loop:plan "{component-name}"
+/lp:plan "{component-name}"
 
 This will:
   • Evaluate existing system + new component design
@@ -304,7 +304,7 @@ Before running /plan, create your feature parity checklist:
   3. Identify high-risk areas (complex logic, critical paths)
 
 Then run:
-/dev-loop:plan "migration-to-{new-tech}"
+/lp:plan "migration-to-{new-tech}"
 
 Consider incremental migration if possible (less risky than big bang).
 The PROJECT_SPEC.md includes a phased approach.
@@ -312,7 +312,7 @@ The PROJECT_SPEC.md includes a phased approach.
 
 **Scenario E: Feature Design**
 ```
-/dev-loop:plan "{feature-name}"
+/lp:plan "{feature-name}"
 
 This will:
   • Evaluate existing system
@@ -320,8 +320,8 @@ This will:
   • Identify integration points
 
 Then implement using your preferred workflow:
-  • /dev-loop:tdd (for features with clear requirements)
-  • /dev-loop:implement (for exploratory/UI features)
+  • /lp:tdd (for features with clear requirements)
+  • /lp:impl (for exploratory/UI features)
 ```
 
 ---
@@ -338,11 +338,11 @@ Then implement using your preferred workflow:
 Please provide a brief description of what you want to build.
 
 Examples:
-  /dev-loop:init-project "Build a CLI tool for managing TODO lists"
-  /dev-loop:init-project "Add React frontend to this backend API"
-  /dev-loop:init-project "Migrate this project from JavaScript to TypeScript"
+  /lp:init-project "Build a CLI tool for managing TODO lists"
+  /lp:init-project "Add React frontend to this backend API"
+  /lp:init-project "Migrate this project from JavaScript to TypeScript"
 
-Usage: /dev-loop:init-project [project description]
+Usage: /lp:init-project [project description]
 ```
 
 **Stop execution. Wait for user to provide description.**
@@ -475,14 +475,14 @@ Continue with automated research? (yes/no)
 
 ### When to Use init-project vs plan
 
-**Use `/dev-loop:init-project` when**:
+**Use `/lp:init-project` when**:
 - Starting a brand new project with no spec
 - Making major architectural changes requiring new decisions
 - Adding an entirely new subsystem to existing project
 - Migrating to different technology
 - Designing a new feature with no existing spec
 
-**Use `/dev-loop:plan` directly when**:
+**Use `/lp:plan` directly when**:
 - Project already has PROJECT_SPEC.md
 - Implementing features defined in existing spec
 - Continuing work after initialization complete
@@ -519,19 +519,19 @@ This command is the **entry point** for project genesis. The full workflow is:
 ```
 User idea
     ↓
-/dev-loop:init-project (THIS COMMAND)
+/lp:init-project (THIS COMMAND)
     ↓
 project-architect → PROJECT_SPEC.md + ARCHITECTURE.md + scaffolding
     ↓
 [User reviews spec]
     ↓
-/dev-loop:plan
+/lp:plan
     ↓
 project-evaluator → STATUS-*.md (gap analysis using PROJECT_SPEC.md)
     ↓
 status-planner → PLAN-*.md (prioritized backlog)
     ↓
-/dev-loop:tdd OR /dev-loop:implement
+/lp:tdd OR /lp:impl
     ↓
 [Implementation agents execute work]
 ```
@@ -562,4 +562,4 @@ This command orchestrates project initialization through four steps:
 
 4. **Handoff**: Display summary of what was created, highlight key decisions, and recommend next command with scenario-specific guidance.
 
-Your project foundation is now established. Review the spec, discuss any changes, then proceed to `/dev-loop:plan` to start implementation.
+Your project foundation is now established. Review the spec, discuss any changes, then proceed to `/lp:plan` to start implementation.

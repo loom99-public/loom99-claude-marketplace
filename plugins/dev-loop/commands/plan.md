@@ -109,7 +109,7 @@ Spend no more than 2-3 minutes on this. Then proceed to Step 4.
 For each ambiguity:
 1. **Defer** (preferred) - Note as out-of-scope, plan around it
 2. **Ask user** - Quick clarifying question
-3. **Research** - Only if critical and fast (`/dev-loop:research`)
+3. **Research** - Only if critical and fast (`/lp:research`)
 
 After attempting resolution, **proceed to Step 4 regardless**. Planning can happen with noted ambiguities.
 
@@ -264,7 +264,7 @@ Plan Complete
    - Item2
    - ...
 
-Next: /dev-loop:implement $TOPIC
+Next: /lp:impl $TOPIC
 ═══════════════════════════════════════════════════════
 ```
 
@@ -277,7 +277,7 @@ Display to user:
 Perform this action:
 
 **ONLY** when a user has requested auto-chain to implementation for some plans:
-   Automatically execute command `/dev-loop:implement $TOPIC`.  Do NOT ask for permission - immediately begin implementation using the approved plan.
+   Automatically execute command `/lp:impl $TOPIC`.  Do NOT ask for permission - immediately begin implementation using the approved plan.
    This ONLY takes effect for plans that match the users criteria for automatic implementation, e.g., the risk level, complexity, and uncertainty is within the user's acceptable range.
 
 ---

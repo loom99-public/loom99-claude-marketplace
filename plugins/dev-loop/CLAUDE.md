@@ -190,15 +190,15 @@ For brand new projects or major architectural decisions:
 ```
 User idea
      ↓
-/dev-loop:init-project "Build a CLI tool for X"
+/lp:init-project "Build a CLI tool for X"
      ↓
 project-architect → PROJECT_SPEC.md + ARCHITECTURE.md + scaffolding (if new)
      ↓
 [User reviews spec, discusses refinements if needed]
      ↓
-/dev-loop:roadmap (optional) - organize work into phases
+/lp:roadmap (optional) - organize work into phases
      ↓
-/dev-loop:plan
+/lp:plan
      ↓
 [Choose TDD or iterative workflow based on project needs]
 ```
@@ -215,11 +215,11 @@ The project-architect agent handles five scenarios:
 For projects with established specs:
 
 ```
-/dev-loop:roadmap (optional) - view project structure
+/lp:roadmap (optional) - view project structure
      ↓
-/dev-loop:plan [area of focus]
+/lp:plan [area of focus]
      ↓
-/dev-loop:tdd OR /dev-loop:implement
+/lp:tdd OR /lp:impl
      ↓
 [Implementation proceeds]
 ```
@@ -364,8 +364,8 @@ Initialize a new project or make major architectural decisions.
 View roadmap tree or add topic. Provides hierarchical project planning with phases and topics.
 
 **Usage**:
-- `/dev-loop:roadmap` - Display roadmap tree view with completion metrics
-- `/dev-loop:roadmap <topic>` - Add topic to roadmap with smart disambiguation
+- `/lp:roadmap` - Display roadmap tree view with completion metrics
+- `/lp:roadmap <topic>` - Add topic to roadmap with smart disambiguation
 
 **View mode (no args)**:
 - Shows phase hierarchy with status icons (active, queued, completed)
@@ -393,17 +393,17 @@ View roadmap tree or add topic. Provides hierarchical project planning with phas
 **Example workflow**:
 ```bash
 # View current roadmap
-/dev-loop:roadmap
+/lp:roadmap
 
 # Add new topic
-/dev-loop:roadmap "user authentication"
+/lp:roadmap "user authentication"
 # → Creates topic, beads epic, directory
 
 # Plan the topic
-/dev-loop:plan user-authentication
+/lp:plan user-authentication
 
 # Implement
-/dev-loop:implement user-authentication
+/lp:impl user-authentication
 ```
 
 **When to use**:
@@ -510,18 +510,18 @@ Shows: WIP, uncommitted changes, in-progress work, recent plans, and next queued
 
 ```bash
 # Initialize with project-architect
-/dev-loop:init-project "Build a CLI tool for task management"
+/lp:init-project "Build a CLI tool for task management"
 
 # Review generated PROJECT_SPEC.md, discuss refinements if needed
 
 # Optional: Organize into roadmap
-/dev-loop:roadmap "task creation"
-/dev-loop:roadmap "task listing"
-/dev-loop:roadmap "task completion"
+/lp:roadmap "task creation"
+/lp:roadmap "task listing"
+/lp:roadmap "task completion"
 
 # Start implementation
-/dev-loop:plan
-/dev-loop:tdd  # or /dev-loop:implement
+/lp:plan
+/dev-loop:tdd  # or /dev-loop:impl
 ```
 
 ### Starting a New Feature (Existing Project)
@@ -538,7 +538,7 @@ Shows: WIP, uncommitted changes, in-progress work, recent plans, and next queued
 
 # Non-TDD approach
 /dev-loop:plan "dashboard UI"
-/dev-loop:implement
+/dev-loop:impl
 ```
 
 ### Mid-Development Status Check

@@ -137,5 +137,5 @@ Theme: [central theme] | User Impact: low | medium | high
 ```
 product-visionary complete
   Proposal: [filename] | Ideas: n evaluated, m selected
-  -> Review proposal, then /dev-loop:plan to create implementation plan
+  -> Review proposal, then /lp:plan to create implementation plan
 ```

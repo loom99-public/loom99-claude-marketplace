@@ -130,7 +130,7 @@ Files Generated:
 
 Files Archived: n (moved to archive/ due to staleness/conflicts)
 
-Recommendation: [next action - usually "Proceed with /dev-loop:test-and-implement or /dev-loop:implement-and-iterate"]
+Recommendation: [next action - usually "Proceed with /dev-loop:test-and-implement or /dev-loop:impl-and-iterate"]
 ```
 
 2. After writing the file, output this message to the user:
@@ -205,7 +205,7 @@ Keep the console output under 8 lines. The file contains full details.
 
 **Complexity**: Low - Template replacement following same pattern.
 
-**Testing**: Run `/dev-loop:implement-and-iterate` (includes work-evaluator), verify SUMMARY-work-evaluator-*.txt exists.
+**Testing**: Run `/dev-loop:impl-and-iterate` (includes work-evaluator), verify SUMMARY-work-evaluator-*.txt exists.
 
 ---
 
@@ -367,7 +367,7 @@ Keep the console output under 8 lines. The file contains full details.
 
 **Complexity**: Low - Template replacement following same pattern.
 
-**Testing**: Run `/dev-loop:implement-and-iterate` (includes iterative-implementer), verify SUMMARY-iterative-implementer-*.txt exists.
+**Testing**: Run `/dev-loop:impl-and-iterate` (includes iterative-implementer), verify SUMMARY-iterative-implementer-*.txt exists.
 
 ---
 
@@ -501,7 +501,7 @@ Output to user:
 
 🎯 Recommended next step:
 - For TDD workflow: Run /dev-loop:test-and-implement
-- For non-TDD workflow: Run /dev-loop:implement-and-iterate"
+- For non-TDD workflow: Run /dev-loop:impl-and-iterate"
 
 **Step 5**: Display final aggregated summary:
 
@@ -522,7 +522,7 @@ Evaluation and Planning Complete
 
 ✨ Ready to implement! Choose your workflow:
 - /dev-loop:test-and-implement (TDD - write tests first)
-- /dev-loop:implement-and-iterate (Iterative - runtime validation)
+- /dev-loop:impl-and-iterate (Iterative - runtime validation)
 ═══════════════════════════════════════════════════════════
 "
 ```
@@ -687,7 +687,7 @@ Add progress messages after each agent invocation:
 
    [If INCOMPLETE]
    ⚠️  Some goals not yet achieved. Review WORK-EVALUATION for details.
-   Continue with another /dev-loop:implement-and-iterate cycle or adjust approach.
+   Continue with another /dev-loop:impl-and-iterate cycle or adjust approach.
 
    [If BLOCKED]
    🛑 Implementation blocked. User guidance needed.
@@ -698,7 +698,7 @@ Add progress messages after each agent invocation:
 
 **Complexity**: Medium - Loop iterations with conditional display based on work-evaluator status.
 
-**Testing**: Run `/dev-loop:implement-and-iterate`, verify progress messages and appropriate final summary.
+**Testing**: Run `/dev-loop:impl-and-iterate`, verify progress messages and appropriate final summary.
 
 ---
 
@@ -729,7 +729,7 @@ After product-visionary completes:
 🎯 Next Steps:
 1. Review the feature proposal
 2. If approved, run /dev-loop:evaluate-and-plan to create implementation backlog
-3. Proceed with /dev-loop:test-and-implement or /dev-loop:implement-and-iterate
+3. Proceed with /dev-loop:test-and-implement or /dev-loop:impl-and-iterate
 "
 ```
 
@@ -924,7 +924,7 @@ After product-visionary completes:
 
 **Complexity**: Medium - Requires iteration tracking and goal progress percentage calculation.
 
-**Testing**: Run `/dev-loop:implement-and-iterate` with conditions requiring multiple iterations, verify progress percentages and iteration summaries.
+**Testing**: Run `/dev-loop:impl-and-iterate` with conditions requiring multiple iterations, verify progress percentages and iteration summaries.
 
 ---
 
@@ -974,7 +974,7 @@ Phase 3 (Loop Progress)
 9. Work Item 1.3: work-evaluator.md
 10. Work Item 1.6: iterative-implementer.md
 11. Work Item 2.3: implement-and-iterate.md
-12. **Test Milestone**: Run `/dev-loop:implement-and-iterate`, verify full visibility
+12. **Test Milestone**: Run `/dev-loop:impl-and-iterate`, verify full visibility
 
 ### Sprint 4: Feature Proposal + Loop Enhancements (P1 - Days 10-11)
 13. Work Item 1.7: product-visionary.md
@@ -1042,7 +1042,7 @@ After each sprint completion:
 Run complete workflows:
 1. `/dev-loop:evaluate-and-plan` → verify two-agent visibility
 2. `/dev-loop:test-and-implement` → verify loop visibility, iteration counts
-3. `/dev-loop:implement-and-iterate` → verify loop visibility, goal progress
+3. `/dev-loop:impl-and-iterate` → verify loop visibility, goal progress
 4. `/dev-loop:feature-proposal` → verify single-agent visibility
 
 ### Manual Validation Criteria

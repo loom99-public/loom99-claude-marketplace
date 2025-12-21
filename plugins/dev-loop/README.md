@@ -6,13 +6,13 @@ An agentic coding assistant that operates as a continuous feedback loop. Each st
 
 ```bash
 # Implement a feature (chains automatically to plan/evaluate if needed)
-/dev-loop:implement add user authentication
+/lp:impl add user authentication
 
 # Just plan (if you want to review before implementing)
-/dev-loop:plan add user authentication
+/lp:plan add user authentication
 
 # Quick status check
-/dev-loop:status
+/lp:status
 ```
 
 ## The Development Loop
@@ -60,13 +60,13 @@ An agentic coding assistant that operates as a continuous feedback loop. Each st
 Commands automatically chain to their dependencies:
 
 ```
-/dev-loop:implement "add feature X"
+/lp:impl "add feature X"
     │
-    ├── No plan exists? ──▶ /dev-loop:plan "add feature X"
+    ├── No plan exists? ──▶ /lp:plan "add feature X"
     │                           │
     │                           └── (evaluates internally)
     │                                   │
-    │                                   ├── Ambiguity? ──▶ /dev-loop:research
+    │                                   ├── Ambiguity? ──▶ /lp:research
     │                                   │                       │
     │                                   │◀──────────────────────┘
     │                                   │     (iterate until resolved)
@@ -209,12 +209,12 @@ evaluate → resolves question ───┘ (max 3 iterations)
 
 ## Example Workflow
 
-### User runs: `/dev-loop:implement add OAuth login`
+### User runs: `/lp:impl add OAuth login`
 
 **Phase 0: Resolve Dependencies**
 ```
 No plan found for "add OAuth login"
-Chaining to /dev-loop:plan...
+Chaining to /lp:plan...
 ```
 
 **Evaluate** (via `/plan` chaining to `/evaluate`):
@@ -257,7 +257,7 @@ Implementation Complete
   Task: add OAuth login
   Criteria: 4/4 met
   Deferred: Microsoft OAuth, Apple Sign-In
-Next: /dev-loop:implement add Microsoft OAuth
+Next: /lp:impl add Microsoft OAuth
 ```
 
 ## Philosophy

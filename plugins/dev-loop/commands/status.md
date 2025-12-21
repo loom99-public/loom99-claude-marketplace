@@ -82,7 +82,7 @@ Display:
 │ P0: Implement password validation                  │
 │ Status: Not started                                │
 │                                                    │
-│ Run: /dev-loop:implement auth                      │
+│ Run: /lp:impl auth                      │
 └────────────────────────────────────────────────────┘
 ```
 
@@ -108,7 +108,7 @@ Recent Plans:
 
 Next Up:
   P0: Implement password validation (auth/)
-  → /dev-loop:implement auth
+  → /lp:impl auth
 
 ═══════════════════════════════════════════════════════
 ```
@@ -119,5 +119,5 @@ Next Up:
 
 - This is a **quick check** - no deep evaluation or agent spawning
 - Does NOT run tests or validate implementation
-- For deep evaluation, use `/dev-loop:plan` which evaluates before planning
+- For deep evaluation, use `/lp:plan` which evaluates before planning
 - Use this for "where am I?" orientation at start of session

@@ -91,12 +91,12 @@ Check topic directory for a plan.
 **Decision:**
 
 - **Plan is complete** → Note topic directory, proceed to next step
-- **No plan** → Run `/dev-loop:plan $TOPIC`, then proceed with new plan
-- **Plan is incomplete** → Run `/dev-loop:plan Please complete or update this plan: $PLAN_PATH`, then proceed
+- **No plan** → Run `/lp:plan $TOPIC`, then proceed with new plan
+- **Plan is incomplete** → Run `/lp:plan Please complete or update this plan: $PLAN_PATH`, then proceed
 
 - **Plan + DoD exist** → Note filepaths, proceed to Step 4
-- **No plan** → Run `/dev-loop:plan $TOPIC`, then proceed with new plan
-- **Plan exists, No DOD** → Run `/dev-loop:plan Please created a Definition of Done for this plan: $PLAN_PATH`, then proceed
+- **No plan** → Run `/lp:plan $TOPIC`, then proceed with new plan
+- **Plan exists, No DOD** → Run `/lp:plan Please created a Definition of Done for this plan: $PLAN_PATH`, then proceed
 
 **Output:** Plan filepath AND DoD filepath.
 
@@ -216,7 +216,7 @@ If approved → proceed to Step 7.
 
 ## Step 7: Completion
 
-After validation approved, run `/dev-loop:status` to show current state.
+After validation approved, run `/lp:status` to show current state.
 
 Display summary:
 ```
@@ -226,7 +226,7 @@ Implementation Complete
   Iterations: n | Status: COMPLETE
   Files: [count] | Commits: [count] | Goals: n/n achieved
   Research: [n decisions made OR "none needed"]
-Next: Review STATUS or continue with /dev-loop:implement [next topic]
+Next: Review STATUS or continue with /lp:impl [next topic]
 ═══════════════════════════════════════
 ```
 

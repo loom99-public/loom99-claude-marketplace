@@ -1076,7 +1076,7 @@ Next Steps
 
 **Scenario 1: New Project from Scratch**
 ```
-/dev-loop:plan
+/lp:plan
 
 This will:
 - Evaluate current state (will show ~0% complete - that's expected!)
@@ -1084,13 +1084,13 @@ This will:
 - Create implementation plan
 
 Then choose your workflow:
-- /dev-loop:tdd (for TDD approach)
-- /dev-loop:implement (for iterative approach)
+- /lp:tdd (for TDD approach)
+- /lp:impl (for iterative approach)
 ```
 
 **Scenario 2: Major Architectural Change**
 ```
-/dev-loop:plan "architectural-migration"
+/lp:plan "architectural-migration"
 
 This will:
 - Analyze current architecture and target architecture
@@ -1102,7 +1102,7 @@ Focus on incremental migration to minimize risk.
 
 **Scenario 3: Greenfield Component Addition**
 ```
-/dev-loop:plan "[component-name]"
+/lp:plan "[component-name]"
 
 This will:
 - Evaluate existing system + new component design
@@ -1119,7 +1119,7 @@ Review the migration plan in PROJECT_SPEC.md carefully.
 Next:
 1. Create feature parity checklist (what must be preserved)
 2. Set up new technology stack alongside old (if incremental)
-3. Run: /dev-loop:plan "migration"
+3. Run: /lp:plan "migration"
 
 Consider incremental migration if possible (less risky than big bang).
 ```
@@ -1369,7 +1369,7 @@ status-planner → PLAN-*.md (backlog from STATUS)
     ↓
 Choose workflow:
   • /dev-loop:tdd (TDD: functional-tester → iterative-implementer)
-  • /dev-loop:implement (Non-TDD: iterative-implementer → work-evaluator)
+  • /dev-loop:impl (Non-TDD: iterative-implementer → work-evaluator)
     ↓
 [Standard dev-loop agents proceed with implementation]
 ```

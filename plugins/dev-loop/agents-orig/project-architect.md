@@ -1085,7 +1085,7 @@ This will:
 
 Then choose your workflow:
 - /dev-loop:test-and-implement (for TDD approach)
-- /dev-loop:implement-and-iterate (for iterative approach)
+- /dev-loop:impl-and-iterate (for iterative approach)
 ```
 
 **Scenario 2: Major Architectural Change**
@@ -1369,7 +1369,7 @@ status-planner → PLAN-*.md (backlog from STATUS)
     ↓
 Choose workflow:
   • /dev-loop:test-and-implement (TDD: functional-tester → test-driven-implementer)
-  • /dev-loop:implement-and-iterate (Non-TDD: iterative-implementer → work-evaluator)
+  • /dev-loop:impl-and-iterate (Non-TDD: iterative-implementer → work-evaluator)
     ↓
 [Standard dev-loop agents proceed with implementation]
 ```

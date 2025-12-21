@@ -9,8 +9,8 @@ Hierarchical project planning with phases and topics.
 
 ## Usage
 
-- `/dev-loop:roadmap` - Display roadmap tree view
-- `/dev-loop:roadmap <topic>` - Add topic to roadmap (with disambiguation if similar exists)
+- `/lp:roadmap` - Display roadmap tree view
+- `/lp:roadmap <topic>` - Add topic to roadmap (with disambiguation if similar exists)
 
 ## Implementation
 
@@ -44,9 +44,9 @@ Display message:
 ```
 No roadmap yet.
 
-Run /dev-loop:roadmap <topic> to create your first roadmap with a topic.
+Run /lp:roadmap <topic> to create your first roadmap with a topic.
 
-Example: /dev-loop:roadmap user-authentication
+Example: /lp:roadmap user-authentication
 ```
 
 **Stop here.**
@@ -330,9 +330,9 @@ Directory: .agent_planning/{topic_slug}/
 Epic: {epic_id or "None (create with bd)"}
 
 Next steps:
-  1. Run /dev-loop:plan {topic_slug} to create a detailed plan
+  1. Run /lp:plan {topic_slug} to create a detailed plan
   2. Edit .agent_planning/ROADMAP.md to add dependencies or labels
-  3. View roadmap: /dev-loop:roadmap
+  3. View roadmap: /lp:roadmap
 ```
 
 **Stop here.**
@@ -374,10 +374,10 @@ Next steps:
 ## Integration with Other Commands
 
 **After adding topic:**
-- Suggest `/dev-loop:plan {topic}` to create planning files
+- Suggest `/lp:plan {topic}` to create planning files
 - Mention that planning files update topic state automatically
 
-**Relationship to /dev-loop:plan:**
+**Relationship to /lp:plan:**
 - Roadmap provides high-level organization
 - Plan provides detailed implementation breakdown
 - Both can be used independently or together

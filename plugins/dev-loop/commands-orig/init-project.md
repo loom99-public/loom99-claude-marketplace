@@ -269,7 +269,7 @@ This will:
 
 Then choose your workflow:
   • /dev-loop:test-and-implement (for TDD approach)
-  • /dev-loop:implement-and-iterate (for iterative approach)
+  • /dev-loop:impl-and-iterate (for iterative approach)
 ```
 
 **Scenario B: Major Architectural Change**
@@ -323,7 +323,7 @@ This will:
 
 Then implement using your preferred workflow:
   • /dev-loop:test-and-implement (for features with clear requirements)
-  • /dev-loop:implement-and-iterate (for exploratory/UI features)
+  • /dev-loop:impl-and-iterate (for exploratory/UI features)
 ```
 
 ---
@@ -531,7 +531,7 @@ project-evaluator → STATUS-*.md (gap analysis using PROJECT_SPEC.md)
     ↓
 status-planner → PLAN-*.md (prioritized backlog)
     ↓
-/dev-loop:test-and-implement OR /dev-loop:implement-and-iterate
+/dev-loop:test-and-implement OR /dev-loop:impl-and-iterate
     ↓
 [Implementation agents execute work]
 ```

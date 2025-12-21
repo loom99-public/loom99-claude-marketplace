@@ -49,7 +49,7 @@ The hook should currently block stopping because PLAN-2025-11-16-142554.md has 1
 **Steps**:
 1. In Claude Code, try to stop or exit
 2. Expected: Stop is prevented with message showing item count
-3. Message should suggest running `/dev-loop:plan`
+3. Message should suggest running `/lp:plan`
 
 **Expected Output**:
 ```
@@ -57,7 +57,7 @@ The hook should currently block stopping because PLAN-2025-11-16-142554.md has 1
 
 The dev-loop workflow requires all backlog items to be completed before stopping.
 
-Please run: /dev-loop:plan
+Please run: /lp:plan
 
 This will re-evaluate the current state and update the planning documents.
 Continue this cycle until no actionable items remain.

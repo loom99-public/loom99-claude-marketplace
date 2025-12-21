@@ -6,7 +6,7 @@ description: Implement functionality iteratively through implementation and eval
 ---
 
 IMPORTANT: if "$1" is set to "plan-first" you MUST run this slash command first:
-/dev-loop:evaluate-and-plan $ARGUMENTS
+/lp:evaluate-and-plan $ARGUMENTS
 
 If specific areas of focus are defined below, focus entirely on those goals. If 'specific-areas-of-focus' is empty, use the latest STATUS and PLAN files.
 
@@ -15,7 +15,7 @@ Specific areas of focus:
 $ARGUMENTS
 </specific-areas-of-focus>
 
-This command integrates with `/dev-loop:evaluate-and-plan`. If no STATUS and PLAN files exist in .agent_planning for the current goal, run `/dev-loop:evaluate-and-plan $ARGUMENTS` first.
+This command integrates with `/lp:evaluate-and-plan`. If no STATUS and PLAN files exist in .agent_planning for the current goal, run `/dev-loop:evaluate-and-plan $ARGUMENTS` first.
 
 ## Implementation Loop
 

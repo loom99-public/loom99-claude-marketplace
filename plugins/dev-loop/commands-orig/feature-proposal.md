@@ -15,7 +15,7 @@ $ARGUMENTS
 
 Use the dev-loop:product-visionary agent to create a feature proposal.
 
-**Important**: This agent generates the "what" and "why" - user problems, feature concepts, and success criteria. It does NOT create implementation plans. After reviewing the proposal, run `/dev-loop:evaluate-and-plan` to turn selected ideas into actionable work items.
+**Important**: This agent generates the "what" and "why" - user problems, feature concepts, and success criteria. It does NOT create implementation plans. After reviewing the proposal, run `/lp:evaluate-and-plan` to turn selected ideas into actionable work items.
 
 After the agent completes, display its summary and show:
 ```
@@ -26,6 +26,6 @@ Feature Proposal Complete
 Workflow:
   1. Review the proposal
   2. Discuss/refine with user if needed
-  3. Run /dev-loop:evaluate-and-plan to create implementation plan
+  3. Run /lp:evaluate-and-plan to create implementation plan
 =======================================
 ```

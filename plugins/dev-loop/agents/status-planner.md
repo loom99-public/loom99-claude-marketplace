@@ -180,5 +180,5 @@ Items: n (P0: x, P1: y, P2: z)
   Topic: <topic>
   Files: PLAN-<timestamp>.md, DOD-<timestamp>.md
   Items: n (P0: x, P1: y)
-  → Ready for /dev-loop:implement
+  → Ready for /lp:impl
 ```

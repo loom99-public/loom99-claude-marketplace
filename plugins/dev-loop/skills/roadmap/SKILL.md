@@ -384,7 +384,7 @@ def get_beads_epic_info(epic_id):
 ### Example 1: Display Roadmap Tree View
 
 ```bash
-# Command context: /dev-loop:roadmap (no args)
+# Command context: /lp:roadmap (no args)
 
 # Step 1: Parse roadmap
 roadmap = parse_roadmap(".agent_planning/ROADMAP.md")
@@ -399,7 +399,7 @@ print(tree)
 ### Example 2: Add New Topic with Disambiguation
 
 ```bash
-# Command context: /dev-loop:roadmap "user authentication"
+# Command context: /lp:roadmap "user authentication"
 
 # Step 1: Parse roadmap
 roadmap = parse_roadmap(".agent_planning/ROADMAP.md")
@@ -466,7 +466,7 @@ Creates visual tree representation of roadmap.
 ```python
 def format_tree_view(roadmap):
     if not roadmap["phases"]:
-        return "No roadmap yet. Run /dev-loop:roadmap <topic> to create one."
+        return "No roadmap yet. Run /lp:roadmap <topic> to create one."
 
     lines = []
     lines.append("Project Roadmap")
@@ -570,7 +570,7 @@ def format_status_report(status):
         lines.append(f"Beads Epic: {status['epic']} (not found or error)")
         lines.append("")
     else:
-        lines.append("Beads Epic: None (run /dev-loop:roadmap to create)")
+        lines.append("Beads Epic: None (run /lp:roadmap to create)")
         lines.append("")
 
     # Dependencies
@@ -694,8 +694,8 @@ def current_timestamp():
 - Planning files: `STATUS-*.md`, `PLAN-*.md`, `DOD-*.md`
 
 **Commands**:
-- `/dev-loop:roadmap` - Main command using this skill
-- `/dev-loop:plan <topic>` - Creates planning files (updates topic state)
+- `/lp:roadmap` - Main command using this skill
+- `/lp:plan <topic>` - Creates planning files (updates topic state)
 
 ## Best Practices
 
@@ -716,11 +716,11 @@ def current_timestamp():
 
 **Error Messages**:
 - Be specific: "Topic 'user-auth' not found in roadmap"
-- Suggest fixes: "Run /dev-loop:roadmap user-auth to add it"
+- Suggest fixes: "Run /lp:roadmap user-auth to add it"
 - Include context: phase, state, directory path
 
 ## See Also
 
 - `SCHEMA.md` - Full schema documentation
 - `.agent_planning/ROADMAP.md.example` - Example file
-- `/dev-loop:roadmap` command - Main user interface
+- `/lp:roadmap` command - Main user interface
