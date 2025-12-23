@@ -1,182 +1,157 @@
----
+# dev-loop
 
-![do-more-now](https://raw.githubusercontent.com/loom99-public/loom99-claude-marketplace/refs/heads/master/assets/do-more-now-2.svg)
-
-**What you already know you should be doing - only better.**
-
-A Claude Code plugin that adds structured workflow commands for development. Seven commands. Ten specialized agents. Zero opinions about your stack.
-
----
-
-## The Pitch
-
-```bash
-/do:it
-```
-
-That's it. That kicks off a structured workflow that finds the most important work and does it.
-
-Want to be more specific?
-
-```bash
-/do:it fix the auth bug
-/do:it add user preferences
-/do:it refactor the database layer
-```
-
-Claude figures out the intent, pulls in the right skills, and executes. You get consistent, repeatable workflows instead of "it depends on how you phrased your prompt."
-
-Think of it as mise en place for software engineering. Everything in its place, ready to use. No hunting around, no crossed wires, no "oops I refactored your entire codebase when you asked me to fix a typo."
-
----
+A Claude Code plugin that runs your development workflow as a continuous feedback loop. Evaluate, plan, implement, verify—repeat.
 
 ## Installation
+
+### From the Marketplace
 
 ```bash
 # Add the marketplace
 claude plugin marketplace add loom99-public/loom99-claude-marketplace
 
 # Install the plugin
-claude plugin install do
+claude plugin install lp
 ```
 
 Or from within Claude Code:
-```bash
+```
 /plugin marketplace add loom99-public/loom99-claude-marketplace
-/plugin install do
+/plugin install lp
 ```
 
-**Requirements:** Claude Code (latest), git
+### Local Development
 
-**Optional:** [Beads](https://github.com/loom99-public/beads) for issue tracking integration
+```bash
+claude --plugin-dir ./plugins/dev-loop
+```
 
----
+**Requirements:** Claude Code 1.0.33+
 
-## The Seven Commands
+## Quick Start
 
-All commands follow: `/do:<command> [intent] [area]`. Both optional. Claude figures it out.
+```bash
+# Implement something (chains to /lp:plan if needed)
+/lp:impl add user authentication
+
+# Just plan first
+/lp:plan add user authentication
+
+# Quick status check
+/lp:status
+```
+
+## Commands
 
 | Command | What it does |
 |---------|--------------|
-| `/do:it` | **Implement**: build, fix, refactor, debug, test, review |
-| `/do:plan` | **Plan**: evaluate status, create plans, manage backlog |
-| `/do:explore` | **Explore**: ask questions about codebase internals |
-| `/do:research` | **Research**: learn from external sources, web search |
-| `/do:chores` | **Chores**: maintenance, cleanup, housekeeping |
-| `/do:docs` | **Docs**: README, API, architecture documentation |
-| `/do:release` | **Release**: versioning, changelog (stub) |
-
----
-
-## Quick Examples
-
-### Planning First
-
-```bash
-/do:plan user authentication    # Evaluate state, create plan
-/do:it                          # Execute the plan
-```
-
-### Specific Tasks
-
-```bash
-/do:it fix login validation
-/do:it refactor the cache layer
-/do:it add tests for payment processing
-```
-
-### Workflow Modes
-
-```bash
-/do:it tdd new API endpoint     # Tests first, then implement
-/do:it iterate dashboard UI     # Build incrementally, validate visually
-/do:it                          # Auto-select based on context
-```
-
-### Research & Exploration
-
-```bash
-/do:explore where is auth handled
-/do:research JWT best practices 2024
-```
-
-### Maintenance
-
-```bash
-/do:chores                      # Quick cleanup
-/do:chores thorough             # Deep cleanup
-/do:chores deps                 # Update dependencies
-```
-
----
+| `/lp:impl` | Implement a feature with planning and verification |
+| `/lp:plan` | Evaluate current state and create implementation plan |
+| `/lp:tdd` | Test-driven development: tests first, then implement |
+| `/lp:status` | Quick status check: WIP, uncommitted changes, next work |
+| `/lp:init-project` | Initialize a new project with comprehensive spec |
+| `/lp:feature-proposal` | Design a new feature |
+| `/lp:research` | Investigate ambiguities and options |
+| `/lp:roadmap` | View or add to project roadmap |
 
 ## How It Works
 
-Do More Now uses a three-tier architecture:
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         OUTER LOOP (Planning)                       │
+│                                                                     │
+│    ┌──────────┐     ┌──────────┐     ┌──────────┐                  │
+│    │ EVALUATE │ ◀─▶ │ RESEARCH │ ──▶ │   PLAN   │                  │
+│    └──────────┘     └──────────┘     └──────────┘                  │
+│          │                                │                         │
+│    Updates cache                    ONE SPRINT only                │
+│          │                                │                         │
+│          ▼                                ▼                         │
+│    ┌────────────────────────────────────────────────────────────┐  │
+│    │                  INNER LOOP (Implementation)               │  │
+│    │                                                            │  │
+│    │  ┌──────────────┐    ┌───────────┐    ┌──────────┐        │  │
+│    │  │ DEFINITION   │───▶│ IMPLEMENT │───▶│  VERIFY  │        │  │
+│    │  │   OF DONE    │    │           │    │          │        │  │
+│    │  └──────────────┘    └───────────┘    └──────────┘        │  │
+│    │         │                  │               │              │  │
+│    │         └──────────────────┴───────────────┘              │  │
+│    │                    Feedback loop                          │  │
+│    └────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-**Commands** (7) detect intent from natural language.
+**Outer Loop**: Evaluate project state → research unknowns → plan ONE sprint
 
-**Skills** (17) define workflows for specific tasks.
+**Inner Loop**: Define acceptance criteria → implement → verify → get user feedback
 
-**Agents** (10) execute the actual work.
+## Workflows
 
-| Agent | What it does |
-|-------|--------------|
-| `project-evaluator` | Analyzes current state, finds gaps |
-| `status-planner` | Creates prioritized backlog |
-| `functional-tester` | Writes tests (TDD mode) |
-| `test-driven-implementer` | Implements to pass tests |
-| `iterative-implementer` | Implements incrementally |
-| `work-evaluator` | Validates with runtime evidence |
-| `product-visionary` | Designs new features |
-| `project-architect` | Initializes new projects |
-| `researcher` | Explores options and ambiguities |
-| `execution-summarizer` | Logs execution traces |
+### TDD Workflow (`/lp:tdd`)
 
-You don't need to know any of this. But if something goes wrong, `.agent_planning/do-command-logs/` has the receipts.
+Best for: APIs, backend services, libraries, clear requirements
 
----
+1. Writes functional tests first
+2. Implements until tests pass
+3. No shortcuts—tests must validate real behavior
 
-## When to Use Which Mode
+### Iterative Workflow (`/lp:impl`)
 
-**TDD** (`/do:it tdd`): APIs, backend services, libraries, clear requirements
+Best for: UI work, exploratory features, visual validation
 
-**Iterative** (`/do:it iterate`): UI work, exploratory features, visual validation
+1. Implements incrementally
+2. Validates with runtime evidence (screenshots, logs)
+3. User reviews after each task
 
-**Auto** (`/do:it`): Let Claude decide based on context. Usually correct.
+## Key Principles
 
----
+- **One sprint at a time**: 2-3 deliverables max. Everything else is explicitly deferred.
+- **Definition of Done first**: Clear acceptance criteria before any coding.
+- **Frequent feedback**: User review after every significant task.
+- **Evaluation caching**: Don't re-evaluate what hasn't changed.
+- **No shortcuts**: Tests must fail with stubs. Implementation must be real.
 
-## Decision Handling
+## Planning Documents
 
-Some commands ask how autonomous Claude should be:
+All workflow state lives in `.agent_planning/`:
 
-| Mode | Behavior |
-|------|----------|
-| **BLOCKING** | Ask before every significant choice |
-| **HYBRID** | Ask about major decisions, auto-approve obvious ones |
-| **NONBLOCKING** | Full autonomy, document decisions for review |
+```
+.agent_planning/
+├── PROJECT_SPEC.md      # Requirements (authoritative)
+├── ROADMAP.md           # High-level phases and topics
+├── STATUS-*.md          # Current implementation state
+├── PLAN-*.md            # Sprint backlog
+├── RESEARCH-*.md        # Research findings
+└── archive/             # Superseded documents
+```
 
-Signal your preference: "carefully" → BLOCKING, "guided" → HYBRID, "autonomous" → NONBLOCKING
+## Example
 
----
+```bash
+# Start with planning
+/lp:plan add OAuth login
 
-## Documentation
+# Claude evaluates codebase, asks clarifying questions
+# > "Which OAuth providers should we support?"
+# You answer: "Google and GitHub"
 
-Full documentation in `plugins/do-more-now/`:
-- `README.md` - User guide
-- `CLAUDE.md` - Technical reference
+# Claude generates plan with 2 deliverables:
+# 1. Google OAuth integration
+# 2. GitHub OAuth integration
+# (Microsoft, Apple deferred to future sprint)
 
----
+# Implement with user feedback after each task
+/lp:impl
+
+# Claude implements Google OAuth → you test → approve
+# Claude implements GitHub OAuth → you test → "callback URL wrong" → fix → approve
+# Validation phase → all criteria met → complete
+```
 
 ## License
 
-**PolyForm Internal Use License 1.0.0**
-
-Free for individuals and organizations for internal purposes. Don't redistribute or repackage without permission.
-
-Questions? Reach out.
+PolyForm Internal Use License 1.0.0
 
 ---
 
-**Version**: 0.5.0 | **Author**: Brandon Fryslie
+**Version**: 0.2.2 | **Author**: Brandon Fryslie
