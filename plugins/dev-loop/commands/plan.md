@@ -1,11 +1,11 @@
 ---
 argument-hint: [area of focus]
-description: Evaluate the project and create a focused implementation plan for ONE sprint. Evaluates first, then plans.
+description: Evaluate the project and create a focused implementation plan for the scope of work. Evaluates first, then plans.
 ---
 
 # Plan Command
 
-Creates a focused, sprint-sized plan. Automatically evaluates first if needed.
+Creates a focused, achievable plan. Automatically evaluates first if needed.
 
 ## Step 1: Determine Topic
 
@@ -81,7 +81,7 @@ Write STATUS-<timestamp>.md to the topic directory.
 Focus on:
 1. What exists
 2. What's missing
-3. What needs changes
+3. What needs changes (which files, components, architecture, etc)
 4. Dependencies and risks
 5. Ambiguities
 ```
@@ -102,16 +102,14 @@ This produces evaluation files in the topic directory:
 
 **IMPORTANT**: Do not stop after evaluation. The plan command must always attempt to generate a plan.
 
-### Step 3c: Quick Ambiguity Resolution (if PAUSE)
+### Step 3c: Ambiguity Resolution (if PAUSE)
 
-Spend no more than 2-3 minutes on this. Then proceed to Step 4.
+Spend no more than 2-3 minutes on this. Then proceed to Step 4. If user stops you during this, pick up right where you left off.
 
-For each ambiguity:
-1. **Defer** (preferred) - Note as out-of-scope, plan around it
-2. **Ask user** - Quick clarifying question
-3. **Research** - Only if critical and fast (`/lp:research`)
-
-After attempting resolution, **proceed to Step 4 regardless**. Planning can happen with noted ambiguities.
+For each ambiguity, do the minimal amount to achieve certainty:
+1. **Ask user** - Quick clarifying questions. Allow user to provide suggestions such as "do research", etc. If user suggests research, ask user again with results of research.
+2. **Research** - If critical and fast (`/lp:research`), do this before asking user. Always ask user again AFTER research, unless you are very certain.
+3. **Defer** (last resort) - Note as out-of-scope, plan around it. This should be used as last resort. It's better to plan more work than less.
 
 ---
 
@@ -119,7 +117,11 @@ After attempting resolution, **proceed to Step 4 regardless**. Planning can happ
 
 **CRITICAL: After project-evaluator completes, you MUST continue to this step. Do not stop.**
 
-**Plan ONLY what can be accomplished in ONE sprint (2-3 significant deliverables).**
+**Plan at MINIMUM one sprint worth of work containing 2-3 significant deliverables.**
+
+**Your GOAL is to plan as much work as you have CERTAINTY around: strategic value, architecture, dependency ordering, implementation details.**
+
+**Prefer UPDATING an existing plan vs CREATING a new plan to previously planned work.**
 
 Use the Task tool with `subagent_type: "dev-loop:status-planner"` agent with:
 

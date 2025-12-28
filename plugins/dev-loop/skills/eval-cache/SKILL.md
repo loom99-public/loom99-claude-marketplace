@@ -35,8 +35,7 @@ Share evaluation findings between evaluators to avoid redundant work across cont
    ```
 
 4. **Cross-read other evaluator outputs**
-   - If you are project-evaluator: Read latest `WORK-EVALUATION-*.md`
-   - If you are work-evaluator: Read latest `STATUS-*.md` and `EVAL-*.md`
+   - Read latest `EVAL-*.md`, `STATUS-*.md`, `RELEVANT-FILES-*.md`
 
 5. **Document what you reused**
    In your output, include:
