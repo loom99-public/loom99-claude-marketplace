@@ -53,7 +53,7 @@ Example: /lp:roadmap user-authentication
 
 #### Step 2b: Parse and Display Tree View
 
-Use the `dev-loop:roadmap` skill to parse and format the tree:
+Use the `lp:roadmap` skill to parse and format the tree:
 
 ```python
 # Parse roadmap using skill procedures
@@ -153,7 +153,7 @@ Consider:
 
 ##### Step 3c-1: Disambiguation Flow
 
-Found a similar topic. Present options to user using `dev-loop:prompt-questioning` skill:
+Found a similar topic. Present options to user using `lp:prompt-questioning` skill:
 
 ```python
 # Get detailed status of similar topic
@@ -205,7 +205,7 @@ Ask user which phase to add the topic to:
 available_phases = [p for p in roadmap["phases"] if p["status"] in ["active", "queued"]]
 ```
 
-Present to user using `dev-loop:prompt-questioning`:
+Present to user using `lp:prompt-questioning`:
 
 ```
 ┌─ Add Topic: {topic_slug} ────────────────────────────┐
@@ -401,7 +401,7 @@ States updated by:
 Users can customize behavior by adding to their CLAUDE.md:
 
 ```markdown
-## dev-loop:roadmap preferences
+## lp:roadmap preferences
 
 - Auto-select similar topics without asking (I'll review before confirming)
 - Always add new topics to Phase 1 unless I specify

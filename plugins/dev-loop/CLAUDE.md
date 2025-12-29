@@ -521,34 +521,34 @@ Shows: WIP, uncommitted changes, in-progress work, recent plans, and next queued
 
 # Start implementation
 /lp:plan
-/dev-loop:tdd  # or /dev-loop:impl
+/lp:tdd  # or /lp:impl
 ```
 
 ### Starting a New Feature (Existing Project)
 
 ```bash
 # Option 1: Add to roadmap first
-/dev-loop:roadmap "user authentication"
-/dev-loop:plan user-authentication
-/dev-loop:tdd user-authentication
+/lp:roadmap "user authentication"
+/lp:plan user-authentication
+/lp:tdd user-authentication
 
 # Option 2: Direct to planning
-/dev-loop:plan "user authentication"
-/dev-loop:tdd
+/lp:plan "user authentication"
+/lp:tdd
 
 # Non-TDD approach
-/dev-loop:plan "dashboard UI"
-/dev-loop:impl
+/lp:plan "dashboard UI"
+/lp:impl
 ```
 
 ### Mid-Development Status Check
 
 ```bash
 # Quick overview
-/dev-loop:roadmap
+/lp:roadmap
 
 # Re-evaluate and update plans
-/dev-loop:plan
+/lp:plan
 ```
 
 ### Understanding Current State

@@ -25,7 +25,7 @@ Default to **focused** unless the question clearly affects project-wide architec
 Repeat until research is SUFFICIENT OR iteration limit reached:
 
 **Step 1: Research** (iteration n of 3)
-Use the dev-loop:researcher agent to explore the problem:
+Use the lp:researcher agent to explore the problem:
 - Gather context from codebase and external sources
 - Identify all viable options
 - Document tradeoffs specific to this project
@@ -35,8 +35,8 @@ Use the dev-loop:researcher agent to explore the problem:
 
 **Step 2: Evaluate**
 Use the appropriate evaluator based on scope:
-- **Project-wide**: dev-loop:project-evaluator (research evaluation mode)
-- **Focused**: dev-loop:work-evaluator (research evaluation mode)
+- **Project-wide**: lp:project-evaluator (research evaluation mode)
+- **Focused**: lp:work-evaluator (research evaluation mode)
 
 The evaluator assesses:
 - Does research answer the actual question?

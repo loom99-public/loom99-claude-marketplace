@@ -55,7 +55,7 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
    mkdir -p .agent_planning/<topic-slug>
    ```
 
-**Tip:** Add to CLAUDE.md to customize: `dev-loop: auto-select directories without asking`
+**Tip:** Add to CLAUDE.md to customize: `lp: auto-select directories without asking`
 
 **Output:** Topic directory path (e.g., `.agent_planning/auth/`)
 
@@ -69,7 +69,7 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 **CRITICAL: You MUST spawn the evaluator AND continue to Step 4 after it completes.**
 
-Use the Task tool with `subagent_type: "dev-loop:project-evaluator"` to evaluate the current state:
+Use the Task tool with `subagent_type: "lp:project-evaluator"` to evaluate the current state:
 
 ```
 Topic: $TOPIC
@@ -123,7 +123,7 @@ For each ambiguity, do the minimal amount to achieve certainty:
 
 **Prefer UPDATING an existing plan vs CREATING a new plan to previously planned work.**
 
-Use the Task tool with `subagent_type: "dev-loop:status-planner"` agent with:
+Use the Task tool with `subagent_type: "lp:status-planner"` agent with:
 
 ```
 Topic: $TOPIC
@@ -181,7 +181,7 @@ Generated: <timestamp>
 
 ## Step 5: Validate Plan
 
-Use dev-loop:work-evaluator agent to check:
+Use lp:work-evaluator agent to check:
 
 | Check | Pass | Fail |
 |-------|------|------|
@@ -228,7 +228,7 @@ Present Deliverable and Definition of Done summary for approval:
 - **Add context**: Ask questions, update plan
 - **Reject**: Return to evaluation with new direction
 
-**Tip:** Add to CLAUDE.md to customize: `dev-loop: auto-approve valid plans with clear acceptance criteria`
+**Tip:** Add to CLAUDE.md to customize: `lp: auto-approve valid plans with clear acceptance criteria`
 
 ---
 
@@ -274,7 +274,7 @@ Next: /lp:impl $TOPIC
 
 Display to user:
 
-**Tip:** You can specify the criteria under which we should automatically plan, such as the risk level, complexity, or uncertainty that is acceptable by adding a note to your CLAUDE.md file.  e.g., `dev-loop: auto-chain plan to implement for all low risk, low complexity plans with little uncertainty`.  By default it will ask you about every plan.
+**Tip:** You can specify the criteria under which we should automatically plan, such as the risk level, complexity, or uncertainty that is acceptable by adding a note to your CLAUDE.md file.  e.g., `lp: auto-chain plan to implement for all low risk, low complexity plans with little uncertainty`.  By default it will ask you about every plan.
 
 Perform this action:
 

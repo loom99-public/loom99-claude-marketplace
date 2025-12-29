@@ -370,7 +370,7 @@ For each question, **explain WHY it matters** before asking. Example:
 
 **Research workflow**:
 1. **Identify ambiguity or unknown** during guided interview
-2. **Invoke dev-loop:researcher agent** with specific, focused question:
+2. **Invoke lp:researcher agent** with specific, focused question:
    - Good: "Compare FastAPI vs Flask for building a REST API with async support and OpenAPI docs. Consider: performance, ecosystem maturity, learning curve."
    - Bad: "What's the best Python web framework?" (too broad)
 3. **Receive research findings** with options and tradeoffs
@@ -380,7 +380,7 @@ For each question, **explain WHY it matters** before asking. Example:
 **Example scenario** (from Phase 2 question):
 > User: "I don't know if I should use REST or GraphQL for my API"
 >
-> Agent: [invokes dev-loop:researcher with question: "Compare REST vs GraphQL for an API serving a mobile app and web app with complex data fetching needs. User is experienced with Python/FastAPI but new to GraphQL."]
+> Agent: [invokes lp:researcher with question: "Compare REST vs GraphQL for an API serving a mobile app and web app with complex data fetching needs. User is experienced with Python/FastAPI but new to GraphQL."]
 >
 > Researcher returns: [pros/cons of each, ecosystem comparison, learning curve analysis]
 >
@@ -1126,7 +1126,7 @@ Consider incremental migration if possible (less risky than big bang).
 
 **Scenario 5: Feature Design**
 ```
-/dev-loop:plan "[feature-name]"
+/lp:plan "[feature-name]"
 
 This will:
 - Evaluate existing system
@@ -1151,7 +1151,7 @@ Then implement using your preferred workflow (TDD or iterative).
    **Generated**: [Timestamp]
    **Agent**: project-architect
    **Scenario**: [Scenario type]
-   **Handoff**: Recommended next step: /dev-loop:plan
+   **Handoff**: Recommended next step: /lp:plan
    ```
 
 ---
@@ -1345,7 +1345,7 @@ Before completing Phase 6, verify your work meets these standards:
 - [ ] Summary clearly shows what was created
 - [ ] Key decisions highlighted in handoff message
 - [ ] Next steps are specific and actionable
-- [ ] Scenario-appropriate recommendation provided (/dev-loop:evaluate-and-plan with right context)
+- [ ] Scenario-appropriate recommendation provided (/lp:evaluate-and-plan with right context)
 - [ ] User understands what to do next
 
 ---
@@ -1361,15 +1361,15 @@ project-architect (YOU) → PROJECT_SPEC.md + ARCHITECTURE.md + scaffolding (if 
     ↓
 [User reviews spec, discusses refinements if needed]
     ↓
-/dev-loop:plan
+/lp:plan
     ↓
 project-evaluator → STATUS-*.md (gap analysis based on your PROJECT_SPEC.md)
     ↓
 status-planner → PLAN-*.md (backlog from STATUS)
     ↓
 Choose workflow:
-  • /dev-loop:tdd (TDD: functional-tester → iterative-implementer)
-  • /dev-loop:impl (Non-TDD: iterative-implementer → work-evaluator)
+  • /lp:tdd (TDD: functional-tester → iterative-implementer)
+  • /lp:impl (Non-TDD: iterative-implementer → work-evaluator)
     ↓
 [Standard dev-loop agents proceed with implementation]
 ```
@@ -1412,7 +1412,7 @@ Choose workflow:
    - Skeleton CLI with `--help` working
    - One passing test
    - Validate: `python -m json_validator --help` works
-6. **Phase 6**: Handoff with summary and recommendation: `/dev-loop:evaluate-and-plan`
+6. **Phase 6**: Handoff with summary and recommendation: `/lp:evaluate-and-plan`
 
 **Key decisions documented**:
 - Python (rationale: user expertise, jsonschema library, rapid development)
@@ -1443,7 +1443,7 @@ Choose workflow:
    - Data migration strategy: Shared DB initially, split after services stabilize
    - Rollback plan for each phase
 6. **Phase 5**: Skip (no scaffolding for architectural change)
-7. **Phase 6**: Handoff: "Review migration plan. Start with Phase 1 (auth service). Run `/dev-loop:evaluate-and-plan 'extract auth service'` to begin."
+7. **Phase 6**: Handoff: "Review migration plan. Start with Phase 1 (auth service). Run `/lp:evaluate-and-plan 'extract auth service'` to begin."
 
 **Key decisions documented**:
 - Incremental migration (rationale: de-risk, validate each step, can rollback)

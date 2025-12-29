@@ -55,18 +55,18 @@ Tests MUST be (TestCriteria):
 - Fully automated using existing or standard framework
 
 **Step 1: Design and write tests**
-Use the dev-loop:functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria.
+Use the lp:functional-tester agent to design and write high-level functional tests that validate real user workflows and follow all TestCriteria.
 
 **Step 1b: Display results** - Show functional-tester's summary to user before proceeding.
 
 **Step 2: Evaluate tests**
-Use the dev-loop:project-evaluator agent to evaluate the tests just written. Evaluate in context of the plan to ensure they follow TestCriteria.
+Use the lp:project-evaluator agent to evaluate the tests just written. Evaluate in context of the plan to ensure they follow TestCriteria.
 
 **Step 2b: Display results** - Show project-evaluator's summary and loop decision to user.
 
 **Step 2c: Handle PAUSE (if applicable)**
 If project-evaluator returns PAUSE with ambiguities about test design:
-1. Use dev-loop:researcher to explore the testing question
+1. Use lp:researcher to explore the testing question
 2. Use project-evaluator (research evaluation mode) to assess if research is sufficient
 3. If sufficient, project-evaluator makes the decision
 4. Continue TestLoop with resolved ambiguity
@@ -80,18 +80,18 @@ If project-evaluator returns PAUSE with ambiguities about test design:
 ## ImplementLoop
 
 **Step 1: Implement**
-Use the dev-loop:iterative-implementer agent to implement the functionality that makes tests pass. The agent will automatically detect TDD mode and iterate until all tests pass.
+Use the lp:iterative-implementer agent to implement the functionality that makes tests pass. The agent will automatically detect TDD mode and iterate until all tests pass.
 
 **Step 1b: Display results** - Show iterative-implementer's summary (tests passing/failing, files, commits) to user.
 
 **Step 2: Evaluate implementation**
-Use the dev-loop:work-evaluator agent to evaluate the current implementation.
+Use the lp:work-evaluator agent to evaluate the current implementation.
 
 **Step 2b: Display results** - Show work-evaluator's summary and loop decision to user.
 
 **Step 2c: Handle PAUSE (if applicable)**
 If work-evaluator returns PAUSE with ambiguities about implementation:
-1. Use dev-loop:researcher to explore the specific technical question
+1. Use lp:researcher to explore the specific technical question
 2. Use work-evaluator (research evaluation mode) to assess if research is sufficient
 3. If sufficient, work-evaluator makes the decision
 4. Continue ImplementLoop with resolved ambiguity

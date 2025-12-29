@@ -77,7 +77,7 @@ If ambiguous, ASK USER:
 
 **Goal**: Generate comprehensive project specification through guided interview
 
-Use the `dev-loop:project-architect` agent to:
+Use the `lp:project-architect` agent to:
 
 1. **Classify project archetype** (CLI, web app, API, library, mobile app, etc.)
 2. **Conduct adaptive interview** (15-25 targeted questions based on archetype)
@@ -85,7 +85,7 @@ Use the `dev-loop:project-architect` agent to:
    - Skip irrelevant questions (e.g., don't ask CLI tool about databases unless needed)
    - Explain WHY each question matters before asking
    - Present 2-3 options with tradeoffs for major decisions
-3. **Research ambiguities** (invoke dev-loop:researcher if user is uncertain)
+3. **Research ambiguities** (invoke lp:researcher if user is uncertain)
 4. **Generate PROJECT_SPEC.md** in `.agent_planning/` with:
    - Project Overview (purpose, users, goals, success criteria)
    - Architecture (system design, components, data flow)
@@ -420,13 +420,13 @@ Please choose 1, 2, or 3.
 
 **If user chooses 3**: Display existing spec summary and exit gracefully.
 
-**Tip:** Add to CLAUDE.md to customize: `dev-loop: auto-archive existing specs without asking`
+**Tip:** Add to CLAUDE.md to customize: `lp: auto-archive existing specs without asking`
 
 ---
 
 ### Error 5: Excessive Research Invocations
 
-**If project-architect invokes dev-loop:researcher >3 times**:
+**If project-architect invokes lp:researcher >3 times**:
 
 ```
 ⚠️  Multiple Ambiguities Detected
