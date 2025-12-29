@@ -11,7 +11,7 @@ If specific areas of focus are defined below, explore ideas within that domain. 
 $ARGUMENTS
 </areas-of-focus>
 
-Use the dev-loop:product-visionary agent to create a feature proposal.
+Use the lp:product-visionary agent to create a feature proposal.
 
 **Important**: This agent generates the "what" and "why" - user problems, feature concepts, and success criteria. It does NOT create implementation plans. After reviewing the proposal, run `/lp:plan` to turn selected ideas into actionable work items.
 

@@ -93,7 +93,7 @@ Keep the console output under 8 lines. The file contains full details.
 
 **Complexity**: Low - Template replacement with specific format requirements.
 
-**Testing**: Run `/dev-loop:evaluate-and-plan`, verify SUMMARY-project-evaluator-*.txt exists and contains expected content.
+**Testing**: Run `/lp:evaluate-and-plan`, verify SUMMARY-project-evaluator-*.txt exists and contains expected content.
 
 ---
 
@@ -130,7 +130,7 @@ Files Generated:
 
 Files Archived: n (moved to archive/ due to staleness/conflicts)
 
-Recommendation: [next action - usually "Proceed with /dev-loop:test-and-implement or /dev-loop:impl-and-iterate"]
+Recommendation: [next action - usually "Proceed with /lp:test-and-implement or /dev-loop:impl-and-iterate"]
 ```
 
 2. After writing the file, output this message to the user:

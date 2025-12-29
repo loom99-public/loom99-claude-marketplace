@@ -7,7 +7,7 @@ description: Implement a feature with automatic planning, human-in-the-loop veri
 
 Iterative implementation workflow: resolve topic, get plan, approve DoD, spawn agent to build functionality, validate through runtime evaluation.
 
-**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `dev-loop:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `lp:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
 
 ## Step 1: Determine What to Work On
 
@@ -111,7 +111,7 @@ To do this, check the `.agent_planning/<topic>/` directory for files named:
 
 **IMPORTANT**: If the file specifies the user rejected the plan, it may have been revised later without updating this file, so read the planning documents, provide a summary to the user, and ask them for approval.  Upon approval, proceed to **Step 5**.
 
-**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `dev-loop:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `lp:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
 
 ---
 
@@ -121,7 +121,7 @@ Repeat until complete:
 
 ### Step 5.1: Implement
 
-Use the Task tool to spawn `dev-loop:iterative-implementer` agent:
+Use the Task tool to spawn `lp:iterative-implementer` agent:
 
 ```
 Implement: $TOPIC
@@ -138,7 +138,7 @@ Implement: $TOPIC
 2. Implement each acceptance criterion from the DoD
 3. Commit after each logical chunk of work
 4. When all criteria complete, run validation (tests, lint, type check)
-5. Use `dev-loop:prompt-questioning` skill if you need user input during implementation
+5. Use `lp:prompt-questioning` skill if you need user input during implementation
 6. Update planning docs when done
 ```
 
@@ -146,7 +146,7 @@ Implement: $TOPIC
 
 ### Step 5.2: Evaluate
 
-Use the dev-loop:work-evaluator agent to assess if goals are achieved. The agent will:
+Use the lp:work-evaluator agent to assess if goals are achieved. The agent will:
 - Run the software
 - Collect evidence (screenshots, logs, output)
 - Compare against acceptance criteria
@@ -164,7 +164,7 @@ If work-evaluator reports INCOMPLETE and the path forward is clear (concrete nex
 
 **Research Condition (PAUSE)**:
 If work-evaluator reports PAUSE with ambiguities that need resolution:
-1. Use the dev-loop:researcher agent to explore the specific question(s)
+1. Use the lp:researcher agent to explore the specific question(s)
 2. Use work-evaluator (research evaluation mode) to assess if research is sufficient
 3. If sufficient, work-evaluator makes the decision
 4. Continue the implementation loop with resolved ambiguity
@@ -234,7 +234,7 @@ Next: Review STATUS or continue with /lp:impl [next topic]
 
 ## Summary
 
-**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `dev-loop:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `lp:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
 
 **Main context handles:**
 - Topic resolution (Step 1)
