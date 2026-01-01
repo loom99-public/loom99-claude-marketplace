@@ -184,7 +184,7 @@ example-config:
     @echo "Created example-promptctl.yaml"
 
 # Show help for logs CLI
-logs-help:
+logs-hedo:
     python3 bin/logs.py --help
 
 # Development workflow: install, test, check

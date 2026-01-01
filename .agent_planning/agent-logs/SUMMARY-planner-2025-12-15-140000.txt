@@ -1,4 +1,0 @@
-Agent: status-planner | 2025-12-15-140000
-Topic: agent-logs
-Files: PLAN-2025-12-15-140000.md, DOD-2025-12-15-140000.md
-Items: 3 (P0: 3, P1: 0, P2: 0)

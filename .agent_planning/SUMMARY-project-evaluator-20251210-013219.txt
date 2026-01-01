@@ -1,4 +1,0 @@
-Agent: project-evaluator | 2025-12-10 01:32:19
-Completion: 0% | Gaps: 26 components missing | Design Quality: Complete
-Implementation: Not started | Workflow: CONTINUE
-Next: Begin Phase 1 (gating-controller skill) or run /do:plan for full implementation plan

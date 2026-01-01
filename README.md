@@ -31,28 +31,28 @@ claude --plugin-dir ./plugins/dev-loop
 ## Quick Start
 
 ```bash
-# Implement something (chains to /lp:plan if needed)
-/lp:impl add user authentication
+# Implement something (chains to /do:plan if needed)
+/do:impl add user authentication
 
 # Just plan first
-/lp:plan add user authentication
+/do:plan add user authentication
 
 # Quick status check
-/lp:status
+/do:status
 ```
 
 ## Commands
 
 | Command | What it does |
 |---------|--------------|
-| `/lp:impl` | Implement a feature with planning and verification |
-| `/lp:plan` | Evaluate current state and create implementation plan |
-| `/lp:tdd` | Test-driven development: tests first, then implement |
-| `/lp:status` | Quick status check: WIP, uncommitted changes, next work |
-| `/lp:init-project` | Initialize a new project with comprehensive spec |
-| `/lp:feature-proposal` | Design a new feature |
-| `/lp:research` | Investigate ambiguities and options |
-| `/lp:roadmap` | View or add to project roadmap |
+| `/do:impl` | Implement a feature with planning and verification |
+| `/do:plan` | Evaluate current state and create implementation plan |
+| `/do:tdd` | Test-driven development: tests first, then implement |
+| `/do:status` | Quick status check: WIP, uncommitted changes, next work |
+| `/do:init-project` | Initialize a new project with comprehensive spec |
+| `/do:feature-proposal` | Design a new feature |
+| `/do:research` | Investigate ambiguities and options |
+| `/do:roadmap` | View or add to project roadmap |
 
 ## How It Works
 
@@ -87,7 +87,7 @@ claude --plugin-dir ./plugins/dev-loop
 
 ## Workflows
 
-### TDD Workflow (`/lp:tdd`)
+### TDD Workflow (`/do:tdd`)
 
 Best for: APIs, backend services, libraries, clear requirements
 
@@ -95,7 +95,7 @@ Best for: APIs, backend services, libraries, clear requirements
 2. Implements until tests pass
 3. No shortcuts—tests must validate real behavior
 
-### Iterative Workflow (`/lp:impl`)
+### Iterative Workflow (`/do:impl`)
 
 Best for: UI work, exploratory features, visual validation
 
@@ -129,7 +129,7 @@ All workflow state lives in `.agent_planning/`:
 
 ```bash
 # Start with planning
-/lp:plan add OAuth login
+/do:plan add OAuth login
 
 # Claude evaluates codebase, asks clarifying questions
 # > "Which OAuth providers should we support?"
@@ -141,7 +141,7 @@ All workflow state lives in `.agent_planning/`:
 # (Microsoft, Apple deferred to future sprint)
 
 # Implement with user feedback after each task
-/lp:impl
+/do:impl
 
 # Claude implements Google OAuth → you test → approve
 # Claude implements GitHub OAuth → you test → "callback URL wrong" → fix → approve

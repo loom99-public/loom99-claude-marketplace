@@ -9,24 +9,17 @@
   },
   "plugins": [
     {
-      "name": "do",
+      "name": "do-more",
       "source": "./plugins/do-more-now",
-      "description": "Flexible development system makes it easy to Do More Now.  What you alreaady know you should be doing - only better",
+      "description": "Don't just do. Do more.  Advanced do-loop",
       "version": "0.5.1",
       "strict": true
     },
     {
-      "name": "lp",
-      "source": "./plugins/dev-loop",
-      "description": "dev-loop (lp): ideate, evaluate, research, plan, test, implement, verify",
-      "version": "0.2.2",
-      "strict": true
-    },
-    {
-      "name": "claude4claude",
-      "source": "./plugins/claude4claude",
-      "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
-      "version": "0.1.0",
+      "name": "do",
+      "source": "./plugins/do",
+      "description": "do: ideate, evaluate, research, plan, test, implement, verify",
+      "version": "0.2.4",
       "strict": true
     }
   ]
