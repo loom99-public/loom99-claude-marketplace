@@ -61,7 +61,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 
 **File Access**:
 - READ-ONLY: PROJECT_SPEC.md, PROJECT.md, all code files
-- READ-WRITE: STATUS-*.md files only
+- READ-WRITE: EVALUATION-*.md files only
 
 **Core Principle**: Runtime evidence first. If runtime fails, tests mean nothing.
 
@@ -80,7 +80,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 - Feature cohesion
 - Domain-specific analysis
 
-**Output**: `STATUS-<timestamp>.md` with:
+**Output**: `EVALUATION-<timestamp>.md` with:
 - Executive summary
 - Runtime assessment with evidence
 - Data flow verification
@@ -112,7 +112,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 4. Generates BACKLOG and SPRINT files
 
 **File Access**:
-- READ-ONLY: STATUS-*.md, PLAN-*.md
+- READ-ONLY: EVALUATION-*.md, PLAN-*.md
 - READ-WRITE: BACKLOG-*.md, SPRINT-*.md
 
 **Beads Integration**:
@@ -137,7 +137,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 4. Writes tests that fail when functionality is missing
 
 **File Access**:
-- READ-ONLY: STATUS-*.md, PLAN-*.md, existing code
+- READ-ONLY: EVALUATION-*.md, PLAN-*.md, existing code
 - READ-WRITE: Test files
 
 **Test Quality Criteria**:
@@ -164,7 +164,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 5. Commits frequently
 
 **File Access**:
-- READ-ONLY: STATUS-*.md, PLAN-*.md
+- READ-ONLY: EVALUATION-*.md, PLAN-*.md
 - READ-WRITE: Code files, SPRINT-*.md, TODO-*.md
 
 **Principles**:
@@ -198,7 +198,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 5. Updates planning docs
 
 **File Access**:
-- READ-ONLY: STATUS-*.md, PLAN-*.md, BACKLOG-*.md
+- READ-ONLY: EVALUATION-*.md, PLAN-*.md, BACKLOG-*.md
 - READ-WRITE: Code files, SPRINT-*.md, TODO-*.md
 
 **Principles**:
@@ -266,7 +266,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 5. Produces clear recommendation
 
 **File Access**:
-- READ-ONLY: All project files, STATUS-*.md, PLAN-*.md
+- READ-ONLY: All project files, EVALUATION-*.md, PLAN-*.md
 - READ-WRITE: RESEARCH-*.md
 
 **Tools**: Read, Glob, Grep, WebSearch, WebFetch

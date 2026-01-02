@@ -76,7 +76,7 @@ Topic: $TOPIC
 Topic Directory: .agent_planning/<topic>/
 
 Evaluate the current state of this topic area.
-Write STATUS-<timestamp>.md to the topic directory.
+Write EVALUATION-<timestamp>.md to the topic directory.
 
 Focus on:
 1. What exists
@@ -87,7 +87,7 @@ Focus on:
 ```
 
 This produces evaluation files in the topic directory:
-- `STATUS-<timestamp>.md` - Current state snapshot
+- `EVALUATION-<timestamp>.md` - Current state snapshot
 
 ### Step 3b: Handle Evaluation Results
 
@@ -253,7 +253,7 @@ Plan Complete
   Directory structure:
    .agent_planning/
    ├── <topic>/
-   │   ├── STATUS-<timestamp>.md          # Evaluation snapshots
+   │   ├── EVALUATION-<timestamp>.md          # Evaluation snapshots
    │   ├── EVAL-<timestamp>.md            # Gap analysis
    │   ├── PLAN-<timestamp>.md            # Full plan
    │   ├── USER-RESPONSE-<timestamp>.md   # User response to plan (Approved/Rejected)
@@ -266,7 +266,7 @@ Plan Complete
    - Item2
    - ...
 
-Next: /do:impl $TOPIC
+Next: /do:it $TOPIC
 ═══════════════════════════════════════════════════════
 ```
 
@@ -279,7 +279,7 @@ Display to user:
 Perform this action:
 
 **ONLY** when a user has requested auto-chain to implementation for some plans:
-   Automatically execute command `/do:impl $TOPIC`.  Do NOT ask for permission - immediately begin implementation using the approved plan.
+   Automatically execute command `/do:it $TOPIC`.  Do NOT ask for permission - immediately begin implementation using the approved plan.
    This ONLY takes effect for plans that match the users criteria for automatic implementation, e.g., the risk level, complexity, and uncertainty is within the user's acceptable range.
 
 ---

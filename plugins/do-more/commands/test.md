@@ -8,15 +8,6 @@ Testing command. Audit test coverage, get recommendations, build implementation 
 <user-input>$ARGUMENTS</user-input>
 <current-command>test</current-command>
 
-## Step 0: Load Gate Configuration
-
-Load gate config from: command → session → CLAUDE.md → prompt.
-See `/do:it` Step 0 for full gate loading logic.
-
-Write config to `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.yaml`.
-
----
-
 ## Topic Resolution
 
 Determine what to analyze:
@@ -572,15 +563,3 @@ Use existing audit or re-run? [use/rerun]
 
 If `route-subcommands` returned `post_commands`, execute each one now.
 
----
-
-## Checkpoint Gate
-
-After workflow completes, process `checkpoint-gate` per config.
-
-For testing commands, checkpoint presents:
-- Audit findings summary
-- Recommendation priorities
-- Plan scope
-
-User can modify or approve.

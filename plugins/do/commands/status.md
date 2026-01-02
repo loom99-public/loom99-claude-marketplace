@@ -82,7 +82,7 @@ Display:
 │ P0: Implement password validation                  │
 │ Status: Not started                                │
 │                                                    │
-│ Run: /do:impl auth                      │
+│ Run: /do:it auth                      │
 └────────────────────────────────────────────────────┘
 ```
 
@@ -108,7 +108,7 @@ Recent Plans:
 
 Next Up:
   P0: Implement password validation (auth/)
-  → /do:impl auth
+  → /do:it auth
 
 ═══════════════════════════════════════════════════════
 ```

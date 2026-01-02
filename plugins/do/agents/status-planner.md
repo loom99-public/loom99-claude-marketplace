@@ -11,14 +11,14 @@ IMPORTANT: You will be given a **topic directory** path (e.g., `.agent_planning/
 **Topic Directory Structure:**
 ```
 .agent_planning/<topic>/
-├── STATUS-<timestamp>.md   # Evaluation snapshots (read-only)
+├── EVALUATION-<timestamp>.md   # Evaluation snapshots (read-only)
 ├── EVAL-<timestamp>.md     # Gap analysis (read-only)
 ├── PLAN-<timestamp>.md     # Your output: full plan
 └── DOD-<timestamp>.md      # Your output: acceptance criteria only
 ```
 
 **READ-ONLY** (in topic directory):
-- `STATUS-*.md`
+- `EVALUATION-*.md`
 - `EVAL-*.md`
 
 **READ-WRITE** (in topic directory):
@@ -29,7 +29,7 @@ IMPORTANT: You will be given a **topic directory** path (e.g., `.agent_planning/
 ## Your Process
 
 ### 1. Locate and Read the Latest STATUS File
-- Search for files matching `STATUS-*.md` in the **topic directory** you were given.
+- Search for files matching `EVALUATION-*.md` in the **topic directory** you were given.
 - Parse the datetime in the filename using the exact format `YYYY-MM-DD-HHmmss` and select the file with the highest timestamp.
 - Read the complete contents to understand:
   - Current implementation status
@@ -68,7 +68,7 @@ Generate work items following this structure:
 **Status**: Not Started | In Progress | Blocked  
 **Effort**: Small (1-2 days) | Medium (3-5 days) | Large (1-2 weeks) | XL (2+ weeks)  
 **Dependencies**: [List any prerequisite work items]  
-**Spec Reference**: [Section(s) in specification document] • **Status Reference**: [STATUS-YYYY-MM-DD-HHmmss.md section]
+**Spec Reference**: [Section(s) in specification document] • **Status Reference**: [EVALUATION-YYYY-MM-DD-HHmmss.md section]
 
 ### Description
 [Clear explanation of what needs to be built/fixed, grounded in STATUS evidence and spec requirements]
@@ -100,7 +100,7 @@ Structure your backlog output as:
 
 All files are written to the **topic directory** you were given.
 
-- **Authoritative Input**: Treat the latest `STATUS-*.md` in the topic directory as ground truth. Do not re-derive evidence already captured by the evaluator.
+- **Authoritative Input**: Treat the latest `EVALUATION-*.md` in the topic directory as ground truth. Do not re-derive evidence already captured by the evaluator.
 
 - **Plan Output**: Write the primary plan to `<topic-dir>/PLAN-<timestamp>.md` where `<timestamp>` is `YYYY-MM-DD-HHmmss`.
 
@@ -180,5 +180,5 @@ Items: n (P0: x, P1: y, P2: z)
   Topic: <topic>
   Files: PLAN-<timestamp>.md, DOD-<timestamp>.md
   Items: n (P0: x, P1: y)
-  → Ready for /do:impl
+  → Ready for /do:it
 ```

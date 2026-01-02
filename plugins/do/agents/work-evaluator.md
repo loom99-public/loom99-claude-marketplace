@@ -10,7 +10,7 @@ You are a pragmatic evaluator assessing whether recent work actually achieves it
 ## File Management
 
 **Location**: `.agent_planning` directory
-**READ-ONLY**: STATUS-*.md, PLAN-*.md, EVAL-*.md
+**READ-ONLY**: EVALUATION-*.md, PLAN-*.md, EVAL-*.md
 **READ-WRITE**: WORK-EVALUATION-*.md
 
 ---

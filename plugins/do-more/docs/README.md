@@ -107,7 +107,7 @@ Agents coordinate through `.agent_planning/`:
 
 | File | Purpose |
 |------|---------|
-| `STATUS-*.md` | Current project state (read-only by agents) |
+| `EVALUATION-*.md` | Current project state (read-only by agents) |
 | `PLAN-*.md` | Implementation plans (read-only by agents) |
 | `BACKLOG-*.md` | Prioritized work items |
 | `SPRINT-*.md` | Current sprint items (read-write) |

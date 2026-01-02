@@ -214,7 +214,7 @@ If you see these errors in production:
 
 ### 1. Consume Planning Artifacts
 
-Read latest `STATUS-*.md` and `PLAN-*.md` (highest timestamp):
+Read latest `EVALUATION-*.md` and `PLAN-*.md` (highest timestamp):
 - STATUS gaps → test scenarios that would catch those gaps
 - PLAN acceptance criteria → test assertions
 - Focus on P0/P1 items and INCOMPLETE/PARTIAL components

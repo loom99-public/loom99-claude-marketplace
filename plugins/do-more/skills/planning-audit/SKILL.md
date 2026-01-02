@@ -58,7 +58,7 @@ What this layer defines:
 - What are the dependencies?
 
 ### Layer 4: Implementation
-**Files**: Actual code, `STATUS-*.md`, `TODO-*.md`
+**Files**: Actual code, `EVALUATION-*.md`, `TODO-*.md`
 
 What this layer defines:
 - What has actually been built?

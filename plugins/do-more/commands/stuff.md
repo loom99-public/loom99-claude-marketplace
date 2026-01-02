@@ -8,125 +8,6 @@ Implementation command. Detects intent and invokes the appropriate skill.
 <user-input>$ARGUMENTS</user-input>
 <current-command>it</current-command>
 
-## Step 0: Load Gate Configuration
-
-Gate config sources (highest precedence first):
-1. Inline in `$ARGUMENTS` (e.g., "carefully", "ask about auth")
-2. Session context (user said earlier "always verify")
-3. CLAUDE.md (natural language gating preferences)
-4. Prompt user if not configured
-
-### Step 0a: Check for inline gate signals
-
-| User Signals | Gate Config |
-|--------------|-------------|
-| "carefully", "approve each decision" | decision-gate: BLOCKING, checkpoint-gate: BLOCKING |
-| "verify", "check my work", "review when done" | decision-gate: NONBLOCKING, checkpoint-gate: BLOCKING |
-| "autonomous", "just do it", "trust your judgment" | All gates: NONBLOCKING |
-| "ask about X" / "only stop for Y" | Both gates: CUSTOM with that prompt |
-
-### Step 0b: Check CLAUDE.md for gate config
-
-Look for gating preferences in natural language:
-
-```markdown
-## Gating Preferences
-
-- Always verify my work before moving on
-- Ask me about auth or security decisions
-```
-
-Or more structured:
-
-```markdown
-- decision-gate: Ask only if auth or security affected
-- checkpoint-gate: Always verify
-```
-
-### Step 0c: Prompt if not configured
-
-If no gate config found, display brief context then ask:
-
-**Display first**:
-```
-This plugin can pause for your review at four points:
-- **Agent gate**: Whether to execute tasks with autonomous agents (token-efficient) or interactively
-- **Decision gate**: When making architecture/technology choices
-- **Security gate**: When touching auth, credentials, external APIs, or adding dependencies
-- **Checkpoint gate**: When a command finishes, before moving on
-
-You can preconfigure these in CLAUDE.md with a "Gating" section, or choose now.
-```
-
-**Then AskUserQuestion**:
-```json
-{
-  "questions": [
-    {
-      "question": "How should I handle execution mode for implementation tasks?",
-      "header": "Execution",
-      "options": [
-        {"label": "Ask each time", "description": "Always ask whether to use agent or work interactively"},
-        {"label": "Auto-decide", "description": "Choose automatically based on task clarity and scope"},
-        {"label": "Always agent", "description": "Use autonomous agents for all concrete tasks"},
-        {"label": "Always interactive", "description": "Work with you interactively for all tasks"}
-      ],
-      "multiSelect": false
-    },
-    {
-      "question": "When should I stop for your review during implementation?",
-      "header": "Review",
-      "options": [
-        {"label": "When done", "description": "Work through task, verify results before continuing"},
-        {"label": "Each decision", "description": "Stop before each significant choice"},
-        {"label": "Keep going", "description": "Work autonomously, review final result"},
-        {"label": "Custom rule", "description": "Specify when to ask (e.g., 'only for auth changes')"}
-      ],
-      "multiSelect": false
-    }
-  ]
-}
-```
-
-**Map responses**:
-
-Execution mode (first question):
-- "Ask each time" → agent-gate: BLOCKING
-- "Auto-decide" → agent-gate: NONBLOCKING
-- "Always agent" → agent-gate: NONBLOCKING (with auto-agent preference)
-- "Always interactive" → agent-gate: NONBLOCKING (with auto-main preference)
-
-Review gates (second question):
-- "When done" → decision-gate: NONBLOCKING, checkpoint-gate: BLOCKING
-- "Each decision" → decision-gate: BLOCKING, checkpoint-gate: BLOCKING
-- "Keep going" → All gates: NONBLOCKING
-- "Custom rule" → Prompt for rule, both gates: CUSTOM with that prompt
-
-### Step 0d: Write gate config
-
-Write to `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`:
-
-```
-EXEC_ID: <uuid>
-COMMAND: /do:it
-CREATED: <timestamp>
-SOURCE: command | session | claude-md | prompted
-
-DECISION_GATE: BLOCKING | NONBLOCKING | CUSTOM
-DECISION_PROMPT: <if CUSTOM>
-
-SECURITY_GATE: BLOCKING | NONBLOCKING | CUSTOM
-SECURITY_PROMPT: <if CUSTOM>
-
-CHECKPOINT_GATE: BLOCKING | NONBLOCKING | CUSTOM
-CHECKPOINT_PROMPT: <if CUSTOM>
-
-AGENT_GATE: BLOCKING | NONBLOCKING | CUSTOM
-AGENT_PROMPT: <if CUSTOM>
-```
-
----
-
 ## Step 1: Topic Resolution
 
 Determine what to work on:
@@ -218,7 +99,7 @@ Check if plan contains:
 - Has scope section
 - Has approach/constraints section
 
-**3. Recent STATUS-*.md** in topic directory (provides current state context):
+**3. Recent EVALUATION-*.md** in topic directory (provides current state context):
 ```bash
 ls -t <topic-directory>/STATUS-*.md | head -1
 ```
@@ -234,7 +115,7 @@ Score the plan on completeness (0-5 points):
 - +1: Has current state context (from STATUS or recent evaluation)
 
 **Plan Assessment**:
-- Score **5**: Plan is solid → Skip to Step 1.6 (agent-gate)
+- Score **5**: Plan is solid → Skip to Step 1.6 (execution mode)
 - Score **3-4**: Plan exists but has gaps → Proceed to Step 1.5a (fill gaps)
 - Score **0-2**: No plan or very incomplete → Proceed to Step 1.5a (fill gaps)
 
@@ -316,7 +197,7 @@ After gap-filling agents complete, re-check plan completeness:
 
 ---
 
-## Step 1.6: Agent-Gate (Execution Mode Decision)
+## Step 1.6: Execution Mode Decision
 
 **At this point, we have a solid plan.** Now decide HOW to implement it.
 
@@ -329,24 +210,17 @@ After gap-filling agents complete, re-check plan completeness:
 - No UI/visual work
 - Existing test framework
 
-**Complex implementation signals** (likely main context):
+**Complex implementation signals** (likely interactive mode):
 - Multiple interconnected changes
 - UI/visual work needing iteration
 - Exploratory refactoring
 - Complex debugging scenarios
 - User wants to see progress
 
-### Trigger Agent-Gate
+### Decide Execution Mode
 
-1. **Check gate configuration** from `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`
-2. **Get AGENT_GATE mode**:
-   - `BLOCKING`: Always ask user
-   - `NONBLOCKING`: Auto-decide based on complexity signals
-   - `CUSTOM`: Use custom rule to evaluate
+**Auto-decide based on complexity signals above**, or ask user if unclear:
 
-3. **If BLOCKING or (CUSTOM and rule triggers)**:
-
-Use AskUserQuestion:
 ```json
 {
   "questions": [{
@@ -367,11 +241,9 @@ Use AskUserQuestion:
 }
 ```
 
-4. **Handle response**:
-   - "Use agent" → Set `execution_mode = AGENT`
-   - "Work with me" → Set `execution_mode = MAIN`
-
-5. **If NONBLOCKING**: Auto-decide based on complexity signals above
+**Handle response**:
+- "Use agent" → Set `execution_mode = AGENT`
+- "Work with me" → Set `execution_mode = MAIN`
 
 ---
 
@@ -531,24 +403,6 @@ Beads tracking: <if applicable, reference issue ID>
 
 ---
 
-## Step 3b: Process Decision and Security Gates
-
-After agent/skill returns, process any logged gates:
-
-**Check for pending decisions**:
-- Glob: `.agent_planning/do-command-state/<EXEC_ID>/DECISIONS/*.txt`
-- If files exist without `APPROVAL_STATUS:` → invoke `do:gating-controller` for `decision-gate`
-
-**Check for pending security events**:
-- Glob: `.agent_planning/do-command-state/<EXEC_ID>/SECURITY/*.txt`
-- If files exist without `APPROVAL_STATUS:` → invoke `do:gating-controller` for `security-gate`
-
-**Handle results**:
-- If gating-controller returns `STOP` → Stop command, show user feedback
-- If gating-controller returns `CONTINUE` → Proceed
-
----
-
 ## Post-Commands
 
 If `route-subcommands` returned `post_commands`, execute each one now:
@@ -562,29 +416,6 @@ If `route-subcommands` returned `post_commands`, execute each one now:
   ```
 
 **Important**: Append main_instructions to preserve context for downstream commands.
-
----
-
-## Step 4: Checkpoint Gate
-
-After workflow completes, invoke `do:gating-controller` for `checkpoint-gate`:
-
-**Read config** from `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.yaml`
-
-| checkpoint-gate mode | Action |
-|----------------------|--------|
-| BLOCKING | Invoke `do:work-checkpoint` skill |
-| NONBLOCKING | Skip checkpoint |
-| CUSTOM | Invoke `do:gating-controller` to evaluate, then checkpoint if triggered |
-
-**If checkpoint invoked**, handle the result:
-
-| Checkpoint Result | Next Action |
-|-------------------|-------------|
-| `ACTION: FIX_FEEDBACK` | Re-invoke workflow skill with feedback as context |
-| `ACTION: CONTINUE` | Proceed to next planned work (or prompt for next command) |
-| `ACTION: STOP` | End command, wait for user |
-| `ACTION: CUSTOM` | Execute user's custom instruction |
 
 ---
 

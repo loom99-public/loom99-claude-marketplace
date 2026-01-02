@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-`do-more-now` (plugin name: `do`) is a Claude Code plugin providing structured development workflows. Seven commands orchestrate work via: commands (intent detection) → skills (workflows) → agents (execution).
+`do-more` is an expansion pack for the `do` plugin, providing specialized development workflows. Commands orchestrate work via: commands (intent detection) → skills (workflows) → agents (execution).
+
+**Note**: This plugin extends the base `do` plugin. Use `/do:plan`, `/do:it`, `/do:tdd` from the base plugin for core planning and implementation workflows.
 
 ## Architecture
 
@@ -25,7 +27,6 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | Command | Purpose |
 |---------|---------|
 | `/do:it [args]` | Implement: build, fix, refactor, debug, test, review |
-| `/do:plan [args]` | Plan: evaluate status, create plans, track backlog |
 | `/do:handoff [topic]` | Create context handoff document for agent transfer |
 | `/do:explore [question]` | Explore: codebase questions, internal investigation |
 | `/do:research [topic]` | Research: external sources, web search, market analysis |
@@ -33,6 +34,8 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | `/do:docs [type]` | Docs: README, API, architecture documentation |
 | `/do:release` | Release: versioning, changelog (stub) |
 | `/do:test [args]` | Test: audit coverage, recommendations, implementation |
+| `/do:audit [type]` | Comprehensive code/planning/security/test audits |
+| `/do:deferred-work-cleanup [quick\|deep]` | Find incomplete migrations, dual code paths, legacy fallbacks |
 
 ### `/do:it` Intent Detection
 
@@ -47,17 +50,6 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | "tdd", "test first" | `do:tdd-workflow` |
 | "iterate", "build incrementally" | `do:iterative-workflow` |
 | *(default)* | Auto-select TDD or iterative based on context |
-
-### `/do:plan` Intent Detection
-
-| Intent signals | Invokes skill |
-|----------------|---------------|
-| "init", "initialize", "new project" | `do:init-project` |
-| "audit", "deep analysis", "forensic" | `do:audit` |
-| "status", "where are we", "check" | `do:status-check` |
-| "feature", "proposal", "design" | `do:feature-proposal` |
-| "track" | Beads issue creation (if available) |
-| *(default)* | Evaluate + plan workflow |
 
 ### `/do:test` Intent Detection
 
@@ -104,26 +96,14 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 
 Agents coordinate via `.agent_planning/`:
 
-| File Pattern | Access | Purpose |
-|--------------|--------|---------|
-| `STATUS-*.md` | Read-only | Current project state |
-| `PLAN-*.md` | Read-only | Implementation plans |
-| `BACKLOG-*.md` | Read-only | Prioritized work items |
-| `SPRINT-*.md` | Read-write | Current sprint items |
-| `TODO-*.md` | Read-write | Immediate tasks |
+| File Pattern       | Access | Purpose |
+|--------------------|--------|---------|
+| `EVALUATION-*.md`  | Read-only | Current project state |
+| `PLAN-*.md`        | Read-only | Implementation plans |
+| `BACKLOG-*.md`     | Read-only | Prioritized work items |
+| `SPRINT-*.md`      | Read-write | Current sprint items |
+| `TODO-*.md`        | Read-write | Immediate tasks |
 | `do-command-logs/` | Read-write | Execution tracking |
-
-## Gate Mode System
-
-Commands can operate in three decision-handling modes:
-
-| Mode | Behavior | User signals |
-|------|----------|--------------|
-| BLOCKING | Ask for every significant choice | "carefully", "approve each", "manual" |
-| HYBRID | Ask about major/risky, auto-approve obvious | "guided", "review major", "help with risks" |
-| NONBLOCKING | Full autonomy, document for review | "autonomous", "auto", "just do it" |
-
-Gate state stored in `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`
 
 ## Execution Tracking
 
@@ -186,8 +166,6 @@ Beads (`bd` CLI) provides persistent issue tracking that survives context window
 
 | Command | Beads Integration |
 |---------|------------------|
-| `/do:plan` | Checks `bd ready`/`bd stale` at start, syncs PLAN items to beads after planning |
-| `/do:plan track <desc>` | Quick issue creation: `bd create` with parsed priority/type |
 | `/do:it` | Claims issue at start (`in_progress`), closes on completion, syncs discovered issues |
 | `/do:it bd-xxx` | Work on specific beads issue by ID |
 
@@ -230,10 +208,7 @@ Everything works without beads installed. If `bd` commands fail, the plugin:
 
 | Skill | Purpose |
 |-------|---------|
-| `do:init-project` | New project initialization |
 | `do:audit` | Deep forensic analysis |
-| `do:status-check` | Quick status diagnostic |
-| `do:feature-proposal` | Feature design proposals |
 | `do:refactor` | Safe code restructuring |
 | `do:debug` | Root cause investigation |
 | `do:fix` | Bug fix workflow |
@@ -244,23 +219,22 @@ Everything works without beads installed. If `bd` commands fail, the plugin:
 | `do:iterative-workflow` | Incremental implementation |
 | `do:market-research` | External/market research |
 | `do:evaluation-profiles` | Context-aware validation |
-| `do:gating-controller` | Decision approval routing |
 | `do:route-subcommands` | Subcommand parsing |
 | `do:advanced-skill-builder` | Skill creation helper |
 | `do:beads` | Persistent issue tracking via bd CLI |
 | `do:test-coverage-audit` | Forensic test analysis |
 | `do:test-recommendations` | Prioritized test recommendations |
 | `do:test-implementation-plan` | Test implementation plan with refactoring |
+| `do:work-checkpoint` | Present completed work for verification |
 
 ## Common Patterns
 
-### Plan → Handoff → Execute (Recommended)
+### Handoff → Execute (Recommended)
 ```bash
-/do:plan auth system         # Creates PLAN with acceptance criteria
 /do:handoff auth             # Creates handoff doc with all context
 /do:it auth                  # Executes (spawns agent or works interactively)
 ```
-Ensures solid plan before implementation, enables efficient agent execution.
+Captures context before implementation, enables efficient agent execution.
 
 ### Quick Handoff for Current Work
 ```bash
@@ -276,9 +250,9 @@ Parenthetical constraints are respected.
 
 ### Full Autonomous Run
 ```bash
-/do:it autonomous refactor everything
+/do:it refactor everything
 ```
-NONBLOCKING mode, documents decisions for review.
+Works autonomously, documents decisions for review.
 
 ### Test Coverage Audit
 ```bash

@@ -76,7 +76,7 @@ plugins/<name>/
 ### dev-loop (lp) Plugin
 
 Primary commands:
-- `/do:impl <task>` - Implement with planning and verification
+- `/do:it <task>` - Implement with planning and verification
 - `/do:plan <task>` - Evaluate and create implementation plan
 - `/do:tdd <task>` - Test-driven development workflow
 - `/do:status` - Quick status check

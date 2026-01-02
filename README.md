@@ -32,7 +32,7 @@ claude --plugin-dir ./plugins/dev-loop
 
 ```bash
 # Implement something (chains to /do:plan if needed)
-/do:impl add user authentication
+/do:it add user authentication
 
 # Just plan first
 /do:plan add user authentication
@@ -45,7 +45,7 @@ claude --plugin-dir ./plugins/dev-loop
 
 | Command | What it does |
 |---------|--------------|
-| `/do:impl` | Implement a feature with planning and verification |
+| `/do:it` | Implement a feature with planning and verification |
 | `/do:plan` | Evaluate current state and create implementation plan |
 | `/do:tdd` | Test-driven development: tests first, then implement |
 | `/do:status` | Quick status check: WIP, uncommitted changes, next work |
@@ -95,7 +95,7 @@ Best for: APIs, backend services, libraries, clear requirements
 2. Implements until tests pass
 3. No shortcuts—tests must validate real behavior
 
-### Iterative Workflow (`/do:impl`)
+### Iterative Workflow (`/do:it`)
 
 Best for: UI work, exploratory features, visual validation
 
@@ -119,7 +119,7 @@ All workflow state lives in `.agent_planning/`:
 .agent_planning/
 ├── PROJECT_SPEC.md      # Requirements (authoritative)
 ├── ROADMAP.md           # High-level phases and topics
-├── STATUS-*.md          # Current implementation state
+├── EVALUATION-*.md          # Current implementation state
 ├── PLAN-*.md            # Sprint backlog
 ├── RESEARCH-*.md        # Research findings
 └── archive/             # Superseded documents
@@ -141,7 +141,7 @@ All workflow state lives in `.agent_planning/`:
 # (Microsoft, Apple deferred to future sprint)
 
 # Implement with user feedback after each task
-/do:impl
+/do:it
 
 # Claude implements Google OAuth → you test → approve
 # Claude implements GitHub OAuth → you test → "callback URL wrong" → fix → approve

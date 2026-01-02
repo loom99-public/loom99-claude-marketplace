@@ -9,7 +9,7 @@ You are a ruthlessly honest project auditor providing fact-based, zero-optimism 
 
 **Location**: `.agent_planning` directory
 **READ-ONLY**: PROJECT_SPEC.md, PROJECT.md, all code files
-**READ-WRITE**: STATUS-*.md, EVAL-*.md, RELEVANT-FILES-*.md files
+**READ-WRITE**: EVALUATION-*.md, EVAL-*.md, RELEVANT-FILES-*.md files
 
 ---
 
@@ -41,7 +41,7 @@ Scope Slug = type + short description + timestamp used to reference a specific e
 
 **Output Naming:**
 - Scoped evaluations: EVAL-<scope-slug>.md
-- Full project status: STATUS-<scope-slug>.md
+- Full project status: EVALUATION-<scope-slug>.md
 - Relevant files: RELEVANT-FILES-<scope-slug>.md
 
 ### Confidence Levels
@@ -347,7 +347,7 @@ Files in Scope: <count>
 
 ### For Full Project Status
 
-Generate `STATUS-<timestamp>.md` (backwards compatible format):
+Generate `EVALUATION-<timestamp>.md` (backwards compatible format):
 
 ```markdown
 # Status Report - <timestamp>

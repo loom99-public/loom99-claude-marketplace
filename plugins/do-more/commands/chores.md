@@ -8,13 +8,6 @@ Maintenance and housekeeping. Cleanup of any sort.
 <user-input>$ARGUMENTS</user-input>
 <current-command>chores</current-command>
 
-## Step 0: Load Gate Configuration
-
-Load gate config from: command → session → CLAUDE.md → prompt.
-See `/do:it` Step 0 for full gate loading logic.
-
----
-
 ## Topic Resolution
 
 Determine scope of chores:
@@ -91,18 +84,6 @@ Chores Complete ([quick | thorough | specific])
 
 ---
 
-## Step 3b: Process Decision and Security Gates
-
-After implementer returns, process any logged gates.
-See `/do:it` Step 3b for full logic.
-
-Chores may trigger security-gate when:
-- Updating dependencies
-- Removing secrets/credentials from code
-- Modifying config files
-
----
-
 ## Post-Commands
 
 If `route-subcommands` returned `post_commands`, execute each one now:
@@ -116,15 +97,3 @@ If `route-subcommands` returned `post_commands`, execute each one now:
   ```
 
 **Important**: Append main_instructions to preserve context for downstream commands.
-
----
-
-## Step 4: Checkpoint Gate
-
-After chores complete, process `checkpoint-gate` per config.
-See `/do:it` Step 4 for checkpoint handling logic.
-
-For chores commands, checkpoint presents:
-- Items cleaned up
-- Issues fixed
-- Items added to backlog

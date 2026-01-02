@@ -135,7 +135,7 @@ Competitive:
   Gaps: n | Opportunities: n
 
 Reports:
-  - STATUS-<timestamp>.md
+  - EVALUATION-<timestamp>.md
   - PLANNING-AUDIT-<timestamp>.md
   - SECURITY-AUDIT-<timestamp>.md
   - COMPETITIVE-AUDIT-<timestamp>.md

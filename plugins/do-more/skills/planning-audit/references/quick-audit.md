@@ -22,7 +22,7 @@ ls -la .agent_planning/PLAN-*.md .agent_planning/BACKLOG-*.md 2>/dev/null
 ls -la .agent_planning/SPRINT-*.md ROADMAP.md 2>/dev/null
 
 # Implementation status
-ls -la .agent_planning/STATUS-*.md .agent_planning/TODO-*.md 2>/dev/null
+ls -la .agent_planning/EVALUATION-*.md .agent_planning/TODO-*.md 2>/dev/null
 ```
 
 **Record**: Which layers exist? Which are missing entirely?
@@ -47,7 +47,7 @@ Pick ONE path through the stack and verify references exist:
 1. Open most recent PLAN-*.md
 2. Does it reference strategy/spec? (should mention goals/features from strategy)
 3. Does it reference architecture? (should align with stated structure)
-4. Does STATUS-*.md reflect progress on this plan?
+4. Does EVALUATION-*.md reflect progress on this plan?
 
 **Flag**: If plan doesn't mention strategy at all, alignment is suspect.
 

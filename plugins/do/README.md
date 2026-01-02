@@ -6,7 +6,7 @@ An agentic coding assistant that operates as a continuous feedback loop. Each st
 
 ```bash
 # Implement a feature (chains automatically to plan/evaluate if needed)
-/do:impl add user authentication
+/do:it add user authentication
 
 # Just plan (if you want to review before implementing)
 /do:plan add user authentication
@@ -60,7 +60,7 @@ An agentic coding assistant that operates as a continuous feedback loop. Each st
 Commands automatically chain to their dependencies:
 
 ```
-/do:impl "add feature X"
+/do:it "add feature X"
     │
     ├── No plan exists? ──▶ /do:plan "add feature X"
     │                           │
@@ -93,7 +93,7 @@ Commands automatically chain to their dependencies:
 | Stage | Command | Input | Output |
 |-------|---------|-------|--------|
 | **Ideate** | `/feature-proposal` | User needs | Feature proposals |
-| **Evaluate + Plan** | `/plan` | Codebase, cache | STATUS-*.md, PLAN-*.md (ONE sprint) |
+| **Evaluate + Plan** | `/plan` | Codebase, cache | EVALUATION-*.md, PLAN-*.md (ONE sprint) |
 | **Research** | `/research` | Questions | RESEARCH-*.md |
 | **Status Check** | `/status` | N/A | Quick status display |
 
@@ -115,7 +115,7 @@ Commands automatically chain to their dependencies:
 
 | Output | Purpose | Who Reads It |
 |--------|---------|--------------|
-| `STATUS-*.md`, `EVAL-*.md` | Shared cache | Only evaluator |
+| `EVALUATION-*.md`, `EVAL-*.md` | Shared cache | Only evaluator |
 | `TASK-EVAL-*.md` | Task-specific summary | Planner |
 
 **Confidence levels** for cached findings:
@@ -195,7 +195,7 @@ evaluate → resolves question ───┘ (max 3 iterations)
 .agent_planning/
 ├── PROJECT_SPEC.md              # Requirements (authoritative)
 │
-├── STATUS-*.md                  # Project-wide evaluation cache
+├── EVALUATION-*.md                  # Project-wide evaluation cache
 ├── EVAL-<scope>-*.md            # Component evaluation cache
 │
 ├── TASK-EVAL-<task>-*.md        # Task-specific eval (planner reads)
@@ -209,7 +209,7 @@ evaluate → resolves question ───┘ (max 3 iterations)
 
 ## Example Workflow
 
-### User runs: `/do:impl add OAuth login`
+### User runs: `/do:it add OAuth login`
 
 **Phase 0: Resolve Dependencies**
 ```
@@ -257,7 +257,7 @@ Implementation Complete
   Task: add OAuth login
   Criteria: 4/4 met
   Deferred: Microsoft OAuth, Apple Sign-In
-Next: /do:impl add Microsoft OAuth
+Next: /do:it add Microsoft OAuth
 ```
 
 ## Philosophy

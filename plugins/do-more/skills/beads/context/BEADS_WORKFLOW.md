@@ -119,7 +119,7 @@ bd create "Task" -p 1
 Strategic planning and research documents live in `.agent_planning/`:
 
 **Document Types:**
-- `STATUS-*.md` - Current implementation state (from project-evaluator)
+- `EVALUATION-*.md` - Current implementation state (from project-evaluator)
 - `PLAN-*.md` - Implementation plans (from status-planner)
 - `BACKLOG-*.md` - Prioritized work items
 - `RESEARCH-*.md` - Investigation results, competitive analysis
@@ -132,7 +132,7 @@ Strategic planning and research documents live in `.agent_planning/`:
 - Cross-reference between them for full context
 
 **Example workflow:**
-1. project-evaluator writes `STATUS-auth-2024-12-12.md` (gap analysis)
+1. project-evaluator writes `EVALUATION-auth-2024-12-12.md` (gap analysis)
 2. status-planner writes `PLAN-auth-2024-12-12.md` (implementation plan)
 3. status-planner creates beads issues for each work item
 4. iterative-implementer claims bd-123, references plan in notes

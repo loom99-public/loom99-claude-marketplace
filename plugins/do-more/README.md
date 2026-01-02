@@ -321,7 +321,7 @@ Be specific to avoid scope creep:
 ### Planning Files
 
 Agents coordinate via `.agent_planning/`:
-- `STATUS-*.md` - Current project state
+- `EVALUATION-*.md` - Current project state
 - `PLAN-*.md` - Implementation plans
 - `BACKLOG-*.md` - Prioritized work items
 - `SPRINT-*.md` - Current sprint items

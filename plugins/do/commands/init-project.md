@@ -267,7 +267,7 @@ This will:
 
 Then choose your workflow:
   • /do:tdd (for TDD approach)
-  • /do:impl (for iterative approach)
+  • /do:it (for iterative approach)
 ```
 
 **Scenario B: Major Architectural Change**
@@ -321,7 +321,7 @@ This will:
 
 Then implement using your preferred workflow:
   • /do:tdd (for features with clear requirements)
-  • /do:impl (for exploratory/UI features)
+  • /do:it (for exploratory/UI features)
 ```
 
 ---
@@ -527,11 +527,11 @@ project-architect → PROJECT_SPEC.md + ARCHITECTURE.md + scaffolding
     ↓
 /do:plan
     ↓
-project-evaluator → STATUS-*.md (gap analysis using PROJECT_SPEC.md)
+project-evaluator → EVALUATION-*.md (gap analysis using PROJECT_SPEC.md)
     ↓
 status-planner → PLAN-*.md (prioritized backlog)
     ↓
-/do:tdd OR /do:impl
+/do:tdd OR /do:it
     ↓
 [Implementation agents execute work]
 ```

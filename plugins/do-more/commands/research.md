@@ -8,13 +8,6 @@ Research from external sources. Web search, market analysis, competitor comparis
 <user-input>$ARGUMENTS</user-input>
 <current-command>research</current-command>
 
-## Step 0: Load Gate Configuration
-
-Load gate config from: command → session → CLAUDE.md → prompt.
-See `/do:it` Step 0 for full gate loading logic.
-
----
-
 ## Topic Resolution
 
 Determine what to research:
@@ -78,20 +71,6 @@ Next: /do:plan to incorporate findings
 
 ---
 
-## Step 2b: Process Decision Gates
-
-After researcher returns, process any logged recommendation decisions.
-See `/do:it` Step 3b for full logic.
-
-Researcher may trigger decision-gate when:
-- Recommending a technology/framework choice
-- Recommending an architecture pattern
-- Making HIGH-risk recommendations
-
-Research doesn't trigger security-gate (research only, no implementation).
-
----
-
 ## Post-Commands
 
 If `route-subcommands` returned `post_commands`, execute each one now:
@@ -105,14 +84,3 @@ If `route-subcommands` returned `post_commands`, execute each one now:
   ```
 
 **Important**: Append main_instructions to preserve context for downstream commands.
-
----
-
-## Step 3: Checkpoint Gate
-
-After research completes, process `checkpoint-gate` per config.
-See `/do:it` Step 4 for checkpoint handling logic.
-
-For research commands, checkpoint presents:
-- Research findings summary
-- Recommendation and alternatives considered

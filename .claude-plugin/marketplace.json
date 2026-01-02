@@ -10,7 +10,7 @@
   "plugins": [
     {
       "name": "do-more",
-      "source": "./plugins/do-more-now",
+      "source": "./plugins/do-more",
       "description": "Don't just do. Do more.  Advanced do-loop",
       "version": "0.5.1",
       "strict": true

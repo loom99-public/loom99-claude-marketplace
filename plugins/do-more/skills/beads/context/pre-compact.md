@@ -106,7 +106,7 @@ bd syncs automatically:
 ## .agent_planning/ Documents
 
 **Types:**
-- `STATUS-*.md` - Implementation state (project-evaluator)
+- `EVALUATION-*.md` - Implementation state (project-evaluator)
 - `PLAN-*.md` - Implementation plans (status-planner)
 - `BACKLOG-*.md` - Prioritized work
 - `RESEARCH-*.md` - Investigation results

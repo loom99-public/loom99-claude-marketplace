@@ -133,7 +133,7 @@ Create `.agent_planning/EXEC-<command>-<YYYYMMDD-HHmmss>.md`:
 - Created prioritized PLAN with 8 items
 
 ### Artifacts Created
-- STATUS-auth-20251207-123456.md
+- EVALUATION-auth-20251207-123456.md
 - RESEARCH-jwt-vs-sessions-20251207-123500.md
 - PLAN-auth-20251207-123600.md
 

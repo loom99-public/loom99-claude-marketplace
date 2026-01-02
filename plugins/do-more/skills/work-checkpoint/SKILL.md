@@ -11,23 +11,15 @@ Present completed work to user for verification and determine next steps.
 
 ## When to Invoke
 
-Invoke at the **end of every `/do:*` command** when gate mode is BLOCKING or VERIFIED.
+Invoke at the **end of `/do:*` commands** when verification is needed.
 
 **Skip checkpoint if**:
-- Gate mode is NONBLOCKING or HYBRID
 - No significant work was completed
 - User explicitly said "don't stop" or "keep going"
 
 ## Process
 
-**Step 1**: Read execution context
-
-Get EXEC_ID from `.agent_logs/do-more-now/CURRENT_EXECUTION_ID.txt`.
-Read GATE_CONFIG from `.agent_planning/do-command-state/<EXEC_ID>/GATE_CONFIG.txt`.
-
-If gate mode is NONBLOCKING or HYBRID, return immediately with "CONTINUE: Checkpoint skipped (non-blocking mode)".
-
-**Step 2**: Gather completed work
+**Step 1**: Gather completed work
 
 Read partial files from `.agent_logs/do-more-now/partials/<EXEC_ID>-*.txt`.
 Read any SUMMARY files from `.agent_planning/SUMMARY-*.txt` (recent ones).

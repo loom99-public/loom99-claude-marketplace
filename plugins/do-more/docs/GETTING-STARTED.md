@@ -248,7 +248,7 @@ The plugin creates a `.agent_planning/` folder in your project:
 
 ```
 .agent_planning/
-├── STATUS-*.md        # Project state snapshots
+├── EVALUATION-*.md        # Project state snapshots
 ├── PLAN-*.md          # Implementation plans
 ├── BACKLOG-*.md       # Work to be done
 ├── RESEARCH-*.md      # Research findings

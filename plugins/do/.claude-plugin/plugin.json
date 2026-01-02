@@ -1,6 +1,6 @@
 {
   "name": "do",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "do: ideate, evaluate, research, plan, test, implement, verify",
   "author": {
     "name": "Brandon Fryslie",
@@ -10,8 +10,8 @@
   "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
   "commands": [
     "./commands/feature-proposal.md",
-    "./commands/impl.md",
     "./commands/init-project.md",
+    "./commands/it.md",
     "./commands/plan.md",
     "./commands/research.md",
     "./commands/roadmap.md",
@@ -19,8 +19,8 @@
     "./commands/tdd.md"
   ],
   "skills": [
-    "./skills/prompt-questioning",
     "./skills/eval-cache",
+    "./skills/prompt-questioning",
     "./skills/roadmap"
   ],
   "agents": [

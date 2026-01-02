@@ -12,7 +12,7 @@ IMPORTANT: You will be given a **topic directory** path (e.g., `.agent_planning/
 **Topic Directory Structure:**
 ```
 .agent_planning/<topic>/
-├── STATUS-<timestamp>.md   # Current state (read-only)
+├── EVALUATION-<timestamp>.md   # Current state (read-only)
 ├── PLAN-<timestamp>.md     # Implementation plan (read-only)
 ├── DOD-<timestamp>.md      # Acceptance criteria (read-only)
 └── WORK-EVALUATION-<timestamp>.md  # Previous validations (read-only)
@@ -32,7 +32,7 @@ Update SPRINT/TODO files as you progress. Ask questions when uncertain—never a
 
 ### 1. Understand Context
 
-Read latest `STATUS-*.md`, `PLAN-*.md`, and `DOD-*.md` from topic directory (highest timestamp):
+Read latest `EVALUATION-*.md`, `PLAN-*.md`, and `DOD-*.md` from topic directory (highest timestamp):
 - What exists? What's broken? What's the architecture?
 - Which work items and acceptance criteria apply?
 - What dependencies and technical guidance exist?

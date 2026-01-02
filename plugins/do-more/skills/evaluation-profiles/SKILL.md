@@ -55,7 +55,7 @@ To avoid redundant work across evaluator invocations:
 
 1. **Check existing STATUS files** - If a validation was already performed and code hasn't changed, skip it
 2. **Note what was validated** - Include in STATUS output which checks were run
-3. **Mark unchanged areas** - "Config validation: unchanged since STATUS-2024-12-08"
+3. **Mark unchanged areas** - "Config validation: unchanged since EVALUATION-2024-12-08"
 
 ## When Validation Is Difficult
 

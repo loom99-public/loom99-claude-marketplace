@@ -175,7 +175,7 @@ What this layer defines:
 - What are the dependencies?
 
 #### Layer 4: Implementation
-**Files**: Actual code, `STATUS-*.md`, `TODO-*.md`
+**Files**: Actual code, `EVALUATION-*.md`, `TODO-*.md`
 
 What this layer defines:
 - What has actually been built?
@@ -910,7 +910,7 @@ Test Coverage:
   Distribution: Unit n% | Integration n% | E2E n%
 
 Reports:
-  - STATUS-<timestamp>.md
+  - EVALUATION-<timestamp>.md
   - PLANNING-AUDIT-<timestamp>.md (if planning dimension)
   - SECURITY-AUDIT-<timestamp>.md (if security dimension)
   - COMPETITIVE-AUDIT-<timestamp>.md (if competitive dimension)

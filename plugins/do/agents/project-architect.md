@@ -1085,7 +1085,7 @@ This will:
 
 Then choose your workflow:
 - /do:tdd (for TDD approach)
-- /do:impl (for iterative approach)
+- /do:it (for iterative approach)
 ```
 
 **Scenario 2: Major Architectural Change**
@@ -1363,13 +1363,13 @@ project-architect (YOU) → PROJECT_SPEC.md + ARCHITECTURE.md + scaffolding (if 
     ↓
 /do:plan
     ↓
-project-evaluator → STATUS-*.md (gap analysis based on your PROJECT_SPEC.md)
+project-evaluator → EVALUATION-*.md (gap analysis based on your PROJECT_SPEC.md)
     ↓
 status-planner → PLAN-*.md (backlog from STATUS)
     ↓
 Choose workflow:
   • /do:tdd (TDD: functional-tester → iterative-implementer)
-  • /do:impl (Non-TDD: iterative-implementer → work-evaluator)
+  • /do:it (Non-TDD: iterative-implementer → work-evaluator)
     ↓
 [Standard dev-loop agents proceed with implementation]
 ```

@@ -287,7 +287,7 @@ mkdir -p .agent_planning/{topic_slug}/
 
 ```python
 # Determine initial state
-if os.path.exists(f".agent_planning/{topic_slug}/STATUS-*.md"):
+if os.path.exists(f".agent_planning/{topic_slug}/EVALUATION-*.md"):
     initial_state = "PLANNING"
 elif os.path.exists(f".agent_planning/{topic_slug}/PLAN-*.md"):
     initial_state = "PLANNING"

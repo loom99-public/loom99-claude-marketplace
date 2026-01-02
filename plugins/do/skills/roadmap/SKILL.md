@@ -324,7 +324,7 @@ def list_planning_files(directory):
     import glob
 
     files = []
-    patterns = ["STATUS-*.md", "PLAN-*.md", "DOD-*.md", "USER-RESPONSE-*.md"]
+    patterns = ["EVALUATION-*.md", "PLAN-*.md", "DOD-*.md", "USER-RESPONSE-*.md"]
 
     for pattern in patterns:
         matches = glob.glob(os.path.join(directory, pattern))
@@ -691,7 +691,7 @@ def current_timestamp():
 **File System**:
 - `.agent_planning/ROADMAP.md` - Main roadmap file
 - `.agent_planning/<topic>/` - Topic directories
-- Planning files: `STATUS-*.md`, `PLAN-*.md`, `DOD-*.md`
+- Planning files: `EVALUATION-*.md`, `PLAN-*.md`, `DOD-*.md`
 
 **Commands**:
 - `/do:roadmap` - Main command using this skill
