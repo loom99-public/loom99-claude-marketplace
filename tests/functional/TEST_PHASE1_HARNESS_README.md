@@ -453,7 +453,7 @@ As implementation progresses:
 For questions about these tests:
 1. Read the docstrings in `test_phase1_test_harness.py`
 2. Reference `PLAN-test-harness-2025-11-07-023500.md`
-3. Review `STATUS-test-harness-feasibility-2025-11-07-022042.md`
+3. Review `EVALUATION-test-harness-feasibility-2025-11-07-022042.md`
 4. Check test failure messages for specific guidance
 
 The tests are designed to be self-documenting through clear assertions and failure messages.

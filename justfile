@@ -224,3 +224,51 @@ pre-commit: clean validate test
     @echo ""
     @echo "✅ Pre-commit checks passed!"
     @echo "   Safe to commit your changes."
+
+# Bump all plugins and reload marketplace
+bump:
+    @just bump-plugin do
+    @just bump-plugin do-more
+    @echo "Reloading marketplace..."
+    @claude plugin marketplace update loom99
+    @echo "Done!"
+
+# Bump a single plugin version (no reload)
+bump-plugin plugin:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    PLUGIN="{{plugin}}"
+    PLUGIN_JSON="plugins/$PLUGIN/.claude-plugin/plugin.json"
+    MARKETPLACE_JSON=".claude-plugin/marketplace.json"
+    if [ ! -f "$PLUGIN_JSON" ]; then
+        echo "Error: Plugin not found: $PLUGIN"
+        exit 1
+    fi
+    CURRENT=$(grep '"version"' "$PLUGIN_JSON" | head -1 | sed 's/.*: *"\([^"]*\)".*/\1/')
+    MAJOR=$(echo "$CURRENT" | cut -d. -f1)
+    MINOR=$(echo "$CURRENT" | cut -d. -f2)
+    PATCH=$(echo "$CURRENT" | cut -d. -f3)
+    NEW_PATCH=$((PATCH + 1))
+    NEW_VERSION="$MAJOR.$MINOR.$NEW_PATCH"
+    echo "Bumping $PLUGIN: $CURRENT -> $NEW_VERSION"
+    sed -i '' "s/\"version\": \"$CURRENT\"/\"version\": \"$NEW_VERSION\"/" "$PLUGIN_JSON"
+    echo "  Updated $PLUGIN_JSON"
+    python3 -c "import json; f=open('$MARKETPLACE_JSON'); d=json.load(f); f.close(); [p.update({'version':'$NEW_VERSION'}) for p in d['plugins'] if p['name']=='$PLUGIN']; f=open('$MARKETPLACE_JSON','w'); json.dump(d,f,indent=2); f.write('\n'); f.close()"
+    echo "  Updated $MARKETPLACE_JSON"
+    echo "Done: $PLUGIN is now v$NEW_VERSION"
+
+# Reload marketplace without bumping version
+reload:
+    @claude plugin marketplace update loom99
+
+# Tail hook logs in real-time
+hook-tail:
+    @echo "Tailing hook logs (Ctrl+C to stop)..."
+    @echo "Tip: export DO_PLUGIN_DEBUG=1 to enable logging"
+    @mkdir -p /tmp/do_plugin && touch /tmp/do_plugin/hooks.log
+    @tail -f /tmp/do_plugin/hooks.log
+
+# Clear hook logs
+hook-clear:
+    @rm -f /tmp/do_plugin/hooks.log 2>/dev/null || true
+    @echo "Hook logs cleared."

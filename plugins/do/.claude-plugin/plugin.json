@@ -1,0 +1,34 @@
+{
+  "name": "do",
+  "version": "0.2.18",
+  "description": "do: ideate, evaluate, research, plan, test, implement, verify",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
+  "commands": [
+    "./commands/chores.md",
+    "./commands/it.md",
+    "./commands/plan.md",
+    "./commands/research.md",
+    "./commands/roadmap.md",
+    "./commands/status.md"
+  ],
+  "skills": [
+    "./skills/eval-cache",
+    "./skills/prompt-questioning",
+    "./skills/roadmap"
+  ],
+  "agents": [
+    "./agents/functional-tester.md",
+    "./agents/iterative-implementer.md",
+    "./agents/product-visionary.md",
+    "./agents/project-architect.md",
+    "./agents/project-evaluator.md",
+    "./agents/researcher.md",
+    "./agents/status-planner.md",
+    "./agents/work-evaluator.md"
+  ]
+}
