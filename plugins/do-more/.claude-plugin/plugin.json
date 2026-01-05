@@ -1,0 +1,59 @@
+{
+  "name": "do",
+  "version": "0.5.13",
+  "description": "do more: audit, docs, handoff, release, research",
+  "author": {
+    "name": "Brandon Fryslie"
+  },
+  "license": "MIT",
+  "keywords": [
+    "development",
+    "workflow",
+    "skills"
+  ],
+  "commands": [
+    "./commands/audit.md",
+    "./commands/deferred-work-cleanup.md",
+    "./commands/docs.md",
+    "./commands/explore.md",
+    "./commands/feature-proposal.md",
+    "./commands/handoff.md",
+    "./commands/init-project.md",
+    "./commands/release.md",
+    "./commands/stuff.md",
+    "./commands/tdd.md",
+    "./commands/test.md",
+    "./commands/nothing.md",
+    "./commands/time.md"
+  ],
+  "skills": [
+    "./skills/add-tests",
+    "./skills/advanced-skill-builder",
+    "./skills/audit",
+    "./skills/audit-master",
+    "./skills/beads",
+    "./skills/competitive-audit",
+    "./skills/debug",
+    "./skills/deep-audit",
+    "./skills/evaluation-profiles",
+    "./skills/fix",
+    "./skills/iterative-workflow",
+    "./skills/market-research",
+    "./skills/planning-audit",
+    "./skills/refactor",
+    "./skills/review",
+    "./skills/security-audit",
+    "./skills/setup-testing",
+    "./skills/tdd-workflow",
+    "./skills/test-coverage-audit",
+    "./skills/test-implementation-plan",
+    "./skills/test-recommendations",
+    "./skills/testing-master",
+    "./skills/work-checkpoint"
+  ],
+  "agents": [
+    "./agents/execution-summarizer.md",
+    "./agents/test-auditor.md",
+    "./agents/test-driven-implementer.md"
+  ]
+}

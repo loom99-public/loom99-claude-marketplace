@@ -1,58 +1,91 @@
-# dev-loop
+# do
 
-A Claude Code plugin that runs your development workflow as a continuous feedback loop. Evaluate, plan, implement, verify—repeat.
+**Get out of the weeds. Stay in the loop.**
+
+A Claude Code plugin for structured development workflows.
+
+## Why?
+
+You want Claude to do the work. But full delegation usually means losing visibility. `do` gives you both.
+
+**Claude handles the weeds:**
+- Evaluates your codebase to find gaps
+- Proposes a plan with clear scope
+- Implements incrementally
+- Verifies against acceptance criteria
+
+**You stay in the loop:**
+- Approve the plan before work begins
+- Answer clarifying questions that shape the approach
+- Review after each step, course-correct as needed
+- Decide when it's done
+
+## In Practice
+
+```bash
+# Add a feature
+/do:plan add user authentication
+/do:it
+
+# Fix something
+/do:plan fix the checkout flow breaking on mobile
+/do:it
+
+# Refactor
+/do:plan migrate from REST to GraphQL
+/do:it
+
+# Or skip straight to implementation (chains to planning if needed)
+/do:it add dark mode toggle
+```
+
+Claude evaluates your codebase, asks clarifying questions, proposes a scoped plan, and waits for your approval before implementing. After each step, you review and decide whether to continue.
 
 ## Installation
-
-### From the Marketplace
 
 ```bash
 # Add the marketplace
 claude plugin marketplace add loom99-public/loom99-claude-marketplace
 
-# Install the plugin
-claude plugin install lp
-```
+# Install the core plugin
+claude plugin install do
 
-Or from within Claude Code:
-```
-/plugin marketplace add loom99-public/loom99-claude-marketplace
-/plugin install lp
-```
-
-### Local Development
-
-```bash
-claude --plugin-dir ./plugins/dev-loop
+# Optional: install extended tools
+claude plugin install do-more
 ```
 
 **Requirements:** Claude Code 1.0.33+
 
-## Quick Start
+## The Workflow
 
-```bash
-# Implement something (chains to /lp:plan if needed)
-/lp:impl add user authentication
-
-# Just plan first
-/lp:plan add user authentication
-
-# Quick status check
-/lp:status
+```
+/do:plan <prompt>  →  /do:it <prompt>
 ```
 
-## Commands
+That's it. Plan what you want to build, then build it.
 
-| Command | What it does |
-|---------|--------------|
-| `/lp:impl` | Implement a feature with planning and verification |
-| `/lp:plan` | Evaluate current state and create implementation plan |
-| `/lp:tdd` | Test-driven development: tests first, then implement |
-| `/lp:status` | Quick status check: WIP, uncommitted changes, next work |
-| `/lp:init-project` | Initialize a new project with comprehensive spec |
-| `/lp:feature-proposal` | Design a new feature |
-| `/lp:research` | Investigate ambiguities and options |
-| `/lp:roadmap` | View or add to project roadmap |
+```bash
+# Plan first
+/do:plan add user authentication
+
+# Then implement
+/do:it
+
+# Or go straight to implementation (chains to plan if needed)
+/do:it add user authentication
+```
+
+The `<prompt>` can be anything—a feature, a bug fix, a refactor. Medium-sized units of work tend to flow best.
+
+## Core Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/do:plan <prompt>` | Evaluate project state, create implementation plan |
+| `/do:it <prompt>` | Implement with planning and verification |
+| `/do:status` | Quick status check: WIP, uncommitted changes, next work |
+| `/do:roadmap` | View or build a longer-term project roadmap |
+| `/do:research <question>` | Investigate options, look things up online |
 
 ## How It Works
 
@@ -81,72 +114,50 @@ claude --plugin-dir ./plugins/dev-loop
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-**Outer Loop**: Evaluate project state → research unknowns → plan ONE sprint
+**Outer Loop** (`/do:plan`): Evaluate project state → research unknowns → plan one sprint
 
-**Inner Loop**: Define acceptance criteria → implement → verify → get user feedback
+**Inner Loop** (`/do:it`): Define acceptance criteria → implement → verify → iterate
 
-## Workflows
-
-### TDD Workflow (`/lp:tdd`)
-
-Best for: APIs, backend services, libraries, clear requirements
-
-1. Writes functional tests first
-2. Implements until tests pass
-3. No shortcuts—tests must validate real behavior
-
-### Iterative Workflow (`/lp:impl`)
-
-Best for: UI work, exploratory features, visual validation
-
-1. Implements incrementally
-2. Validates with runtime evidence (screenshots, logs)
-3. User reviews after each task
-
-## Key Principles
-
-- **One sprint at a time**: 2-3 deliverables max. Everything else is explicitly deferred.
-- **Definition of Done first**: Clear acceptance criteria before any coding.
-- **Frequent feedback**: User review after every significant task.
-- **Evaluation caching**: Don't re-evaluate what hasn't changed.
-- **No shortcuts**: Tests must fail with stubs. Implementation must be real.
-
-## Planning Documents
-
-All workflow state lives in `.agent_planning/`:
-
-```
-.agent_planning/
-├── PROJECT_SPEC.md      # Requirements (authoritative)
-├── ROADMAP.md           # High-level phases and topics
-├── STATUS-*.md          # Current implementation state
-├── PLAN-*.md            # Sprint backlog
-├── RESEARCH-*.md        # Research findings
-└── archive/             # Superseded documents
-```
+Planning documents live in `.agent_planning/`:
+- `EVALUATION-*.md` — Gap analysis of current state
+- `PLAN-*.md` — Prioritized work items with acceptance criteria
+- `ROADMAP.md` — High-level phases and topics (optional)
 
 ## Example
 
 ```bash
-# Start with planning
-/lp:plan add OAuth login
+/do:plan add OAuth login
 
-# Claude evaluates codebase, asks clarifying questions
-# > "Which OAuth providers should we support?"
-# You answer: "Google and GitHub"
+# Claude evaluates codebase, asks:
+# > "Which OAuth providers? Google, GitHub, others?"
+# You: "Google and GitHub"
 
-# Claude generates plan with 2 deliverables:
+# Claude creates plan:
 # 1. Google OAuth integration
 # 2. GitHub OAuth integration
-# (Microsoft, Apple deferred to future sprint)
 
-# Implement with user feedback after each task
-/lp:impl
+/do:it
 
 # Claude implements Google OAuth → you test → approve
-# Claude implements GitHub OAuth → you test → "callback URL wrong" → fix → approve
-# Validation phase → all criteria met → complete
+# Claude implements GitHub OAuth → you test → approve
+# Done
 ```
+
+## do-more (Optional)
+
+Extended tools for specific tasks:
+
+| Command | Purpose |
+|---------|---------|
+| `/do:audit` | Code quality, security, or test coverage audit |
+| `/do:fix <issue>` | Fix a specific bug |
+| `/do:debug <problem>` | Investigate root cause |
+| `/do:refactor <target>` | Restructure without behavior change |
+| `/do:test` | Testing audit and implementation |
+| `/do:tdd` | Test-driven development workflow |
+| `/do:chores` | Maintenance and cleanup tasks |
+
+Install with: `claude plugin install do-more`
 
 ## License
 
@@ -154,4 +165,4 @@ PolyForm Internal Use License 1.0.0
 
 ---
 
-**Version**: 0.2.2 | **Author**: Brandon Fryslie
+**Author**: Brandon Fryslie

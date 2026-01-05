@@ -659,7 +659,7 @@ def promptctl(action: str = "status") -> str:
 Available actions:
 - status: Show current status
 - config: Show config file location
-- help: Show this help message
+- hedo: Show this help message
 
 Configure handlers in promptctl.yaml to automate workflows."""
 

@@ -221,7 +221,7 @@ Phase 2 will be complete when:
 ### STATUS Report Integration
 
 Tests address gaps identified in:
-- `STATUS-2025-10-29-050659.md`
+- `EVALUATION-2025-10-29-050659.md`
 - Skills verbosity (2.0-2.4x oversized)
 - README tutorial bloat
 
