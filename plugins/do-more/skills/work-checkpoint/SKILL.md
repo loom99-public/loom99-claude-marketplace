@@ -86,7 +86,29 @@ Display the verification checklist (from Step 3), then use AskUserQuestion with 
 - Two questions appear together, user can answer both at once
 - If user has specific feedback, they use "Other" on the Feedback question
 
-**Step 5**: Return action
+**Step 5**: Capture incomplete work (if stopping)
+
+If user selects "Stop here" AND there is incomplete work from the session, capture it:
+
+For each incomplete or partially completed item:
+```
+Skill("do:deferred-work-capture") with:
+  title: "Incomplete: <item name>"
+  description: |
+    Work stopped before completion at user checkpoint.
+
+    What was completed: <completed parts>
+    What remains: <remaining parts>
+    Files affected: <list of files>
+    How to resume: <steps to continue>
+  type: task
+  priority: 2
+  source_context: "work-checkpoint stop for <command>"
+```
+
+This ensures incomplete work is tracked for future sessions.
+
+**Step 6**: Return action
 
 Based on user response:
 
@@ -94,7 +116,7 @@ Based on user response:
 |----------|--------|
 | "Address feedback" | Return `"ACTION: FIX_FEEDBACK"` with collected issues |
 | "Continue work" | Return `"ACTION: CONTINUE"` |
-| "Stop here" | Return `"ACTION: STOP"` |
+| "Stop here" | Capture incomplete work, then return `"ACTION: STOP"` |
 | Custom input | Return `"ACTION: CUSTOM"` with user's input |
 
 ## Output Format

@@ -204,6 +204,34 @@ Everything works without beads installed. If `bd` commands fail, the plugin:
 - Continues with planning docs as the source of truth
 - Never errors or blocks workflow
 
+## Deferred Work Capture
+
+The `do:deferred-work-capture` skill (from base `do` plugin) ensures discovered work items aren't silently lost:
+
+### What Gets Captured
+
+| Source | Captured Items |
+|--------|----------------|
+| `work-evaluator` | PAUSE questions, BLOCKED reasons |
+| `status-planner` | Out-of-scope/deferred items |
+| `test-driven-implementer` | Discovered bugs during implementation |
+| `work-checkpoint` | Incomplete work when user stops |
+| `iterative-workflow` | Work remaining on INCOMPLETE/BLOCKED |
+| `audit-master` | P0/P1 findings from audits |
+| `/do:test` | Critical test gaps |
+
+### How It Works
+
+1. **Primary**: Auto-persists to beads with `discovered-from` links
+2. **Fallback**: If beads unavailable, writes to `.agent_planning/DEFERRED-WORK.md`
+3. **Deduplication**: Checks for similar existing items before creating
+
+### Processing Deferred Work
+
+- `/do:deferred-work-cleanup` - Find and process deferred items
+- `bd stale --days 14` - Find forgotten issues
+- Review `.agent_planning/DEFERRED-WORK.md` if beads unavailable
+
 ## Skills Reference
 
 | Skill | Purpose |
@@ -222,6 +250,7 @@ Everything works without beads installed. If `bd` commands fail, the plugin:
 | `do:route-subcommands` | Subcommand parsing |
 | `do:advanced-skill-builder` | Skill creation helper |
 | `do:beads` | Persistent issue tracking via bd CLI |
+| `do:deferred-work-capture` | Capture and persist discovered work (from base do plugin) |
 | `do:test-coverage-audit` | Forensic test analysis |
 | `do:test-recommendations` | Prioritized test recommendations |
 | `do:test-implementation-plan` | Test implementation plan with refactoring |

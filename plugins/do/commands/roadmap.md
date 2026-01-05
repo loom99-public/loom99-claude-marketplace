@@ -7,6 +7,8 @@ description: View roadmap tree or add topic. No args = show tree view. With args
 
 Hierarchical project planning with phases and topics.
 
+Use the /Explore agent to do the exploration.  When it returns a result, write files based on its output.
+
 ## Usage
 
 - `/do:roadmap` - Display roadmap tree view

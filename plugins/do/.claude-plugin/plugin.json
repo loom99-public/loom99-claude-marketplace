@@ -1,6 +1,6 @@
 {
   "name": "do",
-  "version": "0.2.5",
+  "version": "0.2.18",
   "description": "do: ideate, evaluate, research, plan, test, implement, verify",
   "author": {
     "name": "Brandon Fryslie",
@@ -9,14 +9,12 @@
   "license": "MIT",
   "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"],
   "commands": [
-    "./commands/feature-proposal.md",
-    "./commands/init-project.md",
+    "./commands/chores.md",
     "./commands/it.md",
     "./commands/plan.md",
     "./commands/research.md",
     "./commands/roadmap.md",
-    "./commands/status.md",
-    "./commands/tdd.md"
+    "./commands/status.md"
   ],
   "skills": [
     "./skills/eval-cache",

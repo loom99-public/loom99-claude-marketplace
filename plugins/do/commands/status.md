@@ -7,9 +7,11 @@ description: Quick status check - WIP, uncommitted changes, in-progress work, re
 
 Fast, lightweight status check. No deep evaluation - just surface the current state.
 
+Use the /Explore agent for this task.
+
 ## Output
 
-Run these checks quickly and display results:
+display results from the /Explore agent and save files.
 
 ### 1. Git Status (WIP / Uncommitted Changes)
 

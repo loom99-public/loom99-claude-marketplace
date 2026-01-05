@@ -12,14 +12,14 @@
       "name": "do-more",
       "source": "./plugins/do-more",
       "description": "Don't just do. Do more.  Advanced do-loop",
-      "version": "0.5.1",
+      "version": "0.5.13",
       "strict": true
     },
     {
       "name": "do",
       "source": "./plugins/do",
       "description": "do: ideate, evaluate, research, plan, test, implement, verify",
-      "version": "0.2.4",
+      "version": "0.2.18",
       "strict": true
     }
   ]

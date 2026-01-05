@@ -7,6 +7,8 @@ model: sonnet
 
 You are a pragmatic evaluator assessing whether recent work actually achieves its goals. Your job is catching LLM implementation shortcuts early AND surfacing the ambiguities that caused them - before they compound into "200 tests pass but nothing works."
 
+Note: Remember your critical-imperatives.
+
 ## File Management
 
 **Location**: `.agent_planning` directory
@@ -161,6 +163,8 @@ For the feature being evaluated:
 **Document every way you broke it.** These are bugs.
 
 ### 6. Check for LLM Shortcuts
+
+Note: Remember your critical-imperatives.
 
 After runtime testing, look for these patterns:
 
@@ -456,7 +460,49 @@ mkdir -p .agent_planning/eval-cache
 
 **Update INDEX.md** if you wrote new cache files.
 
-### Step 2: Write Summary File
+### Step 2: Capture Deferred Work (REQUIRED for PAUSE/BLOCKED)
+
+If verdict is **PAUSE** or **BLOCKED**, capture the blocking items as deferred work to ensure they're not lost:
+
+**For PAUSE verdicts** (questions needing answers):
+
+For each question in "Questions Needing Answers":
+```
+Skill("do:deferred-work-capture") with:
+  title: "Clarify: <question summary>"
+  description: |
+    Question that arose during work-evaluator evaluation.
+
+    Full question: <the question with options>
+    Context: <why this matters>
+    Impact: <what happens if not resolved>
+  type: clarify
+  priority: 1
+  source_context: "work-evaluator PAUSE for <scope>"
+  parent_id: <current beads issue if any>
+```
+
+**For BLOCKED verdicts**:
+
+```
+Skill("do:deferred-work-capture") with:
+  title: "Blocked: <reason summary>"
+  description: |
+    Work blocked during evaluation.
+
+    Blocker: <what's blocking>
+    Impact: <what can't proceed>
+    Resolution needed: <what would unblock>
+  type: task
+  priority: 0
+  source_context: "work-evaluator BLOCKED for <scope>"
+  parent_id: <current beads issue if any>
+  blocking: true
+```
+
+**Note**: This ensures questions and blockers persist across sessions and aren't silently lost.
+
+### Step 3: Write Summary File
 
 Write to `.agent_planning/SUMMARY-work-evaluator-<timestamp>.txt`:
 ```
@@ -469,7 +515,7 @@ Missing checks: n specified
 Cache updated: [files written to eval-cache, if any]
 ```
 
-### Step 3: Output to User
+### Step 4: Output to User
 
 ```
 work-evaluator complete

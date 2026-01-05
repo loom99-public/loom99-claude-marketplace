@@ -931,6 +931,53 @@ Reports:
 
 ---
 
+## Capture Audit Findings
+
+After generating the audit report, capture high-priority findings as deferred work to ensure they're tracked:
+
+**For P0 and P1 findings**, capture each as a work item:
+
+```
+Skill("do:deferred-work-capture") with:
+  title: "[Dimension] <finding summary>"
+  description: |
+    Audit finding from [dimension] audit.
+
+    Finding: <full description>
+    Location: <file/area affected>
+    Impact: <what's at risk>
+    Recommendation: <suggested fix>
+  type: bug  # for security, or task for quality/planning
+  priority: 0  # for P0, or 1 for P1
+  source_context: "audit-master <dimension> audit"
+```
+
+**For P2 findings** (batch capture):
+
+```
+Skill("do:deferred-work-capture") with:
+  title: "Tech debt batch: <dimension> audit findings"
+  description: |
+    Medium-priority findings from [dimension] audit.
+
+    Findings:
+    - <finding 1>
+    - <finding 2>
+    - <finding 3>
+
+    See: <audit-report-file.md>
+  type: chore
+  priority: 2
+  source_context: "audit-master <dimension> audit batch"
+```
+
+**Why capture audit findings?**
+- Ensures critical findings aren't just reported and forgotten
+- Creates actionable work items from audit results
+- Enables tracking and follow-up across sessions
+
+---
+
 ## Complete Reference Index
 
 ### Code Quality References

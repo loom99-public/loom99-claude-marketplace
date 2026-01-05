@@ -69,7 +69,7 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 **CRITICAL: You MUST spawn the evaluator AND continue to Step 4 after it completes.**
 
-Use the Task tool with `subagent_type: "do:project-evaluator"` to evaluate the current state:
+Use the /Explore agent to evaluate the current state:
 
 ```
 Topic: $TOPIC
@@ -77,6 +77,8 @@ Topic Directory: .agent_planning/<topic>/
 
 Evaluate the current state of this topic area.
 Write EVALUATION-<timestamp>.md to the topic directory.
+
+Critical: Ambiguities and open questions MUST be 
 
 Focus on:
 1. What exists
@@ -117,13 +119,13 @@ For each ambiguity, do the minimal amount to achieve certainty:
 
 **CRITICAL: After project-evaluator completes, you MUST continue to this step. Do not stop.**
 
-**Plan at MINIMUM one sprint worth of work containing 2-3 significant deliverables.**
+**Plan at MINIMUM one sprint worth of work containing ALL significant deliverables.**
 
 **Your GOAL is to plan as much work as you have CERTAINTY around: strategic value, architecture, dependency ordering, implementation details.**
 
 **Prefer UPDATING an existing plan vs CREATING a new plan to previously planned work.**
 
-Use the Task tool with `subagent_type: "do:status-planner"` agent with:
+Use the /Plan tool subagent with:
 
 ```
 Topic: $TOPIC
@@ -133,6 +135,7 @@ Read the evaluation files in the topic directory.
 Generate:
 1. PLAN-<timestamp>.md - Full sprint plan
 2. DOD-<timestamp>.md - Acceptance criteria only (separate file)
+3. CONTEXT-<timestamp>.md - The comprehensive dump of context that would allow an agent with write-only access to the project (and this file) to successfully implement the plan.  Include everything relevent to the plan including filenames, line numbers, symbols, logic, and concepts 
 
 Both files go in the topic directory.
 ```

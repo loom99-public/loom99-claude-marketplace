@@ -20,7 +20,7 @@ Set `main_instructions` to the resolved topic.
 
 ---
 
-## Subcommand Detection
+## Subcommand Routing
 
 Parse `main_instructions` for subcommands:
 
@@ -183,6 +183,27 @@ Summary:
 Next: /do:test recommend
 ═══════════════════════════════════════
 ```
+
+**Step A4**: Capture critical gaps
+
+For each critical gap (P0) identified in the audit, capture as deferred work:
+
+```
+Skill("do:deferred-work-capture") with:
+  title: "Missing test: <gap summary>"
+  description: |
+    Critical test gap identified during test audit.
+
+    Gap: <what's missing>
+    Risk: <what could go wrong without this test>
+    Location: <where test should go>
+    Convention: <existing test pattern to follow>
+  type: task
+  priority: 0
+  source_context: "test audit critical gap"
+```
+
+This ensures critical test gaps are tracked even if user stops after audit phase.
 
 If subcommand was `audit`, exit here.
 
@@ -557,9 +578,4 @@ The codebase may have changed.
 Use existing audit or re-run? [use/rerun]
 ```
 
----
-
-## Post-Commands
-
-If `route-subcommands` returned `post_commands`, execute each one now.
 

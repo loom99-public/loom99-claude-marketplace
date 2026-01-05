@@ -1,6 +1,6 @@
 {
   "name": "do",
-  "version": "0.5.3",
+  "version": "0.5.13",
   "description": "do more: audit, docs, handoff, release, research",
   "author": {
     "name": "Brandon Fryslie"
@@ -13,14 +13,18 @@
   ],
   "commands": [
     "./commands/audit.md",
-    "./commands/chores.md",
+    "./commands/deferred-work-cleanup.md",
     "./commands/docs.md",
     "./commands/explore.md",
+    "./commands/feature-proposal.md",
     "./commands/handoff.md",
+    "./commands/init-project.md",
     "./commands/release.md",
-    "./commands/research.md",
     "./commands/stuff.md",
-    "./commands/test.md"
+    "./commands/tdd.md",
+    "./commands/test.md",
+    "./commands/nothing.md",
+    "./commands/time.md"
   ],
   "skills": [
     "./skills/add-tests",
@@ -38,7 +42,6 @@
     "./skills/planning-audit",
     "./skills/refactor",
     "./skills/review",
-    "./skills/route-subcommands",
     "./skills/security-audit",
     "./skills/setup-testing",
     "./skills/tdd-workflow",

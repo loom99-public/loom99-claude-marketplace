@@ -247,16 +247,7 @@ After gap-filling agents complete, re-check plan completeness:
 
 ---
 
-## Step 2: Subcommand Detection
-
-**Quick check**: Does `main_instructions` contain `/do:` patterns (other than `/do:it`)?
-
-- **If NO** → Proceed to Intent Detection
-- **If YES** → Invoke `do:route-subcommands` skill, then proceed with returned `main_instructions`
-
----
-
-## Step 3: Execute Implementation
+## Step 2: Execute Implementation
 
 **At this point**: We have a solid plan and have decided execution mode (agent or main context).
 
@@ -400,22 +391,6 @@ Beads tracking: <if applicable, reference issue ID>
    - Reference EXECUTION_BRIEF.md for plan
    - Check acceptance criteria as you go
    - Update beads issue with progress
-
----
-
-## Post-Commands
-
-If `route-subcommands` returned `post_commands`, execute each one now:
-
-**For each command in post_commands**:
-- Use the `SlashCommand` tool
-- Format: `<command> <main_instructions>`
-- Example: If post_commands = `["/do:chores"]` and main_instructions = `"fix the bug"`, execute:
-  ```
-  SlashCommand("/do:chores fix the bug")
-  ```
-
-**Important**: Append main_instructions to preserve context for downstream commands.
 
 ---
 
