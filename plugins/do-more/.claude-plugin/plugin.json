@@ -1,7 +1,7 @@
 {
   "name": "do",
   "version": "0.5.13",
-  "description": "do more: audit, docs, handoff, release, research",
+  "description": "do more: audit, docs, handoff, release, testing workflows",
   "author": {
     "name": "Brandon Fryslie"
   },
@@ -20,25 +20,22 @@
     "./commands/handoff.md",
     "./commands/init-project.md",
     "./commands/release.md",
+    "./commands/research.md",
     "./commands/stuff.md",
     "./commands/tdd.md",
-    "./commands/test.md",
-    "./commands/nothing.md",
-    "./commands/time.md"
+    "./commands/test.md"
   ],
   "skills": [
     "./skills/add-tests",
     "./skills/advanced-skill-builder",
     "./skills/audit",
     "./skills/audit-master",
-    "./skills/beads",
     "./skills/competitive-audit",
     "./skills/debug",
     "./skills/deep-audit",
     "./skills/evaluation-profiles",
     "./skills/fix",
     "./skills/iterative-workflow",
-    "./skills/market-research",
     "./skills/planning-audit",
     "./skills/refactor",
     "./skills/review",

@@ -1,0 +1,25 @@
+{
+  "name": "do-extra",
+  "version": "0.5.13",
+  "description": "do-extra: experimental tools, external integrations, and novelty commands",
+  "author": {
+    "name": "Brandon Fryslie"
+  },
+  "license": "MIT",
+  "keywords": [
+    "experimental",
+    "workflow",
+    "tools"
+  ],
+  "commands": [
+    "./commands/nothing.md",
+    "./commands/time.md"
+  ],
+  "skills": [
+    "./skills/beads",
+    "./skills/market-research"
+  ],
+  "agents": [
+    "./agents/gabe.md"
+  ]
+}

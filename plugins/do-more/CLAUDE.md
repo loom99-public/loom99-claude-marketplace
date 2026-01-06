@@ -29,8 +29,7 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | `/do:it [args]` | Implement: build, fix, refactor, debug, test, review |
 | `/do:handoff [topic]` | Create context handoff document for agent transfer |
 | `/do:explore [question]` | Explore: codebase questions, internal investigation |
-| `/do:research [topic]` | Research: external sources, web search, market analysis |
-| `/do:chores [type]` | Chores: maintenance, cleanup, housekeeping |
+| `/do:research [topic]` | Research: external sources, web search |
 | `/do:docs [type]` | Docs: README, API, architecture documentation |
 | `/do:release` | Release: versioning, changelog (stub) |
 | `/do:test [args]` | Test: audit coverage, recommendations, implementation |
@@ -63,18 +62,6 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | "add [target]" | `do:add-tests` |
 | "fix [issue]" | Targeted test quality fix |
 | *(default)* | Full pipeline: audit → recommend → plan |
-
-### `/do:chores` Intent Detection
-
-| Intent signals | Action |
-|----------------|--------|
-| "thorough", "deep" | Comprehensive cleanup |
-| "git", "branches" | Git hygiene only |
-| "planning", "docs" | Planning file cleanup |
-| "dead-code", "unused" | Dead code removal |
-| "deps", "dependencies" | Dependency updates |
-| "debt", "tech debt" | Tech debt inventory |
-| *(default)* | Quick cleanup |
 
 ## Agent Mapping
 
@@ -131,15 +118,9 @@ All execution artifacts stored in `.agent_planning/`:
 
 ## Hooks
 
-**SessionStart** (`bin/init.py`, `bin/bd-session-start.sh`):
+**SessionStart** (`bin/init.py`):
 - Creates directory structure
-- Initializes beads if needed
-- Injects workflow context from `skills/beads/context/session-start.md`
-- Shows ready work from `bd ready --json`
-
-**PreCompact** (`bin/bd-pre-compact.sh`):
-- Injects full beads reference from `skills/beads/context/pre-compact.md`
-- Preserves workflow context before compaction
+- Initializes execution tracking
 
 **Stop** (`bin/aggregate-exec.py`): Aggregates partial logs into final report, cleans up state files
 
@@ -150,68 +131,6 @@ Commands detect `/do:` patterns in arguments and route them:
 /do:plan feature auth /do:it tdd
 ```
 Executes plan feature first, then it tdd with context from plan.
-
-## Beads Integration
-
-Beads (`bd` CLI) provides persistent issue tracking that survives context window resets and session boundaries. The plugin integrates beads with a clear division of labor:
-
-### Division of Labor
-
-| Tool | Use For |
-|------|---------|
-| `.agent_planning/` docs | Strategy, evaluations, research, ARDs, architecture decisions, STATUS reports |
-| Beads (`bd`) | Concrete work items: stories, bugs, tasks, epics, dependencies |
-
-**Rule of thumb**: If work needs context in 2+ weeks or spans multiple sessions, use beads. Otherwise planning docs are sufficient.
-
-**Cross-referencing**: Reference beads issues in planning docs, and reference planning docs in beads descriptions for full context.
-
-**Context files**: Workflow reminders are in `skills/beads/context/`:
-- `BEADS_WORKFLOW.md` - Complete workflow guide
-- `session-start.md` - Brief reminders (injected at session start)
-- `pre-compact.md` - Full reference (injected before compaction)
-
-### Beads in Commands
-
-| Command | Beads Integration |
-|---------|------------------|
-| `/do:it` | Claims issue at start (`in_progress`), closes on completion, syncs discovered issues |
-| `/do:it bd-xxx` | Work on specific beads issue by ID |
-
-### Beads in Agents
-
-| Agent | Beads Behavior |
-|-------|----------------|
-| project-evaluator | Cross-references issues with implementation, creates CLARIFY issues for ambiguities |
-| status-planner | Creates beads issues for ALL backlog items, links dependencies, creates epics for large features |
-| iterative-implementer | Claims issues, creates `discovered-from` linked issues, closes on completion |
-| test-driven-implementer | Same as iterative, with test-specific notes |
-
-### Session Lifecycle
-
-**Start**:
-```bash
-bd ready --json       # Find unblocked work
-bd stale --days 14    # Find forgotten issues
-```
-
-**During work**:
-```bash
-bd update <id> --status in_progress --json  # Claim
-bd create "Found: <issue>" --deps discovered-from:<parent> --json  # Discovered work
-```
-
-**End (CRITICAL)**:
-```bash
-bd sync  # Force immediate export/commit/push - NEVER skip
-```
-
-### Graceful Degradation
-
-Everything works without beads installed. If `bd` commands fail, the plugin:
-- Skips beads steps silently
-- Continues with planning docs as the source of truth
-- Never errors or blocks workflow
 
 ## Deferred Work Capture
 
@@ -231,15 +150,13 @@ The `do:deferred-work-capture` skill (from base `do` plugin) ensures discovered 
 
 ### How It Works
 
-1. **Primary**: Auto-persists to beads with `discovered-from` links
-2. **Fallback**: If beads unavailable, writes to `.agent_planning/DEFERRED-WORK.md`
-3. **Deduplication**: Checks for similar existing items before creating
+1. **Primary**: Writes to `.agent_planning/DEFERRED-WORK.md`
+2. **Deduplication**: Checks for similar existing items before creating
 
 ### Processing Deferred Work
 
 - `/do:deferred-work-cleanup` - Find and process deferred items
-- `bd stale --days 14` - Find forgotten issues
-- Review `.agent_planning/DEFERRED-WORK.md` if beads unavailable
+- Review `.agent_planning/DEFERRED-WORK.md`
 
 ## Skills Reference
 
@@ -254,10 +171,8 @@ The `do:deferred-work-capture` skill (from base `do` plugin) ensures discovered 
 | `do:setup-testing` | Configure test framework |
 | `do:tdd-workflow` | Test-driven development |
 | `do:iterative-workflow` | Incremental implementation |
-| `do:market-research` | External/market research |
 | `do:evaluation-profiles` | Context-aware validation |
 | `do:advanced-skill-builder` | Skill creation helper |
-| `do:beads` | Persistent issue tracking via bd CLI |
 | `do:deferred-work-capture` | Capture and persist discovered work (from base do plugin) |
 | `do:test-coverage-audit` | Forensic test analysis |
 | `do:test-recommendations` | Prioritized test recommendations |
