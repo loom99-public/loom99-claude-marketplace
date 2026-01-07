@@ -1,7 +1,7 @@
 {
-  "name": "do-extra",
+  "name": "do",
   "version": "0.5.13",
-  "description": "do-extra: experimental tools, external integrations, and novelty commands",
+  "description": "do-extra: experimental tools. it's always nice to have a little extra.",
   "author": {
     "name": "Brandon Fryslie"
   },
@@ -10,16 +10,5 @@
     "experimental",
     "workflow",
     "tools"
-  ],
-  "commands": [
-    "./commands/nothing.md",
-    "./commands/time.md"
-  ],
-  "skills": [
-    "./skills/beads",
-    "./skills/market-research"
-  ],
-  "agents": [
-    "./agents/gabe.md"
   ]
 }

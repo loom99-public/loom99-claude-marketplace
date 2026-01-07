@@ -1,5 +1,5 @@
 ---
-argument-hint:
+argument-hint: [intentionally left blank]
 description: Do nothing. Just vibes.
 ---
 
