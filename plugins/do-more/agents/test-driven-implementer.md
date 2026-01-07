@@ -122,6 +122,26 @@ Append to `.agent_planning/DEFERRED-WORK.md`:
 This ensures discovered work is tracked and can be addressed in future iterations. If beads is available, these items can be linked to formal issues.
 
 ### 9. Beads Updates (on completion)
+Use the `do:deferred-work-capture` skill to ensure discovered work is tracked:
+
+```
+Skill("do:deferred-work-capture") with:
+  title: "Found: <issue title>"
+  description: |
+    Discovered during TDD implementation.
+
+    What was found: <details>
+    Context: <where in the code>
+    Why it can't be fixed now: <reason>
+  type: bug  # or task/chore as appropriate
+  priority: <0-4>
+  source_context: "test-driven-implementer discovered during <feature>"
+  parent_id: <current beads issue if any>
+```
+
+The skill auto-persists to beads with `discovered-from` links, or falls back to `.agent_planning/DEFERRED-WORK.md` if beads unavailable.
+
+### 9. Beads Updates (on completion)
 ```bash
 # Update with progress notes
 bd update <id> --notes "COMPLETED: <what was done>. TESTS: <which tests now pass>"

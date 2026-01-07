@@ -225,6 +225,29 @@ Reminder: do you need to ask the user any questions?
 
 ---
 
+## Step 8: Handle deferred work
+
+Was there any deferred work from any of the previous steps?  If so, we need to surface this info to the user:
+
+═══════════════════════════════════════
+Deferred Work
+Topic: $TOPIC
+Status: DEFERRED
+Goals: [incomplete goals]
+Work items:
+- [list deferred work items]
+═══════════════════════════════════════
+
+Now we must plan each deferred work item.  For each work item, run /do:plan [deferred work item].  This will update the planning documents to ensure the work is not lost.
+
+Now is a great time: Do you need to ask the user any questions?
+
+Ask the user if they would like to implement the deferred work items.  If so, run /do:it [deferred work item] for EACH deferred work item.
+
+**ALWAYS**: Before proceeding to the next step, run `/do:plan [current topic]` ONE MORE TIME to update the planning docs with the outcomes of the implementation.
+
+You MUST ALWAYS end by running a final `/do:plan` to ensure the planning docs are in the correct state.
+
 ## Step 7: Handle deferred work
 
 Was there any deferred work from any of the previous steps?  If so, we need to surface this info to the user:
@@ -250,6 +273,8 @@ You MUST ALWAYS end by running a final `/do:plan` to ensure the planning docs ar
 
 ## Step 8: Completion
 
+After handling validation, surfacing deferred work to user, planning deferred work, and implementing deferred work, 
+run `/do:status` to show current project state.  
 After handling validation, surfacing deferred work to user, planning deferred work, and implementing deferred work, 
 run `/do:status` to show current project state.  
 

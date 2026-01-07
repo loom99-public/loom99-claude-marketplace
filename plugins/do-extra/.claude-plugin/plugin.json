@@ -1,14 +1,14 @@
 {
   "name": "do",
   "version": "0.5.13",
-  "description": "do-more: audit, docs, handoff, release, testing workflows. work less, do more.",
+  "description": "do-extra: experimental tools. it's always nice to have a little extra.",
   "author": {
     "name": "Brandon Fryslie"
   },
   "license": "MIT",
   "keywords": [
-    "development",
+    "experimental",
     "workflow",
-    "skills"
+    "tools"
   ]
 }
