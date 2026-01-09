@@ -1,4 +1,0 @@
-Agent: status-planner | 2025-12-09-054422
-Outcome: Lean plan created, old heavyweight plan archived
-Items: 6 (P0: 3, P1: 3) | Top: Make "not verified" explicit | PLAN-2025-12-09-054129.md
-Archived: 1 file (PLAN-2025-12-09-051425.md → heavyweight enforcement approach)

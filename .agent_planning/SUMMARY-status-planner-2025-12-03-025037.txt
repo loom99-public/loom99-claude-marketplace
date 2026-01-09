@@ -1,4 +1,0 @@
-Agent: status-planner | 2025-12-03-025037
-Outcome: Minimal rename plan created for dev-loop → do-more-now
-Items: 6 phases (P0: 3, P1: 2, P2: 1) | Top: Delete cruft & duplicates | PLAN-dev-loop-rename-2025-12-03-025037.md
-Archived: 0 files (cleanup deferred to Phase 6)

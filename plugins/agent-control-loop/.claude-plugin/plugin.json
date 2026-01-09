@@ -1,0 +1,23 @@
+{
+  "name": "agent-control-loop",
+  "version": "0.1.0",
+  "description": "Minimal control loop for convergent, high-risk software work",
+  "author": {
+    "name": "Brandon Fryslie",
+    "email": ""
+  },
+  "license": "MIT",
+  "keywords": ["convergence", "governance", "control-loop", "migration", "refactor"],
+  "commands": [
+    "./commands/init.md",
+    "./commands/phase.md",
+    "./commands/status.md"
+  ],
+  "agents": [
+    "./agents/governor.md"
+  ],
+  "skills": [
+    "./skills/phase-ritual",
+    "./skills/artifact-templates"
+  ]
+}

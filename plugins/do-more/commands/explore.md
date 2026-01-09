@@ -46,18 +46,3 @@ Use do:researcher in **explore mode** with `main_instructions`:
 - Needs external research → "Use `/do:research`"
 - Needs correctness/status check → "Use `/do:plan status`"
 
----
-
-## Post-Commands
-
-If `route-subcommands` returned `post_commands`, execute each one now:
-
-**For each command in post_commands**:
-- Use the `SlashCommand` tool
-- Format: `<command> <main_instructions>`
-- Example: If post_commands = `["/do:chores"]` and main_instructions = `"understand auth"`, execute:
-  ```
-  SlashCommand("/do:chores understand auth")
-  ```
-
-**Important**: Append main_instructions to preserve context for downstream commands.
