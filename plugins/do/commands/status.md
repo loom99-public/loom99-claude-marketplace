@@ -88,6 +88,30 @@ Display:
 └────────────────────────────────────────────────────┘
 ```
 
+### 5. Retro Items (if >5 pending)
+
+Check for pending retro items:
+
+```bash
+wc -l .agent_planning/retro/items.jsonl 2>/dev/null | awk '{print $1}'
+```
+
+If count >5, display:
+```
+┌─ Retro Items ──────────────────────────────────────┐
+│ 12 items pending - workflow friction captured      │
+│ Run: /retro list                                    │
+└────────────────────────────────────────────────────┘
+```
+
+If count >20, make it more prominent:
+```
+┌─ ⚠️  Retro Items ───────────────────────────────────┐
+│ 23 items pending - consider running retro          │
+│ Run: /retro session                                 │
+└────────────────────────────────────────────────────┘
+```
+
 ---
 
 ## Full Output Example
@@ -111,6 +135,10 @@ Recent Plans:
 Next Up:
   P0: Implement password validation (auth/)
   → /do:it auth
+
+Retro Items:
+  12 items pending - workflow friction captured
+  → /retro list
 
 ═══════════════════════════════════════════════════════
 ```
