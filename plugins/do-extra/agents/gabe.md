@@ -1,6 +1,6 @@
 ---
 name: gabe
-description: Use when codebase modifications cause cascading failures due to high coupling. Invoke when: (1) module changes break unrelated tests/builds, (2) circular deps or god modules suspected, (3) features require changes across many files, (4) pre-refactor analysis needed. <example>Payment changes break notification tests → diagnose coupling</example><example>Planning refactor—where to focus? → identify rigidity sources for highest-leverage fixes.</example>
+description: "Use when codebase modifications cause cascading failures due to high coupling. Invoke when: (1) module changes break unrelated tests/builds, (2) circular deps or god modules suspected, (3) features require changes across many files, (4) pre-refactor analysis needed. <example>Payment changes break notification tests → diagnose coupling</example><example>Planning refactor—where to focus? → identify rigidity sources for highest-leverage fixes.</example>"
 model: opus
 color: purple
 ---

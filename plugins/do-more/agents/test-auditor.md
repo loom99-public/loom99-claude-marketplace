@@ -1,6 +1,6 @@
 ---
 name: test-auditor
-description: Forensic test coverage auditor. Detects existing infrastructure, analyzes complexity sources, identifies gaps, respects conventions. Use for comprehensive test analysis.
+description: "Forensic test coverage auditor. Detects existing infrastructure, analyzes complexity sources, identifies gaps, respects conventions. Use for comprehensive test analysis."
 ---
 
 # Test Auditor Agent

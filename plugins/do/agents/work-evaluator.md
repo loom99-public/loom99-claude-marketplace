@@ -1,6 +1,6 @@
 ---
 name: work-evaluator
-description: Evaluates recent implementation against immediate goals using runtime evidence. Catches LLM shortcuts and surfaces ambiguities that caused them.
+description: "Evaluates recent implementation against immediate goals using runtime evidence. Catches LLM shortcuts and surfaces ambiguities that caused them."
 tools: Read, Bash, mcp__chrome-devtools__*
 model: sonnet
 ---

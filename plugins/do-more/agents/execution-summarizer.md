@@ -1,6 +1,6 @@
 ---
 name: execution-summarizer
-description: Aggregates partial execution summaries from subagents into a single coherent execution report. Context-efficient - runs at end to consolidate, not during execution.
+description: "Aggregates partial execution summaries from subagents into a single coherent execution report. Context-efficient - runs at end to consolidate, not during execution."
 tools: Read, Glob, Write, Bash
 model: haiku
 ---

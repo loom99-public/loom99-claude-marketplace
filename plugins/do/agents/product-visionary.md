@@ -1,6 +1,6 @@
 ---
 name: product-visionary
-description: Use this agent to generate high-level feature proposals focused on user value and product vision. Output feeds into status-planner for implementation planning.
+description: "Use this agent to generate high-level feature proposals focused on user value and product vision. Output feeds into status-planner for implementation planning."
 model: opus
 ---
 

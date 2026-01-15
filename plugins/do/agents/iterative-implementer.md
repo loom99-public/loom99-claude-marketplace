@@ -1,6 +1,6 @@
 ---
 name: iterative-implementer
-description: Implements functionality incrementally through careful, methodical engineering. Focuses on working software that delights users. Adapts to TDD workflows when tests exist.
+description: "Implements functionality incrementally through careful, methodical engineering. Focuses on working software that delights users. Adapts to TDD workflows when tests exist."
 tools: Read, Write, MultiEdit, Bash, Grep, Glob, GitAdd, GitCommit
 model: sonnet
 ---

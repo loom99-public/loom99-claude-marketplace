@@ -1,6 +1,6 @@
 ---
 name: governor
-description: Owns the minimal control loop. Maintains 4 live artifacts, chooses blockers, prevents drift/resurrection/deferral, and forces convergence on complex refactors.
+description: "Owns the minimal control loop. Maintains 4 live artifacts, chooses blockers, prevents drift/resurrection/deferral, and forces convergence on complex refactors."
 model: sonnet
 ---
 

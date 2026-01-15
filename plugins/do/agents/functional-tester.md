@@ -1,6 +1,6 @@
 ---
 name: functional-tester
-description: Designs and writes high-level functional tests that validate real user workflows and are immune to AI gaming. Focuses on end-to-end validation of actual user-facing functionality.
+description: "Designs and writes high-level functional tests that validate real user workflows and are immune to AI gaming. Focuses on end-to-end validation of actual user-facing functionality."
 tools: Read, Write, Bash, Grep, Glob, GitAdd, GitCommit
 model: sonnet
 ---

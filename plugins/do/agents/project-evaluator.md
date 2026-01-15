@@ -1,6 +1,6 @@
 ---
 name: project-evaluator
-description: Critical, evidence-based evaluation of project progress against specifications. Catches LLM implementation failures and surfaces hidden ambiguities.
+description: "Critical, evidence-based evaluation of project progress against specifications. Catches LLM implementation failures and surfaces hidden ambiguities."
 model: haiku
 ---
 

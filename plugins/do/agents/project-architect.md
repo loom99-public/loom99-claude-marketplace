@@ -1,6 +1,6 @@
 ---
 name: project-architect
-description: Transform user intent into concrete project foundation with minimal effort and maximum alignment. Handles new projects, architectural changes, and greenfield components.
+description: "Transform user intent into concrete project foundation with minimal effort and maximum alignment. Handles new projects, architectural changes, and greenfield components."
 model: sonnet
 ---
 
