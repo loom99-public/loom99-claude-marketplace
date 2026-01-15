@@ -1,6 +1,6 @@
 {
   "name": "promptctl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Hook-based automation for Claude Code workflows",
   "author": {
     "name": "Brandon Fryslie",

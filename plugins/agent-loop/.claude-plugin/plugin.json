@@ -1,6 +1,6 @@
 {
   "name": "agent-loop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Agentic Software Engineering Loop - Explore, plan, code, commit workflow",
   "author": {
     "name": "Brandon Fryslie",

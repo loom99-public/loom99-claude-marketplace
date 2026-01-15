@@ -1,6 +1,6 @@
 {
   "name": "agent-control-loop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Minimal control loop for convergent, high-risk software work",
   "author": {
     "name": "Brandon Fryslie",

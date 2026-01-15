@@ -1,6 +1,6 @@
 {
   "name": "claude4claude",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Claude plugin for working with Claude artifacts (MCP, skills, plugins, agents, commands, etc)",
   "author": {
     "name": "Brandon Fryslie",
