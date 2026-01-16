@@ -14,7 +14,7 @@ Determine what to work on:
 
 1. **If `$ARGUMENTS` provided** → Use `$ARGUMENTS` as the topic
 2. **If no arguments, check conversation context** → If we were just discussing a subject (a bug, feature, file, error, task, etc.), that subject is the topic
-3. **If no obvious subject in conversation** → Look for the most recent planning doc in `.agent_planning/` (PLAN-*.md, SPRINT-*.md, or TODO-*.md) and use its next uncompleted item
+3. **If no obvious subject in conversation** → Look for the most recent planning doc in `.agent_planning/` (SPRINT-*-PLAN.md or TODO-*.md) and use its next uncompleted item. Prefer HIGH confidence sprints.
 
 Set `main_instructions` to the resolved topic.
 
@@ -89,15 +89,21 @@ Check if description contains:
 - Acceptance criteria (or link to PLAN doc)
 - Scope definition
 
-**2. Recent PLAN-*.md** in topic directory:
+**2. Recent SPRINT-*-PLAN.md** in topic directory:
 ```bash
-ls -t <topic-directory>/PLAN-*.md | head -1
+ls -t <topic-directory>/SPRINT-*-PLAN.md | head -1
 ```
 Check if plan contains:
 - Related to current topic (keyword match with `main_instructions`)
+- Confidence level (HIGH/MEDIUM/LOW)
 - Has acceptance criteria section
 - Has scope section
 - Has approach/constraints section
+
+**Confidence-Based Decision:**
+- HIGH confidence → Ready for implementation
+- MEDIUM confidence → Research unknowns first, present options to user
+- LOW confidence → Explore with user, run research, re-plan before implementing
 
 **3. Recent EVALUATION-*.md** in topic directory (provides current state context):
 ```bash
@@ -177,8 +183,10 @@ Create implementation plan based on STATUS-<timestamp>.md in the topic directory
 All gap-filling agents must complete before proceeding.
 
 Agents will create files in the topic directory:
-- `<topic-directory>/STATUS-<timestamp>.md` (from project-evaluator)
-- `<topic-directory>/PLAN-<timestamp>.md` (from status-planner)
+- `<topic-directory>/EVALUATION-<timestamp>.md` (from project-evaluator)
+- `<topic-directory>/SPRINT-<ts>-<slug>-PLAN.md` (from status-planner, with confidence level)
+- `<topic-directory>/SPRINT-<ts>-<slug>-DOD.md` (acceptance criteria)
+- `<topic-directory>/SPRINT-<ts>-<slug>-CONTEXT.md` (implementation context)
 - `<topic-directory>/RESEARCH-<topic>-<timestamp>.md` (from researcher)
 
 ---
@@ -270,14 +278,15 @@ If handoff exists and is recent (< 1 hour old) and related to topic:
 
 If no handoff exists, gather context from planning artifacts **in the topic directory**:
 
-1. **Read latest PLAN-*.md** (created by status-planner):
+1. **Read latest SPRINT-*-PLAN.md** (created by status-planner):
    ```bash
-   ls -t <topic-directory>/PLAN-*.md | head -1
+   ls -t <topic-directory>/SPRINT-*-PLAN.md | head -1
    ```
+   Note the confidence level (HIGH/MEDIUM/LOW) from the header.
 
-2. **Read latest STATUS-*.md** (created by project-evaluator):
+2. **Read latest EVALUATION-*.md** (created by project-evaluator):
    ```bash
-   ls -t <topic-directory>/STATUS-*.md | head -1
+   ls -t <topic-directory>/EVALUATION-*.md | head -1
    ```
 
 3. **Read beads issue** (if applicable):

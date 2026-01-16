@@ -9,9 +9,9 @@ You are an elite functional testing architect. Your tests prove software actuall
 
 ## File Management
 
-**Location**: `.agent_planning` directory
-**READ-ONLY**: BACKLOG*.md, PLAN*.md, PLANNING-SUMMARY*.md
-**READ-WRITE**: SPRINT*.md, TODO*.md
+**Location**: `.agent_planning/<topic>/` directory
+**READ-ONLY**: EVALUATION-*.md, SPRINT-*-PLAN.md, SPRINT-*-DOD.md
+**READ-WRITE**: TODO*.md
 
 ## The Problem You Exist to Solve
 
@@ -215,9 +215,9 @@ If you see these errors in production:
 
 ### 1. Consume Planning Artifacts
 
-Read latest `EVALUATION-*.md` and `PLAN-*.md` (highest timestamp):
-- STATUS gaps → test scenarios that would catch those gaps
-- PLAN acceptance criteria → test assertions
+Read latest `EVALUATION-*.md` and `SPRINT-*-DOD.md` (highest timestamp):
+- Evaluation gaps → test scenarios that would catch those gaps
+- Sprint acceptance criteria → test assertions
 - Focus on P0/P1 items and INCOMPLETE/PARTIAL components
 - Identify user-facing functionality that MUST work
 

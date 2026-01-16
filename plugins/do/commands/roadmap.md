@@ -77,15 +77,23 @@ Last updated: 2025-12-18-143000
   Goal: Deliver core functionality
   ├─ ✅ user-authentication [COMPLETED]
   │   Epic: USER-AUTHENTICATION-1 (3/3 issues closed)
-  ├─ 🔄 payment-processing [IN PROGRESS]
+  ├─ 🔄 payment-processing [IN PROGRESS] [HIGH]
   │   Epic: PAYMENT-PROCESSING-1 (2/5 issues closed)
-  └─ 💡 dashboard-ui [PROPOSED]
+  │   Sprint: stripe-integration (ready for /do:it)
+  ├─ 📋 dashboard-ui [PLANNING] [MEDIUM]
+  │   Sprint: ui-core (research needed)
+  └─ 💡 analytics [PROPOSED] [LOW]
 
 ⏸️ Phase 2: Growth [QUEUED] (0/2 completed)
   Goal: Scale and optimize
   ├─ 💡 performance-optimization [PROPOSED]
   └─ 💡 analytics-dashboard [PROPOSED]
 ```
+
+**Confidence indicators in tree:**
+- [HIGH] → Ready for implementation
+- [MEDIUM] → Needs research before implementation
+- [LOW] → Needs exploration and user input
 
 **Stop here.**
 
@@ -386,17 +394,26 @@ Next steps:
 
 **Topic state sync:**
 - PROPOSED → no planning files
-- PLANNING → STATUS/PLAN/DOD exist, no implementation
+- PLANNING → Sprint plans exist, no implementation
 - IN PROGRESS → implementation started
 - COMPLETED → all acceptance criteria met
 - ARCHIVED → no longer maintained
 
+**Confidence level (from sprint plans):**
+- HIGH → Ready for `/do:it`
+- MEDIUM → Research needed first
+- LOW → Exploration and user input needed
+
 States updated by:
 - `PROPOSED` - Default when adding to roadmap
-- `PLANNING` - Auto-detected when STATUS/PLAN files exist
+- `PLANNING` - Auto-detected when SPRINT-*-PLAN files exist
 - `IN PROGRESS` - Updated by implementer agents
 - `COMPLETED` - Updated by work-evaluator (all DoD met)
 - `ARCHIVED` - Manual update in ROADMAP.md
+
+Confidence derived from:
+- Highest confidence sprint plan in topic directory
+- No sprint plans → no confidence shown
 
 ## Customization via CLAUDE.md
 

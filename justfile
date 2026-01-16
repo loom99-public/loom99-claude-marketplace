@@ -259,6 +259,8 @@ bump-plugin plugin:
 
 # Reload marketplace without bumping version
 reload:
+    rm -rf ~/.claude/plugins/cache/loom99
+    claude plugin install do@loom99
     @claude plugin marketplace update loom99
 
 # Tail hook logs in real-time

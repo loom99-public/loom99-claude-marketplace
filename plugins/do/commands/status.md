@@ -35,56 +35,75 @@ Display:
 Check for active work in `.agent_planning/`:
 
 ```bash
-ls -t .agent_planning/*/SPRINT-*.md 2>/dev/null | head -3
-ls -t .agent_planning/*/TODO-*.md 2>/dev/null | head -3
+ls -t .agent_planning/*/SPRINT-*-PLAN.md 2>/dev/null | head -5
 ```
 
 For each found, extract:
 - Topic name (from directory)
+- Sprint slug (from filename)
+- Confidence level (from file header: HIGH/MEDIUM/LOW)
 - Status (from file content - look for checked/unchecked items)
 - Last modified
 
 Display:
 ```
 ┌─ In-Progress Work ─────────────────────────────────┐
-│ 1. auth/ - 2/5 items complete (modified: 2h ago)   │
-│ 2. payments/ - 0/3 items (modified: 1d ago)        │
+│ 1. auth/auth-core [HIGH] - 2/5 items (2h ago)      │
+│ 2. auth/auth-oauth [MEDIUM] - research needed      │
+│ 3. payments/stripe-int [LOW] - exploration needed  │
 │ [or "No active sprints found"]                     │
 └────────────────────────────────────────────────────┘
 ```
 
-### 3. Recent Plans
+**Confidence indicators:**
+- HIGH → Ready for `/do:it`
+- MEDIUM → Research unknowns first
+- LOW → Explore options with user
+
+### 3. Recent Plans (by Confidence)
 
 ```bash
-ls -t .agent_planning/*/PLAN-*.md 2>/dev/null | head -3
+ls -t .agent_planning/*/SPRINT-*-PLAN.md 2>/dev/null | head -5
 ```
+
+Group by confidence level:
 
 Display:
 ```
 ┌─ Recent Plans ─────────────────────────────────────┐
-│ 1. auth/PLAN-2024-12-13-143022.md (today)          │
-│    Sprint: "Implement login flow"                  │
-│ 2. payments/PLAN-2024-12-12-091500.md (yesterday)  │
-│    Sprint: "Add Stripe integration"                │
+│ HIGH (ready for implementation):                   │
+│   auth/auth-core - "Implement login flow"          │
+│                                                    │
+│ MEDIUM (research needed):                          │
+│   auth/auth-oauth - "OAuth integration"            │
+│   payments/stripe-int - "Stripe setup"             │
+│                                                    │
+│ LOW (exploration needed):                          │
+│   payments/refunds - "Refund handling"             │
 └────────────────────────────────────────────────────┘
 ```
 
 ### 4. Next Queued Work
 
-Look for incomplete items in most recent plans:
+Find highest priority work, preferring HIGH confidence:
 
 ```bash
-# Find highest priority incomplete item from latest PLAN
+# Find highest priority incomplete item from HIGH confidence sprints first
+# Fall back to MEDIUM/LOW if no HIGH confidence work available
 ```
 
 Display:
 ```
 ┌─ Next Up ──────────────────────────────────────────┐
-│ From: auth/PLAN-2024-12-13-143022.md               │
+│ Sprint: auth/auth-core [HIGH]                      │
 │ P0: Implement password validation                  │
 │ Status: Not started                                │
 │                                                    │
-│ Run: /do:it auth                      │
+│ Run: /do:it auth                                   │
+│                                                    │
+│ Waiting (needs research first):                    │
+│   auth/auth-oauth [MEDIUM] - OAuth provider choice │
+│   payments/refunds [LOW] - Refund policy unclear   │
 └────────────────────────────────────────────────────┘
 ```
 

@@ -11,8 +11,8 @@ Note: Remember your critical-imperatives.
 
 ## File Management
 
-**Location**: `.agent_planning` directory
-**READ-ONLY**: EVALUATION-*.md, PLAN-*.md, EVAL-*.md
+**Location**: `.agent_planning/<topic>/` directory
+**READ-ONLY**: EVALUATION-*.md, SPRINT-*-PLAN.md, SPRINT-*-DOD.md
 **READ-WRITE**: WORK-EVALUATION-*.md
 
 ---
@@ -261,7 +261,7 @@ Scope: <work/goal/component/flow>/<name>
 Confidence: FRESH
 
 ## Goals Under Evaluation
-From PLAN-*.md:
+From SPRINT-*-DOD.md:
 1. [Goal 1]
 2. [Goal 2]
 

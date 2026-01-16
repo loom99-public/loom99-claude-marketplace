@@ -80,29 +80,29 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 ## Step 3: Find or Create a Plan
 
-Check topic directory for a plan.
+Check topic directory for sprint plans.
 
 **Search:**
 1. List files in topic directory: `ls .agent_planning/<topic>/`
-2. Look for all plan files, find the latest timestamp, and ensure each file exists for that timestamp:
-   - `EVALUATION-*.md`
-   - `EVAL-*.md`
-   - `PLAN-*.md`
-   - `USER-*.md`
-   - `DOD-*.md`
-3. If it contains ALL plan files, the plan is complete.  Otherwise it is incomplete.
+2. Look for sprint files: `SPRINT-*-PLAN.md`, `SPRINT-*-DOD.md`, `SPRINT-*-CONTEXT.md`
+3. Check confidence level in each sprint plan header
 
-**Decision:**
+**Confidence-Based Decision:**
 
-- **Plan is complete** → Note topic directory, proceed to next step
-- **No plan** → Run `/do:plan $TOPIC`, then proceed with new plan
-- **Plan is incomplete** → Run `/do:plan Please complete or update this plan: $PLAN_PATH`, then proceed
+| Files Found | Confidence | Action |
+|-------------|------------|--------|
+| No plans | - | Run `/do:plan $TOPIC`, then proceed |
+| Sprint plans exist | HIGH | Ready for implementation → Step 4 |
+| Sprint plans exist | MEDIUM | Research first: surface unknowns to user, then implement |
+| Sprint plans exist | LOW | Exploration required: ask user questions, run research, re-plan |
 
-- **Plan + DoD exist** → Note filepaths, proceed to Step 4
-- **No plan** → Run `/do:plan $TOPIC`, then proceed with new plan
-- **Plan exists, No DOD** → Run `/do:plan Please created a Definition of Done for this plan: $PLAN_PATH`, then proceed
+**For MEDIUM/LOW confidence sprints:**
+- Read the "Unknowns to Resolve" and "Exit Criteria" sections
+- Present options to user with tradeoffs table
+- After user input, update sprint plan or create HIGH confidence version
+- Only proceed to implementation when confidence is HIGH
 
-**Output:** Plan filepath AND DoD filepath.
+**Output:** Sprint PLAN filepath, DOD filepath, and confidence level.
 
 ---
 
@@ -320,13 +320,20 @@ Next: Review STATUS or continue with /do:it [next topic]
 ```
 .agent_planning/
 ├── auth/
-│   ├── PLAN-<timestamp>.md    # Full plan (agent reads)
-│   ├── DOD-<timestamp>.md     # Acceptance criteria (main reads)
-│   └── EVALUATION-<timestamp>.md  # Evaluation snapshots
+│   ├── SPRINT-<ts>-<slug>-PLAN.md    # Sprint plan with confidence level
+│   ├── SPRINT-<ts>-<slug>-DOD.md     # Acceptance criteria
+│   ├── SPRINT-<ts>-<slug>-CONTEXT.md # Implementation context
+│   ├── EVALUATION-<timestamp>.md     # Evaluation snapshots
+│   └── USER-RESPONSE-<timestamp>.md  # User approval
 ├── payments/
 │   └── ...
 └── do-command-logs/           # Execution tracking (unchanged)
 ```
+
+**Confidence Levels:**
+- HIGH: Implement immediately
+- MEDIUM: Research unknowns, then implement
+- LOW: Explore options with user, then re-plan
 
 ## Important Notes
 

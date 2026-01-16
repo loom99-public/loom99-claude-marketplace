@@ -1,11 +1,24 @@
 ---
 argument-hint: [area of focus]
-description: Evaluate the project and create a focused implementation plan for the scope of work. Evaluates first, then plans.
+description: Evaluate the project and create implementation plans for all work. Plans as many sprints as certainty allows, with confidence levels.
 ---
 
 # Plan Command
 
-Creates a focused, achievable plan. Automatically evaluates first if needed.
+Creates comprehensive, confidence-rated plans. Plans ALL work to some level of certainty.
+
+## Core Concepts
+
+**Sprint**: A coherent unit of related work (features, fixes, implementations). NOT time-based.
+
+**Confidence Level**:
+- **HIGH**: We know the work and how to do it. Ready for implementation.
+- **MEDIUM**: General approach clear, but details need research. Primary goal: raise to HIGH.
+- **LOW**: Significant unknowns. Primary goal: research and clarify before implementation.
+
+**Principle**: Plan ALL work to some confidence level. Better to have 4 low-confidence sprints than 1 high-confidence sprint that ignores remaining work.
+
+---
 
 ## Step 1: Determine Topic
 
@@ -55,8 +68,6 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
    mkdir -p .agent_planning/<topic-slug>
    ```
 
-**Tip:** Add to CLAUDE.md to customize: `do: auto-select directories without asking`
-
 **Output:** Topic directory path (e.g., `.agent_planning/auth/`)
 
 ---
@@ -67,8 +78,6 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 ### Step 3a: Run Evaluation
 
-**CRITICAL: You MUST spawn the evaluator AND continue to Step 4 after it completes.**
-
 Use the /Explore agent to evaluate the current state:
 
 ```
@@ -78,89 +87,119 @@ Topic Directory: .agent_planning/<topic>/
 Evaluate the current state of this topic area.
 Write EVALUATION-<timestamp>.md to the topic directory.
 
-Critical: Ambiguities and open questions MUST be 
-
 Focus on:
 1. What exists
 2. What's missing
 3. What needs changes (which files, components, architecture, etc)
 4. Dependencies and risks
-5. Ambiguities
+5. Ambiguities and unknowns (CRITICAL - list ALL uncertainties)
 ```
 
-This produces evaluation files in the topic directory:
-- `EVALUATION-<timestamp>.md` - Current state snapshot
+This produces: `EVALUATION-<timestamp>.md`
 
 ### Step 3b: Handle Evaluation Results
 
-**DEFAULT: Always proceed to Step 4 unless explicitly BLOCKED.**
-
 | Result | Action |
 |--------|--------|
-| **CONTINUE** | Proceed to Step 4 immediately |
-| **PAUSE** | Attempt quick resolution (Step 3c), then proceed to Step 4 |
+| **CONTINUE** | Proceed to Step 4 |
+| **PAUSE** | Attempt resolution (Step 3c), then proceed |
 | **BLOCKED** | Surface to user, ask how to proceed |
-| **No verdict** | Treat as CONTINUE - proceed to Step 4 |
-
-**IMPORTANT**: Do not stop after evaluation. The plan command must always attempt to generate a plan.
+| **No verdict** | Treat as CONTINUE |
 
 ### Step 3c: Ambiguity Resolution (if PAUSE)
 
-Spend no more than 2-3 minutes on this. Then proceed to Step 4. If user stops you during this, pick up right where you left off.
+For each ambiguity, ask user with prepared options:
 
-For each ambiguity, do the minimal amount to achieve certainty:
-1. **Ask user** - Quick clarifying questions. Allow user to provide suggestions such as "do research", etc. If user suggests research, ask user again with results of research.
-2. **Research** - If critical and fast (`/do:research`), do this before asking user. Always ask user again AFTER research, unless you are very certain.
-3. **Defer** (last resort) - Note as out-of-scope, plan around it. This should be used as last resort. It's better to plan more work than less.
+```
+┌─ Clarification Needed ────────────────────────────────┐
+│                                                       │
+│ Question: [specific question]                         │
+│                                                       │
+│ Options:                                              │
+│                                                       │
+│ | Option | Approach | Pros | Cons |                   │
+│ |--------|----------|------|------|                   │
+│ | A (Standard) | [well-trodden path] | ... | ... |   │
+│ | B (Creative) | [optimal improvement] | ... | ... | │
+│ | C | [alternative if applicable] | ... | ... |      │
+│                                                       │
+│ Recommendation: [your suggestion and why]             │
+│                                                       │
+└───────────────────────────────────────────────────────┘
+```
+
+**ALWAYS** include:
+1. A "standard/well-trodden" option
+2. An "optimal/creative improvement" option
+3. Optionally a third alternative
 
 ---
 
-## Step 4: Generate Plan
+## Step 4: Generate Sprint Plans
 
-**CRITICAL: After project-evaluator completes, you MUST continue to this step. Do not stop.**
+**CRITICAL: Plan ALL identified work. Do not artificially limit to 1 sprint.**
 
-**Plan at MINIMUM one sprint worth of work containing ALL significant deliverables.**
+### Step 4a: Assess Work and Assign Confidence
 
-**Your GOAL is to plan as much work as you have CERTAINTY around: strategic value, architecture, dependency ordering, implementation details.**
+Review evaluation and categorize ALL work items by confidence:
 
-**Prefer UPDATING an existing plan vs CREATING a new plan to previously planned work.**
+| Confidence | Criteria | Sprint Focus |
+|------------|----------|--------------|
+| HIGH | Known approach, clear implementation path | Implementation |
+| MEDIUM | General direction clear, details uncertain | Research → Implementation |
+| LOW | Significant unknowns, multiple approaches possible | Research → Raise confidence |
 
-Use the /Plan tool subagent with:
+### Step 4b: Group into Sprints
+
+**Each sprint**:
+- Contains ONE confidence level (homogeneous)
+- Represents a coherent unit of related work
+- Has its OWN planning documents (not shared)
+
+**Sprint naming**: `SPRINT-<timestamp>-<slug>.md`
+- Slug is 2-3 words describing the work
+- Example: `SPRINT-2024-12-15-120000-auth-core.md`
+
+### Step 4c: Generate Plans
+
+**For each sprint**, use the /Plan subagent:
 
 ```
 Topic: $TOPIC
 Topic Directory: .agent_planning/<topic>/
+Sprint: <sprint-slug>
+Confidence: HIGH | MEDIUM | LOW
 
-Read the evaluation files in the topic directory.
 Generate:
-1. PLAN-<timestamp>.md - Full sprint plan
-2. DOD-<timestamp>.md - Acceptance criteria only (separate file)
-3. CONTEXT-<timestamp>.md - The comprehensive dump of context that would allow an agent with write-only access to the project (and this file) to successfully implement the plan.  Include everything relevent to the plan including filenames, line numbers, symbols, logic, and concepts 
+1. SPRINT-<timestamp>-<slug>-PLAN.md - Sprint plan
+2. SPRINT-<timestamp>-<slug>-DOD.md - Acceptance criteria
+3. SPRINT-<timestamp>-<slug>-CONTEXT.md - Implementation context
 
-Both files go in the topic directory.
+All files go in the topic directory.
 ```
 
-**Plan template:**
+### Sprint Plan Templates
+
+**HIGH Confidence Sprint:**
 ```markdown
-# Sprint Plan: [Task Name]
+# Sprint: [Slug] - [Name]
 Generated: <timestamp>
+Confidence: HIGH
+Status: READY FOR IMPLEMENTATION
 
 ## Sprint Goal
-[One sentence describing what this sprint delivers]
+[One sentence describing deliverables]
 
 ## Scope
-**In scope (this sprint):**
+**Deliverables:**
 - [Deliverable 1]
 - [Deliverable 2]
 - [Deliverable 3, if applicable]
 
-**Explicitly out of scope (future sprints):**
-- [Item deferred]
-
 ## Work Items
 
 ### P0: [First deliverable]
-**Acceptance Criteria (REQUIRED):**
+**Acceptance Criteria:**
 - [ ] [Criterion 1]
 - [ ] [Criterion 2]
 - [ ] [Criterion 3]
@@ -168,130 +207,225 @@ Generated: <timestamp>
 **Technical Notes:**
 - [Implementation guidance]
 
-### P1: [Second deliverable]
-...
-
 ## Dependencies
 - [Prerequisites]
 
 ## Risks
-- [Potential issues]
+- [Known risks with mitigations]
 ```
 
-**CRITICAL**: The planner MUST limit scope to 2-3 deliverables.
+**MEDIUM Confidence Sprint:**
+```markdown
+# Sprint: [Slug] - [Name]
+Generated: <timestamp>
+Confidence: MEDIUM
+Status: RESEARCH REQUIRED
+
+## Sprint Goal
+[Raise confidence to HIGH through targeted research]
+
+## Known Elements
+- [What we DO know]
+
+## Unknowns to Resolve
+1. [Unknown 1] - Research approach: [how to find out]
+2. [Unknown 2] - Research approach: [how to find out]
+
+## Tentative Deliverables
+- [Likely deliverable 1 - pending research]
+- [Likely deliverable 2 - pending research]
+
+## Research Tasks
+- [ ] [Research task 1]
+- [ ] [Research task 2]
+
+## Exit Criteria (to reach HIGH confidence)
+- [ ] [What must be true to proceed]
+```
+
+**LOW Confidence Sprint:**
+```markdown
+# Sprint: [Slug] - [Name]
+Generated: <timestamp>
+Confidence: LOW
+Status: EXPLORATION REQUIRED
+
+## Sprint Goal
+[Reduce uncertainty and define approach]
+
+## Current Understanding
+[What little we know]
+
+## Major Unknowns
+1. [Unknown 1] - Impact: [why it matters]
+2. [Unknown 2] - Impact: [why it matters]
+
+## Exploration Options
+
+### Option A: [Standard Approach]
+| Aspect | Assessment |
+|--------|------------|
+| Complexity | [Low/Medium/High] |
+| Risk | [Low/Medium/High] |
+| Pros | [benefits] |
+| Cons | [drawbacks] |
+
+### Option B: [Creative Approach]
+| Aspect | Assessment |
+|--------|------------|
+| Complexity | [Low/Medium/High] |
+| Risk | [Low/Medium/High] |
+| Pros | [benefits] |
+| Cons | [drawbacks] |
+
+## Questions for User
+1. [Question 1]
+2. [Question 2]
+
+## Exit Criteria (to reach MEDIUM confidence)
+- [ ] [What must be true to proceed]
+```
+
+### Step 4d: Check for Existing Plans
+
+**CRITICAL: ALWAYS update existing plans rather than creating duplicates.**
+
+Before creating any sprint plan:
+1. List existing `SPRINT-*-PLAN.md` files in topic directory
+2. Check if any cover the same work
+3. If yes: UPDATE the existing plan, don't create new
+4. If no: Create new plan
 
 ---
 
-## Step 5: Validate Plan
+## Step 5: Handle Low/Medium Confidence
 
-Use do:work-evaluator agent to check:
+**For LOW or MEDIUM confidence sprints, the primary goal is raising confidence.**
+
+### Present Options to User
+
+```
+┌─ Research Required: [Sprint Name] ────────────────────┐
+│ Confidence: LOW/MEDIUM                                │
+│                                                       │
+│ Unknowns:                                             │
+│ 1. [Unknown 1]                                        │
+│ 2. [Unknown 2]                                        │
+│                                                       │
+│ Research Options:                                     │
+│                                                       │
+│ | Option | Approach | Effort | Outcome |              │
+│ |--------|----------|--------|---------|              │
+│ | A | [standard research path] | [est] | [result] |  │
+│ | B | [alternative approach] | [est] | [result] |    │
+│                                                       │
+│ Which approach should we take? (or suggest your own) │
+└───────────────────────────────────────────────────────┘
+```
+
+**After user input**: Update sprint plan with findings, re-assess confidence.
+
+---
+
+## Step 6: Validate Plans
+
+For each sprint plan, verify:
 
 | Check | Pass | Fail |
 |-------|------|------|
 | Every deliverable has acceptance criteria? | ✓ | INVALID |
 | Acceptance criteria testable (2-5 per item)? | ✓ | Too vague |
-| Scope reasonable for one sprint? | ✓ | Too large |
+| Confidence level appropriate for content? | ✓ | Reassess |
 | Dependencies identified? | ✓ | Missing |
+| LOW/MEDIUM have exit criteria? | ✓ | INVALID |
 
-**Plans without acceptance criteria are INVALID.** Re-run planner.
-
----
-
-## Step 6: User Approval
-
-Present Deliverable and Definition of Done summary for approval:
-
-```
-┌─ Please Review: Sprint Plan for $TOPIC ────────────┐
-│ Task: [name]                                       │
-│ Sprint Goal: [one sentence]                        │
-│                                                    │
-│ Deliverables (this sprint):                        │
-│ 1. [Deliverable 1]                                 │
-│ 2. [Deliverable 2]                                 │
-│ 3. [Deliverable 3, if any]                         │
-│                                                    │
-│ Acceptance Criteria:                               │
-│ - [ ] [Criterion 1]                                │
-│ - [ ] [Criterion 2]                                │
-│ - [ ] [Criterion 3]                                │
-│                                                    │
-│ Deferred to future sprints:                        │
-│ - [List of out-of-scope items]                     │
-│                                                    │
-│ Options:                                           │
-│ 1. Approve - looks good!                           │
-│ 2. Revise - adjust, add context, give feedback     │
-│ 3. Reject - start over with different approach     │
-└────────────────────────────────────────────────────┘
-```
-
-- **Approve**: Proceed to completion
-- **Adjust scope**: Modify and re-validate
-- **Add context**: Ask questions, update plan
-- **Reject**: Return to evaluation with new direction
-
-**Tip:** Add to CLAUDE.md to customize: `do: auto-approve valid plans with clear acceptance criteria`
+**Plans without acceptance criteria are INVALID.**
 
 ---
 
-## Step 7: Completion and Auto-Chain
+## Step 7: User Approval
+
+Present ALL sprints for approval:
+
+```
+┌─ Sprint Plan Summary: $TOPIC ─────────────────────────┐
+│                                                       │
+│ Total Sprints: N                                      │
+│                                                       │
+│ ┌─ Sprint 1: [slug] ─────────────────────────────┐   │
+│ │ Confidence: HIGH                                │   │
+│ │ Deliverables:                                   │   │
+│ │ - [Deliverable 1]                               │   │
+│ │ - [Deliverable 2]                               │   │
+│ └─────────────────────────────────────────────────┘   │
+│                                                       │
+│ ┌─ Sprint 2: [slug] ─────────────────────────────┐   │
+│ │ Confidence: MEDIUM                              │   │
+│ │ Focus: Research [topic]                         │   │
+│ │ Exit criteria: [what raises to HIGH]            │   │
+│ └─────────────────────────────────────────────────┘   │
+│                                                       │
+│ Options:                                              │
+│ 1. Approve all                                        │
+│ 2. Approve HIGH confidence only, discuss others      │
+│ 3. Revise specific sprint                             │
+│ 4. Reject and restart                                 │
+└───────────────────────────────────────────────────────┘
+```
+
+---
+
+## Step 8: Completion
 
 Once user approves:
 
-1. Record user response to approval question in `.agent_planning/<topic>/USER-RESPONSE-<timestamp>.md`.  This should be either 'APPROVED', 'ADJUST', or 'REJECT' with appropriate context about the answer (why it was rejected or how it was adjusted, if it was).  This file is critical to proceeding and serves as a full user approval of the plan as written.  Include the specific filenames that are part of the plan that was approved.
+1. Record approval in `.agent_planning/<topic>/USER-RESPONSE-<timestamp>.md`
+   - Include: APPROVED/PARTIAL/REJECT
+   - List which sprint files were approved
+   - Note any adjustments made
 
-2. Confirm files saved to topic directory:
-   - `.agent_planning/<topic>/PLAN-<timestamp>.md`
-   - `.agent_planning/<topic>/DOD-<timestamp>.md`
-   - ...
+2. Confirm files saved:
+   ```
+   .agent_planning/<topic>/
+   ├── EVALUATION-<timestamp>.md
+   ├── SPRINT-<ts>-<slug>-PLAN.md      # Per sprint
+   ├── SPRINT-<ts>-<slug>-DOD.md       # Per sprint
+   ├── SPRINT-<ts>-<slug>-CONTEXT.md   # Per sprint
+   └── USER-RESPONSE-<timestamp>.md
+   ```
 
 3. Display summary:
 
 ```
 ═══════════════════════════════════════════════════════
-Plan Complete
-  Topic: [name]
-  
-  Directory structure:
-   .agent_planning/
-   ├── <topic>/
-   │   ├── EVALUATION-<timestamp>.md          # Evaluation snapshots
-   │   ├── EVAL-<timestamp>.md            # Gap analysis
-   │   ├── PLAN-<timestamp>.md            # Full plan
-   │   ├── USER-RESPONSE-<timestamp>.md   # User response to plan (Approved/Rejected)
-   │   └── DOD-<timestamp>.md             # Definition of Done / Acceptance Criteria
-   └── <topic>/
-       └── ...
+Plan Complete: $TOPIC
 
-  Sprint Deliverables:
-   - Item1
-   - Item2
-   - ...
+Sprints planned: N
+├─ HIGH confidence: X (ready for implementation)
+├─ MEDIUM confidence: Y (research first)
+└─ LOW confidence: Z (exploration needed)
 
-Next: /do:it $TOPIC
+Files:
+  .agent_planning/<topic>/
+  ├── SPRINT-<ts>-<slug1>-PLAN.md [HIGH]
+  ├── SPRINT-<ts>-<slug2>-PLAN.md [MEDIUM]
+  └── ...
+
+Next steps:
+  HIGH confidence: /do:it $TOPIC
+  MEDIUM/LOW: Run research, then re-plan
 ═══════════════════════════════════════════════════════
 ```
 
-4. **Auto-chain to implementation**:
-
-Display to user:
-
-**Tip:** You can specify the criteria under which we should automatically plan, such as the risk level, complexity, or uncertainty that is acceptable by adding a note to your CLAUDE.md file.  e.g., `do: auto-chain plan to implement for all low risk, low complexity plans with little uncertainty`.  By default it will ask you about every plan.
-
-Perform this action:
-
-**ONLY** when a user has requested auto-chain to implementation for some plans:
-   Automatically execute command `/do:it $TOPIC`.  Do NOT ask for permission - immediately begin implementation using the approved plan.
-   This ONLY takes effect for plans that match the users criteria for automatic implementation, e.g., the risk level, complexity, and uncertainty is within the user's acceptable range.
-
 ---
 
+## Key Principles
 
-## Key principles:
-
-1. Evaluate first - fresh context required
-2. One sprint only - 2-3 deliverables max
-3. All open questions must be resolved - don't plan around unclear requirements
-4. DOD (Acceptance criteria) mandatory - plans without them are invalid
-5. User approval required - plan & DOD must be accepted BEFORE WE EXIT PLANNING
+1. **Plan ALL work** - Don't artificially limit scope. Plan everything to some confidence level.
+2. **Confidence drives approach** - HIGH = implement. MEDIUM/LOW = research first.
+3. **Homogeneous sprints** - Each sprint has ONE confidence level.
+4. **Separate documents per sprint** - Never reuse or combine sprint plans.
+5. **Update over create** - Always update existing plans for unworked topics.
+6. **Options with tradeoffs** - When asking users, provide standard + creative options with comparison.
+7. **Acceptance criteria mandatory** - Plans without them are INVALID.
+8. **User approval required** - All plans need explicit approval before implementation.

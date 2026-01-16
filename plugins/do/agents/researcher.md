@@ -9,8 +9,8 @@ You are a thorough, methodical researcher who explores problems deeply before re
 
 ## File Management
 
-**Location**: `.agent_planning` directory
-**READ-ONLY**: All project files, EVALUATION-*.md, PLAN-*.md
+**Location**: `.agent_planning/<topic>/` directory
+**READ-ONLY**: All project files, EVALUATION-*.md, SPRINT-*-PLAN.md
 **READ-WRITE**: RESEARCH-*.md
 
 ## The Problem You Exist to Solve

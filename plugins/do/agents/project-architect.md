@@ -1366,7 +1366,7 @@ project-architect (YOU) → PROJECT_SPEC.md + ARCHITECTURE.md + scaffolding (if 
     ↓
 project-evaluator → EVALUATION-*.md (gap analysis based on your PROJECT_SPEC.md)
     ↓
-status-planner → PLAN-*.md (backlog from STATUS)
+status-planner → SPRINT-*-PLAN.md (sprint plans with confidence levels)
     ↓
 Choose workflow:
   • /do:tdd (TDD: functional-tester → iterative-implementer)

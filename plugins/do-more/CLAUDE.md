@@ -88,16 +88,22 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 
 ## Planning Files
 
-Agents coordinate via `.agent_planning/`:
+Agents coordinate via `.agent_planning/<topic>/`:
 
-| File Pattern       | Access | Purpose |
-|--------------------|--------|---------|
-| `EVALUATION-*.md`  | Read-only | Current project state |
-| `PLAN-*.md`        | Read-only | Implementation plans |
-| `BACKLOG-*.md`     | Read-only | Prioritized work items |
-| `SPRINT-*.md`      | Read-write | Current sprint items |
-| `TODO-*.md`        | Read-write | Immediate tasks |
+| File Pattern | Access | Purpose |
+|--------------|--------|---------|
+| `EVALUATION-*.md` | Read-only | Current project state |
+| `SPRINT-<ts>-<slug>-PLAN.md` | Read-only | Sprint plan with confidence level |
+| `SPRINT-<ts>-<slug>-DOD.md` | Read-only | Acceptance criteria |
+| `SPRINT-<ts>-<slug>-CONTEXT.md` | Read-only | Implementation context |
+| `USER-RESPONSE-*.md` | Read-write | User approval record |
+| `TODO-*.md` | Read-write | Immediate tasks |
 | `do-command-logs/` | Read-write | Execution tracking |
+
+**Confidence Levels** (in sprint plans):
+- HIGH → Ready for `/do:it`
+- MEDIUM → Research unknowns first
+- LOW → Explore with user, then re-plan
 
 ## Execution Tracking
 
