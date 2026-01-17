@@ -97,6 +97,12 @@ skill-name/
 
 ### Phase 5: Validate
 
+**Size discipline:**
+- New skills should be tight. SKILL.md typically 50-150 lines.
+- When improving existing skills: surgical changes only, preserve existing wording.
+- Measure additions: if adding 50+ lines for a feature, reconsider approach.
+- No template bloat, ASCII boxes, or repeated tables.
+
 Before outputting, verify:
 
 - [ ] `name`: lowercase, hyphens, ≤64 chars, no "anthropic"/"claude"
