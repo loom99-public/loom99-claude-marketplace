@@ -1,11 +1,11 @@
 {
   "name": "do",
   "version": "0.5.21",
-  "description": "do: ideate, evaluate, research, plan, test, implement, verify",
+  "description": "do: stop trying. start doing.",
   "author": {
     "name": "Brandon Fryslie",
     "email": ""
   },
   "license": "MIT",
-  "keywords": ["development", "workflow", "testing", "implementation", "planning", "tdd"]
+  "keywords": ["light-touch", "agentic", "harness"]
 }
