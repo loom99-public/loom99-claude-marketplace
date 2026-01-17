@@ -87,6 +87,16 @@ Primary commands:
 - **Hooks enforce discipline**: Pre-hooks gate operations, post-hooks remind about next steps
 - **Testing**: pytest-based functional tests in `tests/functional/`
 
+## Editing Guidelines
+
+When modifying commands, skills, or agents:
+
+- **Surgical changes only** - Preserve existing wording. Change only what's necessary.
+- **Minimal additions** - Strong bias against adding content. New features should add ~10-30 lines, not 100+.
+- **No template bloat** - Avoid verbose markdown templates, ASCII art boxes, repeated tables.
+- **Reference, don't repeat** - If content exists elsewhere, reference it instead of duplicating.
+- **Measure your diff** - Run `git diff --stat` before committing. Question any file with 20+ lines added.
+
 ## Adding New Components
 
 ### New Skill
