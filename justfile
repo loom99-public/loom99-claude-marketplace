@@ -227,11 +227,20 @@ pre-commit: clean validate test
 
 # Bump all plugins and reload marketplace
 bump:
-    @just bump-plugin do
-    @just bump-plugin do-more
-    @echo "Reloading marketplace..."
-    @claude plugin marketplace update loom99
-    @echo "Done!"
+    #!/usr/bin/env bash
+    set -euo pipefail
+    for plugin in do do-more do-extra; do
+        if [ -f "plugins/$plugin/.claude-plugin/plugin.json" ]; then
+            just bump-plugin "$plugin"
+        fi
+    done
+    echo "Reloading marketplace..."
+    claude plugin marketplace update loom99
+    echo "Updating Claude's installed plugins..."
+    for plugin in do do-more do-extra; do
+        just reload "$plugin"
+    done
+    echo "Done!"
 
 # Bump a single plugin version (no reload)
 bump-plugin plugin:
@@ -257,11 +266,16 @@ bump-plugin plugin:
     echo "  Updated $MARKETPLACE_JSON"
     echo "Done: $PLUGIN is now v$NEW_VERSION"
 
-# Reload marketplace without bumping version
-reload:
-    rm -rf ~/.claude/plugins/cache/loom99
-    claude plugin install do@loom99
-    @claude plugin marketplace update loom99
+# Reload a specific plugin
+reload plugin:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    plugin="{{plugin}}"
+    plugin_list=$(claude plugin list 2>/dev/null)
+    if echo "$plugin_list" | grep -A3 "❯ $plugin@loom99" | grep -q "Status: ✔ enabled"; then
+        echo "Updating $plugin..."
+        claude plugin update "$plugin@loom99"
+    fi
 
 # Tail hook logs in real-time
 hook-tail:
