@@ -75,6 +75,7 @@ Format: `- topic-slug [STATE]`
 | `ARCHIVED` | Completed but no longer maintained |
 
 **Topic metadata (indented, optional):**
+- `Summary:` - Brief description captured from conversation when added (context for `/do:plan`)
 - `Epic:` - Beads epic ID (e.g., `USER-AUTH-1`)
 - `Directory:` - Planning directory path (e.g., `.agent_planning/user-auth/`)
 - `Dependencies:` - Comma-separated list of topic slugs this depends on
@@ -99,17 +100,20 @@ Status: active
 ### Topics
 
 - user-authentication [IN PROGRESS]
+  - Summary: Users need secure login/logout. Support email+password initially, OAuth later.
   - Epic: USER-AUTHENTICATION-1
   - Directory: .agent_planning/user-authentication/
   - Labels: backend, security
 
 - payment-processing [PLANNING]
+  - Summary: Stripe integration for subscriptions. Need webhook handling for failed payments.
   - Epic: PAYMENT-PROCESSING-1
   - Directory: .agent_planning/payment-processing/
   - Dependencies: user-authentication
   - Labels: backend, critical
 
 - dashboard-ui [PROPOSED]
+  - Summary: Main user dashboard showing account status, recent activity, quick actions.
   - Directory: .agent_planning/dashboard-ui/
   - Dependencies: user-authentication
   - Labels: frontend
@@ -164,6 +168,7 @@ interface Phase {
 interface Topic {
   name: string;        // kebab-case slug
   state: 'PROPOSED' | 'PLANNING' | 'IN PROGRESS' | 'COMPLETED' | 'ARCHIVED';
+  summary?: string;    // Brief description from conversation (context for /do:plan)
   epic?: string;       // Beads epic ID
   directory?: string;  // Planning directory path
   dependencies?: string[];  // Topic slugs

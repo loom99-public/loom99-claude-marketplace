@@ -1,6 +1,7 @@
 ---
-name: roadmap
-description: Parse and manipulate ROADMAP.md files for hierarchical project planning with phases and topics.
+name: roadmap-skill
+description: "Parse and manipulate ROADMAP.md files for hierarchical project planning with phases and topics. Entry point for /do:roadmap command."
+context: fork
 ---
 
 # Roadmap Skill
@@ -16,7 +17,120 @@ Parse, query, and update `.agent_planning/ROADMAP.md` files that define project 
 - Adding new topics to phases
 - Updating topic states or metadata
 - Generating topic status reports
-My fucking file
+
+## Entry Point
+
+This skill serves as the implementation for `/do:roadmap`. The command invokes this skill with:
+
+```
+Skill("do:roadmap-skill") with:
+  topic: "<topic-string>" | null
+```
+
+### Execute Command (Entry Point)
+
+**Input**:
+- `mode`: Either "view" (no arguments) or "add" (with topic argument)
+- `topic`: Topic string to add (only used in "add" mode)
+
+**Output**: Formatted text for display to user
+
+**Flow**:
+
+```python
+def execute_command(mode: str, topic: str | None) -> str:
+    """Entry point for /do:roadmap command"""
+
+    if mode == "view":
+        # View mode: display roadmap tree
+        if not file_exists(".agent_planning/ROADMAP.md"):
+            return """No roadmap yet.
+
+Run /do:roadmap <topic> to create your first roadmap with a topic.
+
+Example: /do:roadmap user-authentication"""
+
+        roadmap = parse_roadmap(".agent_planning/ROADMAP.md")
+        return format_tree_view(roadmap)
+
+    elif mode == "add":
+        # Add mode: full add flow
+        return execute_add_flow(topic)
+
+def execute_add_flow(topic_input: str) -> str:
+    """Handle adding a topic to the roadmap"""
+
+    # Step 1: Check/create ROADMAP.md
+    if not file_exists(".agent_planning/ROADMAP.md"):
+        roadmap = initialize_roadmap()
+        # Skip similarity check - roadmap is empty
+        selected_phase_num = 1
+    else:
+        roadmap = parse_roadmap(".agent_planning/ROADMAP.md")
+
+        # Step 2: Similarity check (LLM-based)
+        all_topics = list_all_topics(roadmap)
+        similar = llm_check_similarity(topic_input, all_topics)
+
+        if similar:
+            # Step 3: Disambiguation (use do:prompt-questioning)
+            choice = prompt_user_disambiguation(similar, topic_input)
+            if choice == "view_status":
+                return format_status_report(get_topic_status(similar["name"], roadmap))
+            elif choice == "cancel":
+                return "Cancelled."
+            # else: continue to add as new topic
+
+        # Step 4: Phase selection (use do:prompt-questioning)
+        selected_phase_num = prompt_user_phase_selection(roadmap)
+
+    # Step 5: Capture summary (use do:prompt-questioning)
+    topic_summary = prompt_user_for_summary(topic_input)
+
+    # Step 6: Create beads epic
+    topic_slug = to_kebab_case(topic_input)
+    try:
+        epic_id = create_beads_epic(topic_slug)
+    except:
+        epic_id = None  # Continue without epic
+
+    # Step 7: Create topic directory
+    mkdir(f".agent_planning/{topic_slug}/")
+
+    # Step 8: Add to roadmap
+    roadmap = add_topic_to_phase(
+        topic_name=topic_slug,
+        phase_num=selected_phase_num,
+        roadmap=roadmap,
+        summary=topic_summary,
+        epic=epic_id
+    )
+
+    # Step 9: Write file
+    content = write_roadmap(roadmap)
+    write_file(".agent_planning/ROADMAP.md", content)
+
+    # Step 10: Return confirmation
+    phase = next(p for p in roadmap["phases"] if p["number"] == selected_phase_num)
+    return f"""✓ Added topic to roadmap
+
+Topic: {topic_slug}
+Phase: Phase {selected_phase_num}: {phase['name']}
+State: PROPOSED
+Directory: .agent_planning/{topic_slug}/
+Epic: {epic_id or "None (create with bd)"}
+
+Next steps:
+  1. Run /do:plan {topic_slug} to create a detailed plan
+  2. Edit .agent_planning/ROADMAP.md to add dependencies or labels
+  3. View roadmap: /do:roadmap"""
+```
+
+**User Interaction**: The add flow uses the `do:prompt-questioning` skill for:
+- Disambiguation when similar topic found
+- Phase selection
+- Summary capture
+
 ## Core Procedures
 
 ### Procedure 1: Parse ROADMAP.md
@@ -78,6 +192,10 @@ def parse_roadmap(path):
                 "state": match.group(2).strip()
             }
             current_topics.append(topic)
+
+        # Topic metadata: - Summary: ...
+        elif current_topics and line.strip().startswith("- Summary:"):
+            current_topics[-1]["summary"] = line.split(":", 1)[1].strip()
 
         # Topic metadata: - Epic: ...
         elif current_topics and line.strip().startswith("- Epic:"):
@@ -164,14 +282,14 @@ def list_all_topics(roadmap):
 
 Adds a new topic to a specified phase and updates the file.
 
-**Input**: Topic name, phase number, optional metadata (epic, dependencies, labels)
+**Input**: Topic name, phase number, optional metadata (summary, epic, dependencies, labels)
 
 **Output**: Updated roadmap data
 
 **Algorithm**:
 
 ```python
-def add_topic_to_phase(topic_name, phase_num, roadmap, epic=None, deps=None, labels=None):
+def add_topic_to_phase(topic_name, phase_num, roadmap, summary=None, epic=None, deps=None, labels=None):
     # Find target phase
     phase = next((p for p in roadmap["phases"] if p["number"] == phase_num), None)
     if not phase:
@@ -185,6 +303,10 @@ def add_topic_to_phase(topic_name, phase_num, roadmap, epic=None, deps=None, lab
         "name": slug,
         "state": "PLANNING" if has_planning_files(slug) else "PROPOSED"
     }
+
+    # Add summary (captured from conversation - context for /do:plan)
+    if summary:
+        topic["summary"] = summary
 
     # Add directory
     topic["directory"] = f".agent_planning/{slug}/"
@@ -261,6 +383,9 @@ def write_roadmap(roadmap):
             lines.append(f"- {topic['name']} [{topic['state']}]")
 
             # Write topic metadata (indented)
+            # Summary first - it's the key context for understanding the topic
+            if "summary" in topic:
+                lines.append(f"  - Summary: {topic['summary']}")
             if "epic" in topic:
                 lines.append(f"  - Epic: {topic['epic']}")
             if "directory" in topic:
