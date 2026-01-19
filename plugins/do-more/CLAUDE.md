@@ -168,7 +168,7 @@ The `do:deferred-work-capture` skill (from base `do` plugin) ensures discovered 
 
 | Skill | Purpose |
 |-------|---------|
-| `do:audit` | Deep forensic analysis |
+| `do:audit-master` | Multi-dimension comprehensive audit |
 | `do:refactor` | Safe code restructuring |
 | `do:debug` | Root cause investigation |
 | `do:fix` | Bug fix workflow |
