@@ -1,0 +1,29 @@
+Agent: iterative-implementer | 20260119-054718
+Mode: manual
+Completed: Full release-skill implementation | Files: 1 | Commits: 1
+Tests: N/A (manual validation mode)
+Cache invalidated: None (no eval-cache present)
+Status: complete
+
+Implementation Details:
+- Replaced stub SKILL.md with complete implementation
+- Implemented 6 actions: status, bump, changelog, notes, tag, publish
+- Status action: shows version, last tag, commits since tag, uncommitted changes
+- Bump action: semantic versioning (major/minor/patch) with existing justfile integration
+- Changelog action: generates/updates CHANGELOG.md from git commits using Keep a Changelog format
+- Notes action: extracts/displays release notes for current version
+- Tag action: creates annotated git tag with version
+- Publish action: orchestrates full workflow (validate → bump → changelog → commit → tag)
+- Comprehensive error handling for all edge cases
+- Follows patterns from chores-skill for consistency
+
+Validation:
+- just validate: PASSED
+- All plugins valid
+- No stub text remaining
+- Clean commit: 386 additions, 28 deletions
+
+Next Steps:
+- Manual testing: /do:release status to verify functionality
+- Test each action individually
+- Test full publish workflow
