@@ -86,6 +86,83 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | test-auditor | `/do:test` | Test coverage forensics |
 | execution-summarizer | All commands | Execution logging |
 
+## Skill-Agent Invocations
+
+| Skill | Agents Invoked | Sequence |
+|-------|----------------|----------|
+| `do:tdd-workflow` | functional-tester → project-evaluator → test-driven-implementer → work-evaluator | TestLoop then ImplementLoop |
+| `do:iterative-workflow` | iterative-implementer → work-evaluator | Loop until COMPLETE |
+| `do:fix` | researcher → iterative-implementer → work-evaluator | Investigate → Fix → Verify |
+| `do:debug` | researcher → work-evaluator | Investigate → Report (no fix) |
+| `do:refactor` | project-evaluator → iterative-implementer → work-evaluator | Analyze → Restructure → Verify |
+| `do:review` | project-evaluator | Single-pass review |
+| `do:add-tests` | project-evaluator → functional-tester → work-evaluator | Find gaps → Write tests → Verify |
+| `do:competitive-audit` | researcher | External research |
+| `do:explore-skill` | researcher (explore mode) | Codebase search |
+| `do:stuff-skill` | project-evaluator, status-planner, researcher, (tdd or iterative) | Full orchestration |
+
+## Skill Dependencies
+
+### Audit Pipeline
+```
+/do:audit
+    └── audit-master
+        ├── [code] → deep-audit
+        ├── [planning] → planning-audit
+        ├── [security] → security-audit
+        ├── [competitive] → competitive-audit → researcher
+        └── [testing] → test-coverage-audit
+```
+
+### Testing Pipeline
+```
+/do:test
+    └── testing-master
+        ├── setup → setup-testing
+        ├── audit → test-coverage-audit
+        ├── recommend → test-recommendations
+        └── plan → test-implementation-plan
+```
+
+### Implementation Pipeline
+```
+/do:it OR /do:stuff
+    └── stuff-skill
+        ├── [no plan] → project-evaluator → status-planner
+        ├── [unknowns] → researcher
+        └── [implement] → tdd-workflow OR iterative-workflow
+```
+
+## Workflow Decision Trees
+
+### /do:it Intent Detection
+```
+User says...
+├── "tdd", "test first" → tdd-workflow
+├── "refactor", "restructure" → refactor skill
+├── "debug", "investigate" → debug skill
+├── "fix", "bug", "broken" → fix skill
+├── "review", "PR" → review skill
+├── "test", "add tests" → add-tests skill
+├── "iterate", "build" → iterative-workflow
+└── (default) → auto-select based on:
+    ├── test framework exists + API/logic → tdd-workflow
+    └── otherwise → iterative-workflow
+```
+
+### /do:test Intent Detection
+```
+User says...
+├── "status", "quick" → quick status check
+├── "audit" → test-coverage-audit
+├── "recommend" → test-recommendations
+├── "plan" → test-implementation-plan
+├── "setup" → setup-testing
+├── "add [target]" → add-tests skill
+├── "fix [issue]" → targeted fix
+└── (default) → full pipeline: audit → recommend → plan
+```
+
 ## Planning Files
 
 Agents coordinate via `.agent_planning/<topic>/`:
