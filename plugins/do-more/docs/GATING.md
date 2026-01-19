@@ -218,7 +218,7 @@ Agents are subagents and cannot ask questions directly. Instead, they:
 |---------|---------------|---------------|-----------------|
 | `/do:it` | ✅ | ✅ | ✅ |
 | `/do:plan` | - | - | ✅ |
-| `/do:research` | ✅ | - | ✅ |
+| `/do:external-research` | ✅ | - | ✅ |
 | `/do:chores` | ✅ | ✅ | ✅ |
 | `/do:docs` | ✅ | - | ✅ |
 | `/do:explore` | - | - | - |

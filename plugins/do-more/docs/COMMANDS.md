@@ -11,7 +11,7 @@ Both `[intent]` and `[area]` are optional. Claude figures it out from context.
 | `/do:it` | Implementation | Build, fix, refactor, debug, test, review |
 | `/do:plan` | Planning | Evaluate status, create plans, manage backlog |
 | `/do:explore` | Internal research | Ask questions about the codebase |
-| `/do:research` | External research | Web search, docs, competitors |
+| `/do:external-research` | External research | Web search, docs, competitors |
 | `/do:chores` | Maintenance | Cleanup, git hygiene, tech debt |
 | `/do:docs` | Documentation | README, API docs, architecture |
 | `/do:release` | Release management | Versioning, changelog (stub) |
@@ -217,22 +217,22 @@ Ask questions about the codebase. Fast, codebase-only queries.
 
 ### When to Use Something Else
 
-- Need external docs or best practices → `/do:research`
+- Need external docs or best practices → `/do:external-research`
 - Need to assess correctness → `/do:plan status`
 - Need implementation → `/do:it`
 
 ---
 
-## `/do:research` - External Research
+## `/do:external-research` - External Research
 
 Research external sources: web search, documentation, competitors.
 
 ### Basic Usage
 
 ```bash
-/do:research JWT best practices 2024
-/do:research React Server Components patterns
-/do:research competitors to Stripe
+/do:external-research JWT best practices 2024
+/do:external-research React Server Components patterns
+/do:external-research competitors to Stripe
 ```
 
 ### What It Does
@@ -253,25 +253,25 @@ Creates `RESEARCH-<topic>-<timestamp>.md` with:
 ### Market Research
 
 ```bash
-/do:research market payment processing
-/do:research competitors to our auth solution
+/do:external-research market payment processing
+/do:external-research competitors to our auth solution
 ```
 
 ### Examples
 
 ```bash
 # Technology decisions
-/do:research GraphQL vs REST for our use case
-/do:research database options for time-series data
-/do:research authentication libraries for Node.js
+/do:external-research GraphQL vs REST for our use case
+/do:external-research database options for time-series data
+/do:external-research authentication libraries for Node.js
 
 # Best practices
-/do:research microservices patterns 2024
-/do:research API versioning strategies
+/do:external-research microservices patterns 2024
+/do:external-research API versioning strategies
 
 # Market analysis
-/do:research competitors to Notion
-/do:research demand for CLI developer tools
+/do:external-research competitors to Notion
+/do:external-research demand for CLI developer tools
 ```
 
 ---
@@ -396,7 +396,7 @@ The `route-subcommands` skill:
 /do:plan /do:it /do:chores
 
 # Research then plan
-/do:research auth patterns /do:plan feature auth
+/do:external-research auth patterns /do:plan feature auth
 ```
 
 ---
@@ -407,7 +407,7 @@ The `route-subcommands` skill:
 |---------|---------------|---------------|-----------------|
 | `/do:it` | Yes | Yes | Yes |
 | `/do:plan` | - | - | Yes |
-| `/do:research` | Yes | - | Yes |
+| `/do:external-research` | Yes | - | Yes |
 | `/do:chores` | Yes | Yes | Yes |
 | `/do:docs` | Yes | - | Yes |
 | `/do:explore` | - | - | - |

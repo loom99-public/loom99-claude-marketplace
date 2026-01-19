@@ -49,8 +49,7 @@ This document explains how Do More Now is structured internally and how its comp
 │  │   ├── STATUS-*.md        (project state)                            │    │
 │  │   ├── PLAN-*.md          (implementation plans)                     │    │
 │  │   ├── BACKLOG-*.md       (work items)                               │    │
-│  │   ├── RESEARCH-*.md      (research findings)                        │    │
-│  │   └── do-command-logs/   (execution tracking)                       │    │
+│  │   └── RESEARCH-*.md      (research findings)                        │    │
 │  └─────────────────────────────────────────────────────────────────────┘    │
 │  ┌─────────────────────────────────────────────────────────────────────┐    │
 │  │ Source Code Files                                                    │    │
@@ -77,7 +76,7 @@ Commands are the entry point. Each command:
 | `it.md` | `/do:it` |
 | `plan.md` | `/do:plan` |
 | `explore.md` | `/do:explore` |
-| `research.md` | `/do:research` |
+| `research.md` | `/do:external-research` |
 | `chores.md` | `/do:chores` |
 | `docs.md` | `/do:docs` |
 | `release.md` | `/do:release` |
@@ -148,9 +147,6 @@ do-more-now/
 │   └── ...
 ├── hooks/                    # Lifecycle hooks
 │   └── hooks.json
-├── bin/                      # Hook scripts
-│   ├── init.py
-│   └── aggregate-exec.py
 ├── docs/                     # Documentation
 ├── architecture/             # Architecture docs
 ├── CLAUDE.md                 # Claude instructions
@@ -168,18 +164,7 @@ do-more-now/
 ├── TODO-*.md                # Immediate tasks
 ├── RESEARCH-*.md            # Research findings
 ├── FEATURE-*.md             # Feature proposals
-├── SUMMARY-*.txt            # Agent summaries
-├── do-command-logs/
-│   ├── CURRENT_EXECUTION_ID.txt
-│   ├── CURRENT_SEQUENCE.txt
-│   ├── EXEC-*.md            # Final execution reports
-│   └── partials/
-│       └── *-PARTIAL-*.txt  # Per-agent execution traces
-└── do-command-state/
-    └── <EXEC_ID>/
-        ├── GATE_CONFIG.txt
-        ├── DECISIONS/
-        └── SECURITY/
+└── SUMMARY-*.txt            # Agent summaries
 ```
 
 ### File Access Patterns
@@ -217,13 +202,12 @@ do-more-now/
 4. Each agent:
    a. Read execution state
    b. Perform work
-   c. Write partial log
+   c. Write summary
    d. Return result
 
 5. Command finishes:
    a. Process checkpoint gate
-   b. Aggregate logs (via hook)
-   c. Return result to user
+   b. Return result to user
 ```
 
 ### Gate Processing Flow
@@ -244,18 +228,6 @@ do-more-now/
 4. If rejected: Stop execution
    If approved: Continue to next step
 ```
-
-### Hook Integration
-
-**SessionStart Hook** (`bin/init.py`):
-- Creates `.agent_planning/` structure
-- Initializes execution tracking files
-- Logs session start
-
-**Stop Hook** (`bin/aggregate-exec.py`):
-- Reads partial logs from all agents
-- Aggregates into final execution report
-- Cleans up state files
 
 ---
 
@@ -313,12 +285,6 @@ Each command execution has:
 - **SEQUENCE**: Counter for agent invocations
 - **GATE_CONFIG**: Decision checkpoint configuration
 
-State files in `.agent_logs/do/`:
-```
-CURRENT_EXECUTION_ID.txt   # Active execution UUID
-CURRENT_SEQUENCE.txt       # Current agent sequence number
-```
-
 ### Planning State
 
 Project state is maintained in `.agent_planning/`:
@@ -364,7 +330,6 @@ Gate decisions are tracked per-execution:
 3. Specify tool access
 4. Define file access patterns
 5. Define output format
-6. Add execution tracking
 
 ---
 

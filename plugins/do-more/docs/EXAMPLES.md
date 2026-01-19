@@ -232,7 +232,7 @@ Claude follows the code path and explains each step.
 ### External Context
 
 ```bash
-/do:research what's the best practice for JWT refresh tokens
+/do:external-research what's the best practice for JWT refresh tokens
 ```
 
 Web research when codebase context isn't enough.
@@ -246,7 +246,7 @@ You need to add auth to an API that doesn't have it.
 ### Research First
 
 ```bash
-/do:research JWT vs session authentication for REST APIs
+/do:external-research JWT vs session authentication for REST APIs
 ```
 
 Claude researches options, explains tradeoffs, recommends an approach.
@@ -351,7 +351,7 @@ Claude will:
 ### Review What It Did
 
 ```bash
-cat .agent_logs/do/EXEC-*.md
+cat .agent_planning/SUMMARY-*.txt
 ```
 
 See exactly what happened.
@@ -442,8 +442,8 @@ App is slow, you don't know why.
 ### Research Performance Patterns
 
 ```bash
-/do:research common React performance issues
-/do:research database query optimization
+/do:external-research common React performance issues
+/do:external-research database query optimization
 ```
 
 ### Audit the Code
@@ -500,7 +500,7 @@ Creates an inventory of tech debt.
 | New feature (complex) | `/do:plan feature` → `/do:it` |
 | Code cleanup | `/do:chores` or `/do:it refactor` |
 | Understanding code | `/do:explore` |
-| Learning best practices | `/do:research` |
+| Learning best practices | `/do:external-research` |
 | Full autonomy | `/do:it autonomous` |
 | Full control | `/do:it carefully` |
 | Security check | `/do:plan audit security` |

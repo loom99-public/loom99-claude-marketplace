@@ -133,14 +133,14 @@ Ask questions about the codebase. Claude reads code, not docs.
 /do:explore compare REST vs GraphQL approaches in this codebase
 ```
 
-### `/do:research` - External Research
+### `/do:external-research` - External Research
 
 Learn from outside sources. Web search, docs, competitors.
 
 ```bash
-/do:research JWT best practices 2024
-/do:research competitors to Stripe
-/do:research React Server Components patterns
+/do:external-research JWT best practices 2024
+/do:external-research competitors to Stripe
+/do:external-research React Server Components patterns
 ```
 
 ### `/do:chores` - Maintenance
@@ -222,9 +222,6 @@ Example: `/do:it fix auth bug`
 2. Invokes `do:fix` skill
 3. Skill spawns `researcher` agent (investigation)
 4. Then `iterative-implementer` agent (fix)
-5. Stop hook aggregates execution report
-
-You don't need to know any of this. But if something goes wrong, `.agent_logs/do/` has the receipts.
 
 ---
 
@@ -261,7 +258,7 @@ Everything works without Beads. It just works *better* with it.
 
 ### "Nothing is happening"
 
-Check `.agent_logs/do/` for debug logs. The `*-DEBUG.log` files show what Claude is doing.
+Check `.agent_planning/` for debug logs and planning files.
 
 ### "Claude is stuck in a loop"
 
@@ -289,13 +286,6 @@ Use NONBLOCKING mode:
 Use BLOCKING mode:
 ```bash
 /do:it carefully refactor the database
-```
-
-### "Where did my work go?"
-
-Execution reports are saved to:
-```
-.agent_logs/do/EXEC-<command>-<timestamp>.md
 ```
 
 ---

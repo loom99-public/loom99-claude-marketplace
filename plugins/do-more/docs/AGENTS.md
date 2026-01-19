@@ -13,7 +13,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 | [test-driven-implementer](#test-driven-implementer) | TDD implementation | `/do:it tdd` |
 | [iterative-implementer](#iterative-implementer) | Iterative implementation | `/do:it`, `/do:chores`, `/do:docs` |
 | [work-evaluator](#work-evaluator) | Runtime validation | `/do:it`, `/do:plan status` |
-| [researcher](#researcher) | Investigation | `/do:explore`, `/do:research` |
+| [researcher](#researcher) | Investigation | `/do:explore`, `/do:external-research` |
 | [product-visionary](#product-visionary) | Feature proposals | `/do:plan feature` |
 | [execution-summarizer](#execution-summarizer) | Execution logging | All commands |
 
@@ -256,7 +256,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 
 **Purpose**: Deep exploration of problems, unknowns, and design decisions.
 
-**Invoked By**: `/do:explore`, `/do:research`
+**Invoked By**: `/do:explore`, `/do:external-research`
 
 **What It Does**:
 1. Clarifies what's actually being asked
@@ -277,7 +277,7 @@ Do More Now uses ten specialized agents, each with a focused purpose. Agents are
 - Fast exit (30s-2min)
 - Minimal output
 
-**Full Mode** (for `/do:research`):
+**Full Mode** (for `/do:external-research`):
 - Thorough exploration
 - External sources included
 - Structured research document

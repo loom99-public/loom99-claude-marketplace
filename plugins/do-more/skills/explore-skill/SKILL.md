@@ -44,5 +44,5 @@ Use do:researcher in **explore mode** with `main_instructions`:
 
 ## Redirects
 
-- Needs external research → "Use `/do:research`"
+- Needs external research → "Use `/do:external-research`"
 - Needs correctness/status check → "Use `/do:plan status`"

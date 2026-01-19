@@ -12,15 +12,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```
 User Command → Command (intent detection) → Skill (workflow) → Agent(s) (execution)
-     ↓
-  Hooks (SessionStart/Stop) manage execution state and logging
 ```
 
 **Execution Flow Example**: `/do:it fix auth bug`
 1. `commands/it.md` detects "fix" intent
 2. Invokes `do:fix` skill
 3. Skill spawns `researcher` agent (investigation) then `iterative-implementer` (fix)
-4. Agents write partial logs; Stop hook aggregates into final report
 
 ## Commands
 
@@ -29,7 +26,7 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 | `/do:it [args]` | Implement: build, fix, refactor, debug, test, review |
 | `/do:handoff [topic]` | Create context handoff document for agent transfer |
 | `/do:explore [question]` | Explore: codebase questions, internal investigation |
-| `/do:research [topic]` | Research: external sources, web search |
+| `/do:external-research [topic]` | Research: external sources, web search |
 | `/do:docs [type]` | Docs: README, API, architecture documentation |
 | `/do:release` | Release: versioning, changelog (stub) |
 | `/do:test [args]` | Test: audit coverage, recommendations, implementation |
@@ -84,7 +81,7 @@ User Command → Command (intent detection) → Skill (workflow) → Agent(s) (e
 |-------|---------|---------|
 | test-driven-implementer | `/do:tdd` | TDD implementation |
 | test-auditor | `/do:test` | Test coverage forensics |
-| execution-summarizer | All commands | Execution logging |
+| execution-summarizer | (not yet wired) | Execution logging (planned) |
 
 ## Skill-Agent Invocations
 
@@ -175,37 +172,11 @@ Agents coordinate via `.agent_planning/<topic>/`:
 | `SPRINT-<ts>-<slug>-CONTEXT.md` | Read-only | Implementation context |
 | `USER-RESPONSE-*.md` | Read-write | User approval record |
 | `TODO-*.md` | Read-write | Immediate tasks |
-| `do-command-logs/` | Read-write | Execution tracking |
 
 **Confidence Levels** (in sprint plans):
 - HIGH → Ready for `/do:it`
 - MEDIUM → Research unknowns first
 - LOW → Explore with user, then re-plan
-
-## Execution Tracking
-
-All execution artifacts stored in `.agent_planning/`:
-
-**State Files** (in `.agent_planning/do-command-logs/`):
-- `CURRENT_EXECUTION_ID.txt` - Active execution UUID
-- `CURRENT_SEQUENCE.txt` - Agent sequence counter
-
-**Partial Logs** (in `.agent_planning/do-command-logs/partials/`):
-- `<EXEC_ID>-<SEQ>-PARTIAL-<agent>.txt` - Per-agent execution trace
-
-**Final Reports** (in `.agent_planning/`):
-- `EXEC-<cmd>-<timestamp>.md` - Aggregated execution report (created by Stop hook)
-
-**Debug Logs** (in `.agent_planning/`):
-- `<session-id>-DEBUG.log` - Timestamped debug output per session
-
-## Hooks
-
-**SessionStart** (`bin/init.py`):
-- Creates directory structure
-- Initializes execution tracking
-
-**Stop** (`bin/aggregate-exec.py`): Aggregates partial logs into final report, cleans up state files
 
 ## Subcommand Chaining
 

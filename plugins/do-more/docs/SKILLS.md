@@ -39,7 +39,7 @@ Skills are reusable workflow definitions that orchestrate agents and define proc
 
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
-| `do:market-research` | External/market research | `/do:research market` |
+| `do:market-research` | External/market research | `/do:external-research market` |
 
 ### System Skills
 

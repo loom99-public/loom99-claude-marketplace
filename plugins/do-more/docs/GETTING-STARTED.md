@@ -77,7 +77,7 @@ You only need to remember these:
 | `/do:it` | Build, fix, refactor, test | `/do:it fix auth bug` |
 | `/do:plan` | Evaluate and plan work | `/do:plan` |
 | `/do:explore` | Ask about your code | `/do:explore where is auth handled` |
-| `/do:research` | Learn from the web | `/do:research JWT best practices` |
+| `/do:external-research` | Learn from the web | `/do:external-research JWT best practices` |
 | `/do:chores` | Cleanup and maintenance | `/do:chores` |
 | `/do:docs` | Documentation | `/do:docs readme` |
 | `/do:release` | Versioning (stub) | `/do:release` |
@@ -175,7 +175,7 @@ Default behavior. Claude works, then shows you results for approval.
 ### Research, Then Build
 
 ```bash
-/do:research best practices for rate limiting    # Learn
+/do:external-research best practices for rate limiting    # Learn
 /do:it add rate limiting to API                  # Build with knowledge
 ```
 
@@ -290,7 +290,7 @@ Use careful mode:
 Check the execution logs:
 
 ```bash
-cat .agent_logs/do/EXEC-*.md
+cat .agent_planning/SUMMARY-*.txt
 ```
 
 ### Something went wrong
@@ -298,7 +298,7 @@ cat .agent_logs/do/EXEC-*.md
 Debug logs are in:
 
 ```bash
-cat .agent_logs/do/*-DEBUG.log
+cat .agent_planning/ for debug information
 ```
 
 ---
@@ -329,7 +329,7 @@ Once you're comfortable with basics:
 /do:plan audit              # Comprehensive assessment
 
 /do:explore <question>      # Ask about codebase
-/do:research <topic>        # Web research
+/do:external-research <topic>        # Web research
 
 /do:chores                  # Quick cleanup
 /do:docs readme             # Update README

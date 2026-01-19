@@ -22,7 +22,7 @@ What are you trying to do?
 │
 ├─► Understand something
 │   └─► Internal (codebase) → /do:explore
-│   └─► External (web/docs) → /do:research
+│   └─► External (web/docs) → /do:external-research
 │
 ├─► Plan work
 │   └─► /do:plan
@@ -271,7 +271,7 @@ Test framework exists?
 
 ### External Research (Web)
 
-**Command**: `/do:research [topic]`
+**Command**: `/do:external-research [topic]`
 
 **Flow**:
 ```
@@ -284,9 +284,9 @@ Test framework exists?
 
 **Example**:
 ```bash
-/do:research JWT vs session authentication
-/do:research database options for time-series
-/do:research competitors to Stripe
+/do:external-research JWT vs session authentication
+/do:external-research database options for time-series
+/do:external-research competitors to Stripe
 ```
 
 ---
@@ -359,7 +359,7 @@ Control how much Claude asks:
 ### Research Before Planning
 
 ```bash
-/do:research auth best practices
+/do:external-research auth best practices
 /do:plan feature user authentication
 /do:it tdd
 ```

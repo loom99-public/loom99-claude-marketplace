@@ -57,7 +57,7 @@ That's it. Claude evaluates the codebase, finds the most pressing work, and does
 | `/do:it` | Implement: build, fix, refactor, debug, test, review |
 | `/do:plan` | Plan: evaluate status, create plans, track backlog |
 | `/do:explore` | Explore: codebase questions, internal investigation |
-| `/do:research` | Research: external sources, web search, market analysis |
+| `/do:external-research` | Research: external sources, web search, market analysis |
 | `/do:chores` | Chores: maintenance, cleanup, housekeeping |
 | `/do:docs` | Docs: README, API, architecture documentation |
 | `/do:release` | Release: versioning, changelog (stub) |
@@ -113,7 +113,7 @@ Agents coordinate through `.agent_planning/`:
 | `SPRINT-*.md` | Current sprint items (read-write) |
 | `TODO-*.md` | Immediate tasks (read-write) |
 | `RESEARCH-*.md` | Research findings |
-| `do-command-logs/` | Execution tracking |
+| `SUMMARY-*.txt` | Agent execution summaries |
 
 ## Common Patterns
 
@@ -162,7 +162,7 @@ Everything works without Beads. It just works *better* with it.
 
 ### Nothing is happening
 
-Check `.agent_logs/do/` for debug logs.
+Check `.agent_planning/` for planning files and agent summaries.
 
 ### Claude is stuck in a loop
 
@@ -187,7 +187,7 @@ Use BLOCKING mode:
 
 ### Where did my work go?
 
-Execution reports: `.agent_logs/do/EXEC-<command>-<timestamp>.md`
+Agent summaries are written to `.agent_planning/SUMMARY-*.txt` files.
 
 ## Next Steps
 

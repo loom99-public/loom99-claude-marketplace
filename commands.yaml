@@ -102,7 +102,7 @@ commands:
     skill_name: release-skill
 
   - plugin: do-more
-    name: research
+    name: external-research
     argument_hint: "[market|docs|patterns]"
     description: "[market|docs|patterns] Research external sources - market analysis, competitors, external docs."
     skill_name: research-external-skill
