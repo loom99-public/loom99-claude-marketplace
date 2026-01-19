@@ -218,3 +218,9 @@ hook-tail:
 hook-clear:
     @rm -f /tmp/do_plugin/hooks.log 2>/dev/null || true
     @echo "Hook logs cleared."
+
+# Generate slash command files from commands.yaml
+generate-commands:
+    @echo "🔨 Generating slash command files from commands.yaml..."
+    @python3 scripts/generate_commands.py
+    @echo "✅ Command files generated!"
