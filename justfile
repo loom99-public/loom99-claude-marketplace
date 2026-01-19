@@ -152,79 +152,6 @@ verify: validate test
     @echo "   - All plugins valid"
     @echo "   - All functional tests passing"
 
-# Clean test artifacts and caches
-clean:
-    @echo "🧹 Cleaning test artifacts..."
-    rm -rf .pytest_cache
-    rm -rf tests/__pycache__
-    rm -rf tests/functional/__pycache__
-    find . -type f -name "*.pyc" -delete
-    find . -type d -name "__pycache__" -delete
-    @echo "✅ Cleanup complete!"
-
-# Show marketplace info
-info:
-    @echo "📦 loom99 Claude Marketplace"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @echo "Owner: Brandon Fryslie"
-    @echo "Plugins: 3"
-    @echo ""
-    @echo "Available Plugins:"
-    @echo "  • agent-loop (v0.1.0) - Agentic Software Engineering Loop"
-    @echo "  • epti (v0.1.0) - Evaluate-Plan-Test-Implement TDD Workflow"
-    @echo "  • visual-iteration (v0.1.0) - Screenshot-Driven UI Development"
-    @echo ""
-    @echo "Total Skills: 13"
-    @echo "Total Commands: 16"
-    @echo "Total Agents: 3"
-
-# Check skills structure (quick diagnostic)
-check-skills:
-    @echo "🔍 Checking skills structure..."
-    @echo ""
-    @echo "agent-loop skills:"
-    @ls -1 plugins/agent-loop/skills/
-    @echo ""
-    @echo "epti skills:"
-    @ls -1 plugins/epti/skills/
-    @echo ""
-    @echo "visual-iteration skills:"
-    @ls -1 plugins/visual-iteration/skills/
-
-# Show plugin statistics
-stats:
-    @echo "📊 Marketplace Statistics"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @echo ""
-    @echo "Code Lines:"
-    @echo "  agent-loop:        $(find plugins/agent-loop -name "*.md" -exec wc -l {} + | tail -1 | awk '{print $1}') lines"
-    @echo "  epti:              $(find plugins/epti -name "*.md" -exec wc -l {} + | tail -1 | awk '{print $1}') lines"
-    @echo "  visual-iteration:  $(find plugins/visual-iteration -name "*.md" -exec wc -l {} + | tail -1 | awk '{print $1}') lines"
-    @echo ""
-    @echo "Components:"
-    @echo "  Skills:   $(find plugins/*/skills -name "SKILL.md" | wc -l | tr -d ' ')"
-    @echo "  Commands: $(find plugins/*/commands -name "*.md" | wc -l | tr -d ' ')"
-    @echo "  Agents:   $(find plugins/*/agents -name "*.md" | wc -l | tr -d ' ')"
-    @echo "  Hooks:    $(find plugins/*/hooks -name "hooks.json" | wc -l | tr -d ' ')"
-
-# Initialize git repository (if not already initialized)
-git-init:
-    @if [ ! -d .git ]; then \
-        echo "🔧 Initializing git repository..."; \
-        git init; \
-        git add .; \
-        git commit -m "feat(marketplace): initial commit of loom99 marketplace\n\n- Add agent-loop plugin with 4-stage workflow\n- Add epti plugin with TDD workflow\n- Add visual-iteration plugin with screenshot-driven development\n- Include 24,459 lines of implementation across 3 plugins"; \
-        echo "✅ Git repository initialized!"; \
-    else \
-        echo "ℹ️  Git repository already initialized"; \
-    fi
-
-# Run development checks (before committing)
-pre-commit: clean validate test
-    @echo ""
-    @echo "✅ Pre-commit checks passed!"
-    @echo "   Safe to commit your changes."
-
 # Bump all plugins and reload marketplace
 bump:
     #!/usr/bin/env bash
@@ -234,12 +161,10 @@ bump:
             just bump-plugin "$plugin"
         fi
     done
-    echo "Reloading marketplace..."
+    echo "Updating marketplace..."
     claude plugin marketplace update loom99
     echo "Updating Claude's installed plugins..."
-    for plugin in do do-more do-extra; do
-        just reload "$plugin"
-    done
+    just reload do do-more do-extra
     echo "Done!"
 
 # Bump a single plugin version (no reload)
@@ -266,16 +191,21 @@ bump-plugin plugin:
     echo "  Updated $MARKETPLACE_JSON"
     echo "Done: $PLUGIN is now v$NEW_VERSION"
 
-# Reload a specific plugin
-reload plugin:
+# Reload one or more plugins
+reload +plugins:
     #!/usr/bin/env bash
     set -euo pipefail
-    plugin="{{plugin}}"
     plugin_list=$(claude plugin list 2>/dev/null)
-    if echo "$plugin_list" | grep -A3 "❯ $plugin@loom99" | grep -q "Status: ✔ enabled"; then
-        echo "Updating $plugin..."
-        claude plugin update "$plugin@loom99"
-    fi
+    for plugin in {{plugins}}; do
+        if echo "$plugin_list" | grep -A3 "❯ $plugin@loom99" | grep -q "Status: ✔ enabled"; then
+            echo "Clearing cache"
+            claude plugin uninstall $plugin@loom99
+            rm -rf ~/.claude/plugins/cache/loom99/$plugin
+            claude plugin install $plugin@loom99
+            echo "Updating $plugin..."
+            claude plugin update "$plugin@loom99"
+        fi
+    done
 
 # Tail hook logs in real-time
 hook-tail:
