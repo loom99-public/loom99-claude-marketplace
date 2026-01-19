@@ -23,7 +23,7 @@ This skill produces an exhaustive audit report. For recommendations based on thi
    ╱──────────────╲
 ```
 
-**Comprehensive Testing Level Definitions**: [concepts/testing-levels.md](references/concepts/testing-levels.md)
+**Comprehensive Testing Level Definitions**: [concepts/testing-levels.md](../audit-master/references/testing/concepts/testing-levels.md)
 
 | Level | Tests | Speed | Scope | Confidence |
 |-------|-------|-------|-------|------------|
@@ -44,7 +44,7 @@ This skill produces an exhaustive audit report. For recommendations based on thi
 
 ### Common AI/LLM Testing Mistakes
 
-When AI generates tests, it often makes systematic errors. **Read**: [concepts/llm-testing-mistakes.md](references/concepts/llm-testing-mistakes.md)
+When AI generates tests, it often makes systematic errors. **Read**: [concepts/llm-testing-mistakes.md](../audit-master/references/testing/concepts/llm-testing-mistakes.md)
 
 | Mistake | What It Looks Like | Why It's Harmful |
 |---------|-------------------|------------------|
@@ -65,7 +65,7 @@ When AI generates tests, it often makes systematic errors. **Read**: [concepts/l
 
 **Is this a microservices/distributed system?**
 
-Read: [detection/microservices.md](references/detection/microservices.md)
+Read: [detection/microservices.md](../audit-master/references/testing/detection/microservices.md)
 
 | Signal | Detection Method |
 |--------|------------------|
@@ -87,7 +87,7 @@ Read: [detection/microservices.md](references/detection/microservices.md)
 
 **What data does this system touch?**
 
-Read: [detection/data-interactions.md](references/detection/data-interactions.md)
+Read: [detection/data-interactions.md](../audit-master/references/testing/detection/data-interactions.md)
 
 | Category | Detection |
 |----------|-----------|
@@ -113,7 +113,7 @@ Read: [detection/data-interactions.md](references/detection/data-interactions.md
 
 **What external services does this call?**
 
-Read: [detection/external-apis.md](references/detection/external-apis.md)
+Read: [detection/external-apis.md](../audit-master/references/testing/detection/external-apis.md)
 
 | Category | Detection |
 |----------|-----------|
@@ -137,7 +137,7 @@ Read: [detection/external-apis.md](references/detection/external-apis.md)
 
 **Does this require user interaction for testing?**
 
-Read: [concepts/interactive-testing.md](references/concepts/interactive-testing.md)
+Read: [concepts/interactive-testing.md](../audit-master/references/testing/concepts/interactive-testing.md)
 
 | Pattern | Testing Approach |
 |---------|-----------------|
@@ -165,21 +165,21 @@ Read: [concepts/interactive-testing.md](references/concepts/interactive-testing.
 
 | Signal | Project Type | Scenario Reference |
 |--------|--------------|-------------------|
-| `bin/`, CLI entry point, argparse | CLI Tool | [scenarios/cli.md](references/scenarios/cli.md) |
-| React/Vue/Angular, pages/, components/ | Web Frontend | [scenarios/web-frontend.md](references/scenarios/web-frontend.md) |
-| Express/FastAPI/Rails, routes/ | Web Backend/API | [scenarios/web-backend.md](references/scenarios/web-backend.md) |
-| Both frontend + backend | Full Stack | [scenarios/fullstack.md](references/scenarios/fullstack.md) |
-| npm package, library exports | Library/SDK | [scenarios/library.md](references/scenarios/library.md) |
-| iOS/Android, mobile frameworks | Mobile App | [scenarios/mobile.md](references/scenarios/mobile.md) |
-| Dockerfile, k8s manifests, terraform | Infrastructure | [scenarios/infrastructure.md](references/scenarios/infrastructure.md) |
-| agents/, prompts/, LLM calls | AI/Agent System | [scenarios/ai-agents.md](references/scenarios/ai-agents.md) |
-| Airflow DAGs, Spark jobs, ETL | Data Pipeline | [scenarios/data-pipelines.md](references/scenarios/data-pipelines.md) |
-| Kafka, WebSockets, real-time streams | Real-time System | [scenarios/realtime-systems.md](references/scenarios/realtime-systems.md) |
-| Firmware, HAL, microcontrollers | Embedded/IoT | [scenarios/embedded-iot.md](references/scenarios/embedded-iot.md) |
-| Electron, Qt, WPF, native GUI | Desktop App | [scenarios/desktop-apps.md](references/scenarios/desktop-apps.md) |
-| manifest.json, Chrome/Firefox extension | Browser Extension | [scenarios/browser-extensions.md](references/scenarios/browser-extensions.md) |
-| Unity, Unreal, game engine | Game Development | [scenarios/game-development.md](references/scenarios/game-development.md) |
-| Solidity, smart contracts, Web3 | Blockchain/Web3 | [scenarios/blockchain.md](references/scenarios/blockchain.md) |
+| `bin/`, CLI entry point, argparse | CLI Tool | [scenarios/cli.md](../audit-master/references/testing/scenarios/cli.md) |
+| React/Vue/Angular, pages/, components/ | Web Frontend | [scenarios/web-frontend.md](../audit-master/references/testing/scenarios/web-frontend.md) |
+| Express/FastAPI/Rails, routes/ | Web Backend/API | [scenarios/web-backend.md](../audit-master/references/testing/scenarios/web-backend.md) |
+| Both frontend + backend | Full Stack | [scenarios/fullstack.md](../audit-master/references/testing/scenarios/fullstack.md) |
+| npm package, library exports | Library/SDK | [scenarios/library.md](../audit-master/references/testing/scenarios/library.md) |
+| iOS/Android, mobile frameworks | Mobile App | [scenarios/mobile.md](../audit-master/references/testing/scenarios/mobile.md) |
+| Dockerfile, k8s manifests, terraform | Infrastructure | [scenarios/infrastructure.md](../audit-master/references/testing/scenarios/infrastructure.md) |
+| agents/, prompts/, LLM calls | AI/Agent System | [scenarios/ai-agents.md](../audit-master/references/testing/scenarios/ai-agents.md) |
+| Airflow DAGs, Spark jobs, ETL | Data Pipeline | [scenarios/data-pipelines.md](../audit-master/references/testing/scenarios/data-pipelines.md) |
+| Kafka, WebSockets, real-time streams | Real-time System | [scenarios/realtime-systems.md](../audit-master/references/testing/scenarios/realtime-systems.md) |
+| Firmware, HAL, microcontrollers | Embedded/IoT | [scenarios/embedded-iot.md](../audit-master/references/testing/scenarios/embedded-iot.md) |
+| Electron, Qt, WPF, native GUI | Desktop App | [scenarios/desktop-apps.md](../audit-master/references/testing/scenarios/desktop-apps.md) |
+| manifest.json, Chrome/Firefox extension | Browser Extension | [scenarios/browser-extensions.md](../audit-master/references/testing/scenarios/browser-extensions.md) |
+| Unity, Unreal, game engine | Game Development | [scenarios/game-development.md](../audit-master/references/testing/scenarios/game-development.md) |
+| Solidity, smart contracts, Web3 | Blockchain/Web3 | [scenarios/blockchain.md](../audit-master/references/testing/scenarios/blockchain.md) |
 
 **Read the appropriate scenario file** for testing expectations specific to that project type.
 
@@ -187,12 +187,12 @@ Read: [concepts/interactive-testing.md](references/concepts/interactive-testing.
 
 | Language | Reference |
 |----------|-----------|
-| Python | [languages/python.md](references/languages/python.md) |
-| TypeScript/JavaScript | [languages/typescript.md](references/languages/typescript.md) |
-| Go | [languages/go.md](references/languages/go.md) |
-| Rust | [languages/rust.md](references/languages/rust.md) |
-| Java/Kotlin | [languages/java.md](references/languages/java.md) |
-| Ruby | [languages/ruby.md](references/languages/ruby.md) |
+| Python | [languages/python.md](../audit-master/references/testing/languages/python.md) |
+| TypeScript/JavaScript | [languages/typescript.md](../audit-master/references/testing/languages/typescript.md) |
+| Go | [languages/go.md](../audit-master/references/testing/languages/go.md) |
+| Rust | [languages/rust.md](../audit-master/references/testing/languages/rust.md) |
+| Java/Kotlin | [languages/java.md](../audit-master/references/testing/languages/java.md) |
+| Ruby | [languages/ruby.md](../audit-master/references/testing/languages/ruby.md) |
 
 ### Phases 2-5: Forensic Analysis
 
@@ -323,46 +323,46 @@ The audit produces a comprehensive report:
 ### Concepts
 | Topic | Reference |
 |-------|-----------|
-| Testing levels defined | [concepts/testing-levels.md](references/concepts/testing-levels.md) |
-| AI/LLM testing mistakes | [concepts/llm-testing-mistakes.md](references/concepts/llm-testing-mistakes.md) |
-| Interactive system testing | [concepts/interactive-testing.md](references/concepts/interactive-testing.md) |
-| Unknown UI testing | [concepts/unknown-ui-testing.md](references/concepts/unknown-ui-testing.md) |
+| Testing levels defined | [concepts/testing-levels.md](../audit-master/references/testing/concepts/testing-levels.md) |
+| AI/LLM testing mistakes | [concepts/llm-testing-mistakes.md](../audit-master/references/testing/concepts/llm-testing-mistakes.md) |
+| Interactive system testing | [concepts/interactive-testing.md](../audit-master/references/testing/concepts/interactive-testing.md) |
+| Unknown UI testing | [concepts/unknown-ui-testing.md](../audit-master/references/testing/concepts/unknown-ui-testing.md) |
 
 ### Detection
 | Area | Reference |
 |------|-----------|
-| Microservices detection | [detection/microservices.md](references/detection/microservices.md) |
-| Data interaction detection | [detection/data-interactions.md](references/detection/data-interactions.md) |
-| External API detection | [detection/external-apis.md](references/detection/external-apis.md) |
+| Microservices detection | [detection/microservices.md](../audit-master/references/testing/detection/microservices.md) |
+| Data interaction detection | [detection/data-interactions.md](../audit-master/references/testing/detection/data-interactions.md) |
+| External API detection | [detection/external-apis.md](../audit-master/references/testing/detection/external-apis.md) |
 
 ### Scenarios (15)
 | Category | Reference |
 |----------|-----------|
-| CLI Tools | [scenarios/cli.md](references/scenarios/cli.md) |
-| Web Frontend | [scenarios/web-frontend.md](references/scenarios/web-frontend.md) |
-| Web Backend/API | [scenarios/web-backend.md](references/scenarios/web-backend.md) |
-| Full Stack | [scenarios/fullstack.md](references/scenarios/fullstack.md) |
-| Library/SDK | [scenarios/library.md](references/scenarios/library.md) |
-| Mobile App | [scenarios/mobile.md](references/scenarios/mobile.md) |
-| Infrastructure | [scenarios/infrastructure.md](references/scenarios/infrastructure.md) |
-| AI/Agent System | [scenarios/ai-agents.md](references/scenarios/ai-agents.md) |
-| Data Pipeline/ETL | [scenarios/data-pipelines.md](references/scenarios/data-pipelines.md) |
-| Real-time System | [scenarios/realtime-systems.md](references/scenarios/realtime-systems.md) |
-| Embedded/IoT | [scenarios/embedded-iot.md](references/scenarios/embedded-iot.md) |
-| Desktop App | [scenarios/desktop-apps.md](references/scenarios/desktop-apps.md) |
-| Browser Extension | [scenarios/browser-extensions.md](references/scenarios/browser-extensions.md) |
-| Game Development | [scenarios/game-development.md](references/scenarios/game-development.md) |
-| Blockchain/Web3 | [scenarios/blockchain.md](references/scenarios/blockchain.md) |
+| CLI Tools | [scenarios/cli.md](../audit-master/references/testing/scenarios/cli.md) |
+| Web Frontend | [scenarios/web-frontend.md](../audit-master/references/testing/scenarios/web-frontend.md) |
+| Web Backend/API | [scenarios/web-backend.md](../audit-master/references/testing/scenarios/web-backend.md) |
+| Full Stack | [scenarios/fullstack.md](../audit-master/references/testing/scenarios/fullstack.md) |
+| Library/SDK | [scenarios/library.md](../audit-master/references/testing/scenarios/library.md) |
+| Mobile App | [scenarios/mobile.md](../audit-master/references/testing/scenarios/mobile.md) |
+| Infrastructure | [scenarios/infrastructure.md](../audit-master/references/testing/scenarios/infrastructure.md) |
+| AI/Agent System | [scenarios/ai-agents.md](../audit-master/references/testing/scenarios/ai-agents.md) |
+| Data Pipeline/ETL | [scenarios/data-pipelines.md](../audit-master/references/testing/scenarios/data-pipelines.md) |
+| Real-time System | [scenarios/realtime-systems.md](../audit-master/references/testing/scenarios/realtime-systems.md) |
+| Embedded/IoT | [scenarios/embedded-iot.md](../audit-master/references/testing/scenarios/embedded-iot.md) |
+| Desktop App | [scenarios/desktop-apps.md](../audit-master/references/testing/scenarios/desktop-apps.md) |
+| Browser Extension | [scenarios/browser-extensions.md](../audit-master/references/testing/scenarios/browser-extensions.md) |
+| Game Development | [scenarios/game-development.md](../audit-master/references/testing/scenarios/game-development.md) |
+| Blockchain/Web3 | [scenarios/blockchain.md](../audit-master/references/testing/scenarios/blockchain.md) |
 
 ### Languages (6)
 | Language | Reference |
 |----------|-----------|
-| Python | [languages/python.md](references/languages/python.md) |
-| TypeScript/JS | [languages/typescript.md](references/languages/typescript.md) |
-| Go | [languages/go.md](references/languages/go.md) |
-| Rust | [languages/rust.md](references/languages/rust.md) |
-| Java/Kotlin | [languages/java.md](references/languages/java.md) |
-| Ruby | [languages/ruby.md](references/languages/ruby.md) |
+| Python | [languages/python.md](../audit-master/references/testing/languages/python.md) |
+| TypeScript/JS | [languages/typescript.md](../audit-master/references/testing/languages/typescript.md) |
+| Go | [languages/go.md](../audit-master/references/testing/languages/go.md) |
+| Rust | [languages/rust.md](../audit-master/references/testing/languages/rust.md) |
+| Java/Kotlin | [languages/java.md](../audit-master/references/testing/languages/java.md) |
+| Ruby | [languages/ruby.md](../audit-master/references/testing/languages/ruby.md) |
 
 ---
 

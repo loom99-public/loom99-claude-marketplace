@@ -73,7 +73,7 @@ What this layer defines:
 3. **Flag obvious issues** - Missing layers, stale dates, obvious contradictions
 4. **Output** - Brief summary with red flags
 
-See `references/quick-audit.md` for checklist.
+See `../audit-master/references/planning/quick-audit.md` for checklist.
 
 ### Medium Audit
 
@@ -85,7 +85,7 @@ All of Quick, plus:
 4. **Staleness detection** - Are documents outdated vs. reality?
 5. **Output** - Layer-by-layer assessment with specific gaps
 
-See `references/medium-audit.md` for checklist.
+See `../audit-master/references/planning/medium-audit.md` for checklist.
 
 ### Thorough Audit
 
@@ -99,7 +99,7 @@ All of Medium, plus:
 6. **Temporal consistency** - Planning horizon appropriate per layer?
 7. **Output** - Comprehensive report with traceability matrix
 
-See `references/thorough-audit.md` for checklist.
+See `../audit-master/references/planning/thorough-audit.md` for checklist.
 
 ## Planning Horizon Guidelines
 

@@ -21,10 +21,10 @@ Invoked automatically by `project-evaluator` when user requests:
 
 | Dimension | Reference File | Focus |
 |-----------|----------------|-------|
-| Architecture | `references/architecture.md` | Structure, alignment, violations |
-| Design Quality | `references/design-quality.md` | Patterns, smells, intentionality |
-| Efficiency | `references/efficiency.md` | Dead code, redundancy, performance |
-| Domains | `references/domains.md` | Domain-specific anti-patterns |
+| Architecture | `../audit-master/references/code-quality/architecture.md` | Structure, alignment, violations |
+| Design Quality | `../audit-master/references/code-quality/design-quality.md` | Patterns, smells, intentionality |
+| Efficiency | `../audit-master/references/code-quality/efficiency.md` | Dead code, redundancy, performance |
+| Domains | `../audit-master/references/code-quality/domains.md` | Domain-specific anti-patterns |
 
 ## Audit Workflow
 

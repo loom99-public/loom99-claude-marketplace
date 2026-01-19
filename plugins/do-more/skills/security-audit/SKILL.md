@@ -84,7 +84,7 @@ grep -rn "sk_live_\|pk_live_\|ghp_\|glpat-" .
 
 ### Step 3: Authentication Review
 
-See `references/auth-checklist.md` for detailed checklist.
+See `../audit-master/references/security/auth-checklist.md` for detailed checklist.
 
 **Quick checks:**
 | Check | Status |
@@ -125,7 +125,7 @@ See `references/auth-checklist.md` for detailed checklist.
 
 ### Step 6: OWASP Top 10 Review
 
-See `references/owasp-checklist.md` for detailed checklist.
+See `../audit-master/references/security/owasp-checklist.md` for detailed checklist.
 
 | # | Vulnerability | Status | Evidence |
 |---|---------------|--------|----------|
