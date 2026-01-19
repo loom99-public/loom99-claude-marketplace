@@ -21,10 +21,9 @@ Invoke at the **end of `/do:*` commands** when verification is needed.
 
 **Step 1**: Gather completed work
 
-Read partial files from `.agent_logs/do/partials/<EXEC_ID>-*.txt`.
 **Step 1**: Gather completed work
 
-Read partial files from `.agent_logs/do-more-now/partials/<EXEC_ID>-*.txt`.
+
 Read any SUMMARY files from `.agent_planning/SUMMARY-*.txt` (recent ones).
 
 Extract:

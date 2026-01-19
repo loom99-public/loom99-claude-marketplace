@@ -29,7 +29,7 @@ User                 Command           Skill            Agents           Files
  │                      │                │                 │ Read files     │
  │                      │                │                 ├───────────────►│
  │                      │                │                 │◄───────────────┤
- │                      │                │                 │ Write partial  │
+ │                      │                │                 │ Write summary  │
  │                      │                │                 ├───────────────►│
  │                      │                │◄────────────────┤                │
  │                      │                │                 │                │
@@ -37,7 +37,7 @@ User                 Command           Skill            Agents           Files
  │                      │                ├────────────────►│                │
  │                      │                │                 │ Implement      │
  │                      │                │                 ├───────────────►│
- │                      │                │                 │ Write partial  │
+ │                      │                │                 │ Write summary  │
  │                      │                │                 ├───────────────►│
  │                      │                │◄────────────────┤                │
  │                      │                │                 │                │
@@ -48,7 +48,7 @@ User                 Command           Skill            Agents           Files
  │                      │                │ Task(evaluator) │                │
  │                      │                ├────────────────►│                │
  │                      │                │                 │ Validate       │
- │                      │                │                 │ Write partial  │
+ │                      │                │                 │ Write summary  │
  │                      │                │                 ├───────────────►│
  │                      │                │◄────────────────┤                │
  │                      │                │                 │                │
@@ -59,9 +59,6 @@ User                 Command           Skill            Agents           Files
  │◄─────────────────────┤                │                 │                │
  │ User approves        │                │                 │                │
  ├─────────────────────►│                │                 │                │
- │                      │                │                 │                │
- │                      │ Stop hook aggregates logs        │                │
- │                      ├───────────────────────────────────────────────────►│
  │                      │                │                 │                │
  │ Result               │                │                 │                │
  │◄─────────────────────┤                │                 │                │
@@ -394,57 +391,6 @@ User: /do:plan audit
 │  │   Gaps: n | Opportunities: n                                       │    │
 │  │ ═══════════════════════════════════════                            │    │
 │  └────────────────────────────────────────────────────────────────────┘    │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
-
----
-
-## Hook Execution Flow
-
-```
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                            HOOK EXECUTION FLOW                               │
-└──────────────────────────────────────────────────────────────────────────────┘
-
-SessionStart Hook (bin/init.py):
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
-│  Triggered: When Claude Code session starts                                  │
-│                                                                              │
-│  Actions:                                                                    │
-│  1. Create .agent_planning/ if not exists                                   │
-│  2. Create do-command-logs/ if not exists                                   │
-│  3. Initialize execution tracking files                                     │
-│  4. Log session start to debug log                                          │
-│                                                                              │
-│  Creates:                                                                    │
-│  ├── .agent_planning/                                                       │
-│  │   └── do-command-logs/                                                   │
-│  │       └── <session-id>-DEBUG.log                                         │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-
-Stop Hook (bin/aggregate-exec.py):
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
-│  Triggered: When command completes (stop event)                             │
-│                                                                              │
-│  Actions:                                                                    │
-│  1. Read CURRENT_EXECUTION_ID.txt                                           │
-│  2. Glob partials/<EXEC_ID>-*-PARTIAL-*.txt                                │
-│  3. Aggregate into single report                                            │
-│  4. Write EXEC-<cmd>-<timestamp>.md                                        │
-│  5. Clean up state files                                                    │
-│                                                                              │
-│  Input:                                                                      │
-│  ├── do-command-logs/partials/                                              │
-│  │   ├── <EXEC_ID>-1-PARTIAL-researcher.txt                                │
-│  │   ├── <EXEC_ID>-2-PARTIAL-iterative-implementer.txt                     │
-│  │   └── <EXEC_ID>-3-PARTIAL-work-evaluator.txt                            │
-│                                                                              │
-│  Output:                                                                     │
-│  └── do-command-logs/EXEC-it-<timestamp>.md                                │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```

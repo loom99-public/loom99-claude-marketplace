@@ -1,0 +1,42 @@
+Agent: iterative-implementer | 2026-01-19
+Mode: manual
+Completed: Renamed do-more /do:research to /do:external-research | Files: 14 | Commits: 1
+Tests: N/A (no automated tests for this change)
+Cache invalidated: N/A (no eval-cache exists yet)
+Status: complete
+
+## Changes Made
+
+### P0: Command Rename
+- Renamed plugins/do-more/commands/research.md -> external-research.md
+- Updated commands.yaml (line 105): name: research -> name: external-research
+- Verified generate_commands.py runs successfully
+
+### P1-P4: Documentation Updates
+Updated all /do:research references to /do:external-research in:
+- plugins/do-more/CLAUDE.md (command table)
+- plugins/do-more/README.md (command section)
+- plugins/do-more/docs/COMMANDS.md
+- plugins/do-more/docs/AGENTS.md
+- plugins/do-more/docs/EXAMPLES.md
+- plugins/do-more/docs/GETTING-STARTED.md
+- plugins/do-more/docs/GATING.md
+- plugins/do-more/docs/README.md
+- plugins/do-more/docs/SKILLS.md
+- plugins/do-more/docs/WORKFLOWS.md
+- plugins/do-more/architecture/README.md
+- plugins/do-more/skills/explore-skill/SKILL.md
+
+### Verification
+✓ New command exists: plugins/do-more/commands/external-research.md
+✓ Old command removed: plugins/do-more/commands/research.md (deleted)
+✓ just validate passes
+✓ do plugin /do:research unchanged
+✓ No orphaned references (except intentional Base do Plugin Agents documentation)
+
+Note: One remaining reference to /do:research in CLAUDE.md is intentional - it's in the
+"Base `do` Plugin Agents" section documenting that the researcher agent is used by the
+do plugin's /do:research command (not do-more's).
+
+## Commit
+c5878d6 - Rename do-more research command to external-research

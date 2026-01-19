@@ -1,0 +1,22 @@
+Agent: iterative-implementer | 20260119-050936
+Mode: manual
+Completed: Added skill-agent mapping documentation to plugins/do-more/CLAUDE.md | Files: 1 | Commits: 1
+Tests: N/A (documentation only)
+Cache invalidated: None (no eval-cache present)
+Status: complete
+
+Details:
+- Added "Skill-Agent Invocations" section with 10 skill mappings
+- Added "Skill Dependencies" section with 3 pipeline diagrams (audit, testing, implementation)
+- Added "Workflow Decision Trees" section with 2 decision trees (/do:it and /do:test)
+- All sections inserted after Agent Mapping section (line 88)
+- Validation passed: just validate confirms no issues
+- 77 lines added to CLAUDE.md
+- Commit: 4ec7581 "docs(do-more): add skill-agent mapping documentation"
+
+Acceptance Criteria Met:
+✓ CLAUDE.md contains "Skill-Agent Invocations" section
+✓ CLAUDE.md contains "Skill Dependencies" section
+✓ CLAUDE.md contains "Workflow Decision Trees" section
+✓ Formatting renders correctly
+✓ just validate passes
