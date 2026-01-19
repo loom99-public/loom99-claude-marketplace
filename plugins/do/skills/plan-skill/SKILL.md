@@ -1,6 +1,6 @@
 ---
 name: plan-skill
-description: "Create comprehensive, confidence-rated implementation plans. Always use while planning
+description: "Create comprehensive, confidence-rated implementation plans. Always use while planning"
 context: fork
 ---
 
