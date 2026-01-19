@@ -1,4 +1,5 @@
 ---
+name: "do:handoff"
 argument-hint: [topic or "current"]
 description: Create context handoff document for transferring work to an agent. Contains everything needed to start with minimal investigation.
 ---

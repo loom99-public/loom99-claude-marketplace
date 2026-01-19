@@ -1,4 +1,5 @@
 ---
+name: "do:release"
 argument-hint: [version | action]
 description: [bump|changelog|notes|tag|publish] Release - versioning, changelog, release notes (stub).
 ---

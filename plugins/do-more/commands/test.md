@@ -1,4 +1,5 @@
 ---
+name: "do:test"
 argument-hint: [status|audit|recommend|plan|setup|add|fix] [target]
 description: Testing audit, recommendations, and implementation. Detects project maturity and works incrementally.
 ---

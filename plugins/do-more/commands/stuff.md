@@ -1,4 +1,5 @@
 ---
+name: "do:stuff"
 argument-hint: [refactor|debug|fix|test|tdd|iterate]
 description: Advanced implementation with multiple approaches. Supports iterative, TDD, refactor, debug, fix, test modes.
 ---

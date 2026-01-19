@@ -1,4 +1,5 @@
 ---
+name: "do:docs"
 argument-hint: [what to document]
 description: [readme|api|architecture|changelog] Docs - README, API docs, architecture documentation.
 ---

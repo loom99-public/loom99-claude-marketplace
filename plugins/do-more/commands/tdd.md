@@ -1,4 +1,5 @@
 ---
+name: "do:tdd"
 argument-hint: [area of focus]
 description: Write tests first, then implement. TDD workflow with TestLoop and ImplementLoop.
 ---

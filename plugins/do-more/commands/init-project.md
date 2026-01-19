@@ -1,4 +1,5 @@
 ---
+name: "do:init-project"
 argument-hint: [project description]
 description: Initialize a new project or major architectural component. Guides you through setup with minimal effort and maximum alignment through adaptive questioning and technology recommendations.
 ---

@@ -1,4 +1,5 @@
 ---
+name: "do:feature-proposal"
 argument-hint: [area of focus]
 description: Generate high-level feature proposals focused on user value. Creates raw material for the planning workflow - run /plan afterward to create implementation plans.
 ---

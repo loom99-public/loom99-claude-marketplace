@@ -1,4 +1,5 @@
 ---
+name: "do:deferred-work-cleanup"
 argument-hint: [quick|deep]
 description: Find incomplete migrations, legacy fallbacks, dual code paths, and deferred work causing unnecessary complexity.
 ---

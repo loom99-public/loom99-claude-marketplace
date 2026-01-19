@@ -1,4 +1,5 @@
 ---
+name: "do:audit"
 argument-hint: [code|planning|security|competitive|tests|everything]
 description: Comprehensive audit across code quality, planning, security, competitive, and test coverage dimensions. Invoke audit-master skill.
 ---
