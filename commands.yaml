@@ -9,49 +9,42 @@ commands:
     argument_hint: "[feature or task to implement]"
     description: "Implement a feature with automatic planning, human-in-the-loop verification, and feedback cycles. Chains to /plan if no plan exists."
     skill_name: it-skill
-    skill_arg: topic
 
   - plugin: do
     name: plan
     argument_hint: "[area of focus]"
     description: "Evaluate the project and create implementation plans for all work. Plans as many sprints as certainty allows, with confidence levels."
     skill_name: plan-skill
-    skill_arg: topic
 
   - plugin: do
     name: chores
     argument_hint: "[quick|thorough|git|planning|dead-code|deps|debt]"
     description: "[quick|thorough|git|planning|dead-code|deps|debt] Chores - maintenance, cleanup, housekeeping."
     skill_name: chores-skill
-    skill_arg: scope
 
   - plugin: do
     name: status
     argument_hint: "[topic]"
     description: "Quick status check - WIP, uncommitted changes, in-progress work, recent plans, and next queued work."
     skill_name: status-skill
-    skill_arg: null
 
   - plugin: do
     name: research
     argument_hint: "[question or problem to research]"
     description: "Research a problem or question through iterative exploration. Loops researcher->evaluator until sufficient, then auto-selects recommendation. Output feeds into /plan."
     skill_name: research-skill
-    skill_arg: question
 
   - plugin: do
     name: retro
     argument_hint: "[item to add | session | list | show]"
     description: "Keep track of systemic problems with your workflow so they don't get lost. Add items, or run a retrospective to brainstorm and implement solutions."
     skill_name: retro-skill
-    skill_arg: input
 
   - plugin: do
     name: roadmap
     argument_hint: "[topic to add to roadmap]"
     description: "View roadmap tree or add topic. No args = show tree view. With args = add to roadmap."
     skill_name: roadmap-skill
-    skill_arg: null
 
   # do-more plugin commands
   - plugin: do-more
@@ -59,84 +52,71 @@ commands:
     argument_hint: "[quick|medium|thorough]"
     description: "Comprehensive audit across multiple dimensions - code quality, planning alignment, security, competitive analysis, and test coverage."
     skill_name: audit-skill
-    skill_arg: intensity
 
   - plugin: do-more
     name: test
     argument_hint: "[audit|recommend|implement]"
     description: "Testing audit, recommendations, and implementation. Detects project maturity and works incrementally."
     skill_name: test-skill
-    skill_arg: mode
 
   - plugin: do-more
     name: tdd
     argument_hint: "[feature or test to implement]"
     description: "Test-Driven Development workflow. Write tests first, then implement."
     skill_name: tdd-skill
-    skill_arg: topic
 
   - plugin: do-more
     name: stuff
     argument_hint: "[feature to implement]"
     description: "Advanced implementation with multiple approaches. Supports iterative, TDD, refactor, debug, fix, test modes."
     skill_name: stuff-skill
-    skill_arg: topic
 
   - plugin: do-more
     name: feature-proposal
     argument_hint: "[feature idea]"
     description: "Generate high-level feature proposals focused on user value and product vision."
     skill_name: feature-proposal-skill
-    skill_arg: topic
 
   - plugin: do-more
     name: init-project
     argument_hint: "[optional: project details]"
     description: "Initialize a new project or major architectural component with adaptive questioning."
     skill_name: init-project-skill
-    skill_arg: null
 
   - plugin: do-more
     name: docs
     argument_hint: "[readme|api|architecture|changelog]"
     description: "[readme|api|architecture|changelog] Docs - README, API docs, architecture documentation."
     skill_name: docs-skill
-    skill_arg: type
 
   - plugin: do-more
     name: handoff
     argument_hint: "[context for handoff]"
     description: "Create context handoff document for transferring work to an agent."
     skill_name: handoff-skill
-    skill_arg: topic
 
   - plugin: do-more
     name: release
     argument_hint: "[bump|changelog|notes|tag|publish]"
     description: "[bump|changelog|notes|tag|publish] Release - versioning, changelog, release notes."
     skill_name: release-skill
-    skill_arg: mode
 
   - plugin: do-more
     name: research
     argument_hint: "[market|docs|patterns]"
     description: "[market|docs|patterns] Research external sources - market analysis, competitors, external docs."
     skill_name: research-external-skill
-    skill_arg: type
 
   - plugin: do-more
     name: deferred-work-cleanup
-    argument_hint: null
     description: "Find incomplete migrations, legacy fallbacks, dual code paths, and deferred work."
     skill_name: deferred-work-cleanup-skill
-    skill_arg: null
 
   - plugin: do-more
     name: explore
     argument_hint: "[search query or codebase question]"
     description: "Explore codebase - ask questions, compare ideas, understand internals."
     skill_name: explore-skill
-    skill_arg: query
 
   # do-extra plugin commands
   - plugin: do-extra
@@ -144,25 +124,19 @@ commands:
     argument_hint: "[something]"
     description: "Inaction is always an option."
     skill_name: anything-skill
-    skill_arg: null
 
   - plugin: do-extra
     name: nothing
-    argument_hint: null
     description: "Do nothing. Just vibes."
     skill_name: nothing-skill
-    skill_arg: null
 
   - plugin: do-extra
     name: something
     argument_hint: "[something]"
     description: "Create something from nothing."
     skill_name: something-skill
-    skill_arg: null
 
   - plugin: do-extra
     name: time
-    argument_hint: null
     description: "What time is it? With flair."
     skill_name: time-skill
-    skill_arg: null

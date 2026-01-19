@@ -32,7 +32,6 @@ def generate_command_content(command):
     """Generate the markdown content for a command file"""
     plugin = command["plugin"]
     skill_name = command["skill_name"]
-    skill_arg = command["skill_arg"]
     argument_hint = format_argument_hint(command.get("argument_hint"))
     description = command.get("description", "")
 
@@ -43,13 +42,10 @@ def generate_command_content(command):
     lines.append(f'description: "{description}"')
     lines.append("---")
 
-    # Build skill invocation
+    # Build skill invocation - simple form, no parameters
+    # Skills access $ARGUMENTS directly through execution context
     lines.append("")
-    if skill_arg:
-        lines.append(f'Skill("{skill_name}") with:')
-        lines.append(f"  {skill_arg}: $ARGUMENTS")
-    else:
-        lines.append(f'Skill("{skill_name}")')
+    lines.append(f'Skill("{skill_name}")')
 
     return "\n".join(lines) + "\n"
 
