@@ -29,7 +29,7 @@ Skills are reusable workflow definitions that orchestrate agents and define proc
 
 | Skill | Purpose | Trigger |
 |-------|---------|---------|
-| `do:audit` | Multi-dimension audit routing | `/do:plan audit` |
+| `do:audit-master` | Multi-dimension audit routing | `/do:audit` |
 | `do:deep-audit` | Code quality analysis | Code quality dimension |
 | `do:planning-audit` | Planning alignment analysis | Planning dimension |
 | `do:security-audit` | Security analysis | Security dimension |
@@ -266,7 +266,7 @@ Next: /do:plan to update status
 
 ## Audit Skills
 
-### do:audit
+### do:audit-master
 
 **Purpose**: Route to appropriate audit dimensions.
 
@@ -468,9 +468,9 @@ Skill defines workflow → Task tool spawns agent → Agent executes → Returns
 
 Skills can invoke other skills for composition:
 ```
-do:audit → do:deep-audit
-        → do:security-audit
-        → do:planning-audit
+do:audit-master → do:deep-audit
+                → do:security-audit
+                → do:planning-audit
 ```
 
 ### Command → Skill → Agent
