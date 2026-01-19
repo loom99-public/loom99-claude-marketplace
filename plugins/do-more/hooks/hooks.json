@@ -1,3 +1,15 @@
 {
-  "hooks": {}
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if partial execution logs exist in .agent_planning/do-command-logs/partials/. If any PARTIAL-*.txt files exist for this execution, spawn the execution-summarizer agent to aggregate them into a final EXEC-*.md report in .agent_planning/. If no partial logs exist, skip aggregation."
+          }
+        ]
+      }
+    ]
+  }
 }

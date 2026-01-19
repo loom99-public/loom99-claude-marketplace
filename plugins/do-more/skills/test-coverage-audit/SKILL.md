@@ -194,115 +194,29 @@ Read: [concepts/interactive-testing.md](references/concepts/interactive-testing.
 | Java/Kotlin | [languages/java.md](references/languages/java.md) |
 | Ruby | [languages/ruby.md](references/languages/ruby.md) |
 
-### Phase 3: Test Inventory
+### Phases 2-5: Forensic Analysis
 
-#### 3.1 Locate Test Files
+For the detailed forensic analysis (test inventory, coverage mapping, quality assessment, gap analysis), spawn the `test-auditor` agent:
 
-```bash
-# Common patterns
-find . -name "*_test.*" -o -name "*.test.*" -o -name "test_*" 2>/dev/null | head -50
-find . -path "*/tests/*" -o -path "*/test/*" -o -path "*/__tests__/*" 2>/dev/null | head -50
+Use the Task tool to spawn `do:test-auditor` agent:
 
-# Framework-specific
-find . -name "*.spec.ts" -o -name "*.spec.js" 2>/dev/null  # Jest/Vitest
-find . -path "**/cypress/**/*.cy.*" 2>/dev/null            # Cypress
-find . -name "conftest.py" -o -name "pytest.ini" 2>/dev/null  # pytest
+```
+Execute forensic test coverage analysis.
+
+Project: [current working directory]
+Framework: [detected framework from Phase 1]
+Intensity: [quick|medium|thorough]
+
+Run phases 2-5:
+- Phase 3: Test Inventory
+- Phase 4: Coverage Mapping
+- Phase 5: Quality Assessment
+- Phase 6: Gap Analysis
+
+Output: TEST-AUDIT-<timestamp>.md in .agent_planning/
 ```
 
-#### 3.2 Categorize Each Test
-
-| Test Type | Indicators |
-|-----------|------------|
-| Unit | Single module import, no external deps, mocks everything |
-| Integration | Multiple modules, may use test DB, some real services |
-| E2E | Browser automation, real API calls, full system running |
-| Contract | Pact/OpenAPI validation between services |
-
-**Output**:
-```markdown
-### Test Inventory
-| Type | Count | Location | Framework | Mocking Level |
-|------|-------|----------|-----------|---------------|
-| Unit | n | tests/unit/ | pytest | Heavy |
-| Integration | n | tests/integration/ | pytest | Light |
-| E2E | n | tests/e2e/ | playwright | None |
-| Contract | n | pacts/ | pact-python | N/A |
-```
-
-### Phase 4: Coverage Mapping
-
-**For each complexity source detected in Phase 1, determine test coverage**:
-
-```markdown
-### Coverage Matrix
-
-#### Database Operations
-| Operation | Location | Unit Test? | Integration Test? | E2E? |
-|-----------|----------|------------|-------------------|------|
-| User.create() | models/user.py:23 | ❌ | ❌ | ✅ (login e2e) |
-| Order.validate() | models/order.py:45 | ✅ | ❌ | ❌ |
-
-#### External API Calls
-| API | Endpoint | Mocked? | Real Test? | Error Handling Tested? |
-|-----|----------|---------|------------|------------------------|
-| Stripe | create_payment | ✅ | ❌ | ❌ |
-| SendGrid | send_email | ❌ | ❌ | ❌ |
-
-#### Interactive Features
-| Feature | Testable? | Tested? | Approach |
-|---------|-----------|---------|----------|
-| CLI setup wizard | ✅ | ❌ | Should use pexpect |
-| Tab completion | ✅ | ❌ | Should test completion script |
-```
-
-### Phase 5: Quality Assessment
-
-#### 5.1 Red Flag Detection
-
-| Red Flag | Detection Method | Severity |
-|----------|-----------------|----------|
-| Tautological tests | Grep for `assert True`, `expect(mock)` patterns | High |
-| Over-mocked | Count mocks vs real interactions | High |
-| Flaky tests | Grep for `sleep()`, timing dependencies | Medium |
-| Test data coupling | Hardcoded IDs, magic numbers | Medium |
-| No cleanup | Missing fixtures/teardown | Medium |
-| Happy path only | No error assertions | High |
-
-Read: [concepts/llm-testing-mistakes.md](references/concepts/llm-testing-mistakes.md) for common AI-generated test issues.
-
-#### 5.2 Test Quality Checklist
-
-For a sample of tests, verify:
-- [ ] Tests fail when functionality breaks
-- [ ] Tests don't break on refactoring internals
-- [ ] Test names describe behavior, not implementation
-- [ ] Setup/teardown is reliable
-- [ ] Can run tests in isolation
-- [ ] Edge cases are covered
-- [ ] Error paths are tested
-
-### Phase 6: Gap Analysis
-
-**Compare detected complexity sources against test inventory**:
-
-```markdown
-### Critical Gaps (P0)
-| Gap | Complexity Source | Risk | Why P0 |
-|-----|-------------------|------|--------|
-| No payment error tests | Stripe integration | High | User funds at risk |
-| No auth flow e2e | Auth0 integration | High | Users locked out |
-
-### Significant Gaps (P1)
-| Gap | Complexity Source | Risk | Why P1 |
-|-----|-------------------|------|--------|
-| No cache invalidation tests | Redis cache | Medium | Stale data shown |
-| No webhook tests | Stripe webhooks | Medium | Orders not processed |
-
-### Minor Gaps (P2)
-| Gap | Complexity Source | Risk | Why P2 |
-|-----|-------------------|------|--------|
-| No config validation tests | pydantic settings | Low | Caught at startup |
-```
+The agent will complete the audit report with all remaining phases.
 
 ---
 
