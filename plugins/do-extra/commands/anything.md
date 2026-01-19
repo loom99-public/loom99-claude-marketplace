@@ -1,4 +1,5 @@
 ---
+name: "do:anything"
 argument-hint: something
 description: Inaction is always an option.
 ---

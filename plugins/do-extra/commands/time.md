@@ -1,4 +1,5 @@
 ---
+name: "do:time"
 argument-hint:
 description: What time is it? With flair.
 ---

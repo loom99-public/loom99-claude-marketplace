@@ -1,4 +1,5 @@
 ---
+name: "do:something"
 argument-hint: anything
 description: Create something from nothing
 ---
