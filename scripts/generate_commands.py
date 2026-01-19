@@ -42,23 +42,24 @@ def generate_command_content(command):
     lines.append(f'description: "{description}"')
     lines.append("---")
 
-    # Build skill invocation - simple form, no parameters
-    # Skills access $ARGUMENTS directly through execution context
+    # Build skill invocation
+    # Format: Skill("skill-name")
     lines.append("")
-    lines.append(f'Skill("{skill_name}")')
+    lines.append(f'Wrapper around skill "{skill_name}"')
+    lines.append(f'Invoke the plugin skill "{skill_name}".  Do NOT use any built in commands with a similar name to the skill, ONLY the skill in this plugin. If there is no matching skill, say so.')
 
     return "\n".join(lines) + "\n"
 
 
-def is_skill_wrapper(file_path):
+def is_skill_wrapper(file_path, skill_name):
     """Check if a command file is already a skill wrapper (safe to overwrite)"""
     if not file_path.exists():
         return True  # New files are safe to create
 
     content = file_path.read_text()
-    # A skill wrapper has minimal content: frontmatter + Skill() invocation
-    # Look for the Skill( pattern which indicates it's already a wrapper
-    return "Skill(" in content and content.count("\n") < 15
+    # A skill wrapper has this exact line as its marker
+    expected_marker = f'Wrapper around skill "{skill_name}"'
+    return expected_marker in content.splitlines()
 
 
 def generate_commands():
@@ -78,6 +79,7 @@ def generate_commands():
         try:
             plugin = cmd["plugin"]
             name = cmd["name"]
+            skill_name = cmd["skill_name"]
 
             # Determine command file path
             cmd_file = (
@@ -89,7 +91,7 @@ def generate_commands():
             )
 
             # Check if file exists and is NOT a skill wrapper (protect custom content)
-            if cmd_file.exists() and not is_skill_wrapper(cmd_file):
+            if cmd_file.exists() and not is_skill_wrapper(cmd_file, skill_name):
                 print(f"⊘ {plugin}:{name} - skipped (custom content, not a wrapper)")
                 skipped += 1
                 continue

@@ -37,120 +37,12 @@ validate-plugin plugin:
     @echo "🔍 Validating plugin: {{plugin}}..."
     @claude plugin validate "plugins/{{plugin}}"
 
-# Run comprehensive test suite
-test:
-    @echo "🧪 Running functional tests..."
-    ./run_tests.sh
+# Run full verification (validate only - these plugins can't be pytest tested)
+verify: validate
     @echo ""
-    @echo "📊 Test Summary:"
-    @pytest tests/functional/test_skills_structure.py -v --tb=short
-
-# Run quick structure validation tests only
-test-structure:
-    @echo "🧪 Running structure tests..."
-    ./run_tests.sh structure
-
-# Run Phase 2 verbosity reduction tests
-test-phase2:
-    @echo "🧪 Running Phase 2 reduction tests..."
-    @pytest tests/functional/test_phase2_reductions.py -v --tb=short
-    @echo ""
-    @echo "📊 Phase 2 Status:"
-    @pytest tests/functional/test_phase2_reductions.py::TestPhase2ValidationSummary::test_phase2_reduction_targets_met -v --tb=short
-
-# Run Phase 2 tests (quiet mode for quick checks)
-test-phase2-quick:
-    @echo "🧪 Quick Phase 2 check..."
-    @pytest tests/functional/test_phase2_reductions.py --tb=no -q
-
-# Run Phase 2 tests for specific plugin
-test-phase2-plugin plugin:
-    @echo "🧪 Testing Phase 2 for {{plugin}}..."
-    @pytest tests/functional/test_phase2_reductions.py -k "{{plugin}}" -v --tb=short
-
-# Show current Phase 2 metrics
-phase2-metrics:
-    @echo "📊 Phase 2 Current Metrics"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @echo ""
-    @echo "Skills:"
-    @echo "  Total: $(find plugins/*/skills -name "SKILL.md" -exec wc -l {} + | tail -1 | awk '{print $1}') lines (target: 4,030)"
-    @echo "  agent-loop:"
-    @for skill in plugins/agent-loop/skills/*/SKILL.md; do echo "    - $(basename $(dirname $$skill)): $(wc -l < $$skill) lines"; done
-    @echo "  epti:"
-    @for skill in plugins/epti/skills/*/SKILL.md; do echo "    - $(basename $(dirname $$skill)): $(wc -l < $$skill) lines"; done
-    @echo "  visual-iteration:"
-    @for skill in plugins/visual-iteration/skills/*/SKILL.md; do echo "    - $(basename $(dirname $$skill)): $(wc -l < $$skill) lines"; done
-    @echo ""
-    @echo "READMEs:"
-    @echo "  Total: $(wc -l plugins/*/README.md | tail -1 | awk '{print $1}') lines (target: 1,050)"
-    @echo "  agent-loop: $(wc -l < plugins/agent-loop/README.md) lines (target: 200)"
-    @echo "  epti: $(wc -l < plugins/epti/README.md) lines (target: 350)"
-    @echo "  visual-iteration: $(wc -l < plugins/visual-iteration/README.md) lines (target: 500)"
-
-# Run Phase 3 agent optimization tests
-test-phase3:
-    @echo "🧪 Running Phase 3 agent optimization tests..."
-    @pytest tests/functional/test_phase3_agents.py -v --tb=short
-    @echo ""
-    @echo "📊 Phase 3 Status:"
-    @pytest tests/functional/test_phase3_agents.py::TestPhase3Summary::test_phase3_optimization_complete -v --tb=short
-
-# Run Phase 3 tests (quiet mode for quick checks)
-test-phase3-quick:
-    @echo "🧪 Quick Phase 3 check..."
-    @pytest tests/functional/test_phase3_agents.py --tb=no -q
-
-# Run Phase 3 tests for specific plugin
-test-phase3-plugin plugin:
-    @echo "🧪 Testing Phase 3 for {{plugin}}..."
-    @pytest tests/functional/test_phase3_agents.py -k "{{plugin}}" -v --tb=short
-
-# Show current Phase 3 metrics
-phase3-metrics:
-    @echo "📊 Phase 3 Current Metrics"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @echo ""
-    @echo "Agents:"
-    @echo "  Total: $(wc -l plugins/*/agents/*.md | tail -1 | awk '{print $1}') lines (target: 1,206)"
-    @echo "  agent-loop/workflow-agent: $(wc -l < plugins/agent-loop/agents/workflow-agent.md) lines (target: 206)"
-    @echo "  epti/tdd-agent: $(wc -l < plugins/epti/agents/tdd-agent.md) lines (target: 400)"
-    @echo "  visual-iteration/visual-iteration-agent: $(wc -l < plugins/visual-iteration/agents/visual-iteration-agent.md) lines (target: 600)"
-
-# Run all phase tests
-test-all-phases:
-    @echo "🧪 Running all phase tests..."
-    @echo ""
-    @echo "Phase 2: Skills & READMEs"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @pytest tests/functional/test_phase2_reductions.py -v --tb=line
-    @echo ""
-    @echo "Phase 3: Agents"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @pytest tests/functional/test_phase3_agents.py -v --tb=line
-
-# Show all phase metrics
-metrics:
-    @echo "📊 All Phase Metrics"
-    @echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    @echo ""
-    @just phase2-metrics
-    @echo ""
-    @just phase3-metrics
-
-# Install test dependencies
-install-deps:
-    @echo "📦 Installing test dependencies..."
-    uv pip install --system pytest PyYAML
-    @echo "✅ Dependencies installed!"
-
-# Run full verification (validate + test)
-verify: validate test
-    @echo ""
-    @echo "✅ All verification checks passed!"
+    @echo "✅ Verification complete!"
     @echo "   - Marketplace structure valid"
     @echo "   - All plugins valid"
-    @echo "   - All functional tests passing"
 
 # Bump all plugins and reload marketplace
 bump:

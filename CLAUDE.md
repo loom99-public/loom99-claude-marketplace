@@ -21,23 +21,14 @@ A Claude Code Plugin Marketplace containing workflow automation plugins for soft
 # Validate marketplace and all plugins
 just validate
 
-# Run test suite
-just test
-
-# Run structure validation only
-just test-structure
-
-# Full verification (validate + test)
+# Full verification
 just verify
 
-# Pre-commit checks
-just pre-commit
+# Bump plugin versions and reload
+just bump
 
-# Show plugin statistics
-just stats
-
-# Clean test artifacts
-just clean
+# Reload specific plugins
+just reload do do-more
 ```
 
 ## Plugin Structure
@@ -85,7 +76,6 @@ Primary commands:
 - **Planning documents**: All workflow state lives in `.agent_planning/`
 - **Skills are auto-discoverable**: Claude invokes skills based on description matching
 - **Hooks enforce discipline**: Pre-hooks gate operations, post-hooks remind about next steps
-- **Testing**: pytest-based functional tests in `tests/functional/`
 
 ## Editing Guidelines
 

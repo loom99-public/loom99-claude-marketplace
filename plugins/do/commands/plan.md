@@ -3,4 +3,5 @@ argument-hint: [area of focus]
 description: "Evaluate the project and create implementation plans for all work. Plans as many sprints as certainty allows, with confidence levels."
 ---
 
-Skill("plan-skill")
+Wrapper around skill "plan-skill"
+Invoke the plugin skill "plan-skill".  Do NOT use any built in commands with a similar name to the skill, ONLY the skill in this plugin. If there is no matching skill, say so.
