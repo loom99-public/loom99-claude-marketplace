@@ -14,9 +14,12 @@ Parse, query, and update `.agent_planning/ROADMAP.md` files that define project 
 
 - Reading roadmap to display tree view
 - Checking if a topic exists (similarity matching)
-- Adding new topics to phases
+- Adding new topics to phases (single or batch)
 - Updating topic states or metadata
 - Generating topic status reports
+- Migrating non-compliant roadmaps to schema format
+
+**Multi-item support**: Input can contain multiple topics separated by newlines, semicolons, or as numbered/bulleted lists. Priority markers (P1, P2) auto-assign phases. File references are preserved as context.
 
 ## Entry Point
 
@@ -41,6 +44,10 @@ Skill("do:roadmap-skill") with:
 def execute_command(mode: str, topic: str | None) -> str:
     """Entry point for /do:roadmap command"""
 
+    # Handle migration request
+    if mode == "view" and topic and "migrate" in topic.lower():
+        return execute_migration()
+
     if mode == "view":
         # View mode: display roadmap tree
         if not file_exists(".agent_planning/ROADMAP.md"):
@@ -54,11 +61,24 @@ Example: /do:roadmap user-authentication"""
         return format_tree_view(roadmap)
 
     elif mode == "add":
-        # Add mode: full add flow
+        # Add mode: full add flow (handles single or batch input)
         return execute_add_flow(topic)
 
 def execute_add_flow(topic_input: str) -> str:
-    """Handle adding a topic to the roadmap"""
+    """Handle adding topic(s) to the roadmap (single or batch)"""
+
+    # Step 1: Detect if input contains multiple topics
+    topics = detect_multiple_topics(topic_input)
+
+    if len(topics) > 1:
+        # Batch mode: add multiple topics
+        return execute_batch_add(topics)
+    else:
+        # Single mode: existing flow
+        return execute_single_add(topic_input)
+
+def execute_single_add(topic_input: str) -> str:
+    """Handle adding a single topic to the roadmap"""
 
     # Step 1: Check/create ROADMAP.md
     if not file_exists(".agent_planning/ROADMAP.md"):
@@ -84,8 +104,15 @@ def execute_add_flow(topic_input: str) -> str:
         # Step 4: Phase selection (use do:prompt-questioning)
         selected_phase_num = prompt_user_phase_selection(roadmap)
 
-    # Step 5: Capture summary (use do:prompt-questioning)
+    # Step 5: Capture summary with context guidance
     topic_summary = prompt_user_for_summary(topic_input)
+
+    # NEW: Step 5b: Validate context sufficiency
+    is_sufficient, feedback = validate_context_sufficiency({"summary": topic_summary})
+    if not is_sufficient:
+        # Prompt for more context
+        additional_context = prompt_for_additional_context(feedback)
+        topic_summary = f"{topic_summary} | {additional_context}"
 
     # Step 6: Create beads epic
     topic_slug = to_kebab_case(topic_input)
@@ -233,6 +260,224 @@ def parse_roadmap(path):
 - Parse error → Return partial structure with warnings
 - Unknown fields → Ignore (forward compatibility)
 - Malformed lines → Skip and continue
+
+### Procedure 1b: Migrate Non-Compliant ROADMAP Format
+
+Detects and migrates non-schema-compliant roadmaps (like cherry-chrome-mcp's narrative format) to expected schema.
+
+**Input**: Path to ROADMAP.md file (default: `.agent_planning/ROADMAP.md`)
+
+**Output**: Migrated roadmap structure ready for write_roadmap(), or error message
+
+**Detection heuristics**:
+
+```python
+def detect_migration_needed(path: str) -> tuple[bool, str]:
+    """Check if file needs migration. Returns (needs_migration, reason)"""
+    if not file_exists(path):
+        return False, "File does not exist"
+
+    content = read_file(path)
+
+    # Missing YAML frontmatter → non-compliant
+    if not content.strip().startswith("---"):
+        return True, "Missing YAML frontmatter"
+
+    # Uses H4 headers (####) for topics → non-compliant
+    if "####" in content:
+        return True, "Uses H4 headers instead of list items for topics"
+
+    # Has custom fields (Description, Tools, Pain point) → may need migration
+    if any(field in content for field in ["**Description**", "**Tools", "**Pain point"]):
+        return True, "Contains custom narrative fields"
+
+    # Already compliant (has valid frontmatter and list-based topics)
+    return False, "Already compliant with schema"
+```
+
+**Migration algorithm** (for cherry-chrome-mcp format):
+
+```python
+def migrate_roadmap_format(path: str) -> dict:
+    """Detect and migrate non-schema-compliant roadmaps to expected format"""
+
+    content = read_file(path)
+
+    # Initialize structure
+    roadmap = {
+        "version": "1.0",
+        "created": current_timestamp(),
+        "updated": current_timestamp(),
+        "phases": []
+    }
+
+    current_phase = None
+    current_topic = None
+    phase_number = 0
+
+    for line in content.split("\n"):
+        # Phase headers: ## Phase N: Name or similar patterns
+        if match := re.match(r"^##\s+Phase\s+(\d+):\s+(.+?)(?:\s+\[([A-Z]+)\])?$", line):
+            # Save previous topic and phase
+            if current_topic and current_phase:
+                # Compile topic summary from collected parts
+                if "summary_parts" in current_topic:
+                    current_topic["summary"] = " | ".join(current_topic["summary_parts"])
+                    del current_topic["summary_parts"]
+                current_phase["topics"].append(current_topic)
+                current_topic = None
+
+            if current_phase:
+                roadmap["phases"].append(current_phase)
+
+            # Create new phase
+            phase_number = int(match.group(1))
+            status = match.group(3).lower() if match.group(3) else ("active" if phase_number == 1 else "queued")
+
+            current_phase = {
+                "number": phase_number,
+                "name": match.group(2).strip(),
+                "status": status,
+                "topics": []
+            }
+
+        # Phase metadata: Goal: ...
+        elif current_phase and line.strip().startswith("Goal:"):
+            current_phase["goal"] = line.split(":", 1)[1].strip()
+
+        # Phase metadata: Status: ...
+        elif current_phase and line.strip().startswith("Status:"):
+            current_phase["status"] = line.split(":", 1)[1].strip().lower()
+
+        # Topic headers: #### topic-slug [STATE] or similar
+        elif match := re.match(r"^####\s+([a-z0-9-]+)(?:\s+\[([A-Z\s]+)\])?", line):
+            # Save previous topic
+            if current_topic and current_phase:
+                if "summary_parts" in current_topic:
+                    current_topic["summary"] = " | ".join(current_topic["summary_parts"])
+                    del current_topic["summary_parts"]
+                current_phase["topics"].append(current_topic)
+
+            # Create new topic
+            current_topic = {
+                "name": match.group(1),
+                "state": match.group(2).strip() if match.group(2) else "PROPOSED",
+                "directory": f".agent_planning/{match.group(1)}/",
+                "summary_parts": []
+            }
+
+        # Extract context from custom fields
+        elif current_topic:
+            if line.strip().startswith("**Description**:"):
+                desc = line.split(":", 1)[1].strip()
+                if desc:
+                    current_topic["summary_parts"].append(desc)
+            elif line.strip().startswith("**Tools to implement**:"):
+                # Mark section start, collect subsequent items
+                current_topic["summary_parts"].append("Tools: " + line.split(":", 1)[1].strip() if line.split(":", 1)[1].strip() else "")
+            elif line.strip().startswith("**Pain point**:"):
+                pain = line.split(":", 1)[1].strip()
+                if pain:
+                    current_topic["summary_parts"].append("Pain: " + pain)
+            elif line.strip().startswith("**Directory**:"):
+                current_topic["directory"] = line.split(":", 1)[1].strip()
+            elif line.strip().startswith("**Improvements**:"):
+                current_topic["summary_parts"].append("Improvements: " + line.split(":", 1)[1].strip() if line.split(":", 1)[1].strip() else "")
+            # Collect bullet points and content lines that look like details
+            elif line.strip().startswith("-") and current_topic:
+                # Collect as part of summary/description
+                detail = line.strip()[1:].strip()
+                if detail and not detail.startswith("Summary:") and not detail.startswith("Epic:"):
+                    current_topic["summary_parts"].append(detail)
+
+    # Finalize last topic and phase
+    if current_topic and current_phase:
+        if "summary_parts" in current_topic:
+            current_topic["summary"] = " | ".join(current_topic["summary_parts"])
+            del current_topic["summary_parts"]
+        current_phase["topics"].append(current_topic)
+
+    if current_phase:
+        roadmap["phases"].append(current_phase)
+
+    return roadmap
+```
+
+**Migration execution**:
+
+```python
+def execute_migration() -> str:
+    """Migrate non-compliant ROADMAP.md to schema format"""
+
+    path = ".agent_planning/ROADMAP.md"
+
+    if not file_exists(path):
+        return "No ROADMAP.md found to migrate."
+
+    # Check if migration needed
+    needs_migration, reason = detect_migration_needed(path)
+    if not needs_migration:
+        return f"✓ ROADMAP.md already compliant with schema.\n\nReason: {reason}\n\nNo migration needed."
+
+    # Backup original
+    timestamp = current_timestamp()
+    backup_path = f".agent_planning/ROADMAP.md.backup-{timestamp}"
+    copy_file(path, backup_path)
+
+    # Attempt migration
+    try:
+        roadmap = migrate_roadmap_format(path)
+
+        # Validate migration result
+        if not roadmap.get("phases"):
+            return f"""✗ Migration failed: No phases found after migration.
+
+Check file format and try manual migration.
+Backup saved: {backup_path}
+See SCHEMA.md for expected format."""
+
+        # Write migrated roadmap
+        content = write_roadmap(roadmap)
+        write_file(path, content)
+
+        # Count migrated items
+        total_topics = sum(len(p["topics"]) for p in roadmap["phases"])
+
+        return f"""✓ Migrated ROADMAP.md to schema format
+
+Backup saved: {backup_path}
+
+Migration summary:
+- Phases migrated: {len(roadmap['phases'])}
+- Topics migrated: {total_topics}
+- Format: H4 headers → list items
+- Metadata: Custom fields → Summary field
+- YAML frontmatter: Added with timestamps
+
+Changes:
+- Topics now use list format: - topic-slug [STATE]
+- Context extracted to Summary field
+- State values standardized to uppercase
+- Directory paths preserved
+- All content preserved (nothing lost)
+
+Next steps:
+  1. Review migrated roadmap: /do:roadmap
+  2. Add Epic IDs if using beads
+  3. Organize into phases as needed
+  4. Use /do:roadmap <topic> to continue adding
+
+If issues found, restore backup:
+  mv {backup_path} {path}"""
+
+    except Exception as e:
+        return f"""✗ Migration failed: {str(e)}
+
+Original file unchanged.
+Backup available at: {backup_path}
+Review format and try manual migration.
+See SCHEMA.md for expected format."""
+```
 
 ### Procedure 2: Find Topic
 
@@ -843,6 +1088,318 @@ def current_timestamp():
 - Be specific: "Topic 'user-auth' not found in roadmap"
 - Suggest fixes: "Run /do:roadmap user-auth to add it"
 - Include context: phase, state, directory path
+
+### Procedure 10: Detect Multiple Topics
+
+Detects if input contains multiple topics using light heuristics.
+
+**Input**: Topic input string (possibly containing multiple items)
+
+**Output**: List of topic strings (single item if no pattern detected)
+
+**Algorithm**:
+
+```python
+def detect_multiple_topics(input_text: str) -> list[str]:
+    """
+    Detect if input contains multiple topics. Light heuristics:
+    - Newline-separated lines that look like topics
+    - Semicolon-separated items
+    - Numbered list (1., 2., etc.)
+    - Bullet list (-, *, •)
+
+    Returns list of topic strings. Single item if no pattern detected.
+    """
+
+    input_text = input_text.strip()
+
+    # File reference (don't treat as batch)
+    if input_text.endswith(".md"):
+        return [input_text]
+
+    # Semicolon delimiter (2+ items)
+    if ";" in input_text:
+        items = [t.strip() for t in input_text.split(";") if t.strip()]
+        if len(items) >= 2:
+            return items
+
+    # Newline-separated (3+ lines that look like topics - short, descriptive)
+    lines = [line.strip() for line in input_text.split("\n") if line.strip()]
+    if len(lines) >= 3:
+        # Heuristic: Are lines topic-like? (short lines < 100 chars, no periods)
+        topic_like = all(len(line) < 100 and not line.endswith(".") for line in lines)
+        if topic_like:
+            return lines
+
+    # Numbered list (1. item, 2. item, etc.)
+    numbered = re.findall(r"^\d+\.\s+(.+)$", input_text, re.MULTILINE)
+    if len(numbered) >= 2:
+        return numbered
+
+    # Bullet list (-, *, •)
+    bullets = re.findall(r"^[-*•]\s+(.+)$", input_text, re.MULTILINE)
+    if len(bullets) >= 2:
+        return bullets
+
+    # Default: Single topic
+    return [input_text]
+```
+
+### Procedure 11: Batch Add Multiple Topics
+
+Adds multiple topics in batch mode with smart priority-to-phase mapping.
+
+**Input**: List of topic strings
+
+**Output**: Confirmation message with count of added items
+
+**Algorithm**:
+
+```python
+def execute_batch_add(topics: list[str]) -> str:
+    """
+    Add multiple topics in batch mode.
+
+    Strategy:
+    1. Detect priority markers (P1, P2, P3) to infer phase
+    2. Parse topic name and description
+    3. Validate context for each topic
+    4. Add all with consistent metadata
+    """
+
+    # Load roadmap
+    if not file_exists(".agent_planning/ROADMAP.md"):
+        roadmap = initialize_roadmap()
+        default_phase = 1
+    else:
+        roadmap = parse_roadmap(".agent_planning/ROADMAP.md")
+        default_phase = next(
+            (p["number"] for p in roadmap["phases"] if p.get("status") == "active"),
+            1
+        )
+
+    # Parse topics and extract metadata
+    parsed_topics = []
+    for topic_input in topics:
+        # Extract priority marker if present (P1, P2, P3)
+        priority = None
+        if match := re.search(r"\bP(\d)\b", topic_input, re.IGNORECASE):
+            priority = int(match.group(1))
+
+        # Extract name and description
+        # Patterns: "Name - Description" or "Name: Description"
+        if " - " in topic_input:
+            name, desc = topic_input.split(" - ", 1)
+        elif ": " in topic_input:
+            name, desc = topic_input.split(": ", 1)
+        else:
+            name = topic_input
+            desc = ""
+
+        # Determine phase from priority
+        phase_num = priority if priority and priority <= len(roadmap["phases"]) else default_phase
+
+        parsed_topics.append({
+            "input": topic_input,
+            "name": name.strip(),
+            "description": desc.strip(),
+            "priority": priority,
+            "phase": phase_num
+        })
+
+    # Add all topics
+    added_count = 0
+    skipped_count = 0
+
+    for topic_data in parsed_topics:
+        slug = to_kebab_case(topic_data["name"])
+
+        # Skip duplicates
+        if find_topic(slug, roadmap):
+            skipped_count += 1
+            continue
+
+        # Create directory
+        mkdir(f".agent_planning/{slug}/")
+
+        # Add to roadmap
+        roadmap = add_topic_to_phase(
+            topic_name=slug,
+            phase_num=topic_data["phase"],
+            roadmap=roadmap,
+            summary=topic_data["description"],
+            epic=None  # Batch mode skips epic creation
+        )
+        added_count += 1
+
+    # Write file
+    if added_count > 0:
+        content = write_roadmap(roadmap)
+        write_file(".agent_planning/ROADMAP.md", content)
+
+    # Build confirmation
+    msg = f"""✓ Batch add complete
+
+Added: {added_count} topic(s)
+Skipped: {skipped_count} duplicate(s)
+Total processed: {len(parsed_topics)}
+
+Phase assignments:
+"""
+    # Show phase distribution
+    phase_counts = {}
+    for topic_data in parsed_topics:
+        phase_num = topic_data["phase"]
+        phase_counts[phase_num] = phase_counts.get(phase_num, 0) + 1
+
+    for phase_num in sorted(phase_counts.keys()):
+        phase = next((p for p in roadmap["phases"] if p["number"] == phase_num), None)
+        if phase:
+            msg += f"  Phase {phase_num}: {phase['name']} - {phase_counts[phase_num]} items\n"
+
+    msg += f"""
+Next steps:
+  1. Review roadmap: /do:roadmap
+  2. Create plans: /do:plan <topic>
+  3. Add Epic IDs: Edit .agent_planning/ROADMAP.md"""
+
+    return msg
+```
+
+### Procedure 12: Validate Context Sufficiency
+
+Checks if topic has enough planning context (problem + outcome + areas).
+
+**Input**: Topic data dict with summary field
+
+**Output**: Tuple of (is_sufficient: bool, feedback: str)
+
+**Algorithm**:
+
+```python
+def validate_context_sufficiency(topic_data: dict) -> tuple[bool, str]:
+    """
+    Check if topic has enough context for planning.
+
+    Requirements:
+    - Problem statement (what issue exists)
+    - Intended outcome (what we want to achieve)
+    - Relevant project areas (conceptual, not file paths)
+
+    Returns: (is_sufficient: bool, feedback: str)
+    """
+
+    summary = topic_data.get("summary", "").strip()
+
+    # Minimum length check
+    if len(summary) < 20:
+        return False, "Summary too brief. Need at least: problem + intended outcome + affected areas."
+
+    # Check for problem indicator words
+    problem_words = ["fix", "bug", "issue", "error", "problem", "broken", "fails",
+                     "correct", "improve", "resolve", "handle"]
+    has_problem = any(word in summary.lower() for word in problem_words)
+
+    # Check for outcome indicator words
+    outcome_words = ["add", "implement", "create", "enable", "support", "improve",
+                    "refactor", "enhance", "consolidate", "centralize"]
+    has_outcome = any(word in summary.lower() for word in outcome_words)
+
+    # Check for project area mentions (conceptual, not paths)
+    area_patterns = ["tool", "module", "component", "system", "handler", "manager",
+                    "service", "layer", "interface", "bridge", "adapter", "endpoint"]
+    has_area = any(pattern in summary.lower() for pattern in area_patterns)
+
+    # Sufficient if 2+ indicators present
+    indicators_count = sum([has_problem, has_outcome, has_area])
+    if indicators_count >= 2:
+        return True, ""
+
+    # Build feedback
+    missing = []
+    if not has_problem and not has_outcome:
+        missing.append("what problem exists or what outcome is desired")
+    if not has_area:
+        missing.append("which project areas are affected (e.g., 'tool routing', 'error handling')")
+
+    feedback = f"Context insufficient. Add: {', '.join(missing)}."
+    return False, feedback
+
+def prompt_for_additional_context(feedback: str) -> str:
+    """Prompt user for additional context with guidance"""
+    guidance = f"""
+{feedback}
+
+Please add context about:
+- What's the problem or goal?
+- Which project areas does this affect?
+
+Example: "Consolidate error handling across 17 tools to enforce single-point error formatting at MCP boundary"
+"""
+    return do_prompt_questioning({
+        "question": "Additional context needed:",
+        "guidance": guidance
+    })
+
+def prompt_user_for_summary(topic_name: str) -> str:
+    """Prompt user for topic summary with context guidance"""
+    guidance = """Summary for planning context.
+
+Include:
+- Problem statement or intended outcome
+- Relevant project areas (e.g., "tool routing", not file paths)
+
+Example: "Centralize error formatting in MCP boundary to eliminate duplicate error handling across all tools"
+"""
+    return do_prompt_questioning({
+        "question": f"Summary for '{topic_name}':",
+        "guidance": guidance
+    })
+```
+
+### Procedure 13: Missing has_planning_files() Function
+
+Checks if topic has planning files (indicates topic state).
+
+**Input**: Topic slug name
+
+**Output**: True if planning files exist, False otherwise
+
+**Algorithm**:
+
+```python
+def has_planning_files(topic_slug: str) -> bool:
+    """
+    Check if planning files exist for a topic.
+
+    Detection criteria:
+    - Directory .agent_planning/<slug>/ exists
+    - Contains at least one of: PLAN-*.md, EVALUATION-*.md, DOD-*.md, STATUS-*.md
+
+    Returns: True if planning has started (state should be PLANNING or later)
+    """
+
+    directory = f".agent_planning/{topic_slug}/"
+    if not dir_exists(directory):
+        return False
+
+    # Check for planning file patterns
+    import os
+    import glob
+
+    files = []
+    try:
+        files = os.listdir(directory)
+    except:
+        return False
+
+    planning_patterns = ["PLAN-", "EVALUATION-", "DOD-", "STATUS-"]
+
+    return any(
+        any(pattern in filename for pattern in planning_patterns)
+        for filename in files
+    )
+```
 
 ## See Also
 
