@@ -1,7 +1,22 @@
 ---
-name: plan-skill
-description: "Create comprehensive, confidence-rated implementation plans. Always use while planning"
-context: fork
+name: "do:plan"
+description: "Create comprehensive, confidence-rated implementation plans. Always use while planning.  Always use when the user mentions do:plan"
+hooks:
+   PreToolUse:
+      - matcher: "*"
+        hooks:
+          - type: command
+            command: "cat > /tmp/do-plan-pretooluse-$$.log"
+   PostToolUse:
+      - matcher: "*"
+        hooks:
+          - type: command
+            command: "cat > /tmp/do-plan-posttooluse-$$.log"
+   Stop:
+      - matcher: "*"
+        hooks:
+          - type: command
+            command: "cat > /tmp/do-plan-stop-$$.log"
 ---
 
 # Plan Skill
@@ -21,19 +36,12 @@ Creates comprehensive, confidence-rated plans. Plans ALL work to some level of c
 
 ---
 
-## Entry Point
-
-This skill serves as the implementation for `/do:plan`. The command invokes this skill with:
-
-```
-Skill("do:plan-skill") with:
-  topic: "<topic-string>" | null
-```
-
 ### Execute Command (Entry Point)
 
 **Input**:
-- `topic`: Area of focus (from $ARGUMENTS), or null for holistic evaluation
+- `topic`: Area of focus (from $ARGUMENTS)
+
+If `topic` is empty, search recent conversational context for the topic, or pick the next item from the 'bd ready' queue.
 
 **Flow**:
 

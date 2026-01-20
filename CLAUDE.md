@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+<universal-laws>
+Remember: I prioritize effectiveness over a specific amount of text.  If the text is not valuable, remove it.  If the text IS valuable, we should
+  not remove it.  the goal is to make sure each word and statement is meanful, dense, and effective, not to hit a target LOC.
+
+Repetition can be very valuable and is often very useful to keep an agent on track, as well.  We should prioritize making sure things that are
+critical ARE repeated in a way that will optimally trigger attention on the important foundational concepts at the apppropriate times.  Sometimes
+we must repeat things to get that maximal effectiveness.  It can also be helpful to ask the agent to reflect, do you know what I'm saying?  What
+context makes an agent most effective at it's task?  Think through each of those items that you're aware of and work to express each of those
+characteristics through this work.  Balance strong and concise langauge with repetition to keep the agent focused, please.
+</universal-laws>
+
 ## Project Overview
 
 A Claude Code Plugin Marketplace containing workflow automation plugins for software development. The marketplace is published at `loom99-public/loom99-claude-marketplace`.

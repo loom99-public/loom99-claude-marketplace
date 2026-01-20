@@ -1,7 +1,6 @@
 ---
-name: it-skill
-description: "Implement a feature with automatic planning, human-in-the-loop verification, and feedback cycles. Entry point for /do:it command."
-context: fork
+name: "do:it"
+description: "Implement a feature with automatic planning, human-in-the-loop verification, and feedback cycles. Use any time you want to implement some functionality, and ALWAYS use when implementing work planned with 'do:plan'"
 ---
 
 # Implementation Command
