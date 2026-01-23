@@ -1,6 +1,6 @@
 ---
-name: testing-master
-description: Testing lifecycle management - framework setup, strategic recommendations, and implementation planning. Use when setting up test infrastructure, improving test quality, or planning test implementation. For test coverage auditing, use audit-master with the testing dimension.
+name: "do-testing-master"
+description: "Testing lifecycle management - framework setup, strategic recommendations, and implementation planning. Use when setting up test infrastructure, improving test quality, or planning test implementation. For test coverage auditing, use audit-master with the testing dimension."
 ---
 
 # Testing Master

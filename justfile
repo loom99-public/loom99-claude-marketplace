@@ -111,6 +111,17 @@ hook-clear:
     @rm -f /tmp/do_plugin/hooks.log 2>/dev/null || true
     @echo "Hook logs cleared."
 
+# Sync plugin source to ~/.claude/plugins/cache (silent, for dev iteration)
+sync-cache:
+    #!/usr/bin/env bash
+    CACHE="$HOME/.claude/plugins/cache/loom99"
+    for plugin in plugins/*/; do
+        name=$(basename "$plugin")
+        cache_dir=$(find "$CACHE/$name" -maxdepth 1 -type d 2>/dev/null | tail -1)
+        [ -z "$cache_dir" ] && continue
+        rsync -a --delete --exclude='.claude-plugin' "$plugin" "$cache_dir/"
+    done
+
 # Generate slash command files from commands.yaml
 generate-commands:
     @echo "🔨 Generating slash command files from commands.yaml..."

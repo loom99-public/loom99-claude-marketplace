@@ -1,11 +1,6 @@
 ---
-name: beads
-description: >
-  Tracks complex, multi-session work using the Beads issue tracker and dependency graphs, and provides
-  persistent memory that survives conversation compaction. Use when work spans multiple sessions, has
-  complex dependencies, or needs persistent context across compaction cycles. Trigger with phrases like
-  "create task for", "what's ready to work on", "show task", "track this work", "what's blocking", or
-  "update status".
+name: "do-beads"
+description: "Tracks complex, multi-session work using the Beads issue tracker and dependency graphs, and provides persistent memory that survives conversation compaction. Use when work spans multiple sessions, has complex dependencies, or needs persistent context across compaction cycles."
 allowed-tools: "Read,Bash(bd:*)"
 version: "0.34.0"
 author: "Steve Yegge <https://github.com/steveyegge>"

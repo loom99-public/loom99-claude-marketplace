@@ -1,6 +1,6 @@
 ---
-name: bd-cli
-description: Use the bd (beads) CLI for persistent issue tracking across sessions. Invoke when work spans multiple sessions, has complex dependencies, or requires context preservation across compaction cycles. Provides git-backed memory that survives context window resets.
+name: "do-bd-cli"
+description: "Use the bd (beads) CLI for persistent issue tracking across sessions. Invoke when work spans multiple sessions, has complex dependencies, or requires context preservation across compaction cycles. Provides git-backed memory that survives context window resets."
 ---
 
 # bd CLI - Persistent Agent Memory

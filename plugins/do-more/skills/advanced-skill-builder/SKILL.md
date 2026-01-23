@@ -1,6 +1,6 @@
 ---
-name: advanced-skill-builder
-description: Use when building new Claude skills, converting documentation to Claude skills, or improving existing Claude skills.
+name: "do-advanced-skill-builder"
+description: "Use when building new Claude skills, converting documentation to Claude skills, or improving existing Claude skills."
 ---
 
 # Advanced Skill Builder

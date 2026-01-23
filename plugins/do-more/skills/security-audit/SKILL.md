@@ -1,6 +1,6 @@
 ---
-name: security-audit
-description: Security vulnerability assessment. Check dependencies for CVEs, analyze auth/authz patterns, identify data exposure risks, OWASP top 10 review.
+name: "do-security-audit"
+description: "Security vulnerability assessment. Check dependencies for CVEs, analyze auth/authz patterns, identify data exposure risks, OWASP top 10 review."
 ---
 
 # Security Audit

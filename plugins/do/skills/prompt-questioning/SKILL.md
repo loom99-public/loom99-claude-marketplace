@@ -1,6 +1,6 @@
 ---
-name: prompt-questioning
-description: Allow subagents to ask questions to users and receive responses for decision-making. Use when a subagent needs human input to proceed.
+name: "do-prompt-questioning"
+description: "Allow subagents to ask questions to users and receive responses for decision-making. Use when a subagent needs human input to proceed."
 ---
 
 # Prompt Questioning Skill

@@ -1,3 +1,8 @@
+---
+name: "do-eval-cache"
+description: "Share evaluation findings between evaluators to avoid redundant work across context clears and different evaluation scopes."
+---
+
 # Evaluation Cache Skill
 
 Share evaluation findings between evaluators to avoid redundant work across context clears and different evaluation scopes.

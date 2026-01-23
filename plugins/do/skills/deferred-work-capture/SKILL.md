@@ -1,6 +1,6 @@
 ---
-name: deferred-work-capture
-description: Capture deferred work items discovered during workflows. Auto-persists to beads with fallback to planning docs. Prevents work from falling through the cracks.
+name: "do-deferred-work-capture"
+description: "Capture deferred work items discovered during workflows. Auto-persists to beads with fallback to planning docs. Prevents work from falling through the cracks."
 ---
 
 # Deferred Work Capture

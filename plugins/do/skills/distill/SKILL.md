@@ -1,5 +1,5 @@
 ---
-name: distill
+name: "do-distill"
 description: "See the essence of a codebase. Identifies core abstractions, surfaces dilution and scattering, finds the true shape beneath accumulated code. Outputs a distillation - a seeing, not a plan. Use before pruning or honing."
 ---
 

@@ -1,6 +1,6 @@
 ---
-name: setup-testing
-description: Set up a testing framework for a project that doesn't have one. Use when user wants to add testing infrastructure before writing tests. Detects project type, recommends framework, configures with best practices.
+name: "do-setup-testing"
+description: "Set up a testing framework for a project that doesn't have one. Use when user wants to add testing infrastructure before writing tests. Detects project type, recommends framework, configures with best practices."
 ---
 
 # Setup Testing Framework

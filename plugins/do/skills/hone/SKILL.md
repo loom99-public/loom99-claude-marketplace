@@ -1,5 +1,5 @@
 ---
-name: hone
+name: "do-hone"
 description: "Sharpen what remains toward its purpose. After distilling and pruning, hone tightens names, clarifies boundaries, simplifies signatures, and makes code say what it means. The blade cuts clean."
 ---
 

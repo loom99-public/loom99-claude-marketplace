@@ -1,6 +1,6 @@
 ---
-name: market-research
-description: External/market research - competitive landscape, demand signals, alternatives. Use when user asks about competitors, market demand, or external approaches.
+name: "do-market-research"
+description: "External/market research - competitive landscape, demand signals, alternatives. Use when user asks about competitors, market demand, or external approaches."
 ---
 
 # Market Research

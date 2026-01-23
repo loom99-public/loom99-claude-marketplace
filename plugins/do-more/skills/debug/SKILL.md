@@ -1,6 +1,6 @@
 ---
-name: debug
-description: Systematic root cause investigation. Use when user reports a bug, error, or unexpected behavior and wants to find the cause.
+name: "do-debug"
+description: "Systematic root cause investigation. Use when user reports a bug, error, or unexpected behavior and wants to find the cause."
 ---
 
 # Debug

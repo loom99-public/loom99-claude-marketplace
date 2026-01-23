@@ -1,6 +1,6 @@
 ---
-name: evaluation-profiles
-description: Context-aware validation criteria for evaluator agents. Use this skill when running project-evaluator or work-evaluator to select the appropriate validation profile based on project type. Prevents wasted effort on irrelevant validations (e.g., pagination checks on prompts, concurrent access testing on CLIs). Profiles include CLI tools, web apps, agent prompts, libraries, and APIs.
+name: "do-evaluation-profiles"
+description: "Context-aware validation criteria for evaluator agents. Use this skill when running project-evaluator or work-evaluator to select the appropriate validation profile based on project type. Prevents wasted effort on irrelevant validations (e.g., pagination checks on prompts, concurrent access testing on CLIs). Profiles include CLI tools, web apps, agent prompts, libraries, and APIs."
 ---
 
 # Evaluation Profiles

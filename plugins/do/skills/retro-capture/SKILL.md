@@ -1,6 +1,6 @@
 ---
-name: retro-capture
-description: Silently capture workflow observations to retro log when you notice repeated issues, user frustration, or process inefficiencies. Use when you observe patterns that could improve future work.
+name: "do-retro-capture"
+description: "Silently capture workflow observations to retro log when you notice repeated issues, user frustration, or process inefficiencies. Use when you observe patterns that could improve future work."
 ---
 
 # Retro Capture Skill

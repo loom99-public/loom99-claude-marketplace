@@ -1,6 +1,6 @@
 ---
-name: review
-description: Code review and quality assessment. Use when user wants to review a PR, recent changes, or specific code.
+name: "do-review"
+description: "Code review and quality assessment. Use when user wants to review a PR, recent changes, or specific code."
 ---
 
 # Review

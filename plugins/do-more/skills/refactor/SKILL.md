@@ -1,6 +1,6 @@
 ---
-name: refactor
-description: Safe code restructuring without behavior change. Use when user wants to improve code structure, clean up, or reorganize.
+name: "do-refactor"
+description: "Safe code restructuring without behavior change. Use when user wants to improve code structure, clean up, or reorganize."
 ---
 
 # Refactor

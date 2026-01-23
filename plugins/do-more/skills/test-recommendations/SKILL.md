@@ -1,6 +1,6 @@
 ---
-name: test-recommendations
-description: Generate strategic test recommendations based on test-coverage-audit output. Produces prioritized test plan with specific recommendations for each gap. Use after running test-coverage-audit.
+name: "do-test-recommendations"
+description: "Generate strategic test recommendations based on test-coverage-audit output. Produces prioritized test plan with specific recommendations for each gap. Use after running test-coverage-audit."
 ---
 
 # Test Recommendations

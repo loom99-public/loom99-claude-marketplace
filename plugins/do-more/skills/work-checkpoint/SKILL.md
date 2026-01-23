@@ -1,6 +1,6 @@
 ---
-name: work-checkpoint
-description: Present completed work to user for verification at the end of a /do:* command. Runs in main context so CAN use AskUserQuestion. Lists accomplishments, asks for feedback, and determines next action.
+name: "do-work-checkpoint"
+description: "Present completed work to user for verification at the end of a /do:* command. Runs in main context so CAN use AskUserQuestion. Lists accomplishments, asks for feedback, and determines next action."
 ---
 
 # Work Checkpoint

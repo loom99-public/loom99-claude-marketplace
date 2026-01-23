@@ -1,6 +1,6 @@
 ---
-name: deep-audit
-description: Comprehensive technical audit checklists for architecture, design, efficiency, and domain-specific analysis. Use when project-evaluator runs in audit mode.
+name: "do-deep-audit"
+description: "Comprehensive technical audit checklists for architecture, design, efficiency, and domain-specific analysis. Use when project-evaluator runs in audit mode."
 ---
 
 # Deep Audit

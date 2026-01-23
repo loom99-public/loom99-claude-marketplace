@@ -1,6 +1,6 @@
 ---
-name: audit-master
-description: Comprehensive audit across multiple dimensions - code quality, planning alignment, security, competitive analysis, and test coverage. Use when auditing any aspect of a project. Supports quick, medium, and thorough intensity levels.
+name: "do-audit-master"
+description: "Comprehensive audit across multiple dimensions - code quality, planning alignment, security, competitive analysis, and test coverage. Use when auditing any aspect of a project. Supports quick, medium, and thorough intensity levels."
 ---
 
 # Audit Master

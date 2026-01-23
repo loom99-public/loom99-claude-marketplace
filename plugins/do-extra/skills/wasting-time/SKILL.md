@@ -1,6 +1,6 @@
 ---
-name: wasting-time
-description: A guide for wasting time.  Use when you need to spend a lot of time and end up without anything to show for it.
+name: "do-wasting-time"
+description: "A guide for wasting time. Use when you need to spend a lot of time and end up without anything to show for it."
 ---
 
 # Wasting Time

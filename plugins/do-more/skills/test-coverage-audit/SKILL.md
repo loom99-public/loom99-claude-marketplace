@@ -1,6 +1,6 @@
 ---
-name: test-coverage-audit
-description: Forensic test coverage audit - exhaustive detection of complexity sources and assessment of whether tests exist at the right level. Use when reviewing test quality, identifying testing gaps, or auditing test strategy. Produces detailed accounting for test-recommendations skill.
+name: "do-test-coverage-audit"
+description: "Forensic test coverage audit - exhaustive detection of complexity sources and assessment of whether tests exist at the right level. Use when reviewing test quality, identifying testing gaps, or auditing test strategy. Produces detailed accounting for test-recommendations skill."
 ---
 
 # Test Coverage Audit

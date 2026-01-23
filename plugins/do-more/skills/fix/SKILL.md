@@ -1,6 +1,6 @@
 ---
-name: fix
-description: Bug fix workflow with verification. Use when user wants to fix a known bug or issue.
+name: "do-fix"
+description: "Bug fix workflow with verification. Use when user wants to fix a known bug or issue."
 ---
 
 # Fix

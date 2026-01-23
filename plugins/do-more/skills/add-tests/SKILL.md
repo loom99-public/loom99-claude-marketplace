@@ -1,6 +1,6 @@
 ---
-name: add-tests
-description: Add tests to existing untested code. Use when user wants to improve test coverage for existing functionality.
+name: "do-add-tests"
+description: "Add tests to existing untested code. Use when user wants to improve test coverage for existing functionality."
 ---
 
 # Add Tests

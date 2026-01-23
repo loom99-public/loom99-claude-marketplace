@@ -1,5 +1,5 @@
 ---
-name: prune
+name: "do-prune"
 description: "Remove what has served its purpose and now obscures. Finds dead code, orphaned functions, scaffolding that outlived its use, and vestigial features. Uses distillation to know what to preserve. Outputs proposed removals with rationale."
 ---
 

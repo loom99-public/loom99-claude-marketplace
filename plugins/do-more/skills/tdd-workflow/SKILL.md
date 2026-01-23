@@ -1,6 +1,6 @@
 ---
-name: tdd-workflow
-description: Test-Driven Development workflow. Use when user explicitly wants TDD or when implementing API/logic with existing test framework.
+name: "do-tdd-workflow"
+description: "Test-Driven Development workflow. Use when user explicitly wants TDD or when implementing API/logic with existing test framework."
 ---
 
 # TDD Workflow

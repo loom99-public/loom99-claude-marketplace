@@ -1,6 +1,6 @@
 ---
-name: test-implementation-plan
-description: Generate detailed implementation plan for test recommendations, including testability refactoring. Produces actionable execution plan with code changes needed to make code testable BEFORE/concurrent with writing tests.
+name: "do-test-implementation-plan"
+description: "Generate detailed implementation plan for test recommendations, including testability refactoring. Produces actionable execution plan with code changes needed to make code testable BEFORE/concurrent with writing tests."
 ---
 
 # Test Implementation Plan

@@ -1,6 +1,6 @@
 ---
-name: iterative-workflow
-description: Iterative implementation with runtime validation. Use for UI work, exploratory development, or when TDD is impractical.
+name: "do-iterative-workflow"
+description: "Iterative implementation with runtime validation. Use for UI work, exploratory development, or when TDD is impractical."
 ---
 
 # Iterative Workflow

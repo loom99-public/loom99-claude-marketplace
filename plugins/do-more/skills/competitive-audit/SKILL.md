@@ -1,6 +1,6 @@
 ---
-name: competitive-audit
-description: Compare project against competitors and alternatives. Analyze feature parity, differentiation, gaps, and market positioning. Requires external research.
+name: "do-competitive-audit"
+description: "Compare project against competitors and alternatives. Analyze feature parity, differentiation, gaps, and market positioning. Requires external research."
 ---
 
 # Competitive Audit

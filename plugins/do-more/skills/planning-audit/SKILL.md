@@ -1,6 +1,6 @@
 ---
-name: planning-audit
-description: Audit alignment across strategy, architecture, plans, and implementation. Ensures planning documents remain effective and aligned over time. Supports quick, medium, and thorough intensity levels.
+name: "do-planning-audit"
+description: "Audit alignment across strategy, architecture, plans, and implementation. Ensures planning documents remain effective and aligned over time. Supports quick, medium, and thorough intensity levels."
 ---
 
 # Planning Audit
