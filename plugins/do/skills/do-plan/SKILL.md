@@ -87,7 +87,7 @@ def execute_command(topic: str | None) -> str:
 $ARGUMENTS
 </task-focus>
 
-If task-focus is empty, evaluate the project holistically using PROJECT_SPEC.md.
+If task-focus is empty, infer the topic from recent conversation context. If no context is available, ask the user what they want to plan.
 
 **Output:** A topic string.
 
@@ -245,9 +245,11 @@ Files per sprint:
 3. SPRINT-<timestamp>-<slug>-CONTEXT.md - Implementation context
 
 All files go in the topic directory.
-```
 
 CRITICAL!  Do NOT skip this. You MUST write plans the specified files.
+
+
+```
 
 ### Sprint Plan Templates
 
