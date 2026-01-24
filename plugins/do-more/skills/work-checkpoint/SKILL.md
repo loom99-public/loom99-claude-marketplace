@@ -24,10 +24,10 @@ Invoke at the **end of `/do:*` commands** when verification is needed.
 **Step 1**: Gather completed work
 
 
-Read any SUMMARY files from `.agent_planning/SUMMARY-*.txt` (recent ones).
+Check recent git history and planning files in `.agent_planning/<topic>/` to understand what was accomplished.
 
 Extract:
-- What agents ran and what they accomplished
+- What was implemented (from git log and SPRINT-*-PLAN.md)
 - Files created or modified
 - Tests written or run
 - Commits made

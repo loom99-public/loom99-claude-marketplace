@@ -33,6 +33,7 @@ Before starting evaluation, determine the profile:
 | Web application, frontend, UI | `web-app` |
 | Agent definition, skill, prompt | `agent-prompt` |
 | Library, SDK, package for others | `library` |
+| Compiler, pipeline, data transforms, kernels | `library-pipeline` |
 | REST/GraphQL API, backend service | `api-service` |
 | Configuration, infrastructure | `config-infra` |
 
@@ -46,6 +47,7 @@ After selecting a profile, read the corresponding reference file for specific va
 - **Web applications**: Read `references/web-app.md`
 - **Agent prompts**: Read `references/agent-prompt.md`
 - **Libraries**: Read `references/library.md`
+- **Library/Pipeline**: See inline profile below (no separate reference file)
 - **API services**: Read `references/api-service.md`
 - **Config/Infra**: Read `references/config-infra.md`
 
@@ -156,13 +158,89 @@ Call → Validate → Transform → Return (+ side effects if any)
 
 **Config/Infra:** (No runtime data flow - verify parse + reference resolution)
 
+## Profile: library-pipeline (Inline)
+
+**Use for:** Compilers, data pipelines, render systems, signal processing, transformation chains, pure-function kernels, IR generation, schedule execution.
+
+**Key insight:** There is no UI to click. "Runtime evidence" means running the actual pipeline with real inputs and verifying outputs are correct, correctly shaped, and produced in the right order.
+
+### ALWAYS RUN:
+
+**Pipeline entry point test:**
+- Identify the real entry point (the function/class the rest of the system actually calls)
+- Call it with realistic inputs
+- Verify outputs have correct types, shapes, and values
+
+**Stage ordering verification:**
+- If the pipeline has stages that must run in order, verify the orchestration layer calls them in order
+- SPY on the real orchestrator — do NOT manually call stages in sequence (that's a tautology)
+
+**Invariant checks:**
+- Pure functions: same inputs → bitwise identical outputs (test with repeated calls)
+- No-mutation: input buffers unchanged after pipeline runs (snapshot before/after)
+- Type constraints: output types match declared contracts (Float32Array, stride N, etc.)
+
+**Tautology scan:**
+- For each test: "If I deleted the implementation, would this test still pass?"
+- For each integration test: "Does this invoke the real orchestration layer?"
+- For each ordering test: "Does this spy on the real pipeline, or manually sequence calls?"
+
+### RUN IF applicable:
+
+**Performance (if pipeline processes large data):**
+- Run with N=10000+ elements — no crash, reasonable time
+- No per-element allocations (check for `new` or object literals in hot paths)
+
+**Composition (if pipeline has composable stages):**
+- Verify stages compose correctly (output of stage N is valid input for stage N+1)
+- Verify removing/reordering optional stages doesn't break required stages
+
+**Determinism (if outputs must be reproducible):**
+- Run same inputs twice → bitwise identical outputs
+- Run with different initial states → same outputs (no hidden state leakage)
+
+### SKIP unless requested:
+
+- Memory profiling
+- Benchmarking (unless performance is an acceptance criterion)
+- Concurrency testing (unless pipeline is multi-threaded)
+- Visual output verification (unless rendering is the point)
+
+### SKIP entirely:
+
+- Browser/UI interaction
+- HTTP request testing
+- Form validation
+- User session management
+- Database/persistence checks (unless the pipeline writes to storage)
+
+### Data Flow Template:
+
+```
+Input Data → [Stage 1: Parse/Validate] → IR₁ → [Stage 2: Transform] → IR₂ → ... → [Stage N: Emit] → Output
+```
+
+Verify at EACH stage boundary:
+- Input to stage N+1 is the actual output of stage N (not a manually constructed copy)
+- Stage N's contract (types, shapes, invariants) is satisfied by stage N-1's output
+- The orchestration layer (not the test) coordinates the stages
+
+### Library-Pipeline Red Flags:
+
+- Tests that import internal helpers instead of the public API surface
+- "Integration" tests that manually call individual stages in sequence
+- Tests that construct expected data rather than computing it independently
+- Spy tests that verify manually-constructed ordering rather than real pipeline ordering
+- Tests at the wrong layer (testing a helper when the criterion describes the orchestrator)
+- Performance claims without actual N=large verification
+
 ## Integration with Evaluator Agents
 
 When project-evaluator or work-evaluator starts:
 
 1. Determine project type from context (README, package.json, file structure)
 2. Load this skill
-3. Read the appropriate profile reference
+3. Read the appropriate profile reference (or inline profile for library-pipeline)
 4. Apply only the validations specified for that profile
 5. Check Universal Red Flags and Ambiguity Detection (always)
 6. Note skipped validations with reason in output

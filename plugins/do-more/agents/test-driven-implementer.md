@@ -121,23 +121,8 @@ Append to `.agent_planning/DEFERRED-WORK.md`:
 
 This ensures discovered work is tracked and can be addressed in future iterations. If beads is available, these items can be linked to formal issues.
 
-### 9. Beads Updates (on completion)
-Use the `do:deferred-work-capture` skill to ensure discovered work is tracked:
-
-```
-Skill("do:deferred-work-capture") with:
-  title: "Found: <issue title>"
-  description: |
-    Discovered during TDD implementation.
-
-    What was found: <details>
-    Context: <where in the code>
-    Why it can't be fixed now: <reason>
-  type: bug  # or task/chore as appropriate
-  priority: <0-4>
-  source_context: "test-driven-implementer discovered during <feature>"
-  parent_id: <current beads issue if any>
-```
+### 9. Track Discovered Work (on completion)
+If you discover bugs or issues during implementation that can't be fixed now, note them in your final output so the calling skill can capture them.
 
 The skill auto-persists to beads with `discovered-from` links, or falls back to `.agent_planning/DEFERRED-WORK.md` if beads unavailable.
 
@@ -275,54 +260,10 @@ CATEGORY: architecture | implementation | testing
 - Minor refactoring within established patterns
 - Obvious implementations with no alternatives
 
-## Final Steps (All Required - Do Not Skip Any)
-
-### STEP 0: Invalidate Eval Cache (CRITICAL - DO THIS FIRST)
-
-**You MUST invalidate cached evaluations for files you modified. This is not optional.**
-
-The eval-cache contains knowledge from previous evaluations. When you change files, that knowledge becomes stale. If you don't invalidate it, the next evaluator will use outdated information and produce wrong results.
-
-**For each file you modified**, remove related cache entries:
-
-```bash
-# 1. Check what cache entries exist
-cat .agent_planning/eval-cache/INDEX.md 2>/dev/null
-
-# 2. For each modified file, find and remove related cache entries
-# Example: if you modified src/auth/login.ts, remove entries covering "auth" or "login"
-grep -l "auth\|login" .agent_planning/eval-cache/*.md 2>/dev/null
-
-# 3. Remove the stale cache files
-rm .agent_planning/eval-cache/<matched-files>.md
-
-# 4. Update INDEX.md - remove the deleted entries from the table
-```
-
-**Invalidation rules:**
-- Modified `src/auth/*` → remove `*auth*` cache entries
-- Modified `tests/*` → remove `test-infrastructure.md`
-- Modified project config (package.json, pyproject.toml, etc.) → remove `project-structure.md`
-- Modified architecture (new modules, changed patterns) → remove `architecture.md`
-
-**If in doubt, remove more rather than less.** Stale cache is worse than no cache.
-
-### STEP 1: Write Summary File
-
-Write to `.agent_planning/SUMMARY-test-driven-implementer-<timestamp>.txt`:
-```
-Agent: test-driven-implementer | <timestamp>
-Tests: n passing, m failing | Files: [count] | Commits: [count]
-Cache invalidated: [list of removed cache files]
-Status: complete | in_progress | blocked
-Next: [recommended action]
-```
-
-### STEP 2: Output to User
+## Final Output (Required)
 
 ```
 ✓ test-driven-implementer complete
   Tests: [n passing, m failing] | Files: [count] | Commits: [count]
-  Cache: Invalidated [n] entries for modified files
   → [Status and next step]
 ```

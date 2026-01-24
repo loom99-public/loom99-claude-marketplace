@@ -139,6 +139,7 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 ### Step 3a: Run Evaluation
 
+Remember the universal-laws.
 Use the /Explore agent to evaluate the current state:
 
 ```
@@ -155,8 +156,9 @@ Focus on:
 4. Dependencies and risks
 5. Ambiguities and unknowns (CRITICAL - list ALL uncertainties)
 ```
-
-This produces: `EVALUATION-<timestamp>.md`
+<important>
+You MUST write this file to: `.agent_planning/<topic>/EVALUATION-<timestamp>.md` before continuing.
+</important>
 
 ### Step 3b: Handle Evaluation Results
 
@@ -200,6 +202,8 @@ For each ambiguity, ask user with prepared options:
 
 **CRITICAL: Plan ALL identified work. Do not artificially limit to 1 sprint.**
 
+You MUST write plan files 
+
 ### Step 4a: Assess Work and Assign Confidence
 
 Review evaluation and categorize ALL work items by confidence:
@@ -213,40 +217,46 @@ Review evaluation and categorize ALL work items by confidence:
 ### Step 4b: Group into Sprints
 
 **Each sprint**:
-- Contains ONE confidence level (homogeneous)
 - Represents a coherent unit of related work
 - Has its OWN planning documents (not shared)
+- Each work item gets its own confidence tag (HIGH/MEDIUM/LOW)
+- Sprint status is derived from the mix:
+  - `READY FOR IMPLEMENTATION` — all items HIGH
+  - `PARTIALLY READY` — mix of HIGH and MEDIUM/LOW
+  - `RESEARCH REQUIRED` — majority MEDIUM/LOW
 
-**Sprint naming**: `SPRINT-<timestamp>-<slug>.md`
+**Sprint naming**: `SPRINT-<timestamp>-<slug>-<type>.md`
 - Slug is 2-3 words describing the work
-- Example: `SPRINT-2024-12-15-120000-auth-core.md`
+- Type is PLAN, DOD, or CONTEXT
+- Example: `SPRINT-2024-12-15-120000-auth-core-PLAN.md`
 
 ### Step 4c: Generate Plans
 
-**For each sprint**, use the /Plan subagent:
+**For each sprint**, use the status-planner agent:
 
 ```
 Topic: $TOPIC
 Topic Directory: .agent_planning/<topic>/
-Sprint: <sprint-slug>
-Confidence: HIGH | MEDIUM | LOW
 
-Generate:
+Generate sprint plans with per-item confidence tags and derived sprint status.
+Files per sprint:
 1. SPRINT-<timestamp>-<slug>-PLAN.md - Sprint plan
-2. SPRINT-<timestamp>-<slug>-DOD.md - Acceptance criteria
+2. SPRINT-<timestamp>-<slug>-DOD.md - Definition of Done
 3. SPRINT-<timestamp>-<slug>-CONTEXT.md - Implementation context
 
 All files go in the topic directory.
 ```
 
+CRITICAL!  Do NOT skip this. You MUST write plans the specified files.
+
 ### Sprint Plan Templates
 
-**HIGH Confidence Sprint:**
+**Sprint Plan Template:**
 ```markdown
 # Sprint: [Slug] - [Name]
 Generated: <timestamp>
-Confidence: HIGH
-Status: READY FOR IMPLEMENTATION
+Confidence: HIGH: N, MEDIUM: N, LOW: N
+Status: READY FOR IMPLEMENTATION | PARTIALLY READY | RESEARCH REQUIRED
 
 ## Sprint Goal
 [One sentence describing deliverables]
@@ -275,77 +285,9 @@ Status: READY FOR IMPLEMENTATION
 - [Known risks with mitigations]
 ```
 
-**MEDIUM Confidence Sprint:**
-```markdown
-# Sprint: [Slug] - [Name]
-Generated: <timestamp>
-Confidence: MEDIUM
-Status: RESEARCH REQUIRED
-
-## Sprint Goal
-[Raise confidence to HIGH through targeted research]
-
-## Known Elements
-- [What we DO know]
-
-## Unknowns to Resolve
-1. [Unknown 1] - Research approach: [how to find out]
-2. [Unknown 2] - Research approach: [how to find out]
-
-## Tentative Deliverables
-- [Likely deliverable 1 - pending research]
-- [Likely deliverable 2 - pending research]
-
-## Research Tasks
-- [ ] [Research task 1]
-- [ ] [Research task 2]
-
-## Exit Criteria (to reach HIGH confidence)
-- [ ] [What must be true to proceed]
-```
-
-**LOW Confidence Sprint:**
-```markdown
-# Sprint: [Slug] - [Name]
-Generated: <timestamp>
-Confidence: LOW
-Status: EXPLORATION REQUIRED
-
-## Sprint Goal
-[Reduce uncertainty and define approach]
-
-## Current Understanding
-[What little we know]
-
-## Major Unknowns
-1. [Unknown 1] - Impact: [why it matters]
-2. [Unknown 2] - Impact: [why it matters]
-
-## Exploration Options
-
-### Option A: [Standard Approach]
-| Aspect | Assessment |
-|--------|------------|
-| Complexity | [Low/Medium/High] |
-| Risk | [Low/Medium/High] |
-| Pros | [benefits] |
-| Cons | [drawbacks] |
-
-### Option B: [Creative Approach]
-| Aspect | Assessment |
-|--------|------------|
-| Complexity | [Low/Medium/High] |
-| Risk | [Low/Medium/High] |
-| Pros | [benefits] |
-| Cons | [drawbacks] |
-
-## Questions for User
-1. [Question 1]
-2. [Question 2]
-
-## Exit Criteria (to reach MEDIUM confidence)
-- [ ] [What must be true to proceed]
-```
+**For MEDIUM/LOW confidence items within a sprint, include per-item:**
+- `#### Unknowns to Resolve` — what needs research
+- `#### Exit Criteria` — what raises confidence to HIGH
 
 ### Step 4d: Check for Existing Plans
 
@@ -359,32 +301,11 @@ Before creating any sprint plan:
 
 ---
 
-## Step 5: Handle Low/Medium Confidence
+## Step 5: Handle MEDIUM/LOW Confidence Items
 
-**For LOW or MEDIUM confidence sprints, the primary goal is raising confidence.**
+**For sprints with MEDIUM/LOW items, surface unknowns to user before implementation.**
 
-### Present Options to User
-
-```
-┌─ Research Required: [Sprint Name] ────────────────────┐
-│ Confidence: LOW/MEDIUM                                │
-│                                                       │
-│ Unknowns:                                             │
-│ 1. [Unknown 1]                                        │
-│ 2. [Unknown 2]                                        │
-│                                                       │
-│ Research Options:                                     │
-│                                                       │
-│ | Option | Approach | Effort | Outcome |              │
-│ |--------|----------|--------|---------|              │
-│ | A | [standard research path] | [est] | [result] |  │
-│ | B | [alternative approach] | [est] | [result] |    │
-│                                                       │
-│ Which approach should we take? (or suggest your own) │
-└───────────────────────────────────────────────────────┘
-```
-
-**After user input**: Update sprint plan with findings, re-assess confidence.
+For each MEDIUM/LOW item, present its unknowns and research options to the user. After user input, update the item's confidence to HIGH in the sprint plan.
 
 ---
 
@@ -414,16 +335,19 @@ Present ALL sprints for approval:
 │ Total Sprints: N                                      │
 │                                                       │
 │ ┌─ Sprint 1: [slug] ─────────────────────────────┐   │
-│ │ Confidence: HIGH                                │   │
+│ │ Status: READY FOR IMPLEMENTATION                │   │
+│ │ Confidence: HIGH: 3, MEDIUM: 0, LOW: 0         │   │
 │ │ Deliverables:                                   │   │
 │ │ - [Deliverable 1]                               │   │
 │ │ - [Deliverable 2]                               │   │
 │ └─────────────────────────────────────────────────┘   │
 │                                                       │
 │ ┌─ Sprint 2: [slug] ─────────────────────────────┐   │
-│ │ Confidence: MEDIUM                              │   │
-│ │ Focus: Research [topic]                         │   │
-│ │ Exit criteria: [what raises to HIGH]            │   │
+│ │ Status: PARTIALLY READY                         │   │
+│ │ Confidence: HIGH: 2, MEDIUM: 1, LOW: 0         │   │
+│ │ Deliverables:                                   │   │
+│ │ - [Deliverable 1]                               │   │
+│ │ - [Deliverable 2 - needs research]              │   │
 │ └─────────────────────────────────────────────────┘   │
 │                                                       │
 │ Options:                                              │
@@ -450,8 +374,8 @@ Once user approves:
    .agent_planning/<topic>/
    ├── EVALUATION-<timestamp>.md
    ├── SPRINT-<ts>-<slug>-PLAN.md      # Per sprint
-   ├── SPRINT-<ts>-<slug>-DOD.md       # Per sprint
-   ├── SPRINT-<ts>-<slug>-CONTEXT.md   # Per sprint
+   ├── SPRINT-<ts>-<slug>-DOD.md       # Definition of Done (per sprint)
+   ├── SPRINT-<ts>-<slug>-CONTEXT.md   # Implementation context (per sprint)
    └── USER-RESPONSE-<timestamp>.md
    ```
 
@@ -484,7 +408,7 @@ Next steps:
 
 1. **Plan ALL work** - Don't artificially limit scope. Plan everything to some confidence level.
 2. **Confidence drives approach** - HIGH = implement. MEDIUM/LOW = research first.
-3. **Homogeneous sprints** - Each sprint has ONE confidence level.
+3. **Coherent sprints** - Group related work together. Sprint status derives from item confidence mix.
 4. **Separate documents per sprint** - Never reuse or combine sprint plans.
 5. **Update over create** - Always update existing plans for unworked topics.
 6. **Options with tradeoffs** - When asking users, provide standard + creative options with comparison.

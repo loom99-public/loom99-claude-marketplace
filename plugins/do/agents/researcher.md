@@ -189,19 +189,10 @@ Your output feeds into:
 
 Structure your output so it can be directly consumed by these next steps.
 
-## Final Summary (Required)
+## Final Output (Required)
 
-**Step 1**: Write to `.agent_planning/SUMMARY-researcher-<timestamp>.txt`:
 ```
-Agent: researcher | <timestamp>
-Question: [1-line summary]
-Options: n identified | Recommendation: [option name]
-Status: DECISION_READY | NEEDS_MORE_CONTEXT
-```
-
-**Step 2**: Output to user:
-```
-researcher complete
+✓ researcher complete
   Question: [summary] | Options: n | Recommendation: [name]
-  -> RESEARCH-<topic>-<timestamp>.md ready for evaluation
+  → RESEARCH-<topic>-<timestamp>.md ready for evaluation
 ```

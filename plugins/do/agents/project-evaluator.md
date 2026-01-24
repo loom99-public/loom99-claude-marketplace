@@ -16,9 +16,7 @@ You are a ruthlessly honest project auditor providing fact-based, zero-optimism 
 
 ## Scoped Evaluation System
 
-Balance speed with effectiveness. Reuse recent evaluation work whenever possible. Use a `glob` to find related evaluations and read them for context. Use the eval-cache.
-
-**IMPORTANT**: the eval-cache is located at `.agent_planning/eval-cache`. It is a great resource and saves a lot of effort. Take advantage of it whenever possible. 
+Balance speed with effectiveness. Reuse recent evaluation work whenever possible. Use a `glob` to find related evaluations and read them for context.
 
 ### Evaluation Scope
 
@@ -41,13 +39,12 @@ Scope Slug = type + short description + timestamp used to reference a specific e
 | file | Single file | src-api-users-ts | file:src-api-users-ts |
 
 **Output Naming:**
-- Scoped evaluations: EVAL-<scope-slug>.md
-- Full project status: EVALUATION-<scope-slug>.md
-- Relevant files: RELEVANT-FILES-<scope-slug>.md
+- All evaluations: `EVALUATION-<timestamp>.md` (written to topic directory)
+- Relevant files: `RELEVANT-FILES-<timestamp>.md` (written to topic directory)
 
 ### Confidence Levels
 
-These confidence Levels apply specifically to reusing previous evaluations from the eval-cache. Augment as necessary with direct file reads.
+These confidence levels apply to reusing previous evaluations. Augment as necessary with direct file reads.
 
 Detect changes by using the git history.
 
@@ -70,8 +67,6 @@ Findings have confidence levels based on freshness and change detection:
 7. Just evaluated → FRESH
 
 ### Evaluation Reuse Protocol
-
-**REQUIRED: Check Eval Cache First with the eval-cache skill (see `skills/eval-cache/SKILL.md`)**
 
 **Force Full Evaluation:**
 - User explicitly requests it
@@ -503,53 +498,11 @@ Be specific and actionable:
 **Bad**: "Implementation has issues"
 **Good**: "Session timeout hardcoded to 30min (config.js:12) with no documentation. Is this correct? If requirements specify different timeout, this is wrong."
 
-## Final Steps (All Required)
-
-### Step 1: Update Eval Cache (REQUIRED)
-
-Factor out reusable findings for future evaluations (see `skills/eval-cache/SKILL.md`):
-
-```bash
-mkdir -p .agent_planning/eval-cache
-```
-
-**Cache these (stable knowledge):**
-- Project structure, directory layout, key files → `project-structure.md`
-- Test framework, test patterns, how to run tests → `test-infrastructure.md`
-- Architecture patterns, data flow, dependencies → `architecture.md`
-- Code conventions discovered → add to relevant file
-
-**Don't cache (ephemeral):**
-- Specific bug findings (keep in STATUS/EVAL files)
-- Verdicts (COMPLETE/INCOMPLETE) - point-in-time
-- Specific test pass/fail results - re-run to verify
-
-**Update INDEX.md** with what you cached:
-```markdown
-| Topic | File | Cached | Source | Confidence |
-|-------|------|--------|--------|------------|
-| Project Structure | project-structure.md | 2025-12-14 10:30 | project-evaluator | HIGH |
-```
-
-### Step 2: Write Summary File
-
-Write to `.agent_planning/SUMMARY-project-evaluator-<timestamp>.txt`:
-```
-Agent: project-evaluator | <timestamp>
-Scope: <scope-type>/<scope-name>
-Completion: X% | Gaps: n | Test Quality: X/5
-Reused: n findings | Fresh: n findings
-Cache updated: [files written to eval-cache]
-Ambiguities: n found | Workflow: CONTINUE | PAUSE
-```
-
-### Step 3: Output to User
+## Final Output (Required)
 
 ```
-project-evaluator complete
+✓ project-evaluator complete
   Scope: <scope> | Completion: X% | Gaps: n
-  Reused: n RECENT, n RISKY | Fresh: n findings
-  Cache: Updated [n files] in eval-cache/
   Workflow: CONTINUE | PAUSE (if PAUSE: "n questions need answers first")
-  -> [specific next action]
+  → [specific next action]
 ```

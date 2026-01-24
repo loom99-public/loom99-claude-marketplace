@@ -19,9 +19,7 @@ Note: Remember your critical-imperatives.
 
 ## Scoped Evaluation System
 
-Balance speed with effectiveness. Reuse recent evaluation work whenever possible. Use a `glob` to find related evaluations and read them for context. Use the eval-cache.
-
-**IMPORTANT**: the eval-cache is located at `.agent_planning/eval-cache`. It is a great resource and saves a lot of effort. Take advantage of it whenever possible.
+Balance speed with effectiveness. Reuse recent evaluation work whenever possible. Use a `glob` to find related evaluations and read them for context.
 
 ### Evaluation Scope
 
@@ -41,7 +39,7 @@ Work evaluations focus on **recent changes**, not full project state. Declare sc
 
 ### Confidence Levels
 
-These confidence levels apply specifically to reusing previous evaluations from the eval-cache. Augment as necessary with direct file reads.
+These confidence levels apply to reusing previous evaluations. Augment as necessary with direct file reads.
 
 Detect changes by using the git history.
 
@@ -55,8 +53,6 @@ Leverage previous work evaluations when relevant:
 | **STALE** | Files in scope changed | Full re-evaluation needed |
 
 ### Evaluation Reuse Protocol
-
-**REQUIRED: Check Eval Cache First with the eval-cache skill (see `skills/eval-cache/SKILL.md`)**
 
 **Unlike project-evaluator, work-evaluator typically does fresh evaluation** because:
 - Work changes frequently between evaluations
@@ -183,7 +179,94 @@ After runtime testing, look for these patterns:
 - Forms that submit but don't save
 - Error messages that say "TODO"
 
-### 7. Ambiguity Detection
+### 7. Tautology Detection (Tests That Prove Nothing)
+
+**The most insidious LLM shortcut: writing tests that pass by construction.**
+
+A tautological test manually constructs the scenario it claims to verify. It "passes" without exercising any real system behavior. These tests give false confidence and hide broken implementations.
+
+**Check every test against these patterns:**
+
+**Manual sequence construction:**
+```
+// BAD: Test claims "pipeline runs A → B → C in order"
+// but manually calls A(), then B(), then C() and checks they were called
+const spyA = vi.fn(() => doA());
+const spyB = vi.fn(() => doB());
+spyA(); spyB();  // ← Manually constructed! Proves nothing about the pipeline.
+expect(spyA).toHaveBeenCalled();
+```
+The fix: invoke the REAL pipeline and spy on whether it calls A before B.
+
+**Wrong-layer testing:**
+```
+// BAD: Acceptance criterion says "RenderPass contains screen-space fields"
+// but test checks ProjectionOutput (an internal detail), not RenderPass
+const result = projectInstances(positions, radius, N, camera);
+expect(result.screenPosition.length).toBe(N * 2);  // ← Tests internal function, not RenderPass
+```
+The fix: invoke the layer the criterion describes (assembleRenderPass, not projectInstances).
+
+**Simulated integration:**
+```
+// BAD: "Integration test" that imports individual functions and calls them in sequence
+import { compile } from './compiler';
+import { execute } from './runtime';
+const compiled = compile(patch);
+const result = execute(compiled);  // ← This is a unit test, not integration
+```
+The fix: use the real orchestration layer (the system's actual entry point that coordinates these calls).
+
+**How to detect tautologies:**
+
+1. Read the acceptance criterion / checkbox / DoD item
+2. Read the test
+3. Ask: "If I deleted the implementation entirely, would this test still pass?"
+   - If YES (because the test constructs the scenario itself) → **TAUTOLOGY**
+4. Ask: "Does this test invoke the system boundary described in the criterion?"
+   - If NO (it tests a different layer or a helper function) → **WRONG LAYER**
+5. Ask: "Could a broken implementation make this test pass?"
+   - If YES (because the test doesn't exercise the real path) → **INSUFFICIENT**
+
+**Verdicts for tautological tests:**
+
+- If tests are tautological: verdict is **INCOMPLETE** regardless of whether they pass
+- Specify: "Test at [file:line] is tautological — it manually constructs [X] instead of exercising the real [Y]"
+- The fix is always: rewrite the test to invoke the real system boundary
+
+### 8. Library/Pipeline Evaluation (Non-UI Code)
+
+**For code without a visible UI** (libraries, compilers, pipelines, kernels, data transformations):
+
+"Runtime evidence" does NOT mean "click a button." It means: **run the actual pipeline with real inputs and verify the outputs are correct.**
+
+**How to evaluate library/pipeline code:**
+
+1. **Identify the real entry point**: What function/class does the user of this library actually call? That's your test surface — not internal helpers.
+
+2. **Construct realistic inputs**: Not toy examples. Use inputs that exercise the real data shapes, sizes, and edge cases the system will encounter.
+
+3. **Run the pipeline end-to-end**: Call the real entry point with real inputs. Don't mock intermediate stages.
+
+4. **Verify outputs mechanically**: Check output values, shapes, types, and invariants. Use snapshot comparisons, property-based checks, or mathematical proofs where applicable.
+
+5. **Verify ordering/causality**: If the system has stages that must run in order, spy on the real orchestration layer to verify ordering — don't manually sequence the stages yourself (that's a tautology).
+
+**What "runtime evidence" means for different code types:**
+
+| Code Type | Runtime Evidence |
+|-----------|-----------------|
+| UI/Frontend | Browser interaction, visual verification |
+| API/Backend | HTTP requests, response validation |
+| CLI | Command execution, output capture |
+| Library/SDK | Call real API surface, verify outputs |
+| Compiler/Pipeline | Run full pipeline, verify IR/output |
+| Pure functions | Property-based tests, mathematical invariants |
+| Data transforms | Input→output verification at system boundary |
+
+**Key principle**: The test must exercise the same code path that production will use. If production calls `compilePatch(source)`, your test calls `compilePatch(source)` — not the 5 internal functions that `compilePatch` happens to use.
+
+### 9. Ambiguity Detection
 
 **Look for signs the LLM had to guess:**
 
@@ -211,7 +294,7 @@ If you find bugs that stem from unclear requirements:
 3. Explain why that assumption was wrong
 4. Recommend PAUSE if more implementation will compound the problem
 
-### 8. Specify Missing Persistent Checks
+### 10. Specify Missing Persistent Checks
 
 **If manual testing reveals gaps that should be automated:**
 
@@ -230,7 +313,7 @@ If you find bugs that stem from unclear requirements:
 
 These become persistent checks for future evaluations.
 
-### 9. Quick Checks (Always Do These)
+### 11. Quick Checks (Always Do These)
 
 **Every evaluation:**
 - Empty/null inputs
@@ -241,7 +324,7 @@ These become persistent checks for future evaluations.
 - Did the fix break something else?
 - Is this better or worse than last evaluation?
 
-### 10. Determine Verdict
+### 12. Determine Verdict
 
 **COMPLETE**: All acceptance criteria met. Survived break-it testing. No critical ambiguities.
 
@@ -440,89 +523,13 @@ Your evaluation quality determines whether bad code ships or gets fixed.
 
 ## Final Steps (All Required)
 
-### Step 1: Update Eval Cache (REQUIRED)
-
-Factor out reusable findings for future evaluations (see `skills/eval-cache/SKILL.md`):
-
-```bash
-mkdir -p .agent_planning/eval-cache
-```
-
-**Cache these if discovered (runtime knowledge):**
-- Runtime behavior findings per scope → `runtime-<scope>.md`
-- Break-it test patterns that revealed bugs → add to existing files
-- Data flow verification results → `findings-dataflow-<scope>.md`
-
-**Don't cache (ephemeral):**
-- Specific verdicts (COMPLETE/INCOMPLETE) - point-in-time
-- Test pass/fail counts - re-run to verify
-- Bug details (keep in WORK-EVALUATION files)
-
-**Update INDEX.md** if you wrote new cache files.
-
-### Step 2: Capture Deferred Work (REQUIRED for PAUSE/BLOCKED)
-
-If verdict is **PAUSE** or **BLOCKED**, capture the blocking items as deferred work to ensure they're not lost:
-
-**For PAUSE verdicts** (questions needing answers):
-
-For each question in "Questions Needing Answers":
-```
-Skill("do:deferred-work-capture") with:
-  title: "Clarify: <question summary>"
-  description: |
-    Question that arose during work-evaluator evaluation.
-
-    Full question: <the question with options>
-    Context: <why this matters>
-    Impact: <what happens if not resolved>
-  type: clarify
-  priority: 1
-  source_context: "work-evaluator PAUSE for <scope>"
-  parent_id: <current beads issue if any>
-```
-
-**For BLOCKED verdicts**:
+### Step 1: Output to User
 
 ```
-Skill("do:deferred-work-capture") with:
-  title: "Blocked: <reason summary>"
-  description: |
-    Work blocked during evaluation.
-
-    Blocker: <what's blocking>
-    Impact: <what can't proceed>
-    Resolution needed: <what would unblock>
-  type: task
-  priority: 0
-  source_context: "work-evaluator BLOCKED for <scope>"
-  parent_id: <current beads issue if any>
-  blocking: true
-```
-
-**Note**: This ensures questions and blockers persist across sessions and aren't silently lost.
-
-### Step 3: Write Summary File
-
-Write to `.agent_planning/SUMMARY-work-evaluator-<timestamp>.txt`:
-```
-Agent: work-evaluator | <timestamp>
-Scope: <scope>
-Verdict: COMPLETE | INCOMPLETE | PAUSE | BLOCKED
-Criteria: n/m working | Breaks found: n | Ambiguities: n
-Previous issues: n fixed, n remaining
-Missing checks: n specified
-Cache updated: [files written to eval-cache, if any]
-```
-
-### Step 4: Output to User
-
-```
-work-evaluator complete
+✓ work-evaluator complete
   Scope: <scope> | Verdict: [status] | Criteria: n/m
   Previous: n fixed, n remaining | Breaks: n | Ambiguities: n
-  Cache: [Updated n files | No updates needed]
-  -> [next action]
+  → [next action]
      COMPLETE: "Ready to proceed"
      INCOMPLETE: "Fixes needed: X, Y, Z"
      PAUSE: "n questions need answers before continuing"

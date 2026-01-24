@@ -380,7 +380,6 @@ Beads tracking: <if applicable, reference issue ID>
    - Read full PLAN/DOD/STATUS from topic directory
    - Implement according to acceptance criteria
    - Run tests/validation
-   - Invalidate eval-cache for modified files
    - Update beads issue with progress
    - Return summary of what was implemented
 

@@ -125,18 +125,10 @@ These belong in the planning phase. Your job is to inspire and define value, not
 - Ideas that conflict with the principle of least surprise
 - Vague benefits ("improves user experience" - how specifically?)
 
-## Final Summary (Required)
+## Final Output (Required)
 
-**Step 1**: Write summary to `.agent_planning/SUMMARY-product-visionary-<timestamp>.txt`:
 ```
-Agent: product-visionary | <timestamp>
-Proposal: <TYPE>_PROPOSAL_<name>.md | Ideas: n brainstormed → m selected
-Theme: [central theme] | User Impact: low | medium | high
-```
-
-**Step 2**: Output to user (this appears in their console):
-```
-product-visionary complete
+✓ product-visionary complete
   Proposal: [filename] | Ideas: n evaluated, m selected
-  -> Review proposal, then /do:plan to create implementation plan
+  → Review proposal, then /do:plan to create implementation plan
 ```

@@ -87,35 +87,36 @@ Check topic directory for sprint plans.
 2. Look for sprint files: `SPRINT-*-PLAN.md`, `SPRINT-*-DOD.md`, `SPRINT-*-CONTEXT.md`
 3. Check confidence level in each sprint plan header
 
-**Confidence-Based Decision:**
+**Status-Based Decision:**
 
-| Files Found | Confidence | Action |
-|-------------|------------|--------|
+| Files Found | Status | Action |
+|-------------|--------|--------|
 | No plans | - | Run `/do:plan $TOPIC`, then proceed |
-| Sprint plans exist | HIGH | Ready for implementation → Step 4 |
-| Sprint plans exist | MEDIUM | Research first: surface unknowns to user, then implement |
-| Sprint plans exist | LOW | Exploration required: ask user questions, run research, re-plan |
+| Sprint plans exist | READY FOR IMPLEMENTATION | All items HIGH → Step 4 |
+| Sprint plans exist | PARTIALLY READY | Start HIGH items immediately; for MEDIUM/LOW items, surface unknowns to user first, resolve, then implement |
+| Sprint plans exist | RESEARCH REQUIRED | Exploration required: ask user questions, run research, re-plan |
 
-**For MEDIUM/LOW confidence sprints:**
-- Read the "Unknowns to Resolve" and "Exit Criteria" sections
+**For MEDIUM/LOW confidence items within a sprint:**
+- Read the "Unknowns to Resolve" and "Exit Criteria" sections for those items
 - Present options to user with tradeoffs table
-- After user input, update sprint plan or create HIGH confidence version
-- Only proceed to implementation when confidence is HIGH
+- After user input, update the item's confidence to HIGH
+- Implement once resolved
 
-**Output:** Sprint PLAN filepath, DOD filepath, and confidence level.
+**Output:** Sprint PLAN filepath, DOD filepath, and sprint status.
 
 ---
 
 ## Step 4: Definition of Done (Main Context Approval)
 
-Before spawning the agent, check for exiting user approval on completion criteria.
+**You MUST read the DOD file before spawning the implementer.** The DOD is the verification contract — implementation is judged against it.
 
-To do this, check the `.agent_planning/<topic>/` directory for files named:
-`USER-RESPONSE-*.md`.  For the latest timestamp, read that file.  This will contain the user's approval or rejection of the plan.  If a plan was approved here, automatically proceed to implementation.
+1. Read `SPRINT-*-DOD.md` for the current sprint. This is the Definition of Done.
+2. Check `.agent_planning/<topic>/USER-RESPONSE-*.md` for prior approval. If a plan was approved here, automatically proceed to implementation.
+3. If no prior approval exists, or the user rejected the plan: present the Definition of Done to the user and ask for approval. Upon approval, proceed to **Step 5**.
 
-**IMPORTANT**: If the file specifies the user rejected the plan, it may have been revised later without updating this file, so read the planning documents, provide a summary to the user, and ask them for approval.  Upon approval, proceed to **Step 5**.
+**IMPORTANT**: If the file specifies the user rejected the plan, it may have been revised later without updating this file, so read the planning documents, provide a summary to the user, and ask them for approval.
 
-**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `do:iterative-implementer` agent.  If no planning files are accepted, provide a comprehensive and detailed prompt to the agent**
+**Regardless of ANY other circumstances, ALL implementation done by this command MUST be done using the `do:iterative-implementer` agent. If no planning files are accepted, provide a comprehensive and detailed prompt to the agent.**
 
 ---
 
@@ -155,7 +156,7 @@ Implement: $TOPIC
 Use the do:work-evaluator agent to assess if goals are achieved. The agent will:
 - Run the software
 - Collect evidence (screenshots, logs, output)
-- Compare against acceptance criteria
+- Compare against Definition of Done
 - Determine: COMPLETE, INCOMPLETE, PAUSE, or BLOCKED
 
 **Step 5.2b: Display results** - Show work-evaluator's summary and loop decision to user.
@@ -321,7 +322,7 @@ Next: Review STATUS or continue with /do:it [next topic]
 .agent_planning/
 ├── auth/
 │   ├── SPRINT-<ts>-<slug>-PLAN.md    # Sprint plan with confidence level
-│   ├── SPRINT-<ts>-<slug>-DOD.md     # Acceptance criteria
+│   ├── SPRINT-<ts>-<slug>-DOD.md     # Definition of Done
 │   ├── SPRINT-<ts>-<slug>-CONTEXT.md # Implementation context
 │   ├── EVALUATION-<timestamp>.md     # Evaluation snapshots
 │   └── USER-RESPONSE-<timestamp>.md  # User approval

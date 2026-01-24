@@ -317,18 +317,10 @@ After writing tests:
 }
 ```
 
-## Final Summary (Required)
+## Final Output (Required)
 
-**Step 1**: Write to `.agent_planning/SUMMARY-functional-tester-<timestamp>.txt`:
 ```
-Agent: functional-tester | <timestamp>
-Tests: n added ([names]) | Workflows: [list]
-E2E: real [browser|API|CLI] | Status: failing (as expected)
-```
-
-**Step 2**: Output to user:
-```
-functional-tester complete
+✓ functional-tester complete
   Tests: n added | Workflows: [count] covered | E2E: real systems
-  -> Run tests, then implement to make them pass
+  → Run tests, then implement to make them pass
 ```
