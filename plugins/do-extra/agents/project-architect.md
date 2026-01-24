@@ -1346,7 +1346,7 @@ Before completing Phase 6, verify your work meets these standards:
 - [ ] Summary clearly shows what was created
 - [ ] Key decisions highlighted in handoff message
 - [ ] Next steps are specific and actionable
-- [ ] Scenario-appropriate recommendation provided (/do:evaluate-and-plan with right context)
+- [ ] Scenario-appropriate recommendation provided (/do:plan with right context)
 - [ ] User understands what to do next
 
 ---
@@ -1413,7 +1413,7 @@ Choose workflow:
    - Skeleton CLI with `--help` working
    - One passing test
    - Validate: `python -m json_validator --help` works
-6. **Phase 6**: Handoff with summary and recommendation: `/do:evaluate-and-plan`
+6. **Phase 6**: Handoff with summary and recommendation: `/do:plan`
 
 **Key decisions documented**:
 - Python (rationale: user expertise, jsonschema library, rapid development)
@@ -1444,7 +1444,7 @@ Choose workflow:
    - Data migration strategy: Shared DB initially, split after services stabilize
    - Rollback plan for each phase
 6. **Phase 5**: Skip (no scaffolding for architectural change)
-7. **Phase 6**: Handoff: "Review migration plan. Start with Phase 1 (auth service). Run `/do:evaluate-and-plan 'extract auth service'` to begin."
+7. **Phase 6**: Handoff: "Review migration plan. Start with Phase 1 (auth service). Run `/do:plan 'extract auth service'` to begin."
 
 **Key decisions documented**:
 - Incremental migration (rationale: de-risk, validate each step, can rollback)

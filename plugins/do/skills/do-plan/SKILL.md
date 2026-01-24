@@ -139,22 +139,11 @@ All planning files for a topic live in `.agent_planning/<topic-slug>/`.
 
 ### Step 3a: Run Evaluation
 
-Remember the universal-laws.
-Use the /Explore agent to evaluate the current state:
+Use the project-evaluator agent:
 
 ```
 Topic: $TOPIC
 Topic Directory: .agent_planning/<topic>/
-
-Evaluate the current state of this topic area.
-Write EVALUATION-<timestamp>.md to the topic directory.
-
-Focus on:
-1. What exists
-2. What's missing
-3. What needs changes (which files, components, architecture, etc)
-4. Dependencies and risks
-5. Ambiguities and unknowns (CRITICAL - list ALL uncertainties)
 ```
 <important>
 You MUST write this file to: `.agent_planning/<topic>/EVALUATION-<timestamp>.md` before continuing.
