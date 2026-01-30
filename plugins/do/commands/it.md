@@ -4,4 +4,4 @@ description: "Implement a feature with automatic planning, human-in-the-loop ver
 ---
 
 Wrapper around skill "do:do-it"
-Invoke the plugin skill "di-it".  Do NOT use any built in commands with a similar name to the skill, ONLY the skill in this plugin. If there is no matching skill, say so.
+Invoke the plugin skill "do:do-it".  Do NOT use any built in commands with a similar name to the skill, ONLY the skill in this plugin. If there is no matching skill, say so.

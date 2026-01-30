@@ -1,5 +1,5 @@
 ---
-name: "do-research-external"
+name: "do-external-research"
 description: "[market|docs|patterns] Research external sources - market analysis, competitors, external docs. Entry point for /do-more:research command."
 context: fork
 ---

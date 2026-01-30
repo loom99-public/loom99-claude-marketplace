@@ -58,8 +58,11 @@ def is_skill_wrapper(file_path, skill_name):
 
     content = file_path.read_text()
     # A skill wrapper has this exact line as its marker
-    expected_marker = f'Wrapper around skill "{skill_name}"'
-    return expected_marker in content.splitlines()
+    expected_marker = f'Wrapper around skill'
+    for l in content.splitlines():
+        if l.startswith(expected_marker):
+            return True
+    return False
 
 
 def generate_commands():
