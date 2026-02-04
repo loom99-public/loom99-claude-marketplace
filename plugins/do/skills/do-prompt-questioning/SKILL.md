@@ -155,10 +155,6 @@ Does this look correct?
 
 ## Anti-Patterns
 
-**Asking obvious questions**: Don't ask what you can reasonably determine yourself.
-
-**Compound questions**: Ask one thing at a time unless tightly related.
-
 **No options provided**: When choices exist, list them instead of asking open-ended.
 
 **Missing implications**: Always explain what each choice means.

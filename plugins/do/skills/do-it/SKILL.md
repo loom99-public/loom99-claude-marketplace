@@ -122,7 +122,7 @@ Check topic directory for sprint plans.
 
 ## Step 5: Implementation Loop
 
-Repeat until complete:
+Repeat until the evaluator finds no more issues:
 
 ### Step 5.1: Implement
 
