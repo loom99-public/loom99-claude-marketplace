@@ -13,21 +13,21 @@
       "source": "./plugins/do",
       "description": "do: ideate, evaluate, research, plan, test, implement, verify",
       "strict": true,
-      "version": "0.5.24"
+      "version": "0.5.25"
     },
     {
       "name": "do-more",
       "source": "./plugins/do-more",
       "description": "do-more: audit, docs, handoff, release, testing workflows",
       "strict": true,
-      "version": "0.5.24"
+      "version": "0.5.25"
     },
     {
       "name": "do-extra",
       "source": "./plugins/do-extra",
       "description": "do-extra: experimental tools, external integrations, novelty commands",
       "strict": true,
-      "version": "0.5.18"
+      "version": "0.5.19"
     }
   ]
 }
